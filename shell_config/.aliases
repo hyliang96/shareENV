@@ -745,8 +745,16 @@ gbu()
         echo 'if remote_branch does not exist on remote repo, it will be created'
         return
     fi
+    echo "-----------------------------------------------------------------------"
     echo "remote: $remote; remote_branch: $remote_branch"
+    echo "git fetch $remote $remote_branch"
+    git fetch $remote $remote_branch
+    echo "fetched"
+    echo "-----------------------------------------------------------------------"
+    echo "git branch --set-upstream-to=$remote/$remote_branch"
     git branch --set-upstream-to=$remote/$remote_branch
+    echo "upstream branch has set"
+    echo "-----------------------------------------------------------------------"
 }
 alias gbuu='git branch --unset-upstream' # 将当前枝取关远枝：   guu [本地分支名，默认为当前分支]
 
