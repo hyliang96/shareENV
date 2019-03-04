@@ -18,6 +18,7 @@ if has('syntax') && !exists('g:syntax_on')
     syntax enable
 endif
 
+
 set showcmd                         " 右下角：n模式显示已输入命令；v模式显示选区范围
 set showmode                        " 左下角的状态栏显示INSERT之类的字样
 set nocompatible                    " 关闭 vi 兼容模式
@@ -56,6 +57,7 @@ set ttimeoutlen=50    " 察觉不到的小值，键码串必需50ms内收到，�
 " set nowritebackup  " only in case you don't want a backup file while editing
 " set noundofile     " no undo files
 au BufRead,BufNewFile * start       " 开vim即insert模式
+au BufRead,BufNewFile * filetype detect
 let mapleader = ','                 " 修改leader
 set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}3?\ %c:%l/%L%)\
                                     " 设置在状态行显示的信息
