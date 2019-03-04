@@ -588,10 +588,72 @@ function! VBS() range
     endif
 endfunction
 vmap <bs> :call VBS()<cr>
+
+" function! VBS() range
+    " let l1=line("'<'")
+    " let c1=col("'<'")
+    " let l2=line("'>'")
+    " let c2=col("'>'")
+    " call feedkeys("gv")
+    " call setpos("'<", [0, l1, c1, 0])
+    " call setpos("'>", [0, l2, c2-1, 0])
+    " call feedkeys("\<plug>VDelete")
+" endfunction
+" fun! EndWithCR() range
+    " call feedkeys('<esc>')
+    " call feedkeys('gv')
+    " return strlen(getline("'>"))<col("'>")
+" endf
+
+" function! EndEnter() range
+    " let lend=max([a:firstline,a:lastline])
+    " let [l,c]=getpos('.')[1:2]
+    " if l!=lend
+        " " call feedkeys('gvo')
+        " o
+        " let [l,c]=getpos('.')
+    " endif
+    " return strlen(getline(l))<=col('.')
+
+    " " Get the line and column of the visual selection marks
+    " " let [lnum1, col1] = getpos("'<")[1:2]
+    " " let [lnum2, col2] = getpos("'>")[1:2]
+    " " echo lnum1 col1 lnum2 col2
+" endfunction
+
+
+" vmap <expr> <bs>  EndWithCR()? 'y': 'd'
+
+
+" function! Move()
+    " call feedkeys('gvo')
+" endfunction
+
+" vmap ,pp :call Move()<cr>
+
+
+" function! PrintGivenRange() range
+" echo "firstline ".a:firstline." lastline ".a:lastline
+" echo "firstcol ".a:firstcol." lastcol ".a:lastcol
+" echo "firstline contents" . getline(a:firstline)
+" echo "lastline contents" . getline(a:lastline)
+" endfunction
+" " command! -range PassRange <line1>,<line2>call PrintGivenRange()
+" command! -range PassRange '<,'>call PrintGivenRange()
+" vmap ,pr :PassRange<cr>
+
+
+
+" vmap <expr> <bs> EndWithCR()? ':call VBS()<cr>': '<plug>VDelete'
 " vnoremap <backspace> "_d
 nnoremap <backspace> i<backspace><c-o>:stopinsert<cr>
 " nnoremap <S-backspace> :echo "test c-backspace"<cr>
 
+
+" 删除选区，进入修改模式，不改变剪切板内容
+vnoremap c "_c
+" 删除选区并替换为剪切板内容，不改变剪切板内容
+vnoremap p "_dP
 "=========================================================================
 "缩进
 " ------------------------------------------------------------------------
@@ -601,8 +663,8 @@ set softtabstop=4                   " 使得按退格键时可以一次删掉 4 
 set tabstop=4                       " 设定 tab 长度为 4
 set expandtab                       " 按tab 输入 tabstop 个空格
 " 语言专属缩进设置
-autocmd FileType python set tabstop=4 shiftwidth=4 softtabstop=4  expandtab
-autocmd FileType sh set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+autocmd FileType python set tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType sh set tabstop=4 shiftwidth=4 softtabstop=4
 " ------------------------------------------------------------------------
 " 自动将转换为标准缩进（定义见 set tabstop=几，以及set expandtab还是 set noexpandtab ）
 " 缩进转4个空格  :set ts=4 :set expandtab :%retab!
