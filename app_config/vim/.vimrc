@@ -1057,17 +1057,25 @@ vnoremap  <S-S> <esc>:update<space>
 " 否则若 tab数>1，则关闭此tab
 " 否则若 有tree窗口，则关闭tree窗口，再:q退出本窗口
 " 否则，直接:q退出窗口
-nnoremap <expr> <C-w> (winnr('$')-g:NERDTree.IsOpen() != 1 ? ':q<cr>' :
+function! TreeWindowNumber()
+    if exists('g:NERDTree')
+        return g:NERDTree.IsOpen()
+    else
+        return 0
+    endif
+endfunction
+
+nnoremap <expr> <C-w> (winnr('$')-TreeWindowNumber() != 1 ? ':q<cr>' :
 \ (tabpagenr() > 1 ? ':tabclose<cr>' :
-\ (g:NERDTree.IsOpen()? ':NERDTreeToggle<CR>:q<CR>' : ':q<CR>'
+\ (TreeWindowNumber()? ':NERDTreeToggle<CR>:q<CR>' : ':q<CR>'
 \ )))
-vnoremap <expr> <C-w> (winnr('$')-g:NERDTree.IsOpen()!= 1?'<esc>:q<cr>':
+vnoremap <expr> <C-w> (winnr('$')-TreeWindowNumber()!= 1?'<esc>:q<cr>':
 \ (tabpagenr() > 1 ? '<esc>:tabclose<cr>' :
-\ (g:NERDTree.IsOpen()? '<esc>:NERDTreeToggle<CR>:q<CR>': '<esc>:q<CR>'
+\ (TreeWindowNumber()? '<esc>:NERDTreeToggle<CR>:q<CR>': '<esc>:q<CR>'
 \ )))
-inoremap <expr> <C-w> (winnr('$')-g:NERDTree.IsOpen()!=1?'<c-o>:q<cr>':
+inoremap <expr> <C-w> (winnr('$')-TreeWindowNumber()!=1?'<c-o>:q<cr>':
 \ (tabpagenr() > 1 ? '<c-o>:tabclose<cr>' :
-\ (g:NERDTree.IsOpen()?'<c-o>:NERDTreeToggle<CR><c-o>:q<CR>': '<c-o>:q<CR>'
+\ (TreeWindowNumber()?'<c-o>:NERDTreeToggle<CR><c-o>:q<CR>': '<c-o>:q<CR>'
 \ )))
 
 " vim程序退出
