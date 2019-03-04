@@ -829,10 +829,10 @@ _level()
     local SAVE_IFS=$IFS
     IFS=$(echo -en "\n\b")
     local apath=$1
-    while [[ 1 ]]; do
+    while [ 1 ]; do
         echo $apath
         local newpath=$(dirname $apath)
-        if [[ $newpath == $apath ]]; then
+        if [ "$newpath" == "$apath" ]; then
             break
         else
             apath=$newpath
