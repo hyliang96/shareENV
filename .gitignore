@@ -2,6 +2,7 @@
 /.git_backup/*
 doc/tags
 *.zwc
+plugged
 plugged/
 bundle/
 .netrwhist
