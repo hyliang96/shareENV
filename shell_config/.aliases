@@ -723,7 +723,7 @@ alias grls='git remote show'    # 列出远仓：    grls
                              # 显示远仓信息： grls 远仓名
 # 远枝
 # alias gbu='git branch -u'                # 将当前枝关联远枝：           gup 远仓名 远枝名
-# alias gubu='git branch --unset-upstream' # 将当前枝取关远枝：   guu 远仓名 远枝名
+alias gubu='git branch --unset-upstream' # 将当前枝取关远枝：   guu [本地分支名，默认为当前分支]
 gbu()
 {
     if [ $# = 0 ]; then
@@ -736,7 +736,7 @@ gbu()
         local remote=$1
         local remote_branch=$2
     else
-        echo 'Usgae: gbu [remote [remote_branch]]'
+        echo 'Aruments: [remote [remote_branch]]'
         echo '    default remote=origin'
         echo '    default remote_branch=<current_local_branch_name>'
         echo 'if remote_branch does not exist on remote repo, it will be created'
@@ -745,27 +745,8 @@ gbu()
     echo $remote $remote_branch
     git branch -u $remote $remote_branch
 }
-gubu()
-{
-    if [ $# = 0 ]; then
-        local remote=origin
-        local remote_branch=`git_current_branch`
-    elif [ $# = 1 ]; then
-        local remote=$1
-        local remote_branch=`git_current_branch`
-    elif [ $# = 2 ]; then
-        local remote=$1
-        local remote_branch=$2
-    else
-        echo 'Usgae: gubu [remote [remote_branch]]'
-        echo '    default remote=origin'
-        echo '    default remote_branch=<current_local_branch_name>'
-        echo 'if remote_branch does not exist on remote repo, it will be created'
-        return
-    fi
-    echo $remote $remote_branch
-    git branch --unset-upstream $remote $remote_branch
-}
+
+
 # 推拉
 #  初次推送用，关联远枝并推送，若远仓无此远枝，则创建之
 # gpsu [远仓名 [远枝名]]
@@ -777,31 +758,41 @@ git_current_branch()
 }
 gpsu()
 {
-    if [ $# = 0 ]; then
-        local remote=origin
-        local remote_branch=`git_current_branch`
-    elif [ $# = 1 ]; then
-        local remote=$1
-        local remote_branch=`git_current_branch`
-    elif [ $# = 2 ]; then
-        local remote=$1
-        local remote_branch=$2
-    else
-        echo 'Usgae: gpsu [remote [remote_branch]]'
-        echo '    default remote=origin'
-        echo '    default remote_branch=<current_local_branch_name>'
-        echo 'if remote_branch does not exist on remote repo, it will be created'
-        return
-    fi
-    echo $remote $remote_branch
-    git push -u $remote $remote_branch
+    gbu $*
+    gps
 }
+# gpsu()
+# {
+    # if [ $# = 0 ]; then
+        # local remote=origin
+        # local remote_branch=`git_current_branch`
+    # elif [ $# = 1 ]; then
+        # local remote=$1
+        # local remote_branch=`git_current_branch`
+    # elif [ $# = 2 ]; then
+        # local remote=$1
+        # local remote_branch=$2
+    # else
+        # echo 'Usgae: gpsu [remote [remote_branch]]'
+        # echo '    default remote=origin'
+        # echo '    default remote_branch=<current_local_branch_name>'
+        # echo 'if remote_branch does not exist on remote repo, it will be created'
+        # return
+    # fi
+    # echo $remote $remote_branch
+    # git push -u $remote $remote_branch
+# }
 alias gps='git push'            # 推送当前枝：            gps [ 远仓名 [远枝名]]
 alias gfc='git fetch'           # 拉去到当前枝：          gfc [ 远仓名 [远枝名]]
 alias gpl='git pull'            # 拉去到当前枝并与之合并：  gpl [ 远仓名 [远枝名]]
                                 # gps，gfc，gpl皆可省参数：
                                 # 若该远仓的远枝已关联，则[远枝名]不写
                                 # 若还只关联一个远仓，则[ 远仓名 [远枝名]]不写
+gplu()
+{
+    gbu $*
+    gps
+}
 alias gcl='git clone'           # 克隆远枝：gcl 远仓网址
                                 # 请用http格式，若用ssh格式则需要验证密钥
 
