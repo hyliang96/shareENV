@@ -709,9 +709,9 @@ gh()  # 关联github上的远程repo
         local user=$2
         local repo=$3
     else
-        echo 'Usage: gh [[github_username] remote] remote_repo_name'
-        echo '    default github_username: local git username, see in `git config user.name`'
+        echo 'Usage: gh [remote [github_username]] remote_repo_name'
         echo '    default remote: origin'
+        echo '    default github_username: local git username, see in `git config user.name`'
         return
     fi
     echo $user $name $repo
@@ -723,7 +723,10 @@ alias grls='git remote show'    # 列出远仓：    grls
                              # 显示远仓信息： grls 远仓名
 # 远枝
 # alias gbu='git branch -u'                # 将当前枝关联远枝：           gup 远仓名 远枝名
-alias gubu='git branch --unset-upstream' # 将当前枝取关远枝：   guu [本地分支名，默认为当前分支]
+git_current_branch()
+{
+    git branch | grep \* | cut -d ' ' -f2
+}
 gbu()
 {
     if [ $# = 0 ]; then
@@ -742,25 +745,16 @@ gbu()
         echo 'if remote_branch does not exist on remote repo, it will be created'
         return
     fi
-    echo $remote $remote_branch
-    git branch -u $remote $remote_branch
+    echo "remote: $remote; remote_branch: $remote_branch"
+    git branch --set-upstream-to=$remote/$remote_branch
 }
+alias gbuu='git branch --unset-upstream' # 将当前枝取关远枝：   guu [本地分支名，默认为当前分支]
 
 
 # 推拉
-#  初次推送用，关联远枝并推送，若远仓无此远枝，则创建之
-# gpsu [远仓名 [远枝名]]
-# 默认远仓名=origin
-# 默认远枝名=本地现枝名
-git_current_branch()
-{
-    git branch | grep \* | cut -d ' ' -f2
-}
-gpsu()
-{
-    gbu $*
-    gps
-}
+
+
+
 # gpsu()
 # {
     # if [ $# = 0 ]; then
@@ -782,17 +776,26 @@ gpsu()
     # echo $remote $remote_branch
     # git push -u $remote $remote_branch
 # }
+
+#  初次推送用，关联远枝并推送，若远仓无此远枝，则创建之
+# gpsu [远仓名 [远枝名]]，  默认远仓名=origin， 默认远枝名=本地现枝名
+gpsu()
+{
+    gbu $*
+    git push
+}
 alias gps='git push'            # 推送当前枝：            gps [ 远仓名 [远枝名]]
 alias gfc='git fetch'           # 拉去到当前枝：          gfc [ 远仓名 [远枝名]]
+# gplu [远仓名 [远枝名]],   初次拉用
+gplu()
+{
+    gbu $*
+    git pull
+}
 alias gpl='git pull'            # 拉去到当前枝并与之合并：  gpl [ 远仓名 [远枝名]]
                                 # gps，gfc，gpl皆可省参数：
                                 # 若该远仓的远枝已关联，则[远枝名]不写
                                 # 若还只关联一个远仓，则[ 远仓名 [远枝名]]不写
-gplu()
-{
-    gbu $*
-    gps
-}
 alias gcl='git clone'           # 克隆远枝：gcl 远仓网址
                                 # 请用http格式，若用ssh格式则需要验证密钥
 
