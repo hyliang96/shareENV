@@ -1,0 +1,7 @@
+*.pyc
+/.git_backup/*
+doc/tags
+*.zwc
+plugged/
+bundle/
+.netrwhist

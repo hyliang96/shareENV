@@ -1,0 +1,39 @@
+# attention: 代码行尾勿加注释，会无法执行那一行
+
+# Windows
+Thumbs.db
+ # Thumbnail cache files
+desktop.ini
+# Folder view configuration files
+
+# OS X
+.DS_Store
+# Folder view configuration files
+.Spotlight-V100
+# Files that might appear on external disks
+.Trashes
+# Files that might appear on external disks
+._*
+# Thumbnail cache files
+
+# Compiled Python files
+*.pyc
+
+# Compiled C++ files
+*.out
+
+# Application specific files
+venv
+node_modules
+.sass-cache
+
+# Temp File
+*.swp
+*.swa
+*.swo
+
+# github merge file
+*.orig
+
+#vscode
+.vscode
