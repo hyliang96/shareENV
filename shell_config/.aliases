@@ -126,9 +126,12 @@ kjob()
 alias v='vim'
 
 # alias nvim=$shareENV/local/bin/nvim.appimage
-alias nvim=$shareENV/nvim/usr/bin/nvim
-alias nvi=nvim
-alias nv=nvim
+# 若不是mac
+if [ "$(uname -o)" != "Darwin" ]; then
+    alias nvim=$shareENV/nvim/usr/bin/nvim
+    alias nvi=nvim
+    alias nv=nvim
+fi
 
 # sub(){
 #     if [ -d /Applications/Sublime\ Text.app ]; then
