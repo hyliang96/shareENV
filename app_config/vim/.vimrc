@@ -440,20 +440,6 @@ nnoremap <C-x> :call NCtrlX()<cr>
 " nmap <C-x> ^vg_d"_dd
 " vmap <C-x> d
 " 选区末尾若有换行符，不剪切该换行符
-" function! VCtrlX() range
-    " if strlen(getline("'>"))<col("'>")
-        " let l1=line("'<'")
-        " let c1=col("'<'")
-        " let l2=line("'>'")
-        " let c2=col("'>'")
-        " call feedkeys("gv")
-        " call setpos("'<", [0, l1, c1, 0])
-        " call setpos("'>", [0, l2, c2-1, 0])
-        " call feedkeys("d")
-    " else
-        " call feedkeys("gvd")
-    " endif
-" endfunction
 function! VCtrlX() range
     if strlen(getline("'>"))<col("'>")
         let l1=line("'<'")
@@ -478,20 +464,6 @@ imap <c-x> <c-o>:stopinsert<cr>ddi
 " 复制
 nmap <C-c> ^vg_y
 " 选区末尾若有换行符，不复制该换行符
-" function! VCtrlC() range
-    " if strlen(getline("'>"))<col("'>")
-        " let l1=line("'<'")
-        " let c1=col("'<'")
-        " let l2=line("'>'")
-        " let c2=col("'>'")
-        " call feedkeys("gv")
-        " call setpos("'<", [0, l1, c1, 0])
-        " call setpos("'>", [0, l2, c2-1, 0])
-        " call feedkeys("y")
-    " else
-        " call feedkeys("gvy")
-    " endif
-" endfunction
 function! VCtrlC() range
     if strlen(getline("'>"))<col("'>")
         let l1=line("'<'")
@@ -516,37 +488,7 @@ imap <expr> <C-c> col('.')==1?'<esc>yyi':'<esc>yya'
 " -----------------------------------------
 " 粘贴
 nnoremap <C-v> :set paste<cr>O<right><left><C-r>"<esc>:set nopaste<cr>
-" vmap <C-v> <esc>Pv<right>
-" function! VCtrlV() range
-    " if ( line("'<") == line("'>") ) && ( virtcol("'<") == virtcol("'>") )
-    " " 只选中了一个字符，则粘贴插入此行上方
-        " echo "1"
-        " call feedkeys("gv\<Esc>Pv\<Right>\<esc>")
-    " else
-    " " 否则插入在光标处
-        " echo "2"
-        " call feedkeys("gv\"_dPv\<esc>" )
-    " endif
-" endfunction
-" vnoremap <C-v> :call VCtrlV()<cr>
-"
 " 选区末尾若有换行符，删除该换行符
-" vnoremap <plug>VDelete "_d
-" function! VCtrlV() range
-    " if strlen(getline("'>"))<col("'>")
-        " let l1=line("'<'")
-        " let c1=col("'<'")
-        " let l2=line("'>'")
-        " let c2=col("'>'")
-        " call feedkeys("gv")
-        " call setpos("'<", [0, l1, c1, 0])
-        " call setpos("'>", [0, l2, c2-1, 0])
-        " call feedkeys("\<plug>VDeleteP")
-    " else
-        " call feedkeys("gv\<plug>VDeleteP")
-    " endif
-" endfunction
-" vmap <c-v> :call VCtrlV()<cr>
 function! VCtrlV() range
     if strlen(getline("'>"))<col("'>")
         let l1=line("'<'")
@@ -619,23 +561,6 @@ set clipboard=unnamed     " 所有vim剪切板均与系统剪切板同步
 " ------------------------------------------------------------------------
 " 删除，不放入剪切板
 " 选区末尾若有换行符，不剪切该换行符
-" function! VBS() range
-    " if strlen(getline("'>"))<col("'>")
-        " let l1=line("'<'")
-        " let c1=col("'<'")
-        " let l2=line("'>'")
-        " let c2=col("'>'")
-        " call feedkeys("gv")
-        " call setpos("'<", [0, l1, c1, 0])
-        " call setpos("'>", [0, l2, c2-1, 0])
-        " call feedkeys("\<plug>VDelete")
-    " else
-        " call feedkeys("gv\<plug>VDelete")
-    " endif
-" endfunction
-" vmap <bs> :call VBS()<cr>
-
-
 function! VBS() range
     " try
         " undojoin
@@ -659,63 +584,6 @@ endfunction
 vmap <bs> :call VBS()<cr>
 vmap <del> :call VBS()<cr>
 
-" function! VBS() range
-    " let l1=line("'<'")
-    " let c1=col("'<'")
-    " let l2=line("'>'")
-    " let c2=col("'>'")
-    " call feedkeys("gv")
-    " call setpos("'<", [0, l1, c1, 0])
-    " call setpos("'>", [0, l2, c2-1, 0])
-    " call feedkeys("\<plug>VDelete")
-" endfunction
-" fun! EndWithCR() range
-    " call feedkeys('<esc>')
-    " call feedkeys('gv')
-    " return strlen(getline("'>"))<col("'>")
-" endf
-
-" function! EndEnter() range
-    " let lend=max([a:firstline,a:lastline])
-    " let [l,c]=getpos('.')[1:2]
-    " if l!=lend
-        " " call feedkeys('gvo')
-        " o
-        " let [l,c]=getpos('.')
-    " endif
-    " return strlen(getline(l))<=col('.')
-
-    " " Get the line and column of the visual selection marks
-    " " let [lnum1, col1] = getpos("'<")[1:2]
-    " " let [lnum2, col2] = getpos("'>")[1:2]
-    " " echo lnum1 col1 lnum2 col2
-" endfunction
-
-
-" vmap <expr> <bs>  EndWithCR()? 'y': 'd'
-
-
-" function! Move()
-    " call feedkeys('gvo')
-" endfunction
-
-" vmap ,pp :call Move()<cr>
-
-
-" function! PrintGivenRange() range
-" echo "firstline ".a:firstline." lastline ".a:lastline
-" echo "firstcol ".a:firstcol." lastcol ".a:lastcol
-" echo "firstline contents" . getline(a:firstline)
-" echo "lastline contents" . getline(a:lastline)
-" endfunction
-" " command! -range PassRange <line1>,<line2>call PrintGivenRange()
-" command! -range PassRange '<,'>call PrintGivenRange()
-" vmap ,pr :PassRange<cr>
-
-
-
-" vmap <expr> <bs> EndWithCR()? ':call VBS()<cr>': '<plug>VDelete'
-" vnoremap <backspace> "_d
 nnoremap <backspace> i<backspace><c-o>:stopinsert<cr>
 " nnoremap <S-backspace> :echo "test c-backspace"<cr>
 
