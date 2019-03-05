@@ -290,8 +290,8 @@ autocmd VimEnter * wincmd p " 开vim或tab，默认进入右侧编辑区
 
 " iterm2 把键盘输入的 ctrl+/ 映射成<esc>/
 " 这里在把 <esc>/ 映射成 vim中的<c-/>
-map <esc>/// <c-/>
-map! <esc>/// <c-/>
+map <esc>[[/ <c-/>
+map! <esc>[[/ <c-/>
 
 
 function! NComment()
