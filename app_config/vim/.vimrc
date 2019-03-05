@@ -573,21 +573,36 @@ set clipboard=unnamed     " 所有vim剪切板均与系统剪切板同步
 " ------------------------------------------------------------------------
 " 删除，不放入剪切板
 " 选区末尾若有换行符，不剪切该换行符
+" function! VBS() range
+    " if strlen(getline("'>"))<col("'>")
+        " let l1=line("'<'")
+        " let c1=col("'<'")
+        " let l2=line("'>'")
+        " let c2=col("'>'")
+        " call feedkeys("gv")
+        " call setpos("'<", [0, l1, c1, 0])
+        " call setpos("'>", [0, l2, c2-1, 0])
+        " call feedkeys("\<plug>VDelete")
+    " else
+        " call feedkeys("gv\<plug>VDelete")
+    " endif
+" endfunction
+" vmap <bs> :call VBS()<cr>
+
+
 function! VBS() range
     if strlen(getline("'>"))<col("'>")
         let l1=line("'<'")
         let c1=col("'<'")
         let l2=line("'>'")
         let c2=col("'>'")
-        call feedkeys("gv")
         call setpos("'<", [0, l1, c1, 0])
         call setpos("'>", [0, l2, c2-1, 0])
-        call feedkeys("\<plug>VDelete")
-    else
-        call feedkeys("gv\<plug>VDelete")
     endif
+    normal! gv"_d
 endfunction
 vmap <bs> :call VBS()<cr>
+vmap <del> :call VBS()<cr>
 
 " function! VBS() range
     " let l1=line("'<'")
@@ -648,7 +663,6 @@ vmap <bs> :call VBS()<cr>
 " vnoremap <backspace> "_d
 nnoremap <backspace> i<backspace><c-o>:stopinsert<cr>
 " nnoremap <S-backspace> :echo "test c-backspace"<cr>
-
 
 " 删除选区，进入修改模式，不改变剪切板内容
 vnoremap c "_c
