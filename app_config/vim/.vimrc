@@ -440,18 +440,33 @@ nnoremap <C-x> :call NCtrlX()<cr>
 " nmap <C-x> ^vg_d"_dd
 " vmap <C-x> d
 " 选区末尾若有换行符，不剪切该换行符
+" function! VCtrlX() range
+    " if strlen(getline("'>"))<col("'>")
+        " let l1=line("'<'")
+        " let c1=col("'<'")
+        " let l2=line("'>'")
+        " let c2=col("'>'")
+        " call feedkeys("gv")
+        " call setpos("'<", [0, l1, c1, 0])
+        " call setpos("'>", [0, l2, c2-1, 0])
+        " call feedkeys("d")
+    " else
+        " call feedkeys("gvd")
+    " endif
+" endfunction
 function! VCtrlX() range
     if strlen(getline("'>"))<col("'>")
         let l1=line("'<'")
         let c1=col("'<'")
         let l2=line("'>'")
         let c2=col("'>'")
-        call feedkeys("gv")
         call setpos("'<", [0, l1, c1, 0])
         call setpos("'>", [0, l2, c2-1, 0])
-        call feedkeys("d")
+        normal! gvd$
+    elseif strlen(getline("'>"))==col("'>")
+        normal! gvd$
     else
-        call feedkeys("gvd")
+        normal! gvd
     endif
 endfunction
 vmap <c-x> :call VCtrlX()<cr>
@@ -463,18 +478,33 @@ imap <c-x> <c-o>:stopinsert<cr>ddi
 " 复制
 nmap <C-c> ^vg_y
 " 选区末尾若有换行符，不复制该换行符
+" function! VCtrlC() range
+    " if strlen(getline("'>"))<col("'>")
+        " let l1=line("'<'")
+        " let c1=col("'<'")
+        " let l2=line("'>'")
+        " let c2=col("'>'")
+        " call feedkeys("gv")
+        " call setpos("'<", [0, l1, c1, 0])
+        " call setpos("'>", [0, l2, c2-1, 0])
+        " call feedkeys("y")
+    " else
+        " call feedkeys("gvy")
+    " endif
+" endfunction
 function! VCtrlC() range
     if strlen(getline("'>"))<col("'>")
         let l1=line("'<'")
         let c1=col("'<'")
         let l2=line("'>'")
         let c2=col("'>'")
-        call feedkeys("gv")
         call setpos("'<", [0, l1, c1, 0])
         call setpos("'>", [0, l2, c2-1, 0])
-        call feedkeys("y")
+        normal! gvy$
+    elseif strlen(getline("'>"))==col("'>")
+        normal! gvy$
     else
-        call feedkeys("gvy")
+        normal! gvy
     endif
 endfunction
 vmap <c-c> :call VCtrlC()<cr>
