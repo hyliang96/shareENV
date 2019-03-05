@@ -1,6 +1,7 @@
 scriptencoding utf-8
 set encoding=utf-8
 set fileencoding=utf-8
+" set encoding=utf-8
 "=========================================================================
 " DesCRiption: 适合自己使用的vimrc文件，for Linux/Mac, GUI/Console
 " Last Change: 2019年03月04日
