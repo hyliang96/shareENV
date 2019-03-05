@@ -604,17 +604,17 @@ function! VC() range
         let c2=col("'>'")
         call setpos("'<", [0, l1, c1, 0])
         call setpos("'>", [0, l2, c2-1, 0])
-        normal! gv"_c
+        normal! gv"_c$
     elseif strlen(getline("'>"))==col("'>")
-        normal! gv"_c
+        normal! gv"_c$
     else
         normal! gv"_c
         " exec "normal! gv\"_c\<right>"
     endif
 endfunction
 " 删除选区，进入修改模式，不改变剪切板内容
-" vmap c :call VC()<cr>
-vnoremap c "_c
+vmap c :call VC()<cr>
+" vnoremap c "_c
 
 "=========================================================================
 "缩进
@@ -1239,7 +1239,7 @@ let g:ctrlp_funky_syntax_highlight = 1
 au FileType python let b:delimitMate_nesting_quotes = ['"']
 " ------------------------------------------------------------------------
 " 彩色括号对
-" Plug 'kien/rainbow_parentheses.vim'
+" 'kien/rainbow_parentheses.vim'
 let g:rbpt_colorpairs = [
     \ ['brown', 'RoyalBlue3'],
     \ ['Darkblue', 'SeaGreen3'],
@@ -1267,7 +1267,7 @@ au Syntax * RainbowParenthesesLoadBraces    " {}
 au Syntax * RainbowParenthesesLoadChevrons  " <>
 " ------------------------------------------------------------------------
 " 快速给词加环绕符号,例如单引号/双引号/括号/成对标签等
-" Plug 'tpope/vim-surround'
+"'tpope/vim-surround'
 vmap ' S'
 vmap " S"
 vmap < S<
