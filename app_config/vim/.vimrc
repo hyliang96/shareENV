@@ -51,10 +51,10 @@ set backspace=indent,eol,start      " 不设定在插入状态无法用退格键
 set cmdheight=1                     " 设定命令行的行数为 1
 set laststatus=2                    " 显示状态栏 (默认值为 1, 无法显示状态栏)
 " 按键时长限制
-" set timeout           " mapping的时长限制
-" set timeoutlen=1000   " 单位毫秒，默认值1000
-" set ttimeout          " 收到键码串的时长限制，例如escape sequance
-" set ttimeoutlen=50    " 察觉不到的小值，键码串必需50ms内收到，不然当断开处理
+set timeout           " mapping的时长限制
+set timeoutlen=1000   " 单位毫秒，默认值1000
+set ttimeout          " 收到键码串的时长限制，例如escape sequance
+set ttimeoutlen=100    " 察觉不到的小值，键码串必需50ms内收到，不然当断开处理
 " " 取消自动生成备份、缓冲文件
 " set nobackup       " no backup files
 " set noswapfile     " no swap files
