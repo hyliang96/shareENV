@@ -591,28 +591,34 @@ vmap <del> :call VBS()<cr>
 nnoremap <backspace> i<backspace><c-o>:stopinsert<cr>
 " nnoremap <S-backspace> :echo "test c-backspace"<cr>
 
-function! VC() range
-    " try
-        " undojoin
-    " catch /^Vim\%((\a\+)\)\=:E790/
-    " endtry
-    " exe "normal! \<esc>i\<c-g>u\<c-o>:stopinsert\<cr>"
-    if strlen(getline("'>"))<col("'>")
-        let l1=line("'<'")
-        let c1=col("'<'")
-        let l2=line("'>'")
-        let c2=col("'>'")
-        call setpos("'<", [0, l1, c1, 0])
-        call setpos("'>", [0, l2, c2-1, 0])
-        normal! gv"_c$
-    elseif strlen(getline("'>"))==col("'>")
-        normal! gv"_c$
-    else
-        normal! gv"_c
-        " exec "normal! gv\"_c\<right>"
-    endif
-endfunction
-" 删除选区，进入修改模式，不改变剪切板内容
+
+" FIXME unable to work in visual, visual(insert), visual of multiple cursor
+" wanted feature:
+" * when the selected region ended with a <cr>, set <cr> beyond  the selection
+" * when the selected region is deleted, put the cursor after the char before
+" previous selected region, and end up in insert mode
+" function! VC() range
+    " " try
+        " " undojoin
+    " " catch /^Vim\%((\a\+)\)\=:E790/
+    " " endtry
+    " " exe "normal! \<esc>i\<c-g>u\<c-o>:stopinsert\<cr>"
+    " if strlen(getline("'>"))<col("'>")
+        " let l1=line("'<'")
+        " let c1=col("'<'")
+        " let l2=line("'>'")
+        " let c2=col("'>'")
+        " call setpos("'<", [0, l1, c1, 0])
+        " call setpos("'>", [0, l2, c2-1, 0])
+        " call feedkeys('gv"_c')
+    " elseif strlen(getline("'>"))==col("'>")
+        " call feedkeys('gv"_c')
+    " else
+        " call feedkeys("gv\<bs>i")
+        " " exec "normal! gv\"_di"
+    " endif
+" endfunction
+" " 删除选区，进入修改模式，不改变剪切板内容
 vmap c :call VC()<cr>
 " vnoremap c "_c
 
