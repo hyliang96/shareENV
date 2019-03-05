@@ -54,7 +54,7 @@ set laststatus=2                    " 显示状态栏 (默认值为 1, 无法显
 set timeout           " mapping的时长限制
 set timeoutlen=1000   " 单位毫秒，默认值1000
 set ttimeout          " 收到键码串的时长限制，例如escape sequance
-set ttimeoutlen=100    " 察觉不到的小值，键码串必需50ms内收到，不然当断开处理
+set ttimeoutlen=0    " 察觉不到的小值，键码串必需50ms内收到，不然当断开处理
 " " 取消自动生成备份、缓冲文件
 " set nobackup       " no backup files
 " set noswapfile     " no swap files
@@ -73,6 +73,13 @@ map \ :
 if has('mouse')
     set mouse=a
 endif
+
+" 用iTerm2.app时，插入模式改为细光标，其他模式还是粗光标
+if $TERM_PROGRAM =~ "iTerm"
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+endif
+
 "-----------------------------------------------------------------
 " 折叠
 "-----------------------------------------------------------------
