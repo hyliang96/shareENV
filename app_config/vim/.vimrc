@@ -51,10 +51,13 @@ set backspace=indent,eol,start      " 不设定在插入状态无法用退格键
 set cmdheight=1                     " 设定命令行的行数为 1
 set laststatus=2                    " 显示状态栏 (默认值为 1, 无法显示状态栏)
 " 按键时长限制
+
 set timeout           " mapping的时长限制
 set timeoutlen=1000   " 单位毫秒，默认值1000
 set ttimeout          " 收到键码串的时长限制，例如escape sequance
-set ttimeoutlen=100    " 察觉不到的小值，键码串必需50ms内收到，不然当断开处理
+set ttimeoutlen=50    " 察觉不到的小值，键码串必需50ms内收到，不然当断开处理
+" set ttimeoutlen=-1
+"
 " " 取消自动生成备份、缓冲文件
 " set nobackup       " no backup files
 " set noswapfile     " no swap files
@@ -185,32 +188,69 @@ nnoremap <C-S-RETURN> :bprevious<CR>
 nnoremap « :vsp<cr>
 vnoremap « <esc>:vsp<cr>v
 inoremap « <c-o>:vsp<cr>
-" alt+-：水平分割窗口
-nnoremap – :sp<cr>
-vnoremap – <esc>:sp<cr>v
-inoremap – <c-o>:sp<cr>
+" alt+shift+\：水平分割窗口
+nnoremap » :sp<cr>
+vnoremap » <esc>:sp<cr>v
+inoremap » <c-o>:sp<cr>
 
 " alt+Fn+上下左右：去往上下左右一个窗口
 " alt+Home
-    " 普通终端
-noremap  <esc>[1;9H <c-w>h
-inoremap <esc>[1;9H <c-o><c-w>h
-    " tmux下
-noremap  <esc><esc>[1~ <c-w>h
-inoremap <esc><esc>[1~ <c-o><c-w>h
+map   ᜉ  <plug>LWin
+map!   ᜉ <plug>LWin
+noremap  <plug>LWin  <c-w>h
+inoremap <plug>LWin  <c-o><c-w>h
+    " " 普通终端
+" noremap  <esc>[1;9H <c-w>h
+" inoremap <esc>[1;9H <c-o><c-w>h
+    " " tmux下
+" noremap  <esc><esc>[1~ <c-w>h
+" inoremap <esc><esc>[1~ <c-o><c-w>h
 " alt+end
-    " 普通终端
-noremap  <esc>[1;9F <c-w>l
-inoremap <esc>[1;9F <c-o><c-w>l
-    " tmux下
-noremap  <esc><esc>[4~ <c-w>l
-inoremap <esc><esc>[4~ <c-o><c-w>l
+map  ᜊ   <plug>RWin
+map! ᜊ   <plug>RWin
+noremap  <plug>RWin   <c-w>l
+inoremap <plug>RWin   <c-o><c-w>l
+" 普通终端
+" noremap  <esc>[1;9F <c-w>l
+" inoremap <esc>[1;9F <c-o><c-w>l
+    " " tmux下
+" noremap  <esc><esc>[4~ <c-w>l
+" inoremap <esc><esc>[4~ <c-o><c-w>l
 " alt+PageUp
-noremap  <esc><esc>[5~ <c-w>k
-inoremap <esc><esc>[5~ <c-o><c-w>k
+map  ᜋ   <plug>UWin
+map!  ᜋ  <plug>UWin
+noremap  <plug>UWin  <c-w>k
+inoremap <plug>UWin  <c-o><c-w>k
+" noremap  <esc><esc>[5~ <c-w>k
+" inoremap <esc><esc>[5~ <c-o><c-w>k
 " alt+PageDown
-noremap  <esc><esc>[6~ <c-w>j
-inoremap <esc><esc>[6~ <c-o><c-w>j
+map   ᜌ    <plug>DWin
+map!   ᜌ   <plug>DWin
+noremap  <plug>DWin   <c-w>j
+inoremap <plug>DWin   <c-o><c-w>j
+" noremap  <esc><esc>[6~ <c-w>j
+" inoremap <esc><esc>[6~ <c-o><c-w>j
+
+
+" 窗口移动
+" 变宽
+nnoremap <silent> ≠ :exe "vertical resize " . (winwidth(0) * 15/14)<CR>
+vnoremap <silent> ≠ <esc>:exe "vertical resize " . (winwidth(0) * 15/14)<CR>gv
+inoremap <silent> ≠ <c-o>:exe "vertical resize " . (winwidth(0) * 15/14)<CR>
+" 变窄
+nnoremap <silent> – :exe "vertical resize " . (winwidth(0) * 14/15)<CR>
+vnoremap <silent> – <esc>:exe "vertical resize " . (winwidth(0) * 14/15)<CR>gv
+inoremap <silent> – <c-o>:exe "vertical resize " . (winwidth(0) * 14/15)<CR>
+" 变高
+nnoremap <silent> ± :exe "resize " . (winheight(0) * 10/9)<CR>
+vnoremap <silent> ± <esc>:exe "resize " . (winheight(0) * 10/9)<CR>gv
+inoremap <silent> ± <c-o>:exe "resize " . (winheight(0) * 10/9)<CR>
+" 变矮
+nnoremap <silent> — :exe "resize " . (winheight(0) * 9/10)<CR>
+vnoremap <silent> — <esc>:exe "resize " . (winheight(0) * 9/10)<CR>gv
+inoremap <silent> — <c-o>:exe "resize " . (winheight(0) * 9/10)<CR>
+
+
 "-----------------------------------------------------------------
 "一些不错的映射转换语法（如果在一个文件中混合了不同语言时有用）
 nnoremap <leader>1 :set filetype=python<CR>
@@ -297,11 +337,6 @@ autocmd VimEnter * wincmd p " 开vim或tab，默认进入右侧编辑区
 
 " iterm2 把键盘输入的 ctrl+/ 映射成<esc>/
 " 这里在把 <esc>/ 映射成 vim中的<c-/>
-map <esc>[[/ <c-/>
-map! <esc>[[/ <c-/>
-
-" map <esc>/// <c-/>
-" map! <esc>/// <c-/>
 map ᜀ  <c-/>
 map! ᜀ  <c-/>
 
@@ -325,9 +360,8 @@ function! VComment() range
     if ( firstLine ==# lastLine ) && ( theLine =~ "^[ \t]*$" )
         call feedkeys("\<Esc>\<Plug>NERDCommenterToggle$a")
     else
-        call feedkeys("gv\<PLUG>NERDCommenterToggle")
-        call feedkeys("gv")
-    endi
+        call feedkeys("gv\<PLUG>NERDCommenterTogglegv")
+    endif
 endfunction
 vnoremap <silent> <C-/> :call VComment()<cr>
 " vmap <C-/> <Plug>NERDCommenterToggle<CR>gv
@@ -477,7 +511,10 @@ imap <c-x> <c-o>:stopinsert<cr>ddi
 " imap <C-x> <c-o>:stopinsert<cr>dda
 " -----------------------------------------
 " 复制
-nmap <C-c> ^vg_y
+" 复制一行，带换行符
+" nmap <C-c> ^vg_y
+" 复制一行，不带换行符
+map <c-c> ^y$
 " 选区末尾若有换行符，不复制该换行符
 function! VCtrlC() range
     if strlen(getline("'>"))<col("'>")
@@ -487,17 +524,22 @@ function! VCtrlC() range
         let c2=col("'>'")
         call setpos("'<", [0, l1, c1, 0])
         call setpos("'>", [0, l2, c2-1, 0])
-        normal! gvy$
+        normal! gvygv
+        " normal! gvy$
     elseif strlen(getline("'>"))==col("'>")
-        normal! gvy$
+        normal! gvygv
+        " normal! gvy$
     else
-        normal! gvy
+        normal! gvygv
+        " normal! gvy
     endif
 endfunction
 vmap <c-c> :call VCtrlC()<cr>
 
 " vmap <expr> <C-c> (strlen(getline("'>"))<col("'>"))? ':call CCtrlC()<cr>' : 'y'
-imap <expr> <C-c> col('.')==1?'<esc>yyi':'<esc>yya'
+" imap <expr> <C-c> col('.')==1?'<esc>yyi':'<esc>yya'
+" 选区末尾若有换行符，不复制该换行符
+imap <c-c> <esc>^y$gi
 " imap <C-c> <c-o>:stopinsert<cr>yya
 
 " -----------------------------------------
@@ -928,14 +970,26 @@ inoremap <S-C-Down> <c-o><S-g><C-o>$
 " noremap <S-Right> E
 " inoremap <S-Right> <c-o>E<right>
 
+if has('nvim')
+    map <M-b> <M-left>
+    map! <M-b> <M-left>
+    map <M-f> <M-right>
+    map! <M-f> <M-right>
+else
+    map <esc>b <M-left>
+    map! <esc>b <M-left>
+    map <esc>f <M-right>
+    map! <esc>f <M-right>
+endif
+
 " alt+left => <esc>b 左移一词
-noremap <esc>b gE
-inoremap <esc>b <left><c-o>gE<right>
-cnoremap <esc>b <s-left>
+noremap  <M-left>  gE
+inoremap  <M-left>  <left><c-o>gE<right>
+cnoremap  <M-left>  <s-left>
 " alt+right => <esc>f 右移一词
-noremap <esc>f E
-inoremap <esc>f <c-o>E<right>
-cnoremap <esc>f <s-right>
+noremap  <M-right>   E
+inoremap  <M-right>   <c-o>E<right>
+cnoremap  <M-right>   <s-right>
 
 " 光标前皆字符，且不在行首
 function! EmptyBefore()
@@ -971,13 +1025,17 @@ map! <kEnd> <End>
 " shift+alt+right -> <esc>[4~
 
 " alt+up 光标移动到页顶
-map <esc>[1;9A <A-up>
-map! <esc>[1;9A <A-up>
+" map <esc>[1;9A <A-up>
+" map! <esc>[1;9A <A-up>
+map ᜅ  <A-up>
+map! ᜅ  <A-up>
 noremap <A-up> H
 inoremap <A-up> <c-o>H
 " alt+down 光标移动到页底
-map <esc>[1;9B <A-down>
-map! <esc>[1;9B <A-down>
+" map <esc>[1;9B <A-down>
+" map! <esc>[1;9B <A-down>
+map ᜆ   <A-down>
+map! ᜆ   <A-down>
 noremap <A-down> L
 inoremap <A-down> <c-o>L
 " alt+m   光标移动到页中
@@ -985,13 +1043,17 @@ noremap µ M
 inoremap µ <c-o>M
 
 " alt+shift+up 所在行置页预
-map <esc>[1;10A <A-S-up>
-map! <esc>[1;10A <A-S-up>
+" map <esc>[1;10A <A-S-up>
+" map! <esc>[1;10A <A-S-up>
+map ᜇ  <A-S-up>
+map! ᜇ  <A-S-up>
 noremap <A-S-up> zt
 inoremap <A-S-up> <c-o>zt
 " alt+shift+down 所在行至页底
-map <esc>[1;10B <A-S-down>
-map! <esc>[1;10B <A-S-down>
+" map <esc>[1;10B <A-S-down>
+" map! <esc>[1;10B <A-S-down>
+map ᜈ   <A-S-down>
+map! ᜈ   <A-S-down>
 noremap <A-S-down> zb
 inoremap <A-S-down> <c-o>zb
 " alt+shift+m 所在行置页中
@@ -1021,18 +1083,30 @@ inoremap <C-a> <c-o>gg<c-o>v<S-g>$
 " 这些删除每做一次，，故可一步步撤销
 " 删除
 " alt+del 删除前一个词
-nmap <esc><bs> <plug>DeleteWordBefore
-imap <esc><bs> <plug>DeleteWordBefore
-cmap <esc><bs> <plug>DeleteWordBefore
+if has('nvim')
+    nmap <M-BS> <plug>DeleteWordBefore
+    imap <M-BS> <plug>DeleteWordBefore
+    cmap <M-BS> <plug>DeleteWordBefore
+else
+    nmap <esc><bs> <plug>DeleteWordBefore
+    imap <esc><bs> <plug>DeleteWordBefore
+    cmap <esc><bs> <plug>DeleteWordBefore
+endif
 nnoremap <expr> <plug>DeleteWordBefore (col('.')==1)? 'i<c-g>u<bs><c-o>:stopinsert<cr>' : 'a<c-g>u<esc>vb"_d'
 " nnoremap <expr> <plug>DeleteWordBefore (col('.')==1)? 'i<bs><c-o>:stopinsert<cr>' : ' <left>vb"_d'
 inoremap <expr> <plug>DeleteWordBefore (col('.')==1)? '<c-g>u<bs>' : '<c-g>u<left><c-o>vb"_d'
 " inoremap <expr> <plug>DeleteWordBefore (col('.')==1)? '<bs>' : '<left><c-o>vb"_d'
 cnoremap <plug>DeleteWordBefore <c-w>
 " alt+fn+del 删除后一个词
-nmap <esc>d <plug>DeleteWordAfter
-imap <esc>d <plug>DeleteWordAfter
-cmap <esc>d <plug>DeleteWordAfter
+if has('nvim')
+    nmap <M-d> <plug>DeleteWordAfter
+    imap <M-d> <plug>DeleteWordAfter
+    cmap <M-d> <plug>DeleteWordAfter
+else
+    nmap <esc>d <plug>DeleteWordAfter
+    imap <esc>d <plug>DeleteWordAfter
+    cmap <esc>d <plug>DeleteWordAfter
+endif
 nnoremap <expr> <plug>DeleteWordAfter ((col('.')==col('$')-1)? 'a<c-g>u<del><c-o>:stopinsert<cr>' : 'a<c-g>u<esc>ve"_d')
 inoremap <expr> <plug>DeleteWordAfter (col('.')==col('$'))? '<del>' : '<c-g>u<C-o>ve"_d'
 cnoremap <expr> <plug>DeleteWordAfter ''
@@ -1126,9 +1200,11 @@ inoremap <expr> <C-w> (winnr('$')-TreeWindowNumber()!=1?'<c-o>:q<cr>':
 \ )))
 
 " vim程序退出
-nnoremap <S-w> :qa<cr>
-vnoremap <S-w> <esc>:qa<cr>
-
+map  ᜍ    <S-C-W>
+map! ᜍ     <S-C-W>
+nnoremap <S-C-w> :qa<cr>
+vnoremap <S-C-w> <esc>:qa<cr>
+inoremap <S-C-W> <c-o>:qa<cr>
 " alt+w 退出窗口
 nnoremap ∑ :q<cr>
 vnoremap ∑ <esc>:q<cr>
@@ -1228,7 +1304,7 @@ let g:ctrlp_prompt_mappings = {
 \ 'CreateNewFile()':      ['<c-n>'],
 \ 'ToggleType(1)':        ['<S-right>'],
 \ 'ToggleType(-1)':       ['<S-left>'],
-\ 'AcceptSelection("h")': ['–','<c-h>'],
+\ 'AcceptSelection("h")': ['»','<c-h>'],
 \ 'AcceptSelection("v")': ['«','<c-v>'],
 \ 'ToggleByFname()':      ['<c-f>'],
 \ 'ToggleRegex()':        ['<c-r>'],
@@ -1325,8 +1401,8 @@ function! DebugPrint(str)
     redir >> debug_output | silent! echo a:str | redir END
 endfunction
 " 分割线
-inoremap === =======================================================================
-inoremap --- -----------------------------------------------------------------------
+inoremap <esc>= =======================================================================
+inoremap <esc>- -----------------------------------------------------------------------
 
 "=========================================================================
 " this machine config
