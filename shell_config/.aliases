@@ -125,6 +125,11 @@ kjob()
 # --------------------- 软件 ----------------------
 alias v='vim'
 
+# alias nvim=$shareENV/local/bin/nvim.appimage
+alias nvim=$shareENV/nvim/usr/bin/nvim
+alias nvi=nvim
+alias nv=nvim
+
 # sub(){
 #     if [ -d /Applications/Sublime\ Text.app ]; then
 #         # 本地是Mac，且有sublime
