@@ -501,19 +501,35 @@ nnoremap <C-v> :set paste<cr>O<right><left><C-r>"<esc>:set nopaste<cr>
 " vnoremap <C-v> :call VCtrlV()<cr>
 "
 " 选区末尾若有换行符，删除该换行符
-vnoremap <plug>VDelete "_d
+" vnoremap <plug>VDelete "_d
+" function! VCtrlV() range
+    " if strlen(getline("'>"))<col("'>")
+        " let l1=line("'<'")
+        " let c1=col("'<'")
+        " let l2=line("'>'")
+        " let c2=col("'>'")
+        " call feedkeys("gv")
+        " call setpos("'<", [0, l1, c1, 0])
+        " call setpos("'>", [0, l2, c2-1, 0])
+        " call feedkeys("\<plug>VDeleteP")
+    " else
+        " call feedkeys("gv\<plug>VDeleteP")
+    " endif
+" endfunction
+" vmap <c-v> :call VCtrlV()<cr>
 function! VCtrlV() range
     if strlen(getline("'>"))<col("'>")
         let l1=line("'<'")
         let c1=col("'<'")
         let l2=line("'>'")
         let c2=col("'>'")
-        call feedkeys("gv")
         call setpos("'<", [0, l1, c1, 0])
         call setpos("'>", [0, l2, c2-1, 0])
-        call feedkeys("\<plug>VDeleteP")
+        normal! gv"_dp$
+    elseif strlen(getline("'>"))==col("'>")
+        normal! gv"_dp$
     else
-        call feedkeys("gv\<plug>VDeleteP")
+        normal! gv"_dPl
     endif
 endfunction
 vmap <c-v> :call VCtrlV()<cr>
@@ -591,6 +607,11 @@ set clipboard=unnamed     " 所有vim剪切板均与系统剪切板同步
 
 
 function! VBS() range
+    " try
+        " undojoin
+    " catch /^Vim\%((\a\+)\)\=:E790/
+    " endtry
+    " exe "normal! \<esc>i\<c-g>u\<c-o>:stopinsert\<cr>"
     if strlen(getline("'>"))<col("'>")
         let l1=line("'<'")
         let c1=col("'<'")
@@ -598,8 +619,12 @@ function! VBS() range
         let c2=col("'>'")
         call setpos("'<", [0, l1, c1, 0])
         call setpos("'>", [0, l2, c2-1, 0])
+        normal! gv"_d$
+    elseif strlen(getline("'>"))==col("'>")
+        normal! gv"_d$
+    else
+        normal! gv"_d
     endif
-    normal! gv"_d
 endfunction
 vmap <bs> :call VBS()<cr>
 vmap <del> :call VBS()<cr>
