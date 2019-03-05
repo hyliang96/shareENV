@@ -51,10 +51,10 @@ set backspace=indent,eol,start      " 不设定在插入状态无法用退格键
 set cmdheight=1                     " 设定命令行的行数为 1
 set laststatus=2                    " 显示状态栏 (默认值为 1, 无法显示状态栏)
 " 按键时长限制
-set timeout           " mapping的时长限制
-set timeoutlen=1000   " 单位毫秒，默认值1000
-set ttimeout          " 收到键码串的时长限制，例如escape sequance
-set ttimeoutlen=50    " 察觉不到的小值，键码串必需50ms内收到，不然当断开处理
+" set timeout           " mapping的时长限制
+" set timeoutlen=1000   " 单位毫秒，默认值1000
+" set ttimeout          " 收到键码串的时长限制，例如escape sequance
+" set ttimeoutlen=50    " 察觉不到的小值，键码串必需50ms内收到，不然当断开处理
 " " 取消自动生成备份、缓冲文件
 " set nobackup       " no backup files
 " set noswapfile     " no swap files
@@ -86,9 +86,9 @@ setlocal foldlevel=1                " 设置折叠层数为
 nnoremap <silent> <c-=> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 vnoremap <silent> <expr> <c-=> foldclosed(line('.')) < 0 ? 'zc' : 'zo'
 inoremap <silent> <expr> <c-=> foldclosed(line('.')) < 0 ? '<c-o>zc' : '<c-o>zo'
-" iterm2将 ctrl+= 映射成 ^[[[=   vim再将其映射为<c-=>
-map <esc>[[= <c-=>
-map! <esc>[[= <c-=>
+" iterm2将 ctrl+= 映射成 ᜂ   vim再将其映射为<c-=>
+map  ᜂ   <c-=>
+map! ᜂ   <c-=>
 "-----------------------------------------------------------------
 " 路径设置
 "-----------------------------------------------------------------
@@ -293,6 +293,10 @@ autocmd VimEnter * wincmd p " 开vim或tab，默认进入右侧编辑区
 map <esc>[[/ <c-/>
 map! <esc>[[/ <c-/>
 
+" map <esc>/// <c-/>
+" map! <esc>/// <c-/>
+map ᜀ  <c-/>
+map! ᜀ  <c-/>
 
 function! NComment()
     let firstLine = line("'<")
@@ -658,12 +662,12 @@ nnoremap <c-]> v>gvv
 vnoremap <c-]> >gv
 inoremap <c-]> <esc>v>gvva
 " ctrl+[ 左一个缩进
-" iterm2 把ctrl+[ 映射为 <esc>[[[
-" 此处把 <esc>[[[ 映射为如下
+" iterm2 把ctrl+[ 映射为 ᜁ
+" 此处把 ᜁ 映射为如下
 " 这是因为vim 中，<c-[> 和 <esc> 同键值
-nnoremap <esc>[[[ v<gvv
-vnoremap <esc>[[[ <gv
-inoremap <esc>[[[ <esc>v<gvva
+nnoremap ᜁ   v<gvv
+vnoremap ᜁ   <gv
+inoremap ᜁ   <esc>v<gvva
 " ------------------------------------------------------------------------
 " 缩进线
 let g:indentLine_char = '⎸'
@@ -700,8 +704,8 @@ inoremap <c-z> <esc>g-a
 " imap <expr> <c-z>  pumvisible()?  '<esc>g-a' : '<c-o>u'
 " 重做
 " ctrl+shift+z  --- iterm2 --> <esc>[[z -- vim ---> 重做
-map <esc>[[z <plug>CtrlShiftZ
-map! <esc>[[z <plug>CtrlShiftZ
+map  ᜃ     <plug>CtrlShiftZ
+map! ᜃ     <plug>CtrlShiftZ
 " nnoremap <plug>CtrlShiftZ <c-r>
 " vnoremap <expr> <plug>CtrlShiftZ SelectOneChar()? '<esc>:redo<cr>' : '<esc>:redo<cr>gv'
 " inoremap <expr> <plug>CtrlShiftZ  pumvisible()?  '<esc>:redo<cr>' : '<c-o><c-r>'
@@ -922,7 +926,7 @@ noremap <esc>b gE
 inoremap <esc>b <left><c-o>gE<right>
 cnoremap <esc>b <s-left>
 " alt+right => <esc>f 右移一词
-noremap <esc>f E
+noremap <esc> E
 inoremap <esc>f <c-o>E<right>
 cnoremap <esc>f <s-right>
 

@@ -123,12 +123,19 @@ kjob()
 }
 
 # --------------------- 软件 ----------------------
-alias v='vim'
-
-# alias nvim=$shareENV/local/bin/nvim.appimage
-alias nvim=$shareENV/nvim/usr/bin/nvim
-alias nvi=nvim
-alias nv=nvim
+if [ "$(uname)" != "Darwin" ]; then
+# 若不是mac
+# 有的linux系统，没有fuse，故无法执行下述镜像
+    # alias nvim=$shareENV/local/bin/nvim.appimage
+    alias nvim=$shareENV/nvim/usr/bin/nvim
+    alias nvi=nvim
+    alias nv=nvim
+else
+# mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
+    # 自带nvim命令
+    alias nvi=nvim
+    alias nv=nvim
+fi
 
 # sub(){
 #     if [ -d /Applications/Sublime\ Text.app ]; then
