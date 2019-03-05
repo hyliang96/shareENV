@@ -926,7 +926,7 @@ noremap <esc>b gE
 inoremap <esc>b <left><c-o>gE<right>
 cnoremap <esc>b <s-left>
 " alt+right => <esc>f 右移一词
-noremap <esc> E
+noremap <esc>f E
 inoremap <esc>f <c-o>E<right>
 cnoremap <esc>f <s-right>
 
