@@ -504,7 +504,11 @@ function! VCtrlV() range
         normal! gv"_dPl
     endif
 endfunction
+" 删除选区并替换为剪切板内容，不改变剪切板内容
 vmap <c-v> :call VCtrlV()<cr>
+vmap p :call VCtrlV()<cr>
+" vnoremap p "_dP
+
 " vnoremap <expr> <C-v> SelectOneChar()? '<esc>Pv<right><esc>' : '"_dPv<esc>"'
 " vmap <C-v> <c-b>Pv<right>
 " inoremap <C-v> <c-r>"
@@ -587,10 +591,31 @@ vmap <del> :call VBS()<cr>
 nnoremap <backspace> i<backspace><c-o>:stopinsert<cr>
 " nnoremap <S-backspace> :echo "test c-backspace"<cr>
 
+function! VC() range
+    " try
+        " undojoin
+    " catch /^Vim\%((\a\+)\)\=:E790/
+    " endtry
+    " exe "normal! \<esc>i\<c-g>u\<c-o>:stopinsert\<cr>"
+    if strlen(getline("'>"))<col("'>")
+        let l1=line("'<'")
+        let c1=col("'<'")
+        let l2=line("'>'")
+        let c2=col("'>'")
+        call setpos("'<", [0, l1, c1, 0])
+        call setpos("'>", [0, l2, c2-1, 0])
+        normal! gv"_c
+    elseif strlen(getline("'>"))==col("'>")
+        normal! gv"_c
+    else
+        normal! gv"_c
+        " exec "normal! gv\"_c\<right>"
+    endif
+endfunction
 " 删除选区，进入修改模式，不改变剪切板内容
+" vmap c :call VC()<cr>
 vnoremap c "_c
-" 删除选区并替换为剪切板内容，不改变剪切板内容
-vnoremap p "_dP
+
 "=========================================================================
 "缩进
 " ------------------------------------------------------------------------
