@@ -256,7 +256,8 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # 即使没有 .* 文件，也会把 * 文件删了
 setopt no_nomatch
 
-
+# 10ms for key sequences
+KEYTIMEOUT=1
 
 # ------------- 其他 -------------
 # iterm2_shell_integration
