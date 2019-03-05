@@ -1,1 +1,0 @@
-/home/haoyu/ENV/CONF/.vimrc
