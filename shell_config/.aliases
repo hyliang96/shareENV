@@ -126,8 +126,8 @@ kjob()
 if [ "$(uname)" != "Darwin" ]; then
 # 若不是mac
 # 有的linux系统，没有fuse，故无法执行下述镜像
-    # alias nvim=$shareENV/local/bin/nvim.appimage
-    alias nvim=$shareENV/nvim/usr/bin/nvim
+    # alias nvim=$serverENV/local/bin/nvim.appimage
+    alias nvim=$serverENV/nvim/usr/bin/nvim
     alias nvi=nvim
     alias nv=nvim
 else
