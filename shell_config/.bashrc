@@ -1,5 +1,5 @@
 
-echo share .bashrc
+[ $DotFileDebug -ne 0 ] && echo share .bashrc
 
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
