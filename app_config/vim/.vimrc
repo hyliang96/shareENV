@@ -503,6 +503,7 @@ function! VCtrlX() range
     else
         normal! gvd
     endif
+    call system('nc localhost 8377 &', @")
 endfunction
 vmap <c-x> :call VCtrlX()<cr>
 
@@ -533,6 +534,7 @@ function! VCtrlC() range
         normal! gvygv
         " normal! gvy
     endif
+    call system('nc localhost 8377 &', @")
 endfunction
 vmap <c-c> :call VCtrlC()<cr>
 
