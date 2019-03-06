@@ -40,7 +40,7 @@ Plug 'hyliang96/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
 " , { 'on': [ 'CtrlP', 'CtrlPBuffer', 'CtrlPMRU' ] }
 " 自动补全
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " ultisnips是引擎
 Plug 'SirVer/ultisnips'
 " 所有常用snippet都在vim-snippets里
