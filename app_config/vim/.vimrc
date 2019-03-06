@@ -477,6 +477,8 @@ let g:multi_cursor_quit_key            = '≈' " alt+x
 " 复制黏贴
 " ------------------------------------------------------------------------
 " 剪切
+" 删去一行
+" 不剪切换行符、和行首缩进
 function! NCtrlX()
     let this_line = getline(".")
     if this_line =~ "^[ \t]*$"
@@ -507,7 +509,12 @@ function! VCtrlX() range
 endfunction
 vmap <c-x> :call VCtrlX()<cr>
 
-imap <c-x> <c-o>:stopinsert<cr>ddi
+fun! EmptyLine()
+    return getline(".")=~ "^[ \t]*$"
+endf
+imap <expr> <c-x> EmptyLine()? '<esc>"_ddi' : '<esc>^vg_d"_ddi'
+
+" imap <c-x> <c-o>:stopinsert<cr>ddi
 " imap <expr> <C-x> col('.')==1?'<esc>ddi':'<esc>dda'
 " imap <C-x> <c-o>:stopinsert<cr>dda
 " -----------------------------------------
