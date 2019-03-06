@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # 服务器、笔记本、WSL 共享的alias配置
 
-echo share .bash_aliases
+[ $DotFileDebug -ne 0 ] && echo share .bash_aliases
 
 
 # ---------------- alias to resource ----------------
