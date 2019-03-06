@@ -775,35 +775,35 @@ alias gbuu='git branch --unset-upstream' # 将当前枝取关远枝：   guu [�
 
 
 
-# gpsu()
-# {
-    # if [ $# = 0 ]; then
-        # local remote=origin
-        # local remote_branch=`git_current_branch`
-    # elif [ $# = 1 ]; then
-        # local remote=$1
-        # local remote_branch=`git_current_branch`
-    # elif [ $# = 2 ]; then
-        # local remote=$1
-        # local remote_branch=$2
-    # else
-        # echo 'Usgae: gpsu [remote [remote_branch]]'
-        # echo '    default remote=origin'
-        # echo '    default remote_branch=<current_local_branch_name>'
-        # echo 'if remote_branch does not exist on remote repo, it will be created'
-        # return
-    # fi
-    # echo $remote $remote_branch
-    # git push -u $remote $remote_branch
-# }
+gpsu()
+{
+    if [ $# = 0 ]; then
+        local remote=origin
+        local remote_branch=`git_current_branch`
+    elif [ $# = 1 ]; then
+        local remote=$1
+        local remote_branch=`git_current_branch`
+    elif [ $# = 2 ]; then
+        local remote=$1
+        local remote_branch=$2
+    else
+        echo 'Usgae: gpsu [remote [remote_branch]]'
+        echo '    default remote=origin'
+        echo '    default remote_branch=<current_local_branch_name>'
+        echo 'if remote_branch does not exist on remote repo, it will be created'
+        return
+    fi
+    echo $remote $remote_branch
+    git push -u $remote $remote_branch
+}
 
 #  初次推送用，关联远枝并推送，若远仓无此远枝，则创建之
 # gpsu [远仓名 [远枝名]]，  默认远仓名=origin， 默认远枝名=本地现枝名
-gpsu()
-{
-    gbu $*
-    git push
-}
+# gpsu()
+# {
+    # gbu $*
+    # git push
+# }
 alias gps='git push'            # 推送当前枝：            gps [ 远仓名 [远枝名]]
 alias gfc='git fetch'           # 拉去到当前枝：          gfc [ 远仓名 [远枝名]]
 # gplu [远仓名 [远枝名]],   初次拉用
