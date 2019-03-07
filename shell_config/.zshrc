@@ -226,8 +226,9 @@ zstyle ':completion:*:*sh:*:' tag-order files
 # 效果：不同类型的文件有不同颜色，如图水红色，文件夹群青色...
 #
 # mac 上有gls，用以代替ls
-# mac上的ls不支持 --show-control-chars --color=auto
-# gls --color=auto 默认加载 coreutils 配色
+# mac上ls不支持 --show-control-chars --color=auto
+# 当安装了coreutils时， gls --color=auto 默认加载 coreutils 配色
+# coreutils安装方法：brew install coreutils
 if [ -x "$(command -v brew)" ] && [  -x "$(command -v gls)"  ] ; then
     if brew list | grep coreutils > /dev/null ; then
         # 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
@@ -235,6 +236,12 @@ if [ -x "$(command -v brew)" ] && [  -x "$(command -v gls)"  ] ; then
         # between quotation marks is the tool output for LS_COLORS
         alias ls='gls --show-control-chars --color=auto'
         eval `gdircolors -b $HOME/.dir_colors`
+    else
+        echo '-------------------------------------------------------------------------'
+        echo 'Your mac has brew and gls; but not coreutils is installed, thus `ls` '
+        echo 'will not be colored normally. Please install it by running'
+        echo '                      `brew install coreutils`                           '
+        echo '-------------------------------------------------------------------------'
     fi
 fi
 # linux 的 ls默认上色了，加载 coreutils 配色
