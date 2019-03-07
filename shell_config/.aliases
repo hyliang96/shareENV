@@ -97,7 +97,7 @@ alias umt='fusermount -u' # 取消sshfs的挂载, umt <本地路径>
 # -------------------- 进程管理 --------------------
 # 搜索进程
 # alias jc='ps aux | awk 'NR==1'; ps aux | grep -v grep | grep'
-jc()
+jch()
 {
     if [ $# -eq 0 ]; then
         echo 'Usgae: jc args_for_grep'
