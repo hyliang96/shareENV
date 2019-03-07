@@ -597,9 +597,9 @@
     "Alpha Component" : 1,
     "Green Component" : 0.10676553100347519
   },
-  "Name" : "vim_keymap",
+  "Name" : "vimkeymap",
   "Blinking Cursor" : false,
-  "Guid" : "3F975615-8180-4710-97CC-359A80FEEE92",
+  "Guid" : "3F975615-2380-4710-97CC-359A80FEEE92",
   "Idle Code" : 0,
   "Ansi 10 Color" : {
     "Red Component" : 0.45490196078431372,
@@ -624,8 +624,8 @@
   },
   "Semantic History" : {
     "editor" : "com.sublimetext.3",
-    "text" : "",
-    "action" : "best editor"
+    "action" : "best editor",
+    "text" : ""
   },
   "Ambiguous Double Width" : false,
   "Ansi 0 Color" : {
