@@ -705,6 +705,7 @@ autocmd FileType sh set tabstop=4 shiftwidth=4 softtabstop=4
 " 4个空格转缩进  :set ts=4 :set noexpandtab :%retab!
 " :%retab! 转换所有 包括行头中尾的tab，:%retab 只转行头的
 noremap rt :%retab!<CR>
+inoremap <esc>rt <c-o>:%retab!<CR>
 " ------------------------------------------------------------------------
 " 空白字符显示
 set list                            " 显示文中空白字符，如空格、\tab、换行符等
@@ -1223,11 +1224,13 @@ nnoremap <expr> „ tabpagenr() > 1 ? ':tabclose<cr>' : ':qa<cr>'
 vnoremap <expr> „ tabpagenr() > 1 ? '<esc>:tabclose<cr>' : '<esc>:qa<cr>'
 inoremap <expr> „ tabpagenr() > 1 ? '<c-o>:tabclose<cr>' : '<c-o>:qa<cr>'
 
-
-" 退出 insert/visual 模式
-noremap <C-b> <esc>
-inoremap <C-b> <C-o>:stopinsert<cr>
-"<right><esc>
+" 进出visual模式: ctrl+'
+vnoremap ᜏ <esc>
+inoremap ᜏ <c-o>v
+nnoremap ᜏ v
+" 退出插入模式：ctrl+i
+inoremap ᜎ <C-o>:stopinsert<cr>
+nnoremap ᜎ  i
 
 " noremap <esc> <NOP>
 " inoremap <esc> <NOP>

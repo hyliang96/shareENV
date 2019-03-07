@@ -128,15 +128,14 @@ if [ "$(uname)" != "Darwin" ]; then
 # 有的linux系统，没有fuse，故无法执行下述镜像
     # alias nvim=$serverENV/local/bin/nvim.appimage
     alias nvim=$serverENV/nvim/usr/bin/nvim
-    alias nvi=nvim
-    alias nv=nvim
-else
-# mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
-    # 自带nvim命令
-    alias nvi=nvim
-    alias nv=nvim
 fi
+# mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
+# 安装完成后自带nvim命令
+alias nvi=nvim
+alias nv=nvim
+alias v=nvim
 
+alias vi=vim
 # sub(){
 #     if [ -d /Applications/Sublime\ Text.app ]; then
 #         # 本地是Mac，且有sublime
