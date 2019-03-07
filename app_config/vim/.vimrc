@@ -507,7 +507,7 @@ function! VCtrlX() range
     endif
     call system('nc localhost 8377 &', @")
 endfunction
-vmap <c-x> :call VCtrlX()<cr>
+vnoremap <c-x> :call VCtrlX()<cr>
 
 fun! EmptyLine()
     return getline(".")=~ "^[ \t]*$"
@@ -522,7 +522,7 @@ imap <expr> <c-x> EmptyLine()? '<esc>"_ddi' : '<esc>^vg_d"_ddi'
 " 复制一行，带换行符
 " nmap <C-c> ^vg_y
 " 复制一行，不带换行符
-map <c-c> ^y$
+noremap <c-c> ^y$:call system('nc localhost 8377 &', @")<CR>
 " 选区末尾若有换行符，不复制该换行符
 function! VCtrlC() range
     if strlen(getline("'>"))<col("'>")
@@ -543,12 +543,12 @@ function! VCtrlC() range
     endif
     call system('nc localhost 8377 &', @")
 endfunction
-vmap <c-c> :call VCtrlC()<cr>
+vnoremap <c-c> :call VCtrlC()<cr>
 
 " vmap <expr> <C-c> (strlen(getline("'>"))<col("'>"))? ':call CCtrlC()<cr>' : 'y'
 " imap <expr> <C-c> col('.')==1?'<esc>yyi':'<esc>yya'
 " 选区末尾若有换行符，不复制该换行符
-imap <c-c> <esc>^y$:call system('nc localhost 8377 &', @")<CR>gi
+inoremap <c-c> <esc>^y$:call system('nc localhost 8377 &', @")<CR>gi
 " imap <C-c> <c-o>:stopinsert<cr>yya
 
 " -----------------------------------------
