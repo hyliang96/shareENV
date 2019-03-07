@@ -127,11 +127,12 @@ if [ -x /usr/bin/vim.gnome ]; then
     # 更换vim-gnome, 以支持clipboard
     alias vim='/usr/bin/vim.gnome'
 fi
-if [ "$(uname)" != "Darwin" ]; then
+if [ -x $serverENV/nvim/usr/bin/nvim ]; then
 # 若不是mac
 # 有的linux系统，没有fuse，故无法执行下述镜像
     # alias nvim=$serverENV/local/bin/nvim.appimage
-    alias nvim=$serverENV/nvim/usr/bin/nvim
+    export PATH=$serverENV/nvim/usr/bin/:$PATH
+    # alias nvim=$serverENV/nvim/usr/bin/nvim
 fi
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
