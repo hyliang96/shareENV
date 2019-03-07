@@ -123,6 +123,10 @@ kjob()
 }
 
 # --------------------- 软件 ----------------------
+if [ -x /usr/bin/vim.gnome ]; then
+    # 更换vim-gnome, 以支持clipboard
+    alias vim='/usr/bin/vim.gnome'
+fi
 if [ "$(uname)" != "Darwin" ]; then
 # 若不是mac
 # 有的linux系统，没有fuse，故无法执行下述镜像
