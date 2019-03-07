@@ -1,63 +1,30 @@
-# 我的vim
+# 我的vim配置
 
-介绍：
+仿sublime的快捷键，绝大多数时间可在insert模式下工作
 
-模仿sublime设置快捷键，实现绝大多数时间都在insert模式下工作
+安装各种实用插件，fork了一些插件，改善了corner cases下的用户体验
 
-组装各种插件，fork了一些repo改写插件，改善边边角角情况下的表现
+实现了一些insert模式下基础操作，相比原生的vim命令，同样改善了corner cases下的用户体验
 
 ## 安装方法
 
-### 安装neovim
+本配置支持neovim，vim>=8.0，vim-gnome，macvim，
 
-### 安装vim插件
+`vim --version` 查看特性，需要支持(显示`+`号)以下特性：clipboard、python 或 python3、conceal
 
-### 安装iterm2的profile
+这里只展示neovim的安装方法；其他的vim安装很方便，可请自行安装。
 
-```
-cp vim_keymap.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/
-```
+### n(eo)vim安装方法
 
-然后重启iterm2，在iterm2 `⌘,`设置中选择vim_keymap 这个profile
-
-[图文教程](https://www.jianshu.com/p/c251d26374c5)
-
-### 修改mac的英文键盘方案
-
-这一设置并不需要。这里只是想说明，我的alt+字母是采用的哪套方案。所有.vimrc里用到的alt+字母都已经在上述profile里设置过了。
-
-### ![屏幕快照 2019-03-08 01.15.56](README.assets/屏幕快照 2019-03-08 01.15.56-1979126.png)
-
-![屏幕快照 2019-03-08 01.15.56](README.assets/屏幕快照 2019-03-08 01.15.56.png)
-
-## 内核选用neovim
-
-neovim（简称nvim）是vim的一个fork项目，重构了其内核。
-
-### 选择nvim的原因
-
-* 我的vim配置依赖以下vim的特性
-  * clipboard：系统剪切板与vim剪切板互通
-  * python 或 python3：UltiSnippets、YouCompleteMe 需要当中至少一个
-  * ​conceal：无此特性，则indentline无法显示缩进线, NERDTree的树栏中会出现`^G`符号作为一个文件(夹)的前缀
-
-  查看vim是否支持上述特性，请执行`vim --version`，返回列表中，加号表示支持，减号表示不支持。
-
-  vim不一定都支持，但nvim支持上述所有特性。
-
-* nvim比vim在翻页时更快，特别是用鼠标滚动翻页时，nvim能够实时停下，而vim会持续滚动很久才停
-
-### 安装方法
-
-* mac：`brew install neovim`，而后在命令行中输入`nvim`即可使用此镜像
+- mac：`brew install neovim`，而后在命令行中输入`nvim`即可使用此镜像
 
   `whereis neovim`可查看其二进制文件所在路径
 
-* linux：从[官网](https://github.com/neovim/neovim/releases/tag/v0.3.4)下载最新的镜像文件`nvim.appimage`
+- linux：从[官网](https://github.com/neovim/neovim/releases/tag/v0.3.4)下载最新的镜像文件`nvim.appimage`
 
   使用方法：
 
-  * 系统有FUSE
+  - 系统有FUSE
 
     设置为可执行文件`chmod u+x nvim.appimage`
 
@@ -79,7 +46,7 @@ neovim（简称nvim）是vim的一个fork项目，重构了其内核。
 
     而后在命令行中输入`nvim`即可使用此镜像
 
-  * 系统无FUSE，将镜像解压，执行其中的二进制文件
+  - 系统无FUSE，将镜像解压，执行其中的二进制文件
 
     ```
     ./nvim.appimage --appimage-extract # 解压得到 squashfs-root/ 文件夹
@@ -96,6 +63,19 @@ neovim（简称nvim）是vim的一个fork项目，重构了其内核。
 
     而后在命令行中输入`nvim`即可使用此镜像
 
+* 设置nvim配置文件的链接
+
+  ```bash
+  ln -s 《本repo》/{.vim,.vimrc,.vimrc.bundles} ~
+  ln -s ~/.vim ~/.config/nvim
+  ```
+
+  注：
+
+  * `~/.config/nvim/init.vim` 相当于 `~/.vimrc` ，可直接用之
+  * `~/.config/nvim` 相当于` ~/.vim`，可直接用之
+  * `本repo/.vim/init.vim -> ../.vimrc`  的链接已经设过了，您无需`ln -s ~/.vimrc ~/.config/nvim/init.vim`
+
 ### 安装neovim的python依赖
 
 安装neovim的python依赖
@@ -105,6 +85,57 @@ pip install neovim
 ```
 
 UltiSnippets、YouCompleteMe 需要当中至少一个才能使用；但YouCompleteMe的编译无需之
+
+### 安装vim插件
+
+命令行下输入
+
+```
+nvim  +'PlugInstall --sync' +'PlugUpdate' +qa  
+```
+
+以自动安装Vim-Plug，并安装插件，特别是编译YouCompleteMe插件
+
+### 加载iterm2的profile
+
+[图文教程](https://www.jianshu.com/p/c251d26374c5)
+
+```
+cp vim_keymap.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/
+```
+
+在iterm2 （不用重启，动态加载），`⌘,`设置，中选择vim_keymap 这个profile
+
+注：GUID是profile的唯一id。vim_keymap.json中的GUID参数不可与你已有profile的GUID相同，不然vim_keymap不会加载。
+
+### 修改mac的英文键盘方案
+
+这一设置并不需要。这里只是想说明，我的alt+字母是采用的哪套方案，以便你自行添加其他快捷键。所有.vimrc里用到的alt+字母都已经在上述profile里设置过了。
+
+### ![屏幕快照 2019-03-08 01.15.56](README.assets/屏幕快照 2019-03-08 01.15.56-1979126.png)
+
+![屏幕快照 2019-03-08 01.15.56](README.assets/屏幕快照 2019-03-08 01.15.56.png)
+
+## 使用快捷键
+
+详见`~/.vimrc`中的注释
+
+## 内核选用neovim
+
+neovim（简称nvim）是vim的一个fork项目，重构了其内核。
+
+### 选择nvim的原因
+
+* 我的vim配置依赖以下vim的特性
+  * clipboard：系统剪切板与vim剪切板互通
+  * python 或 python3：UltiSnippets、YouCompleteMe 需要当中至少一个
+  * ​conceal：无此特性，则indentline无法显示缩进线, NERDTree的树栏中会出现`^G`符号作为一个文件(夹)的前缀
+
+  查看vim是否支持上述特性，请执行`vim --version`，返回列表中，加号表示支持，减号表示不支持。
+
+  vim不一定都支持，但nvim支持上述所有特性。
+
+* nvim比vim在翻页时更快，特别是用鼠标滚动翻页时，nvim能够实时停下，而vim会持续滚动很久才停
 
 ### 快捷键设置注意事项
 
@@ -211,7 +242,7 @@ escqpe sequence是以escape键开头的一串按键，例如\<esc>d，只要你�
 | 并行安装、更新插件         | 支持     | 不支持 |
 | 编译插件                   | 支持     | 不支持 |
 
-**.vimrc插件写法**
+### .vimrc插件写法
 
 ```
 " 自动安装vim-plug 到 ~/.vim/autoload/plug.vim   (vim用)
@@ -269,7 +300,7 @@ call plug#end()
   Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle','NERDTreeMirror','NERDTree'] }
   ```
 
-**在(v)vim中安装**
+### 在(v)vim中安装
 
 `:PlugInstall` : 安装插件
 
@@ -279,7 +310,7 @@ call plug#end()
 
 `:PlugClean`: 检测并删除失效插件
 
-**在命令行下安装**
+### 在命令行下安装
 
 以下安装方法无需中途输入任何按键，但屏幕会显示安装教程
 
@@ -295,7 +326,7 @@ vim的自动补全插件，会实时显示候选菜单，需要编译，是所�
 
 ### 编译
 
-**依赖**
+#### 依赖
 
 * mac
 
@@ -313,7 +344,7 @@ vim的自动补全插件，会实时显示候选菜单，需要编译，是所�
   ./install.py
   ```
 
-**自动编译**
+#### 自动编译
 
 在 `/.vimrc`文件中加入
 
@@ -363,7 +394,7 @@ Plug 'Valloric/YouCompleteMe',{'do':'python3 install.py --java-completer'}
 Plug 'Valloric/YouCompleteMe',{'do':'python3 install.py --all'}
 ```
 
-**手动编译**
+#### 手动编译
 
 若自动下载安装成功、但自动编译失败，则需手动编译：`~/.vim/plugged/YouCompleteMe`，执行
 
