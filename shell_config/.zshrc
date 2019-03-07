@@ -60,7 +60,7 @@ source "$ANTIGEN"
 antigen use oh-my-zsh
 
 # antigen bundle autojump # 自动跳转
-# mac装了 brew，可以直接用antigen加载
+# mac装了 brew，且可以直autojump，则接用antigen加载
 if [ -x "$(command -v brew)" ] && [  -x "$(command -v autojump)"  ]; then
     antigen bundle autojump
 else
