@@ -505,7 +505,7 @@ function! VCtrlX() range
     else
         normal! gvd
     endif
-    call system('nc localhost 8377 &', @")
+    call system('timeout 0.1 nc localhost 8377 &', @")
 endfunction
 vnoremap <c-x> :call VCtrlX()<cr>
 
@@ -522,7 +522,7 @@ imap <expr> <c-x> EmptyLine()? '<esc>"_ddi' : '<esc>^vg_d"_ddi'
 " 复制一行，带换行符
 " nmap <C-c> ^vg_y
 " 复制一行，不带换行符
-noremap <c-c> ^y$:call system('nc localhost 8377 &', @")<CR>
+noremap <c-c> ^y$:call system('timeout 0.1 nc localhost 8377 &', @")<CR>
 " 选区末尾若有换行符，不复制该换行符
 function! VCtrlC() range
     if strlen(getline("'>"))<col("'>")
@@ -541,14 +541,14 @@ function! VCtrlC() range
         normal! gvygv
         " normal! gvy
     endif
-    call system('nc localhost 8377 &', @")
+    call system('timeout 0.1 nc localhost 8377 &', @")
 endfunction
 vnoremap <c-c> :call VCtrlC()<cr>
 
 " vmap <expr> <C-c> (strlen(getline("'>"))<col("'>"))? ':call CCtrlC()<cr>' : 'y'
 " imap <expr> <C-c> col('.')==1?'<esc>yyi':'<esc>yya'
 " 选区末尾若有换行符，不复制该换行符
-inoremap <c-c> <esc>^y$:call system('nc localhost 8377 &', @")<CR>gi
+inoremap <c-c> <esc>^y$:call system('timeout 0.1 nc localhost 8377 &', @")<CR>gi
 " imap <C-c> <c-o>:stopinsert<cr>yya
 
 " -----------------------------------------
@@ -598,12 +598,12 @@ set pastetoggle=<F2>
 "   * (数字)yy/dd     整(几)行复制/剪切
 " 发送到笔记本的系统剪切板，但不清空vim的寄存器
 " 上述操作选中都不会选到行号
-vnoremap <silent> y y:call system('nc localhost 8377 &', @")<CR>
-vnoremap <silent> d d:call system('nc localhost 8377 &', @")<CR>
-nnoremap <silent> yy yy:call system('nc localhost 8377 &', @")<CR>
-nnoremap <silent> dd dd:call system('nc localhost 8377 &', @")<CR>
+vnoremap <silent> y y:call system('timeout 0.1 nc localhost 8377 &', @")<CR>
+vnoremap <silent> d d:call system('timeout 0.1 nc localhost 8377 &', @")<CR>
+nnoremap <silent> yy yy:call system('timeout 0.1 nc localhost 8377 &', @")<CR>
+nnoremap <silent> dd dd:call system('timeout 0.1 nc localhost 8377 &', @")<CR>
 " 全选发送到笔记本剪切板
-" noremap <C-a> :%w !nc localhost 8377<CR><CR>
+" noremap <C-a> :%w !timeout 0.1 nc localhost 8377<CR><CR>
 " ------------------------------------------------------------------------
 " vim剪切板同步到本机系统剪切板
 set clipboard=unnamed     " 所有vim剪切板均与系统剪切板同步
