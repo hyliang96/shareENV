@@ -138,7 +138,6 @@ fi
 alias nvi=nvim
 alias nv=nvim
 alias v=nvim
-
 alias vi=vim
 # sub(){
 #     if [ -d /Applications/Sublime\ Text.app ]; then
