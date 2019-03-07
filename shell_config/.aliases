@@ -324,11 +324,11 @@ zo=~/.zlogout
 # alias vzp='vim ~/.zprofile';        alias szp='. ~/.zprofile'
 # alias vzr='vim ~/.zshrc';           alias szr='. ~/.zshrc';          alias vzrs='vim $share_shell_config/.zshrc'
 # alias vzo='vim ~/.zlogout';         alias szo='. ~/.zlogout'
-# others
-alias vtmux='vim ~/.tmux.conf';     alias stmux='tmux source-file ~/.tmux.conf'
-alias vvim='vim ~/.vimrc'           # vim 免source，重新开vim即生效
+# othersalias vtmux='vim ~/.tmux.conf';     alias stmux='tmux source-file ~/.tmux.conf'
+
+alias vv='vim ~/.vimrc'           # vim 免source，重新开vim即生效
 alias vvp='vim ~/.vimrc.bundles'      # vim 的插件
-alias svp='vim +BundleInstall +qall'  # 按照.vimrc.bundles下载vim的插件
+alias svp="vim  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载vim的插件
 alias vgit='vim ~/.gitconfig'
 
 # ---------------- 环境显示 -----------------------

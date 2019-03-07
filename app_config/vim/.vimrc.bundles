@@ -11,6 +11,8 @@ end
 call plug#begin('~/.vim/plugged')
 
 " ------Plugins start-------
+" 中文帮助, 使用方法`:h 待查找的内容`
+Plug 'yianwillis/vimcdoc'
 " 目录树
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle','NERDTreeMirror','NERDTree'] }
 " 目录树下显示git状态

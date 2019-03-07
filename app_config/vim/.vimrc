@@ -185,17 +185,28 @@ nnoremap <C-RETURN> :bnext<CR>
 nnoremap <C-S-RETURN> :bprevious<CR>
 "-----------------------------------------------------------------
 " 窗口分割
+set splitright    " 默认开在右侧
 " alt+\：垂直分割窗口
 nnoremap « :vsp<cr>
 vnoremap « <esc>:vsp<cr>v
 inoremap «  <c-o>:vsp<cr>
+" <esc> alt+\：垂直分割窗口 开文件
+nnoremap <esc>« :vsp<space>
+vnoremap <esc>« <esc>:vsp<space>
+inoremap <esc>«  <c-o>:vsp<space>
+
+set splitbelow  " 默认开在下边
 " alt+shift+\：水平分割窗口
 nnoremap » :sp<cr>
 vnoremap » <esc>:sp<cr>v
 inoremap » <c-o>:sp<cr>
+" <esc> alt+shift+\：水平分割窗口  开文件
+nnoremap <esc>» :sp<space>
+vnoremap <esc>» <esc>:sp<space>
+inoremap <esc>» <c-o>:sp<space>
 
 " alt+Fn+上下左右：去往上下左右一个窗口
-" alt+Home
+" alt+ctrl+left
 map   ᜉ  <plug>LWin
 map!   ᜉ <plug>LWin
 noremap  <plug>LWin  <c-w>h
@@ -206,7 +217,7 @@ inoremap <plug>LWin  <c-o><c-w>h
     " " tmux下
 " noremap  <esc><esc>[1~ <c-w>h
 " inoremap <esc><esc>[1~ <c-o><c-w>h
-" alt+end
+" alt+ctrl+right
 map  ᜊ   <plug>RWin
 map! ᜊ   <plug>RWin
 noremap  <plug>RWin   <c-w>l
@@ -217,14 +228,14 @@ inoremap <plug>RWin   <c-o><c-w>l
     " " tmux下
 " noremap  <esc><esc>[4~ <c-w>l
 " inoremap <esc><esc>[4~ <c-o><c-w>l
-" alt+PageUp
+" alt+ctrl+up
 map  ᜋ   <plug>UWin
 map!  ᜋ  <plug>UWin
 noremap  <plug>UWin  <c-w>k
 inoremap <plug>UWin  <c-o><c-w>k
 " noremap  <esc><esc>[5~ <c-w>k
 " inoremap <esc><esc>[5~ <c-o><c-w>k
-" alt+PageDown
+" alt+shift+doen
 map   ᜌ    <plug>DWin
 map!   ᜌ   <plug>DWin
 noremap  <plug>DWin   <c-w>j
@@ -234,19 +245,19 @@ inoremap <plug>DWin   <c-o><c-w>j
 
 
 " 窗口移动
-" 变宽
+" 变宽：alt +
 nnoremap <silent> ≠ :exe "vertical resize " . (winwidth(0) * 15/14)<CR>
 vnoremap <silent> ≠ <esc>:exe "vertical resize " . (winwidth(0) * 15/14)<CR>gv
 inoremap <silent> ≠ <c-o>:exe "vertical resize " . (winwidth(0) * 15/14)<CR>
-" 变窄
+" 变窄  alt -
 nnoremap <silent> – :exe "vertical resize " . (winwidth(0) * 14/15)<CR>
 vnoremap <silent> – <esc>:exe "vertical resize " . (winwidth(0) * 14/15)<CR>gv
 inoremap <silent> – <c-o>:exe "vertical resize " . (winwidth(0) * 14/15)<CR>
-" 变高
+" 变高  shift alt +
 nnoremap <silent> ± :exe "resize " . (winheight(0) * 10/9)<CR>
 vnoremap <silent> ± <esc>:exe "resize " . (winheight(0) * 10/9)<CR>gv
 inoremap <silent> ± <c-o>:exe "resize " . (winheight(0) * 10/9)<CR>
-" 变矮
+" 变矮  shift alt -
 nnoremap <silent> — :exe "resize " . (winheight(0) * 9/10)<CR>
 vnoremap <silent> — <esc>:exe "resize " . (winheight(0) * 9/10)<CR>gv
 inoremap <silent> — <c-o>:exe "resize " . (winheight(0) * 9/10)<CR>
@@ -404,21 +415,23 @@ let g:checksyntax_auto = 0 " 不自动检查
 "=========================================================================
 " 搜索 ctrl+f
 nnoremap <C-f> :MarkClear<cr>/
-vnoremap <C-f> <esc>:MarkClear<cr>/
+vnoremap <C-f> "9y:MarkClear<cr>/<c-r>9
 inoremap <C-f> <esc>:MarkClear<cr>/
 " 关闭搜索的高亮 alt+f
-nnoremap ƒ :silent! nohls<cr>
-vnoremap ƒ <esc>:silent! nohls<cr>v
-inoremap ƒ <c-o>:silent! nohls<cr>
+nnoremap <silent> ƒ :silent! nohls<cr>
+vnoremap <silent> ƒ <esc>:silent! nohls<cr>v
+inoremap <silent> ƒ <c-o>:silent! nohls<cr>
+" 放弃搜索，退出搜索框
+cnoremap <silent> ƒ <c-u><bs>:silent! nohls<cr>gi
 " ------------------------------------------------------------------------
 " 同词高亮
 " 双击选中一个词，高亮出全部相同的整词
 noremap <plug>2LEFTMOUSE <2-leftMouse>
 map <silent> <2-leftmouse> 1<Leader>m<plug>2LEFTMOUSE
 imap <silent> <2-leftmouse> <c-o>1<Leader>m<c-o><plug>2LEFTMOUSE
-" alt+l 选中一个词
+" alt+l 选中一个词/放弃选中一个词
 nnoremap ¬ viw
-vnoremap ¬ <esc>gi
+vnoremap ¬ <esc>viw
 inoremap ¬ <c-o>viw
 " 单击退出同词高亮
 nnoremap <leftMouse> :MarkClear<cr><leftMouse>
@@ -607,7 +620,9 @@ nnoremap <silent> dd dd:call system('timeout 0.1 nc localhost 8377 &', @")<CR>
 " noremap <C-a> :%w !timeout 0.1 nc localhost 8377<CR><CR>
 " ------------------------------------------------------------------------
 " vim剪切板同步到本机系统剪切板
-set clipboard=unnamed     " 所有vim剪切板均与系统剪切板同步
+" set clipboard=unnamed     " 所有vim剪切板均与系统剪切板同步
+" 注释掉则只同步"剪切板，对应y d dd yy c cc 操作
+"
 " vim --version | grep  clipboad
 " 见+clipborad则为支持clipboard，见-clipboard则为不支持
 " - 我的mac装了最新的vim后，支持cliboard，可复制到系统见其版
@@ -1073,22 +1088,25 @@ inoremap Â <c-o>zz
 " ------------------------------------------------------------------------
 " Vim Gitgutter : 它会在 Vim 的行号列旁显示 git diff 的差异标记
 " alt+[ 去前一个修改的块之间跳转
-nmap “ [c
-vmap “ <esc>[c
-imap “ <c-o>[c
+nmap ᜠ [c
+vmap ᜠ <esc>[c
+imap ᜠ <c-o>[c
 " alt+] 去后一个修改的块之间跳转
-nmap ‘ ]c
-vmap ‘ <esc>]c
-imap ‘ <c-o>]c
+nmap ᜡ  ]c
+vmap ᜡ  <esc>]c
+imap ᜡ  <c-o>]c
 " 开关gitgutter
 noremap  <Leader>g :GitGutterToggle<CR>
+inoremap  <esc>g <c-o>:GitGutterToggle<CR>
 "========================================================================
 " 选择
-" 选中一行，不含行尾换行符
-noremap <c-l> 0v$
+" 选中一行，含行尾换行符
+nnoremap <c-l> 0v$
+vnoremap <c-l> <esc>0v$
 inoremap <c-l> <c-o>0<C-o>v$
 " 全选
-noremap <C-a> ggv<S-g>$
+nnoremap <C-a> ggv<S-g>$
+vnoremap <C-a> <esc>ggv<s-g>$
 inoremap <C-a> <c-o>gg<c-o>v<S-g>$
 "========================================================================
 " 这些删除每做一次，，故可一步步撤销
@@ -1154,9 +1172,9 @@ nnoremap  †   :tabnew<CR>
 vnoremap  †   <esc>:tabnew<CR>v
 inoremap  †   <c-o>:tabnew<CR>
 " 开一个文件到新标签页
-" Shift+alt+t
-nnoremap ˇ :tabedit<space>
-vnoremap ˇ <esc>:tabedit<space>
+" <esc> alt+t
+nnoremap <esc>†  :tabedit<space>
+vnoremap <esc>†  <esc>:tabedit<space>
 " imap <S-t> <esc>:tabedit<space>
 " 左一个标签页
 nnoremap <S-Left> :tabprev<CR>
@@ -1178,9 +1196,9 @@ function! UpDate()
     call cursor(l,c)
     nohls
 endfunction
-nnoremap <silent> <C-S> :call UpDate()<cr>
-vnoremap <silent> <C-S> <esc>:call UpDate()<cr>
-inoremap <silent> <C-S> <c-o>:call UpDate()<cr>
+nnoremap <silent> <C-S> :call UpDate()<cr>:echo "saved"<cr>
+vnoremap <silent> <C-S> <esc>:call UpDate()<cr>:echo "saved"<cr>
+inoremap <silent> <C-S> <c-o>:call UpDate()<cr><c-o>:echo "saved"<cr>
 " 存为
 nnoremap  <S-S> :update<space>
 vnoremap  <S-S> <esc>:update<space>
@@ -1390,18 +1408,18 @@ map Q gq
 
 "=========================================================================
 " 编译报错
-" alt+e+l: 显示报错列表
-noremap ´l <ESC>:cl<CR>
-inoremap ´l <ESC>:cl<CR>
-" alt+e+n: 下一条报错
-noremap ´n <ESC>:cn<CR>
-inoremap ´n <ESC>:cn<CR>
-" alt+e+p: 前一条报错
-noremap ´p <ESC>:cp<CR>
-inoremap ´p <ESC>:cp<CR>
-" alt+e+c:  显示详细错误信息
-noremap ´c <ESC>:cc<CR>
-inoremap ´c <ESC>:cc<CR>
+" alt+e+alt+e: 显示报错列表
+noremap ᜢᜢ <ESC>:cl<CR>
+inoremap ᜢᜢ <ESC>:cl<CR>
+" alt+e+alt+]: 下一条报错
+noremap ᜢᜡ <ESC>:cn<CR>
+inoremap ᜢᜡ <ESC>:cn<CR>
+" alt+e+[: 前一条报错
+noremap ᜢᜠ <ESC>:cp<CR>
+inoremap ᜢᜠ <ESC>:cp<CR>
+" alt+e+alt+<cr>:  显示详细错误信息
+noremap ᜢᜣ <ESC>:cc<CR>
+inoremap ᜢᜣ <ESC>:cc<CR>
 
 "=========================================================================
 " 关闭 vimscript的换行号自动缩进三个tab的特性
