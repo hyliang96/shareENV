@@ -548,7 +548,7 @@ vmap <c-c> :call VCtrlC()<cr>
 " vmap <expr> <C-c> (strlen(getline("'>"))<col("'>"))? ':call CCtrlC()<cr>' : 'y'
 " imap <expr> <C-c> col('.')==1?'<esc>yyi':'<esc>yya'
 " 选区末尾若有换行符，不复制该换行符
-imap <c-c> <esc>^y$gi
+imap <c-c> <esc>^y$:call system('nc localhost 8377 &', @")<CR>gi
 " imap <C-c> <c-o>:stopinsert<cr>yya
 
 " -----------------------------------------
