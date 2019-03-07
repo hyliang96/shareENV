@@ -304,8 +304,8 @@ let Tlist_Compact_Format = 1
 " r 递归刷新当前目录             R 递归刷新当前根目录
 "-----------------------------------------------------------------
 " alt+t NERDTree 切换
-noremap † :NERDTreeToggle<CR>
-inoremap † <c-o>:NERDTreeToggle<CR>
+noremap <c-t> :NERDTreeToggle<CR>
+inoremap <c-t> <c-o>:NERDTreeToggle<CR>
 let NERDTreeShowHidden=1             " 显示隐藏文件
 let NERDTreeWinSize=25               " tree栏宽度
 let NERDTreeMapOpenInTab='<ENTER>'   " 在tree中，回车将文件开新tab
@@ -1149,14 +1149,14 @@ inoremap <plug>DeleteLine <c-g>u<c-o>0<C-o>v$"_d
 " cnoremap <plug>DeleteLine <c-e><c-u>
 "=========================================================================
 " 标签页
-" 新开一空标签页
-nnoremap <C-t>  :tabnew<CR>
-vnoremap <C-t>  <esc>:tabnew<CR>v
-inoremap <C-t>  <c-o>:tabnew<CR>
+" alt+t 新开一空标签页
+nnoremap  †   :tabnew<CR>
+vnoremap  †   <esc>:tabnew<CR>v
+inoremap  †   <c-o>:tabnew<CR>
 " 开一个文件到新标签页
-" <S-C-t> 会被映射为 <C-t>，故用<S-t>
-nnoremap <S-t> :tabedit<space>
-vnoremap <S-t> <esc>:tabedit<space>
+" Shift+alt+t
+nnoremap ˇ :tabedit<space>
+vnoremap ˇ <esc>:tabedit<space>
 " imap <S-t> <esc>:tabedit<space>
 " 左一个标签页
 nnoremap <S-Left> :tabprev<CR>
@@ -1197,25 +1197,24 @@ function! TreeWindowNumber()
     endif
 endfunction
 
-nnoremap <expr> <C-w> (winnr('$')-TreeWindowNumber() != 1 ? ':q<cr>' :
+nnoremap <expr> <C-w> ((winnr('$')-TreeWindowNumber()) != 1 ? ':q<cr>' :
 \ (tabpagenr() > 1 ? ':tabclose<cr>' :
 \ (TreeWindowNumber()? ':NERDTreeToggle<CR>:q<CR>' : ':q<CR>'
 \ )))
-vnoremap <expr> <C-w> (winnr('$')-TreeWindowNumber()!= 1?'<esc>:q<cr>':
+vnoremap <expr> <C-w> ((winnr('$')-TreeWindowNumber())!= 1?'<esc>:q<cr>':
 \ (tabpagenr() > 1 ? '<esc>:tabclose<cr>' :
 \ (TreeWindowNumber()? '<esc>:NERDTreeToggle<CR>:q<CR>': '<esc>:q<CR>'
 \ )))
-inoremap <expr> <C-w> (winnr('$')-TreeWindowNumber()!=1?'<c-o>:q<cr>':
+inoremap <expr> <C-w> ((winnr('$')-TreeWindowNumber())!=1?'<c-o>:q<cr>':
 \ (tabpagenr() > 1 ? '<c-o>:tabclose<cr>' :
 \ (TreeWindowNumber()?'<c-o>:NERDTreeToggle<CR><c-o>:q<CR>': '<c-o>:q<CR>'
 \ )))
 
 " vim程序退出
-map  ᜍ    <S-C-W>
-map! ᜍ     <S-C-W>
-nnoremap <S-C-w> :qa<cr>
-vnoremap <S-C-w> <esc>:qa<cr>
-inoremap <S-C-W> <c-o>:qa<cr>
+" shift+ctrl+w
+nnoremap ᜐ   :qa<cr>
+vnoremap ᜐ   <esc>:qa<cr>
+inoremap  ᜐ   <c-o>:qa<cr>
 " alt+w 退出窗口
 nnoremap ∑ :q<cr>
 vnoremap ∑ <esc>:q<cr>
