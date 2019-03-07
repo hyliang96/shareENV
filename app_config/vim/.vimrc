@@ -522,7 +522,7 @@ imap <expr> <c-x> EmptyLine()? '<esc>"_ddi' : '<esc>^vg_d"_ddi'
 " 复制一行，带换行符
 " nmap <C-c> ^vg_y
 " 复制一行，不带换行符
-noremap <c-c> ^y$:call system('timeout 0.1 nc localhost 8377 &', @")<CR>
+noremap <c-c> mz^y$:call system('timeout 0.1 nc localhost 8377 &', @")<CR>`z
 " 选区末尾若有换行符，不复制该换行符
 function! VCtrlC() range
     if strlen(getline("'>"))<col("'>")
