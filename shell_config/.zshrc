@@ -254,7 +254,10 @@ if [ -x "$(command -v brew)" ]; then
     else
         echo '-------------------------------------------------------------------------'
         echo 'Your mac has brew; but not coreutils and gls is installed, thus `ls` '
-        echo 'will not be colored normally. Please install them, just run'
+        echo 'will not be colored normally. gls is a submodule of coreutils'
+        echo 'To check gls link is alive, check if there is a link'
+        echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
+        echo 'To install them, just run'
         echo '                      `brew install coreutils`                           '
         echo '-------------------------------------------------------------------------'
     fi
