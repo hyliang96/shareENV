@@ -15,7 +15,7 @@
 ### 安装iterm2的profile
 
 ```
-cp vim_keymap.json ~/Library/Application Support/iTerm2/DynamicProfiles/
+cp vim_keymap.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/
 ```
 
 然后重启iterm2，在iterm2 `⌘,`设置中选择vim_keymap 这个profile

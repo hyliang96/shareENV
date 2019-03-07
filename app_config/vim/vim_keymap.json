@@ -597,7 +597,7 @@
     "Alpha Component" : 1,
     "Green Component" : 0.10676553100347519
   },
-  "Name" : "tmux",
+  "Name" : "vim_keymap",
   "Blinking Cursor" : false,
   "Guid" : "3F975615-8180-4710-97CC-359A80FEEE92",
   "Idle Code" : 0,
