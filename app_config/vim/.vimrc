@@ -188,7 +188,7 @@ nnoremap <C-S-RETURN> :bprevious<CR>
 " alt+\：垂直分割窗口
 nnoremap « :vsp<cr>
 vnoremap « <esc>:vsp<cr>v
-inoremap « <c-o>:vsp<cr>
+inoremap «  <c-o>:vsp<cr>
 " alt+shift+\：水平分割窗口
 nnoremap » :sp<cr>
 vnoremap » <esc>:sp<cr>v
