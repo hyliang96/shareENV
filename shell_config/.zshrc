@@ -186,7 +186,7 @@ bindkey '\ev' deer
 
 # ctrl+u
 bindkey \^U backward-kill-line
-# backward-kill-line(删除光标左侧), kill-whole-line(删除整行)
+# iterm2 maps sfhit+backspace to  ᜤ , 删除一行
 
 # 解绑 ctrl+s ctrl+q
 stty start undef
