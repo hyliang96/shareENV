@@ -1,5 +1,5 @@
-
 #!/usr/bin/bash
+
 # 服务器、笔记本、WSL 共享的alias配置
 
 [ $DotFileDebug -ne 0 ] && echo share .bash_aliases
@@ -315,7 +315,8 @@ zr=~/.zshrc;                       szr=$share_shell_config/.zshrc
 zo=~/.zlogout
 
 # others
-alias vtmux='vim ~/.tmux.conf';     alias stmux='tmux source-file ~/.tmux.conf'
+alias vtmux='vim ~/.tmux.conf'
+alias stmux='tmux source-file ~/.tmux.conf'
 alias vv='vim ~/.vimrc'           # vim 免source，重新开vim即生效
 alias vvp='vim ~/.vimrc.bundles'      # vim 的插件
 alias svp="vim  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载vim的插件
