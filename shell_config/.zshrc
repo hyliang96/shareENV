@@ -181,6 +181,8 @@ bindkey '\e[1;3A' beginning-of-line
 bindkey '\e[1;3B' end-of-line
 bindkey '\e[1~' beginning-of-line # Home
 bindkey '\e[4~' end-of-line # End
+bindkey '\e[H' beginning-of-line # Home
+bindkey '\e[F' end-of-line # End
 
 bindkey '\ev' deer
 
