@@ -314,17 +314,6 @@ zp=~/.zprofile
 zr=~/.zshrc;                       szr=$share_shell_config/.zshrc
 zo=~/.zlogout
 
-# # bash
-# alias vbe='vim ~/.shell_config/.bash_env';        alias sbe='. ~/.shell_config/.bash_env';  alias vbes='vim $share_shell_config/.bash_env'
-# alias vbp='vim ~/.profile';         alias sbp='. ~/.profile'
-# alias vbr='vim ~/.bashrc';          alias sbr='. ~/.bashrc';    alias vbrs='vim $share_shell_config/.bashrc'
-# alias vba='vim ~/.bash_aliases';    alias sba='. ~/.bash_aliases';   alias vbas='vim $share_shell_config/.bash_aliases'
-# alias vbo='vim ~/.bash_logout';     alias sbo='. ~/.bash_logout'
-# # zsh
-# alias vze='vim ~/.zshenv';          alias sze='. ~/.zshenv'
-# alias vzp='vim ~/.zprofile';        alias szp='. ~/.zprofile'
-# alias vzr='vim ~/.zshrc';           alias szr='. ~/.zshrc';          alias vzrs='vim $share_shell_config/.zshrc'
-# alias vzo='vim ~/.zlogout';         alias szo='. ~/.zlogout'
 # others
 alias vtmux='vim ~/.tmux.conf';     alias stmux='tmux source-file ~/.tmux.conf'
 alias vv='vim ~/.vimrc'           # vim 免source，重新开vim即生效
