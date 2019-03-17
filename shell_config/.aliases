@@ -398,7 +398,7 @@ alias l='ls -CF'
 
 
 # safe remove
-# sfrm file(s) or dir(s)
+# sr file(s) or dir(s)
 # mv to $my/trash/
 # if the file/dir name conflicts with those in trash/, add time prefix on it
 # support file/dir name conatins spaces and non-ascii chars
@@ -410,7 +410,7 @@ else
     trash=$my/trash
 fi
 
-sfrm()
+sr()
 {
     if ! [ -d $trash ]; then
         echo $trash not existes, now made one
@@ -434,7 +434,7 @@ srm_under()
     local x=
     for x in $*
     do
-        sfrm $x/{*,.[!.]*}
+        sr $x/{*,.[!.]*}
     done
 }
 # 直接清空目录，包括隐藏文件（夹）
@@ -515,8 +515,20 @@ setsh()
 }
 # -------------- 删除mac特有隐藏文件 --------------
 # 删除 .DS_store 和 ._* 文件
-alias macdot_clean='find . \( -type f \( -name "._*" \) -o \( -name ".DS_Store" \) \) -delete'
+# alias macdot_clean='find . \( -type f \( -name "._*" \) -o \( -name ".DS_Store" \) \) -delete'
 
+# 删除 .DS_store 和 ._* 文件
+# macdotrm ：删除当前目录下的这些文件
+# macdotrm -r ：删除当前目录及其各级子目录下的这些文件
+macdotrm()
+{
+    if [ "$1" = "-r" ]; then
+        find . \( -type f \( -name "._*" \) -o \( -name ".DS_Store" \) \) -delete
+    else
+        rm -f ._*
+        rm -f .DS_Store
+    fi
+}
 # ---------------- alias to conda --------------
 alias act='source activate'
 alias dea='source deactivate'
