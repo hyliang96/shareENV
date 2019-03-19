@@ -80,7 +80,7 @@ fi
 # visit https://github.com/unixorn/awesome-zsh-plugins
 # antigen bundle git
 # antigen bundle heroku
-# antigen bundle pip
+antigen bundle pip
 antigen bundle svn-fast-info
 # antigen bundle command-not-find
 
