@@ -530,6 +530,29 @@ macdotrm()
     fi
 }
 # ---------------- alias to conda --------------
+# 清华tuna源，官网https://mirrors.tuna.tsinghua.edu.cn/news/#oh-my-tuna
+# # 国内默认使用tuna，装包会快很多
+tuna()
+{
+    if [ "$1" = '--global' ]; then
+        python $share_app_config/oh-my-tuna.py --global
+    elif [ "$1" = 'install' ] || [ "$1" = 'update' ] ; then
+        wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py -O $share_app_config/oh-my-tuna.py --no-check-certificate
+    elif [ "$1" = '-h' ] ||  [ "$1" = '--help' ] ||  [ "$1" = 'help' ] ; then
+        echo "-------------------------------------------------------------------------"
+        echo '                         help for the alias `tuna`'
+        echo "tuna [ install | update]  : download the newest oh-my-tuna from \n      https://tuna.moe/oh-my-tuna/oh-my-tuna.py"
+        echo "tuna [ help | -h | --help ] : for help"
+        echo "tuna : apply tuna for the one user yourself"
+        echo "sudo tuna --global : apply tuna for the all users"
+        echo "tuna [arguments] : [arguments] follows oh-my-tuna.py"
+        echo "-------------------------------------------------------------------------"
+        python $share_app_config/oh-my-tuna.py -h
+    else
+        python $share_app_config/oh-my-tuna.py $*
+    fi
+}
+
 alias act='source activate'
 alias dea='source deactivate'
 alias els='conda info -e' # 列出conda的环境
