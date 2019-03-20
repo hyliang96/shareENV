@@ -457,28 +457,28 @@ div#notebook {
  background-color: #1d2021;
  min-height: 0px;
  box-shadow: none;
- width: 980px;
+ width: 100%;
  margin-right: auto;
  margin-left: auto;
 }
 div#ipython-main-app.container {
- width: 980px;
+ width: 100%;
  margin-right: auto;
  margin-left: auto;
  margin-right: auto;
  margin-left: auto;
 }
 .container {
- width: 980px;
+ width: 100%;
  margin-right: auto;
  margin-left: auto;
 }
 div#menubar-container {
  width: 100%;
- width: 980px;
+ width: 100%;
 }
 div#header-container {
- width: 980px;
+ width: 100%;
 }
 .notebook_app #header,
 .edit_app #header {
@@ -3231,10 +3231,25 @@ body :focus .MathJax {
  width: auto;
 }
 div#maintoolbar {
- display: none !important;
+ margin-left: 8px !important;
 }
-#header-container {
- display: none !important;
+.toolbar.container {
+ width: 100% !important;
+}
+span.save_widget span.filename {
+ margin-left: 8px;
+ height: initial;
+ font-size: 100%;
+ color: #d5c4a1;
+ background-color: #282828;
+}
+span.save_widget span.filename:hover {
+ color: #928374;
+ background-color: #282828;
+}
+#menubar {
+ padding-top: 4px;
+ background-color: #1d2021;
 }
 
 <script>
