@@ -195,7 +195,7 @@ stty start undef
 stty stop undef
 setopt noflowcontrol
 
-
+stty -ixon
 
 # options
 unsetopt correct_all
