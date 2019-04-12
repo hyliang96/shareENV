@@ -470,7 +470,8 @@ c()
 # 授权bash文件可执行
 alias kzx='chmod +x'  # kzx 文件名： 设为可执行
 alias bkzx='chmod -x' # bkzx 文件名：设为不可执行
-
+# 改所有者：own <用户名>(:<组名>) 文件名
+alias own='chown -R' # -R表示递归，即文件夹下诸物皆然
 
 # 7z压缩
 # 用法
