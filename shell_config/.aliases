@@ -990,3 +990,18 @@ alias userls='cut -d: -f1 /etc/passwd'
     # usermod -aG sudo 用户名
 # -------------------------------------------------------------------------
 
+# vnc  桌面转发
+vnc(){
+    if [ $# -eq 0 ] || [ "$1" = "start" ] ; then
+        vncserver :1 -geometry 1366x768
+    elif [ "$1" = "stop" ]; then
+        vncserver -kill :1
+    elif [ "$1" = "restart" ]; then
+        vncserver -kill :1
+        vncserver :1 -geometry 1366x768
+    elif [ "$1" = "help" ]; then
+        echo 'Usage: vnc [ start(default)) | stop | restart | help ]'
+    else
+        echo 'Usage: vnc [ start(default)) | stop | restart | help ]'
+    fi
+}
