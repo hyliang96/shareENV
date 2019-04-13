@@ -952,3 +952,41 @@ gitkeep()
     fi
 }
 
+
+# -------------------------------------------------------------------------
+# 用户操作
+# 详见 man adduser, man useradd, man userdel 等
+
+# 列出你本地可见的用户名
+alias userls='cut -d: -f1 /etc/passwd'
+
+# To list all users capable of authenticating (in some way), including non-local, see this reply: https://askubuntu.com/a/414561/571941
+
+# 加用户
+    # `sudo adduser new_username`
+    # or
+    # `sudo useradd new_username`
+    # See also: What is the difference between adduser and useradd?
+
+# 删用户
+    # `sudo userdel 用户名`
+    # `sudo rm -r /home/用户名`   # 小心使用，或用下命令
+    # `sudo mkdir /home/trash`
+    # `sudo mv /home/用户名 /home/trash`
+
+# 改用户名
+    # usermod -l 新用户名 老用户名
+
+# 改用户密码
+    # sudo passwd username
+
+# 改用默认shell
+    # sudo chsh username
+
+# 改用户信息 （如真实姓名）:
+    # sudo chfn username
+
+# 将用户加入sudo
+    # usermod -aG sudo 用户名
+# -------------------------------------------------------------------------
+
