@@ -999,9 +999,11 @@ vnc(){
     elif [ "$1" = "restart" ]; then
         vncserver -kill :1
         vncserver :1 -geometry 1366x768
+    elif [ "$1" = "passwd" ]; then
+        vncpasswd
     elif [ "$1" = "help" ]; then
-        echo 'Usage: vnc [ start(default)) | stop | restart | help ]'
+        echo 'Usage: vnc [ start(default)) | stop | restart | passwd | help ]'
     else
-        echo 'Usage: vnc [ start(default)) | stop | restart | help ]'
+        echo 'Usage: vnc [ start(default)) | stop | restart | passwd | help ]'
     fi
 }
