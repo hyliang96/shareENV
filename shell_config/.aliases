@@ -978,13 +978,13 @@ alias userls='cut -d: -f1 /etc/passwd'
     # usermod -l 新用户名 老用户名
 
 # 改用户密码
-    # sudo passwd username
+    # sudo passwd 用户名
 
 # 改用默认shell
-    # sudo chsh username
+    # sudo chsh 用户名
 
 # 改用户信息 （如真实姓名）:
-    # sudo chfn username
+    # sudo chfn 用户名
 
 # 将用户加入sudo
     # usermod -aG sudo 用户名
