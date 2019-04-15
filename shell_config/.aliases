@@ -963,9 +963,10 @@ alias userls='cut -d: -f1 /etc/passwd'
 # To list all users capable of authenticating (in some way), including non-local, see this reply: https://askubuntu.com/a/414561/571941
 
 # 加用户
-    # `sudo adduser new_username`
-    # or
-    # `sudo useradd new_username`
+    # 傻瓜操作，需要设置密码，会创建/home/用户名，等其他众多设置，
+    # `sudo adduser 用户名`
+    # 底层操作，需要设置密码，不创建/home/用户名，等其他众多设置
+    # `sudo useradd 用户名`
     # See also: What is the difference between adduser and useradd?
 
 # 删用户
