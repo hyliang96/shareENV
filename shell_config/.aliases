@@ -104,8 +104,8 @@ jch()
         echo 'Usgae: jc args_for_grep'
         return
     fi
-    local title=`ps aux | awk 'NR==1'`
-    local content=`ps aux | awk 'NR!=1' | grep -v grep | grep $*`
+    local title="`ps aux | awk 'NR==1'`"
+    local content="`ps aux | awk 'NR!=1' | grep -v grep | grep $*`"
     if [ "$content" != "" ]; then
         echo $title
         ps aux | awk 'NR!=1' | grep -v grep | grep $*
