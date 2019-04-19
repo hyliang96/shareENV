@@ -1004,11 +1004,16 @@ vncs(){
         vncserver :1 -geometry 1366x768
     elif [ "$1" = "passwd" ]; then
         vncpasswd
+    elif [ "$1" = "config" ]; then
+        vim ~/.vnc/xstartup
     elif [ "$1" = "help" ]; then
-        echo 'Usage: vnc [ start(default)) | stop | restart | passwd | help ]'
+        echo 'Usage: vnc [ start(default)) | stop | restart | passwd | config | help ]'
     else
-        echo 'Usage: vnc [ start(default)) | stop | restart | passwd | help ]'
+        echo 'Usage: vnc [ start(default)) | stop | restart | passwd | config | help ]'
     fi
 }
-# vnc viewer 服务器别名
-alias vncv='ssh -L 5901:127.0.0.1:5901 -C -N' # -C 压缩所有数据；-N 之转发端口 不执行命令
+
+# vnc viewer
+# 用法：vnc 服务器别名
+alias vncv='ssh -L 5901:127.0.0.1:5901 -C -N'
+# -C 压缩所有数据；  -N 只转发端口 不能在远程终端下执行命令
