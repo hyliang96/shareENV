@@ -410,7 +410,7 @@ else
     trash=$my/trash
 fi
 
-sr()
+srm()
 {
     if ! [ -d $trash ]; then
         echo $trash not existes, now made one
@@ -434,7 +434,7 @@ srm_under()
     local x=
     for x in $*
     do
-        sr $x/{*,.[!.]*}
+        srm $x/{*,.[!.]*}
     done
 }
 # 直接清空目录，包括隐藏文件（夹）
