@@ -993,8 +993,8 @@ alias userls='cut -d: -f1 /etc/passwd'
 
 # -------------------------------------------------------------------------
 
-# vnc  桌面转发
-vnc(){
+# vnc server 桌面转发
+vncs(){
     if [ $# -eq 0 ] || [ "$1" = "start" ] ; then
         vncserver :1 -geometry 1366x768
     elif [ "$1" = "stop" ]; then
@@ -1010,3 +1010,5 @@ vnc(){
         echo 'Usage: vnc [ start(default)) | stop | restart | passwd | help ]'
     fi
 }
+# vnc viewer 服务器别名
+alias vncv='ssh -L 5901:127.0.0.1:5901 -C -N' # -C 压缩所有数据；-N 之转发端口 不执行命令
