@@ -498,14 +498,16 @@ jy()
         local target_jieya_path=.
     fi
 
-    local OLD_IFS=$IFS
-    IFS='.'
-    local tmp=($(echo "$file7z"))
-    IFS=$OLD_IFS
-    local filehead="${tmp[1]}"
+    # local OLD_IFS=$IFS
+    # IFS='.'
+    # local tmp=($(echo "$file7z"))
+    # IFS=$OLD_IFS
+    # local filehead="${tmp[1]}"
+    local filename="${file7z}_extract"
+
     # local filehead=`echo $file7z | sed -E 's/.7z$//g'`
     # `7z x`一次只能解压一个文件
-    eval "7z x ${file7z} -o${target_jieya_path}/${filehead}"
+    eval "7z x ${file7z} -o${target_jieya_path}/${filename}"
 }
 
 # 通用解压
