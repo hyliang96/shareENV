@@ -537,6 +537,7 @@ macdotrm()
         rm -f ._*
         rm -f .DS_Store
     fi
+    rm -rf __MACOSX
 }
 # ---------------- alias to conda --------------
 # 清华tuna源，官网https://mirrors.tuna.tsinghua.edu.cn/news/#oh-my-tuna
