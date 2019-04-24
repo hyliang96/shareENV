@@ -354,15 +354,16 @@ alias sendkey='ssh-copy-id'     # 发送公钥
 alias cp="cp -r"
 # alias scp="scp -r"
 
-ts()
+rsync()
 {
     local retry_time=180 # second
     while [ 1 ]
     do
+        which rsync
         rsync -aHhvzP $*
         if [ "$?" = "0" ] ; then
             echo "rsync completed normally"
-            exit
+            break
         else
             echo "Rsync failure. Backing off and retrying in $retry_time seconds..."
             sleep $retry_time
