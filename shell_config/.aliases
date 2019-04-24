@@ -352,7 +352,23 @@ alias sendkey='ssh-copy-id'     # 发送公钥
 
 # 拷贝、传输一个文件或文件夹（及其下各级所有文件），包括隐藏文件
 alias cp="cp -r"
-alias scp="scp -r"
+# alias scp="scp -r"
+
+ts()
+{
+    local retry_time=180 # second
+    while [ 1 ]
+    do
+        rsync -aHhvzP $*
+        if [ "$?" = "0" ] ; then
+            echo "rsync completed normally"
+            exit
+        else
+            echo "Rsync failure. Backing off and retrying in $retry_time seconds..."
+            sleep $retry_time
+        fi
+    done
+}
 
 # `cp 目录/.`   拷贝一个目录下所有文件，目录自身不拷，拷隐藏文件
 # cp_under 一个或多个源目录 目标目录
