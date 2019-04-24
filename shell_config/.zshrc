@@ -251,7 +251,8 @@ if [ -x "$(command -v brew)" ]; then
         # 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
         PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
         # between quotation marks is the tool output for LS_COLORS
-        alias ls='gls --show-control-chars --color=auto'
+        alias ls='/usr/local/bin/gls --show-control-chars  --color=auto'
+        # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
         eval `gdircolors -b $HOME/.dir_colors`
     else
         echo '-------------------------------------------------------------------------'
