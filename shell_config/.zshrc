@@ -288,23 +288,23 @@ setopt no_nomatch
 # 10ms for key sequences
 KEYTIMEOUT=1
 
-ts()
-{
-    local retry_time=180 # second
-    while [ 1 ]
-    do
-        rsync -aHhvzP $*
-        if [ "$?" = "0" ] ; then
-            echo "rsync completed normally"
-            exit
-        else
-            echo "Rsync failure. Backing off and retrying in $retry_time seconds..."
-            sleep $retry_time
-        fi
-    done
-}
-zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync|ts):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
-compdef _hosts ts
+# ts()
+# {
+    # local retry_time=180 # second
+    # while [ 1 ]
+    # do
+        # rsync -aHhvzP $*
+        # if [ "$?" = "0" ] ; then
+            # echo "rsync completed normally"
+            # exit
+        # else
+            # echo "Rsync failure. Backing off and retrying in $retry_time seconds..."
+            # sleep $retry_time
+        # fi
+    # done
+# }
+# zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync|ts):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+# compdef _hosts ts
 
 # ------------- 其他 -------------
 # iterm2_shell_integration
