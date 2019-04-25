@@ -357,13 +357,14 @@ alias cp="cp -r"
 
 
 
-ts_function()
+rsync()
 {
-    which rsync
+    # which rsync
+    # which command rsync
     local retry_time=180 # second
     while [ 1 ]
     do
-        rsync -aHhvzP $*
+        command rsync -aHhvzP $*
         if [ "$?" = "0" ] ; then
             echo "rsync completed normally"
             break
@@ -373,9 +374,9 @@ ts_function()
         fi
     done
 }
-alias ts='ts_function'
+# alias ts='ts_function'
 
-complete -F _ssh ts
+# complete -F _ssh ts
 # _ts () {
 #   local service=rsync
 #   _rsync "$@"
