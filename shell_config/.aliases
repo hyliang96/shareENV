@@ -359,12 +359,11 @@ alias cp="cp -r"
 
 rsync()
 {
-    # which rsync
-    # which command rsync
     local retry_time=180 # second
     while [ 1 ]
     do
         command rsync -aHhvzP $*
+        # command 调用系统的 rsync 命令，避免递归调用rsync
         if [ "$?" = "0" ] ; then
             echo "rsync completed normally"
             break
@@ -374,20 +373,7 @@ rsync()
         fi
     done
 }
-# alias ts='ts_function'
-
-# complete -F _ssh ts
-# _ts () {
-#   local service=rsync
-#   _rsync "$@"
-# }
-# compdef _ts ts
-# if [ "`$SHELL`" =~ 'zsh' ]; then
-#     compdef _rsync ts
-# fi
-
-# Make zsh know about hosts already accessed by SSH
-# zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync|ts):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+alias ts='rsync'
 
 # `cp 目录/.`   拷贝一个目录下所有文件，目录自身不拷，拷隐藏文件
 # cp_under 一个或多个源目录 目标目录
