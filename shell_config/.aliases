@@ -354,6 +354,37 @@ alias sendkey='ssh-copy-id'     # 发送公钥
 alias cp="cp -r"
 # alias scp="scp -r"
 
+
+
+
+ts_function()
+{
+    which rsync
+    local retry_time=180 # second
+    while [ 1 ]
+    do
+        rsync -aHhvzP $*
+        if [ "$?" = "0" ] ; then
+            echo "rsync completed normally"
+            break
+        else
+            echo "Rsync failure. Backing off and retrying in $retry_time seconds..."
+            sleep $retry_time
+        fi
+    done
+}
+alias ts='ts_function'
+
+complete -F _ssh ts
+# _ts () {
+#   local service=rsync
+#   _rsync "$@"
+# }
+# compdef _ts ts
+# if [ "`$SHELL`" =~ 'zsh' ]; then
+#     compdef _rsync ts
+# fi
+
 # Make zsh know about hosts already accessed by SSH
 # zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync|ts):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
