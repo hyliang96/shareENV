@@ -354,10 +354,9 @@ alias sendkey='ssh-copy-id'     # 发送公钥
 alias cp="cp -r"
 # alias scp="scp -r"
 
-scp()
+ts()
 {
     which rsync
-    return
     local retry_time=180 # second
     while [ 1 ]
     do
