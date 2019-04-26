@@ -359,6 +359,7 @@ alias cp="cp -r"
 
 rsync()
 {
+    echo my rsync
     local retry_time=180 # second
     while [ 1 ]
     do
