@@ -359,8 +359,7 @@ alias cp="cp -r"
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
 alias autots='rsync' # 用来使得autols能够和rsync一样自动补全远程目录
-autots()
-{
+function autots {
     local retry_time=180 # second
     while [ 1 ]
     do
