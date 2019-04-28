@@ -105,11 +105,11 @@ jch()
         echo 'Usgae: jc args_for_grep'
         return
     fi
-    local title="`ps aux | awk 'NR==1'`"
-    local content="`ps aux | awk 'NR!=1' | grep -v grep | grep $*`"
+    local title="`ps aux | awk NR==1`"
+    local content="`ps aux | awk NR!=1 | grep -v grep | grep $*`"
     if [ "$content" != "" ]; then
         echo $title
-        ps aux | awk 'NR!=1' | grep -v grep | grep $*
+        ps aux | awk NR!=1 | grep -v grep | grep -v 'ps aux' | grep -v 'awk NR!=1' | grep $*
     fi
 }
 # 按pid杀死进程
@@ -357,7 +357,8 @@ alias cp="cp -r"
 
 
 
-rsync()
+# 自动端点续传，传送失败后隔180秒自动重新连接
+autots()
 {
     # echo my rsync
     local retry_time=180 # second
@@ -374,7 +375,8 @@ rsync()
         fi
     done
 }
-alias ts='rsync'
+# rsync 封装多种参数，但不支持断点续传
+alias ts='rsync -aHhvz --progress -e "ssh"'
 
 # `cp 目录/.`   拷贝一个目录下所有文件，目录自身不拷，拷隐藏文件
 # cp_under 一个或多个源目录 目标目录
