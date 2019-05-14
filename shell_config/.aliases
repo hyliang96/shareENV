@@ -320,7 +320,8 @@ alias vtmux='vim ~/.tmux.conf'
 alias stmux='tmux source-file ~/.tmux.conf'
 alias vv='vim ~/.vimrc'           # vim 免source，重新开vim即生效
 alias vvp='vim ~/.vimrc.bundles'      # vim 的插件
-alias svp="vim  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载vim的插件
+alias ivp="vim  +'PlugInstall --sync' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件
+alias uvp="vim  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件
 alias vgit='vim ~/.gitconfig'
 
 # ---------------- 环境显示 -----------------------
