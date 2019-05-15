@@ -353,7 +353,7 @@ alias sendkey='ssh-copy-id'     # 发送公钥
 
 # 拷贝、传输一个文件或文件夹（及其下各级所有文件），包括隐藏文件
 alias cp="cp -r"
-# alias scp="scp -r"
+alias scp="scp -r"
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
 alias autots='rsync' # 用来使得autots能够和rsync一样自动补全远程目录
@@ -373,7 +373,7 @@ function autots {
     done
 }
 # rsync 封装多种参数，但不支持断点续传; trs能够和rsync一样自动补全远程目录
-alias trs='rsync -aHhvz --progress -e "ssh"'
+alias ts='rsync -aHhvz --progress -e "ssh"'
 
 # `cp 目录/.`   拷贝一个目录下所有文件，目录自身不拷，拷隐藏文件
 # cp_under 一个或多个源目录 目标目录
