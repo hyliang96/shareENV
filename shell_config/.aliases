@@ -356,7 +356,8 @@ alias cp="cp -r"
 alias scp="scp -r"
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
-alias autots='rsync' # 用来使得autots能够和rsync一样自动补全远程目录
+# autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
+alias autots='rsync'
 function autots {
     local retry_time=180 # second
     while [ 1 ]
@@ -372,7 +373,7 @@ function autots {
         fi
     done
 }
-# rsync 封装多种参数，但不支持断点续传; trs能够和rsync一样自动补全远程目录
+# rsync 封装多种参数，但不支持断点续传; ts能够和rsync一样自动补全远程目录
 alias ts='rsync -aHhvz --progress'
 
 # `cp 目录/.`   拷贝一个目录下所有文件，目录自身不拷，拷隐藏文件
