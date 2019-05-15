@@ -361,7 +361,7 @@ function autots {
     local retry_time=180 # second
     while [ 1 ]
     do
-        rsync -aHhvzP $* -e "ssh"
+        rsync -aHhvzP $*
         # command 调用系统的 rsync 命令，避免递归调用rsync
         if [ "$?" = "0" ] ; then
             echo "rsync completed normally"
@@ -373,7 +373,7 @@ function autots {
     done
 }
 # rsync 封装多种参数，但不支持断点续传; trs能够和rsync一样自动补全远程目录
-alias ts='rsync -aHhvz --progress -e "ssh"'
+alias ts='rsync -aHhvz --progress'
 
 # `cp 目录/.`   拷贝一个目录下所有文件，目录自身不拷，拷隐藏文件
 # cp_under 一个或多个源目录 目标目录
