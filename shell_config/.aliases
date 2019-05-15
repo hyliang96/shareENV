@@ -361,7 +361,7 @@ function autots {
     local retry_time=180 # second
     while [ 1 ]
     do
-        command rsync -aHhvzP $* -e "ssh"
+        rsync -aHhvzP $* -e "ssh"
         # command 调用系统的 rsync 命令，避免递归调用rsync
         if [ "$?" = "0" ] ; then
             echo "rsync completed normally"
