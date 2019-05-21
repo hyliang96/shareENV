@@ -135,6 +135,9 @@ if [ -x $serverENV/nvim/usr/bin/nvim ]; then
     # alias nvim=$serverENV/local/bin/nvim.appimage
     export PATH=$serverENV/nvim/usr/bin/:$PATH
     # alias nvim=$serverENV/nvim/usr/bin/nvim
+    alias default_editor=nvim
+else
+    alias default_editor=vim
 fi
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
@@ -316,13 +319,13 @@ zr=~/.zshrc;                       szr=$share_shell_config/.zshrc
 zo=~/.zlogout
 
 # others
-alias vtmux='vim ~/.tmux.conf'
+alias vtmux='default_editor ~/.tmux.conf'
 alias stmux='tmux source-file ~/.tmux.conf'
-alias vv='vim ~/.vimrc'           # vim 免source，重新开vim即生效
-alias vvp='vim ~/.vimrc.bundles'      # vim 的插件
-alias ivp="vim  +'PlugInstall --sync' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件
-alias uvp="vim  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件
-alias vgit='vim ~/.gitconfig'
+alias vv='default_editor ~/.vimrc'           # vim 免source，重新开vim即生效
+alias vvp='default_editor ~/.vimrc.bundles'      # vim 的插件
+alias ivp="default_editor  +'PlugInstall --sync' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件
+alias uvp="default_editor  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件
+alias vgit='default_editor ~/.gitconfig'
 
 # ---------------- 环境显示 -----------------------
 # 显示路径，换行分隔，例如 `showpa PATH`， `showpa <任何一环境变量>`
@@ -344,8 +347,8 @@ rmpa()
 }
 
 # ssh
-alias vssh='vim ~/.ssh/config';
-alias vhost='vim /etc/hosts' # 系统文件，个人账号用sub看不了
+alias vssh='default_editor ~/.ssh/config';
+alias vhost='default_editor /etc/hosts' # 系统文件，个人账号用sub看不了
 alias sendkey='ssh-copy-id'     # 发送公钥
 
 
@@ -1037,7 +1040,7 @@ vncs(){
     elif [ "$1" = "passwd" ]; then
         vncpasswd
     elif [ "$1" = "config" ]; then
-        vim ~/.vnc/xstartup
+        default_editor ~/.vnc/xstartup
     elif [ "$1" = "help" ]; then
         echo 'Usage: vnc [ start(default)) | stop | restart | passwd | config | help ]'
     else
