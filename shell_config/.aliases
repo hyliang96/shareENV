@@ -125,6 +125,10 @@ kjob()
 }
 
 # --------------------- 软件 ----------------------
+
+alias code='code-insiders'
+
+
 if [ -x /usr/bin/vim.gnome ]; then
     # 更换vim-gnome, 以支持clipboard
     alias vim='/usr/bin/vim.gnome'
