@@ -130,7 +130,7 @@ kjob()
 # 当有 vscode 时，有 `code` 命令
 # 当有 vscode-insiders 而无 vscode 时，将 `code-insiders` 命令 alias 为 `code`
 if ( ! [ -x "`which code`" ] ) && [ -x "`which code-insiders`" ]; then
-    alias code='code-insider'
+    alias code='code-insiders'
 fi
 
 # 设置vim
