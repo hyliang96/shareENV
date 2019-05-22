@@ -125,30 +125,44 @@ kjob()
 }
 
 # --------------------- 软件 ----------------------
+# VScode
+# 当有 vscode-insiders 时，有 `code-insiders` 命令
+# 当有 vscode 时，有 `code` 命令
+# 当有 vscode-insiders 而无 vscode 时，将 `code-insiders` 命令 alias 为 `code`
+if ( ! [ -x "`which code`" ] ) && [ -x "`which code-insiders`" ]; then
+    alias code='code-insider'
+fi
 
-alias code='code-insiders'
-
-
+# 设置vim
 if [ -x /usr/bin/vim.gnome ]; then
     # 更换vim-gnome, 以支持clipboard
     alias vim='/usr/bin/vim.gnome'
 fi
+
+# 设置nvim
 if [ -x $serverENV/nvim/usr/bin/nvim ]; then
-# 若不是mac
-# 有的linux系统，没有fuse，故无法执行下述镜像
-    # alias nvim=$serverENV/local/bin/nvim.appimage
+# 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
     export PATH=$serverENV/nvim/usr/bin/:$PATH
     # alias nvim=$serverENV/nvim/usr/bin/nvim
-    alias default_editor=nvim
-else
-    alias default_editor=vim
 fi
+
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
 alias nvi=nvim
 alias nv=nvim
 alias v=nvim
 alias vi=vim
+
+# 设置默认编辑器
+if [ -x "`which code-insiders`" ] || [ -x "`which code`" ]; then
+    alias default_editor='code'
+elif [ -x $serverENV/nvim/usr/bin/nvim ]; then    
+    alias default_editor=nvim
+else
+    alias default_editor=vim
+fi
+
+
 # sub(){
 #     if [ -d /Applications/Sublime\ Text.app ]; then
 #         # 本地是Mac，且有sublime
