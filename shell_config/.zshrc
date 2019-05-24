@@ -76,6 +76,11 @@ else
     # linux上用户装在自己的home下，则需要手动加载
     [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
 fi
+autojump()
+{
+    cd `command autojump $*`
+}
+
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
 # antigen bundle git
