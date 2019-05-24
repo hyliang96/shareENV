@@ -608,7 +608,7 @@ tuna()
 }
 
 alias act='source activate'
-alias dea='source deactivate'
+alias dea='conda deactivate'
 alias els='conda info -e' # 列出conda的环境
 enew() # enew 环境名字 python的版本  其他参数
 {
