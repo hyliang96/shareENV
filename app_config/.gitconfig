@@ -8,6 +8,7 @@
 [core]
     editor = vim
     excludesfile = ~/.gitignore_global
+    quotepath = false
 [color]
     ui = auto
 [alias]
