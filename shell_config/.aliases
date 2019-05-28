@@ -787,31 +787,7 @@ alias ghs='git reflog'   # 按时间顺序列出 版本重置（git reset）、�
 # 远仓
 alias ght='ssh -T git@github.com' # 测试github连接：ght
 alias gra='git remote add'        # 关联远仓：gra 远仓名（即远程repo在本地的名字） 远程repo的网址
-gh()  # 关联github上的远程repo
-# 先在github上建立一个repo
-# 然后用此，用法见下
-{
-    if [ $# = 1 ]; then
-        local user=`git config user.name`
-        local name=origin
-        local repo=$1
-    elif [ $# = 2 ]; then
-        local user=`git config user.name`
-        local name=$1
-        local repo=$2
-    elif [ $# = 3 ]; then
-        local name=$1
-        local user=$2
-        local repo=$3
-    else
-        echo 'Usage: gh [remote [github_username]] remote_repo_name'
-        echo '    default remote: origin'
-        echo '    default github_username: local git username, see in `git config user.name`'
-        return
-    fi
-    echo $user $name $repo
-    git remote add $name git@github.com:$user/$repo.git
-}
+
 alias grrm='git remote rm'      # 取关远仓：    grrm 远仓名
 alias grrn='git remote rename'  # 重命名远仓：  grrn 远仓名
 alias grls='git remote show'    # 列出远仓：    grls
@@ -1006,25 +982,64 @@ gitkeep()
 }
 
 # -------------------------------------------------------------------------
-# githua pai
-# list all remote repo
-ghapi()
+# github api
+gh()
 {
     if [ "$1" = 'ls' ]; then
-        echo $(curl -H "Authorization: token $(<~/.ssh/github.token)" https://api.github.com/user/repos 2>/dev/null | grep -E '^    "name":|^    "private": ' ) | sed 's/"name": "/\
-/g' | sed 's/"\, "private": false\,//g' | sed 's/"\, "private": true,/ \[private\]/g'
-    elif [ "$1" = 'add' ]; then
+    # list all remote repo
+        echo $(curl -H "Authorization: token $(<~/.ssh/github.token)" https://api.github.com/user/repos 2>/dev/null | \
+        grep -E '^    "name":|^    "private": ' ) | \
+        sed 's/"name": "/\
+/g' | \
+        sed 's/"\, "private": false\,//g' | \
+        sed 's/"\, "private": true,/ \[private\]/g'
+    elif [ "$1" = 'new' ]; then
+    # create new remote repo
         local repo_name="$2"
-        if [ "$3" = 'private' ]; then
+        if [ $# -eq 3 ]  && [ "$3" = 'public' ]; then
             local ifPrivate=false
         else
             local ifPrivate=true
         fi
-        curl -H "Authorization: token $(<~/.ssh/github.token)" https://api.github.com/user/repos --data '{ "name": "$repo_name",  "private": $ifPrivate }'
+        curl -H "Authorization: token $(<~/.ssh/github.token)" https://api.github.com/user/repos --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
+    elif [ "$1" = 'add' ]; then
+        shift
+        grgh $@
+    else
+        echo '`gh ls` : list all your repo, it can inform you whether they are private'
+        echo '`gh new {repo_name}` : create a private repo'
+        echo '`gh new {repo_name} public` : create a public repo'
+        echo '`gh add [{remote} [{github_username}]] {remote_repo_name}` : add a github repo as '
+        echo '    default {remote}: origin'
+        echo '    default {github_username}: local git username, see in `git config user.name`'
     fi
-
 }
-
+# git remote git hub
+grgh()  # 关联github上的远程repo
+# 先在github上建立一个repo
+# 然后用此，用法见下
+{
+    if [ $# = 1 ]; then
+        local user=`git config user.name`
+        local name=origin
+        local repo=$1
+    elif [ $# = 2 ]; then
+        local user=`git config user.name`
+        local name=$1
+        local repo=$2
+    elif [ $# = 3 ]; then
+        local name=$1
+        local user=$2
+        local repo=$3
+    else
+        echo 'Usage: gh [remote [github_username]] remote_repo_name'
+        echo '    default remote: origin'
+        echo '    default github_username: local git username, see in `git config user.name`'
+        return
+    fi
+    echo $user $name $repo
+    git remote add $name git@github.com:$user/$repo.git
+}
 # -------------------------------------------------------------------------
 # 用户操作
 # 详见 man adduser, man useradd, man userdel 等
