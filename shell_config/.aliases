@@ -156,7 +156,7 @@ alias vi=vim
 # 设置默认编辑器
 if [ -x "`which code-insiders`" ] || [ -x "`which code`" ]; then
     alias default_editor='code'
-elif [ -x $serverENV/nvim/usr/bin/nvim ]; then    
+elif [ -x $serverENV/nvim/usr/bin/nvim ]; then
     alias default_editor=nvim
 else
     alias default_editor=vim
@@ -1005,6 +1005,25 @@ gitkeep()
     fi
 }
 
+# -------------------------------------------------------------------------
+# githua pai
+# list all remote repo
+ghapi()
+{
+    if [ "$1" = 'ls' ]; then
+        echo $(curl -H "Authorization: token $(<~/.ssh/github.token)" https://api.github.com/user/repos 2>/dev/null | grep -E '^    "name":|^    "private": ' ) | sed 's/"name": "/\
+/g' | sed 's/"\, "private": false\,//g' | sed 's/"\, "private": true,/ \[private\]/g'
+    elif [ "$1" = 'add' ]; then
+        local repo_name="$2"
+        if [ "$3" = 'private' ]; then
+            local ifPrivate=false
+        else
+            local ifPrivate=true
+        fi
+        curl -H "Authorization: token $(<~/.ssh/github.token)" https://api.github.com/user/repos --data '{ "name": "$repo_name",  "private": $ifPrivate }'
+    fi
+
+}
 
 # -------------------------------------------------------------------------
 # 用户操作
