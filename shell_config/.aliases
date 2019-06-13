@@ -154,7 +154,8 @@ alias v=nvim
 alias vi=vim
 
 # 设置默认编辑器
-if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || ( [ -x "`which code`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) ; then
+if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
+   ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
     alias default_editor='code'
 elif [ -x $serverENV/nvim/usr/bin/nvim ]; then
     alias default_editor=nvim
