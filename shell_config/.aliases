@@ -786,7 +786,6 @@ alias glg='git log --graph --decorate --oneline --all'  #列出提交历史图�
 alias glgs='glg --simplify-by-decoration'               #列出简化历史图谱
 alias ghs='git reflog'   # 按时间顺序列出 版本重置（git reset）、提交（git commit）
 # 远仓
-alias ght='ssh -T git@github.com' # 测试github连接：ght
 alias gra='git remote add'        # 关联远仓：gra 远仓名（即远程repo在本地的名字） 远程repo的网址
 
 alias grrm='git remote rm'      # 取关远仓：    grrm 远仓名
@@ -986,7 +985,9 @@ gitkeep()
 # github api
 gh()
 {
-    if [ "$1" = 'ls' ]; then
+    if [ "$1" = 'test' ]; then
+        ssh -T git@github.com # 测试github的ssh连接
+    elif [ "$1" = 'ls' ]; then
     # list all remote repo
         echo $(curl -H "Authorization: token $(<~/.ssh/github.token)" https://api.github.com/user/repos 2>/dev/null | \
         grep -E '^    "name":|^    "private": ' ) | \
@@ -1007,6 +1008,7 @@ gh()
         shift
         grgh $@
     else
+        echo '`gh test` : test github ssh connection'
         echo '`gh ls` : list all your repo, it can inform you whether they are private'
         echo '`gh new {repo_name}` : create a private repo'
         echo '`gh new {repo_name} public` : create a public repo'
