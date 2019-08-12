@@ -17,6 +17,8 @@ gpuid()
 {
     eval "CUDA_VISIBLE_DEVICES=$*"
 }
+# use no gpu i.e. cpu only
+alias nogpu='CUDA_VISIBLE_DEVICES=-1 '
 
 alias mem='free -h'  # 查内存使用
 alias yp-a='df -h' # 查看所有硬盘使用
