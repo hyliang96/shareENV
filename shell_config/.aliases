@@ -784,7 +784,7 @@ alias gbls='git branch -avv' # 列出所有本地枝，及其关联的远枝： 
 alias gch='git checkout'    # 切换分支：gch 分支名/历史提交编号/HEAD^/HEAD/HEAD~n/HEAD@{n}, 要先git commit一次才能gch
 alias gmg='git merge'       # 将其与当前枝合并：gmg 待合并分支
 # 历史
-alias glg='git log --graph --decorate --oneline --all'  #列出提交历史图谱，含远仓、本仓
+alias glg="git log --graph --oneline --all --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %s' --abbrev-commit --date=short"  #列出提交历史图谱，含远仓、本仓
 alias glgs='glg --simplify-by-decoration'               #列出简化历史图谱
 alias ghs='git reflog'   # 按时间顺序列出 版本重置（git reset）、提交（git commit）
 # 远仓
