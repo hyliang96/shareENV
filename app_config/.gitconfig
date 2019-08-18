@@ -1,8 +1,8 @@
 [oh-my-zsh]
     hide-status = 1
 [user]
-    name = hyliang96
-    email = hyliang96@hotmail.com
+	name = Haoyu Liang
+	email = hyliang96@hotmail.com
 [push]
     default = simple
 [core]
