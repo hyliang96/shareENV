@@ -348,6 +348,23 @@ alias ivp="vim  +'PlugInstall --sync' +qa"  # 按照.vimrc.bundles下载安装�
 alias uvp="vim  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件
 alias vgit='default_editor ~/.gitconfig'
 
+fix_golang()
+{
+    # 法一：https://www.lizenghai.com/archives/22681.html
+    local ycm_path="$HOME/.vim/plugged/YouCompleteMe"
+    mkdir -p $ycm_path/third_party/go/src/golang.org/x
+    cd $ycm_path/third_party/go/src/golang.org/x
+    git clone https://github.com/golang/tools.git
+
+    cd $ycm_path/third_party/ycmd/third_party/go/src/golang.org/x
+    git clone https://github.com/golang/tools.git
+
+    cd $ycm_path
+    git submodule update --init --recursive
+
+    $ycm_path/install.sh
+}
+
 # ---------------- 环境显示 -----------------------
 # 显示路径，换行分隔，例如 `showpa PATH`， `showpa <任何一环境变量>`
 showpa()
