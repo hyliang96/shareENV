@@ -242,7 +242,7 @@ abspath(){
 _open() {
     local app="$1"
     shift
-    local dirs=""
+    local dirs=
     local arg
     for arg in $@; do
         if [ -e $arg ]; then
