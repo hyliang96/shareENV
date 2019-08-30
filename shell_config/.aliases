@@ -239,8 +239,7 @@ abspath(){
     # }
 # fi
 
-_open()
-{
+_open() {
     local app="$1"
     shift
     local dirs=""
@@ -261,6 +260,7 @@ _open()
         echo "remote open: $app; $USER; `hostname`; $dirs"
     fi
 }
+
 if [ "$(uname)" != "Darwin" ]; then
     # 不是mac
 
