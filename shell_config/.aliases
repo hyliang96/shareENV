@@ -257,24 +257,24 @@ _open() {
         dirs=${dirs:2}
     fi
     if [ "$dirs" != '' ]; then
-        echo "remote open: $app; $USER; `hostname`; $dirs"
+        echo 'remote open: '"$app"'; '"$USER"'; '"`hostname`"'; '"$dirs"
     fi
 }
 
-# if [ "$(uname)" != "Darwin" ]; then
-    # # 不是mac
-    # if [ "`which code`" = '' ]; then
-        # # 没有code命令（即在服务器上，且目前不是用vscode远程登录）
-        # alias code='_open code'
-    # fi
-    # alias open='_open open'
-    # alias sub='_open sub'
-# else
-    # if [ -d /Applications/Sublime\ Text.app ]; then
-        # # 本地是Mac，且有sublime
-        # alias sub='open -a "/Applications/Sublime Text.app"'
-    # fi
-# fi
+if [ "$(uname)" != "Darwin" ]; then
+    # 不是mac
+    if [ "`which code`" = '' ]; then
+        # 没有code命令（即在服务器上，且目前不是用vscode远程登录）
+        alias code='_open code'
+    fi
+    alias open='_open open'
+    alias sub='_open sub'
+else
+    if [ -d /Applications/Sublime\ Text.app ]; then
+        # 本地是Mac，且有sublime
+        alias sub='open -a "/Applications/Sublime Text.app"'
+    fi
+fi
 
 
 
