@@ -242,7 +242,8 @@ abspath(){
 
 if [ "$(uname)" != "Darwin" ]; then
     # 不是mac
-    _open(){
+    _open()
+    {
         local app="$1"
         shift
         local dirs=""
