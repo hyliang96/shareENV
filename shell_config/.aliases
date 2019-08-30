@@ -263,7 +263,6 @@ _open() {
 
 if [ "$(uname)" != "Darwin" ]; then
     # 不是mac
-
     if [ "`which code`" = '' ]; then
         # 没有code命令（即在服务器上，且目前不是用vscode远程登录）
         alias code='_open code'
