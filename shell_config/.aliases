@@ -238,32 +238,13 @@ abspath(){
         # fi
     # }
 # fi
-sub(){
-    if [ -d /Applications/Sublime\ Text.app ]; then
-        # 本地是Mac，且有sublime
-        open -a "/Applications/Sublime Text.app" $*
-    else
-        local dirs=""
-        local arg=
-        for arg in $@; do
-            if [ -e $arg ]; then
-                local path_arg=$(abspath $arg)
-                dirs="$dirs; $path_arg"
-            else
-                echo not exist: $arg
-            fi
-        done
-        if [ "${dirs:0:2}" = "; " ]; then
-            dirs=${dirs:2}
-        fi
-        if [ "$dirs" != "" ]; then
-            echo "remote open: sub; $USER; `hostname`; $dirs"
-        fi
-    fi
-}
+
+
 if [ "$(uname)" != "Darwin" ]; then
     # 不是mac
-    open(){
+    _open(){
+        local app="$1"
+        shift
         local dirs=""
         local arg
         for arg in $@; do
@@ -274,14 +255,27 @@ if [ "$(uname)" != "Darwin" ]; then
                 echo not exist: $arg
             fi
         done
+        # 去掉dirs字符串开头的'; '
         if [ "${dirs:0:2}" = "; " ]; then
             dirs=${dirs:2}
         fi
         if [ "$dirs" != "" ]; then
-            echo "remote open: open; $USER; `hostname`; $dirs"
+            echo "remote open: $app; $USER; `hostname`; $dirs"
         fi
     }
+    if [ "`which code`" = '' ]; then
+        # 没有code命令（即在服务器上，且目前不是用vscode远程登录）
+        alias code='_open code'
+    fi
+    alias open='_open open'
+    alias sub='_open sub'
+else
+    if [ -d /Applications/Sublime\ Text.app ]; then
+        # 本地是Mac，且有sublime
+        alias sub='open -a "/Applications/Sublime Text.app"'
+    fi
 fi
+
 
 
 server_port=8304 # 【远程nc端口】
