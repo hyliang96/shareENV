@@ -1146,4 +1146,18 @@ alias wgetc='wget -C -t 0'
 # '-C'断点续传，' -t 0' 无限次断开次续传，'-T 900' 表示900秒(缺省即900)连不上就算超时
 
 
-
+# 生成随机密码
+randpasswd () {
+    if [ "$1" = help ] || [ "$1" = '--help' ] || [ "$1" = '-h' ]
+    then
+        echo "Usage: \`randpasswd [length]\` to generate random passwod of this length"
+        return
+    fi
+    if [ $# -eq 0 ]
+    then
+        local len=24
+    else
+        local len=$1
+    fi
+    openssl rand -base64 $len
+}
