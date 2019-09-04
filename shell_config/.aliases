@@ -551,40 +551,46 @@ alias bkzx='chmod -x' # bkzx 文件名：设为不可执行
 alias own='chown -R' # -R表示递归，即文件夹下诸物皆然
 
 # 7z压缩
-# 用法
-#    jy7z xxx.7z(".7z"可省略) 一到若干个文件或文件夹
-#    jy7z 一个文件夹或文件          # 压缩成 同名.7z
 ys()
 {
-    local file7z=$1; shift 1
-    local filehead=`echo $file7z | sed -E 's/.7z$//g'`
-    local to_be_compressed=$*
-    ! [ $to_be_compressed ] && to_be_compressed=$filehead
-    eval "7z a ${filehead}.7z ${to_be_compressed}"
+    if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = 'help' ]; then
+        echo 'Usage:'
+        echo '    ys 一个文件夹或文件  :    得到 <同名>.7z'
+        echo '    ys 一到若干个文件或文件夹 xxx.7z(".7z"可省略)'
+    else
+        local file7z=${@:$#}
+        local filehead=`echo $file7z | sed -E 's/.7z$//g'`
+        local to_be_compressed="${@:1:`expr $# - 1`}"
+        ! [ $to_be_compressed ] && to_be_compressed=$filehead
+        eval "7z a ${filehead}.7z ${to_be_compressed}"
+    fi
 }
 
+# 7z解压
 jy()
-# 用法
-#    jy7z xxx.7z 目标目录(缺省为.)
-# 解压到`目标目录/xxx`
 {
-    local file7z=$1; shift 1
-    if [ $# -ne 0 ]; then
-        local target_jieya_path=$1
+    if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = 'help' ]; then
+        echo 'Usage:'
+        echo 'jy7z xxx.7z 目标目录(缺省为.)  :  解压到`目标目录/xxx_extract`'
     else
-        local target_jieya_path=.
+        local file7z=$1; shift 1
+        if [ $# -ne 0 ]; then
+            local target_jieya_path=$1
+        else
+            local target_jieya_path=.
+        fi
+
+        # local OLD_IFS=$IFS
+        # IFS='.'
+        # local tmp=($(echo "$file7z"))
+        # IFS=$OLD_IFS
+        # local filehead="${tmp[1]}"
+        local filename="${file7z}_extract"
+
+        # local filehead=`echo $file7z | sed -E 's/.7z$//g'`
+        # `7z x`一次只能解压一个文件
+        eval "7z x ${file7z} -o${target_jieya_path}/${filename}"
     fi
-
-    # local OLD_IFS=$IFS
-    # IFS='.'
-    # local tmp=($(echo "$file7z"))
-    # IFS=$OLD_IFS
-    # local filehead="${tmp[1]}"
-    local filename="${file7z}_extract"
-
-    # local filehead=`echo $file7z | sed -E 's/.7z$//g'`
-    # `7z x`一次只能解压一个文件
-    eval "7z x ${file7z} -o${target_jieya_path}/${filename}"
 }
 
 # 通用解压
