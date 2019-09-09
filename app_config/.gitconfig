@@ -5,6 +5,8 @@
     email = hyliang96@hotmail.com
 [push]
     default = simple
+    ; push此commit，并吧所有此分支上所有tag也上传
+    followTags = true
 [core]
     editor = vim
     excludesfile = ~/.gitignore_global
@@ -21,7 +23,7 @@
     required = true
 [difftool "sourcetree"]
     cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-    path = 
+    path =
 [mergetool "sourcetree"]
     cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
     trustExitCode = true
