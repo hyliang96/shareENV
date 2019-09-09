@@ -100,7 +100,8 @@ antigen bundle willghatch/zsh-cdr
 # antigen bundle zsh-users/zaw
 
 # antigen theme agnoster  # agnoster # ys # 换主题，更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
-antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
+antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
+# antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
 # ZSH_THEME="my_awesome_theme"
 
 # check login shell
