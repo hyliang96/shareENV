@@ -902,7 +902,7 @@ gpsu()
     # gbu $*
     # git push
 # }
-alias gps='git push'            # 推送当前枝：            gps [ 远仓名 [远枝名]]
+alias gps='git push'     # 推送当前枝：            gps [ 远仓名 [远枝名]]
 alias gfc='git fetch'           # 拉去到当前枝：          gfc [ 远仓名 [远枝名]]
 # gplu [远仓名 [远枝名]],   初次拉用
 gplu()
