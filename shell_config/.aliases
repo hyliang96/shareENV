@@ -8,7 +8,7 @@
 # ---------------- alias to resource ----------------
 alias nvd='watch -n 10 nvidia-smi'  # 查GPU使用
 alias gpu='watch -n 10 gpustat'     # 查看GPU使用，谁在用
-alias gpujc='nvidia-who'            # 看用哪个进程在用显卡
+alias gpujch='nvidia-who'            # 看用哪个进程在用显卡
 
 # 用法
 # `gpuid 0 python xxx.py` 现在暂时用GPU0运行 xxx.py
