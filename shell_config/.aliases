@@ -1171,11 +1171,14 @@ randpasswd () {
 
 
 # ------------------ 翻墙 ---------------------------
-if [ -f $server_script/fanqiang/fanqiang.sh  ]; then
-    . $server_script/fanqiang/fanqiang.sh
-else
-    echo "$server_script/fanqiang/fanqiang.sh 找不到"
-    echo "无法加载翻墙客户端、翻墙服务器的alias脚本"
+if [ "$(uname)" != "Darwin" ]; then
+    # 非mac
+    if [ -f $server_script/fanqiang/fanqiang.sh  ]; then
+        . $server_script/fanqiang/fanqiang.sh
+    else
+        echo "$server_script/fanqiang/fanqiang.sh 找不到"
+        echo "无法加载翻墙客户端、翻墙服务器的alias脚本"
+    fi
 fi
 
 fix_zsh_history()
