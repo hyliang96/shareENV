@@ -667,7 +667,7 @@ alias py='python'
 alias py3='python3'
 alias py2='python2'
 alias ipy='ipython'
-alias nb='jupyter notebook'
+alias nb='jupyter notebook' # open local jupyter notebook, it will automatically call safari to open the webpage
 
 # -----------------  alias to tmux ------------------
 # list all session of tmux session
