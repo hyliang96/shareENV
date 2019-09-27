@@ -1,0 +1,82 @@
+// 将键绑定放在此文件中以覆盖默认值
+[
+
+    // ----- 外部终端
+    // 本地文件夹在vscode打开后，在这个文件夹的路径开外部终端：ctrl+shift+`
+    { "key": "ctrl+shift+`", "command": "workbench.action.terminal.openNativeConsole", "when": "!terminalFocus" },
+    { "key": "shift+cmd+c",  "command": "-workbench.action.terminal.openNativeConsole",  "when": "!terminalFocus" },
+
+    // ----- 内部终端
+    // 在代码和终端间切换
+    { "key": "ctrl+`", "command": "workbench.action.terminal.focus"},
+    { "key": "ctrl+`", "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"},
+    // 打开、隐藏内置终端
+    { "key": "ctrl+alt+`",  "command": "workbench.action.togglePanel" },
+    // { "key": "ctrl+alt+`",  "command": "multiCommand.toggleTerminal" },
+    // 关闭当前终端
+    { "key": "cmd+w","command": "workbench.action.terminal.kill", "when": "terminalFocus"},
+    // 最大化、复原 终端
+    { "key": "cmd+enter",    "command": "workbench.action.toggleMaximizedPanel", "when": "terminalFocus" },
+    // 新开一屏终端：ctrl+alt+t
+    { "key": "cmd+t",      "command": "workbench.action.terminal.new"  , "when": "terminalFocus"  },
+    { "key": "ctrl+shift+`",    "command": "-workbench.action.terminal.new"  },  //( 解绑原生的 ctrl+shift+`）
+    // 去前一屏终端（终端编号-1）
+    { "key": "cmd+alt+up",    "command": "workbench.action.terminal.focusPrevious", "when": "terminalFocus" },
+    // 去后一屏终端（终端编号+1）
+    { "key": "cmd+alt+down",    "command": "workbench.action.terminal.focusNext" , "when": "terminalFocus"},
+    // 去左一窗终端
+    { "key": "cmd+alt+left",    "command": "workbench.action.terminal.focusPreviousPane", "when": "terminalFocus" },
+    // 去右一窗终端
+    { "key": "cmd+alt+right",    "command": "workbench.action.terminal.focusNextPane", "when": "terminalFocus" },
+    // 终端左右分窗: cmd+\
+    // 终端上下分窗：vscode不支持
+
+    // 代码左右: cmd+\
+    // 上下分窗
+    { "key": "shift+cmd+\\",    "command": "workbench.action.splitEditorOrthogonal"},
+
+    // 多选区、多光标功能：
+    // 选中一个区域再cmd+d：非整词匹配
+    // 光标在一个词中未选中一片区域，直接cmd+d：整词匹配
+    // 选中下一个和当前一样的：cmd+d
+    // 回到上一个：cmd+U
+    // 跳过当前的：cmd+K, cmd+U
+    // alt+cmd+C/W/R：  开关Case sensitive/whole word/RegEx
+    // 选中所有和当前一样的
+    { "key": "shift+cmd+d",    "command": "editor.action.selectHighlights"},
+    // 新增一个区：按住alt，用鼠标选中区域
+    // 新加一个光标：按住alt点鼠标左键
+    // 上/下加光标：alt+cmd+上/下
+
+    // 调试 （[t]iaoshi）
+    { "key": "shift+cmd+t",    "command": "workbench.view.debug"},
+    // 打开最近关闭的文件（[l]ast）
+    { "key": "shift+cmd+l",    "command": "workbench.action.reopenClosedEditor"},
+
+
+    // 终端下(含vim)的键盘映射：完全仿照我的iterm2的设置
+    // https://code.visualstudio.com/docs/editor/integrated-terminal#_send-text-from-a-keybinding
+    // 参见https://github.com/xtermjs/xterm.js/blob/0e45909c7e79c83452493d2cd46d99c0a0bb585f/src/common/data/EscapeSequences.ts#L31
+    // 左移一词：alt+left
+    { "key": "alt+left",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001bb" }, "when": "terminalFocus" },
+    // 右移一词：alt+right
+    { "key": "alt+right",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001bf" }, "when": "terminalFocus" },
+    // 移动到行首：shift+alt+left  or  cmd+left
+    { "key": "shift+alt+left",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b[H" }, "when": "terminalFocus" },
+    { "key": "cmd+left",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b[H" }, "when": "terminalFocus" },
+    // 移动到行尾：shift+alt+right or  cmd+right
+    { "key": "shift+alt+right",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b[F" }, "when": "terminalFocus" },
+    { "key": "cmd+right",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b[F" }, "when": "terminalFocus" },
+    // 左删一词：alt+backspace
+    { "key": "alt+backspace",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b\u007f" },  "when": "terminalFocus"  },
+    // 右删一词：alt+delete
+    { "key": "alt+delete",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001bd" },  "when": "terminalFocus"  },
+    // 删除到行首：shift+alt+backspace or cmd+backspace
+    { "key": "shift+alt+backspace",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u0015" },  "when": "terminalFocus"  },
+    { "key": "cmd+backspace",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u0015" },  "when": "terminalFocus"  },
+    // 删除到行尾：shift+alt+delete    or cmd+delete
+    { "key": "shift+alt+delete",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u000b" },  "when": "terminalFocus"  },
+    { "key": "cmd+delete",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u000b" },  "when": "terminalFocus"  },
+    // 删除整行： shift+backspace
+    { "key": "shift+backspace",  "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u0005\u0015" }, "when": "terminalFocus" },
+]

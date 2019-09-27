@@ -1,0 +1,127 @@
+{
+    // Place your snippets for python here. Each snippet is defined under a snippet name and has a prefix, body and 
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+    // same ids are connected.
+    // Example:
+    // "Print to console": {
+    //     "prefix": "log",
+    //     "body": [
+    //         "console.log('$1');",
+    //         "$2"
+    //     ],
+    //     "description": "Log output to console"
+    // }
+    "python begining": {
+        "prefix": "py",
+        "body": [
+            "#!/usr/bin/env python",
+            "# -*- coding: utf-8 -*-",
+        ],
+        "description": "python begining"
+    },
+    "future print": {
+        "prefix": "future_print",
+        "body": [
+            "from __future__ import print_function",
+        ],
+        "description": "import python3's print into python2"
+    },
+    "json_save_py2": {
+        "prefix": "json_save_py2",
+        "body": [
+            "with open(${2:file_path.json}, 'w') as f:",
+            "   json.dump(${1:object}, f, ensure_ascii=False, encoding='utf-8')",
+        ],
+        "description": "save to json file, python2"
+    },
+    "json_save_py3": {
+        "prefix": "json_save_py3",
+        "body": [
+            "with open(${2:file_path.json}, 'w') as f:",
+            "   json.dump(${1:object}, f, ensure_ascii=False)",
+        ],
+        "description": "save to json file, python3"
+    },
+    "json_save_string_py2": {
+        "prefix": "json_save_string_py2",
+        "body": [
+            "json.dumps(${1:object}, ensure_ascii=False, encoding='utf-8')",
+        ],
+        "description": "convert to json string, python2"
+    },
+    "json_save_string_py3": {
+        "prefix": "json_save_string_py3",
+        "body": [
+            "json.dumps(${1:object}, ensure_ascii=False)",
+        ],
+        "description": "convert to json string, python3"
+    },
+    "mkdir": {
+        "prefix": "mkdir",
+        "body": [
+            "os.makedirs(${1:path}, exist_ok=True) # if no such path exists, iteratively created the dir",
+        ],
+        "description": "iteratively make a dir if it does not exist"
+    },
+    "here": {
+        "prefix": "here",
+        "body": [
+            "os.path.dirname(os.path.realpath(__file__)) ${1:# get absoltae path to the dir this file is in}",
+        ],
+        "description": "get absoltae path to the dir this file is in"
+    },
+    "plt": {
+        "prefix": "plt",
+        "body": [
+            "import matplotlib.pyplot as plt",
+        ],
+        "description": "import plt"
+    },
+    "hanzi": {
+        "prefix": "hanzi",
+        "body": [
+            "[^\\x00-\\xff]",
+        ],
+        "description": "regex for chinese character"
+    },
+    "ipdb": {
+        "prefix": "ipdb",
+        "body": [
+            "__import__('ipdb').set_trace()",
+        ],
+        "description": "insert ipdb in code"
+    },
+    "fo": {
+        "prefix": "fo",
+        "body": [
+            "#                      *",
+            "#                  *       *",
+            "#                *           *",
+            "#              *    _oo8oo_    *",
+            "#             *    o8888888o    *",
+            "#            *     88\" . \"88     *",
+            "#            *     (| -_- |)     *",
+            "#             *    0\\  =  /0    *",
+            "#              * ___/'==='\\___ *",
+            "#              .' \\\\|     |// '.",
+            "#             / \\\\|||  :  |||// \\",
+            "#            / _||||| -:- |||||_ \\",
+            "#           |   | \\\\\\  -  /// |   |",
+            "#           | \\_|  ''\\---/''  |_/ |",
+            "#           \\  .-\\__  '-'  __/-.  /",
+            "#         ___'. .'  /--.--\\  '. .'___",
+            "#      .\"\" '<  '.___\\_<|>_/___.'  >' \"\".",
+            "#     | | :  `- `.:`\\ _ /`:.`/ -`  : | |",
+            "#     \\  \\ `-.   \\_ __\\ /__ _/   .-` /  /",
+            "# =====`-.____`.___ \\_____/ ___.`____.-`=====",
+            "#                   `=---=`",
+            "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+            "#  X X X X X X X X X X X X X X X X X X X X X",
+            "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+            "#      Buddha Bless      No Bug Forever",
+            "#          佛祖保佑          永无疤疙",
+        ],
+        "description": "Buddha Bless"
+    },
+}
