@@ -667,6 +667,7 @@ alias py='python'
 alias py3='python3'
 alias py2='python2'
 alias ipy='ipython'
+alias nb='jupyter notebook'
 
 # -----------------  alias to tmux ------------------
 # list all session of tmux session
@@ -1167,3 +1168,29 @@ randpasswd () {
     fi
     openssl rand -base64 $len
 }
+
+
+# ------------------ 翻墙 ---------------------------
+if [ -f $server_script/fanqiang/fanqiang.sh  ]; then
+    . $server_script/fanqiang/fanqiang.sh
+else
+    echo "$server_script/fanqiang/fanqiang.sh 找不到"
+    echo "无法加载翻墙客户端、翻墙服务器的alias脚本"
+fi
+
+fix_zsh_history()
+{
+    mv ~/.zsh_history ~/.zsh_history_bad
+    strings ~/.zsh_history_bad > ~/.zsh_history
+    fc -R ~/.zsh_history
+    rm ~/.zsh_history_bad
+}
+
+# dropbox loader
+# 安装使用教程：https://linux.cn/article-6814-1.html
+# 此软件使用前需先翻墙
+# alias dbx='$server_script/dropbox_uploader.sh'
+alias dbx='python2 $server_script/dropbox.py'
+
+
+
