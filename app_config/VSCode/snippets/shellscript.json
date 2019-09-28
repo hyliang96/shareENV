@@ -141,4 +141,11 @@
         ],
         "description": "an argument with an optional option"
     },
+    "getchar": {
+        "prefix": "getchar",
+        "body": [
+            "answer=\\$(bash -c \"read  -n 1 -p '${1:提示内容}? [Y/N] ' c; echo \\\\\\$c\"); echo",
+        ],
+        "description": "get one char"
+    },
 }
