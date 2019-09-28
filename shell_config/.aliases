@@ -2,7 +2,7 @@
 
 # 服务器、笔记本、WSL 共享的alias配置
 
-[ $DotFileDebug -ne 0 ] && echo share .bash_aliases
+[ $DotFileDebug -ne 0 ] && echo share .bash_aliases >&2
 
 
 # ---------------- alias to resource ----------------
@@ -1176,8 +1176,8 @@ if [ "$(uname)" != "Darwin" ]; then
     if [ -f $server_script/fanqiang/fanqiang.sh  ]; then
         . $server_script/fanqiang/fanqiang.sh
     else
-        echo "$server_script/fanqiang/fanqiang.sh 找不到"
-        echo "无法加载翻墙客户端、翻墙服务器的alias脚本"
+        echo "$server_script/fanqiang/fanqiang.sh 找不到"  >&2
+        echo "无法加载翻墙客户端、翻墙服务器的alias脚本"   >&2
     fi
 fi
 
