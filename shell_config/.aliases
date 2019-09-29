@@ -27,16 +27,21 @@ alias yp='df -h' # 查看当前目录所在硬盘使用
 alias cuda-v='nvcc -V'      # 查看cuda版本
 alias cuda-vs='ls -l /usr/local/ | grep cuda'  # 查看所有cuda的安装目录
 
-alias xt='lsb_release -a'   # 查看操作系统版本
-alias ws='getconf LONG_BIT' # 查看系统位数
-alias nh='cat /proc/version' # 查看内核版本
-alias cpu-v='echo -n "logic cpu num:";  cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c' #  查看CPU信息（型号）
+alias sys_xt='lsb_release -a'   # 查看操作系统版本
+alias sys_ws='getconf LONG_BIT' # 查看系统位数
+alias sys_nh='cat /proc/version' # 查看内核版本
+alias sys_cpu_v='echo -n "logic cpu num:";  cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c' #  查看CPU信息（型号）
 sys()
 {
-    echo "系统: "; xt
-    echo -n "位数: "; ws
-    echo -n  "内核: "; nh
-    echo -n "CPU: "; cpu-v
+    echo -n "系统: "
+    lsb_release -a  # 查看操作系统版本
+    echo -n "位数: "
+    getconf LONG_BIT   # 查看系统位数
+    echo -n  "内核: "
+    cat /proc/version # 查看内核版本
+    echo -n "CPU: "
+    echo -n "logic cpu num:"
+    cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c #  查看CPU信息（型号）
 }
 
 
@@ -1195,5 +1200,15 @@ fix_zsh_history()
 # alias dbx='$server_script/dropbox_uploader.sh'
 alias dbx='python2 $server_script/dropbox.py'
 
+ws()
+{
+    if [ $# -ne 0 ]; then
+        echo "测试访问速度：$@"
+        curl -s -w 'Testing Website Response Time for :%{url_effective}\n\nLookup Time:\t\t%{time_namelookup}\nConnect Time:\t\t%{time_connect}\nAppCon Time:\t\t%{time_appconnect}\nRedirect Time:\t\t%{time_redirect}\nPre-transfer Time:\t%{time_pretransfer}\nStart-transfer Time:\t%{time_starttransfer}\n\nTotal Time:\t\t%{time_total}\n' -o /dev/null $@
+    else
+        echo '网速测试：'
+        curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -
+    fi
+}
 
 
