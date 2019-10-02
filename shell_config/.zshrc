@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc
+[ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
 # Antigen: https://github.com/zsh-users/antigen
 ANTIGEN="$HOME/.local/bin/antigen.zsh"
 
