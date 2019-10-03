@@ -21,6 +21,7 @@ gpuid()
 alias nogpu='CUDA_VISIBLE_DEVICES=-1 '
 
 alias mem='free -h'  # 查内存使用
+alias cpu='mpstat'   # 查看CPU使用率
 alias yp-a='df -h' # 查看所有硬盘使用
 alias yp='df -h' # 查看当前目录所在硬盘使用
 
