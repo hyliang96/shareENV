@@ -1197,7 +1197,6 @@ usshfs()
 }
 
 # 列出目前mount的所有磁盘
-alias fsls='jch sshfs'
+alias sshfs_jch='jch sshfs'
 
-#
 
