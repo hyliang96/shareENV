@@ -101,8 +101,17 @@ dk()
     eval "lsof -i:$1"
 }
 
-# sshfs挂载
-alias umt='fusermount -u' # 取消sshfs的挂载, umt <本地路径>
+# 测网速
+ws()
+{
+    if [ $# -ne 0 ]; then
+        echo "测试访问速度：$@"
+        curl -s -w 'Testing Website Response Time for :%{url_effective}\n\nLookup Time:\t\t%{time_namelookup}\nConnect Time:\t\t%{time_connect}\nAppCon Time:\t\t%{time_appconnect}\nRedirect Time:\t\t%{time_redirect}\nPre-transfer Time:\t%{time_pretransfer}\nStart-transfer Time:\t%{time_starttransfer}\n\nTotal Time:\t\t%{time_total}\n' -o /dev/null $@
+    else
+        echo '网速测试：'
+        curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -
+    fi
+}
 
 # -------------------- 进程管理 --------------------
 # 搜索进程
@@ -384,6 +393,14 @@ fix_golang()
     $ycm_path/install.sh
 }
 
+fix_zsh_history()
+{
+    mv ~/.zsh_history ~/.zsh_history_bad
+    strings ~/.zsh_history_bad > ~/.zsh_history
+    fc -R ~/.zsh_history
+    rm ~/.zsh_history_bad
+}
+
 # ---------------- 环境显示 -----------------------
 # 显示路径，换行分隔，例如 `showpa PATH`， `showpa <任何一环境变量>`
 showpa()
@@ -556,6 +573,8 @@ alias bkzx='chmod -x' # bkzx 文件名：设为不可执行
 # 改所有者：own <用户名>(:<组名>) 文件名
 alias own='chown -R' # -R表示递归，即文件夹下诸物皆然
 
+# -------------------------------------------------------------------------
+# 压缩软件
 # 7z压缩
 ys()
 {
@@ -1089,43 +1108,7 @@ grgh()  # 关联github上的远程repo
     echo $user $name $repo
     git remote add $name git@github.com:$user/$repo.git
 }
-# -------------------------------------------------------------------------
-# 用户操作
-# 详见 man adduser, man useradd, man userdel 等
 
-# 列出你本地可见的用户名
-alias userls='cut -d: -f1 /etc/passwd'
-
-# To list all users capable of authenticating (in some way), including non-local, see this reply: https://askubuntu.com/a/414561/571941
-
-# 加用户
-    # 傻瓜操作，需要设置密码，会创建/home/用户名，等其他众多设置，
-    # `sudo adduser 用户名`
-    # 底层操作，需要设置密码，不创建/home/用户名，等其他众多设置
-    # `sudo useradd 用户名`
-    # See also: What is the difference between adduser and useradd?
-
-# 删用户
-        # `sudo userdel 用户名`
-        # `sudo rm -r /home/用户名`       # 小心使用，或用下命令
-        # `sudo rm -rf /var/mail/用户名`   # 小心使用，或用下命令
-    # 上述操作等价于
-    # `sudo userdel -r 用户名`
-
-# 改用户名
-    # usermod -l 新用户名 老用户名
-
-# 改用户密码
-    # sudo passwd 用户名
-
-# 改用默认shell
-    # sudo chsh 用户名
-
-# 改用户信息 （如真实姓名）:
-    # sudo chfn 用户名
-
-# 将用户加入sudo
-    # usermod -aG sudo 用户名
 
 # -------------------------------------------------------------------------
 
@@ -1187,13 +1170,6 @@ if [ "$(uname)" != "Darwin" ]; then
     fi
 fi
 
-fix_zsh_history()
-{
-    mv ~/.zsh_history ~/.zsh_history_bad
-    strings ~/.zsh_history_bad > ~/.zsh_history
-    fc -R ~/.zsh_history
-    rm ~/.zsh_history_bad
-}
 
 # dropbox loader
 # 安装使用教程：https://linux.cn/article-6814-1.html
@@ -1201,15 +1177,27 @@ fix_zsh_history()
 # alias dbx='$server_script/dropbox_uploader.sh'
 alias dbx='python2 $server_script/dropbox/dropbox.py'
 
-ws()
+# -------------------------------------------------------------------------
+# sshfs
+# 挂载
+alias sshfs='sshfs -o allow_other,default_permissions,reconnect'
+
+# 卸挂载
+usshfs()
 {
-    if [ $# -ne 0 ]; then
-        echo "测试访问速度：$@"
-        curl -s -w 'Testing Website Response Time for :%{url_effective}\n\nLookup Time:\t\t%{time_namelookup}\nConnect Time:\t\t%{time_connect}\nAppCon Time:\t\t%{time_appconnect}\nRedirect Time:\t\t%{time_redirect}\nPre-transfer Time:\t%{time_pretransfer}\nStart-transfer Time:\t%{time_starttransfer}\n\nTotal Time:\t\t%{time_total}\n' -o /dev/null $@
+    if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = 'help' ]; then
+        echo "usshfs <mounted_path>: safe unmount when the dir is not used now"
+        echo "usshfs -f <mounted_path>: forced unmount"
+    elif [ "$1" = '-f' ]; then
+        shift
+        sudo umount -l $@
     else
-        echo '网速测试：'
-        curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -
+        fusermount -u $@
     fi
 }
 
+# 列出目前mount的所有磁盘
+alias fsls='jch sshfs'
+
+#
 
