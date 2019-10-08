@@ -1199,4 +1199,17 @@ usshfs()
 # 列出目前mount的所有磁盘
 alias sshfs_jch='jch sshfs'
 
-
+# 实用小工具
+timezone()
+{
+    local source_TZ="$1"
+    local source_time="$2"
+    if [ $# -eq 3 ]; then
+        local target_TZ="$3"
+    else
+        local target_TZ='Asia/Shanghai'
+    fi
+    local target_time="$(TZ="$target_TZ" date -d @$(TZ="$source_TZ" date -d  "$source_time" +%s) '+%F %T 周%w')"
+    target_time="$(echo $target_time | sed 's/周0/周日/g')"
+    echo $target_TZ $target_time
+}
