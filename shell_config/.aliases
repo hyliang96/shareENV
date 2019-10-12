@@ -742,27 +742,46 @@ alias gs='git status'     # 查看当前状态:  gs
 alias ga='git add'        # 暂存增改文件:  ga 文件
 alias gaa='git add -A .'  # 暂存所有增删改文件：gaa
 
-# 查看跟踪的文件和文件夹，并自动着色,
-# 几个文件一行，不显示文件详细信息
+# 查看跟踪的文件和文件夹，并自动着色
+# list files or dirs traced or ignored by git
+# gitls [<path> [<path> ...]] [--ignore] [<other-args-of-ls>]
+#   --ignore         : ls files or dirs ignored by git
+#   without --ignore : ls files or dirs traced by git
+#   without <path>   : ls files or dirs under current path
+# auto colored
 gls()
 {
     local git_args=''
     local ls_args=''
+    local dir_paths
+    declare -a dir_paths
     while test $# -gt 0
     do
         case "$1" in
-            -i) local git_args='-o -i --exclude-standard' ;;
-            -*) local ls_args="$ls_args $1"  ;;
-            --*) local ls_args="$ls_args $1" ;;
-            # -*) echo "bad option $1" ;;
-            *) ;;
+            --ignore)  git_args='-o -i --exclude-standard' ;;
+            -*)        ls_args="$ls_args $1"  ;;
+            --*)       ls_args="$ls_args $1" ;;
+            *)         dir_paths=("${dir_paths[@]}" "$1");;
         esac
         shift
     done
 
-    git ls-files $git_args
-    # eval "git ls-files $git_args | awk -F / '{print $1}' | uniq | sed 's/\ /\\\ /g' | xargs ls -d --color=auto $ls_args"
+    local gls_command="git ls-files $git_args | awk -F / '{print \$1}' | uniq | sed 's/\ /\\\ /g' | xargs ls -dh --color=auto $ls_args"
+
+    if [ ${#dir_paths} -eq 0 ]; then
+        eval "$gls_command"
+    else
+        local here_path="$(pwd | sed 's/\ /\\\ /g')"
+        for dir_path in "${dir_paths[@]}"; do
+            echo
+            echo -E "$dir_path:" | sed 's/\ /\\\ /g'
+            cd $dir_path
+            eval "$gls_command"
+            cd $here_path
+        done
+    fi
 }
+# 几个文件一行，不显示文件详细信息
 alias gl='gls'
 # 一个文件一行，显示详细信息
 alias gll='gls -l'
