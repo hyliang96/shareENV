@@ -1,0 +1,9 @@
+<snippet>
+    <content><![CDATA[
+os.makedirs(${1:path}, exist_ok=True) # if no such path exists, iteratively created the dir
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>mkdir</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <scope>source.python</scope>
+</snippet>

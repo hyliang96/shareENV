@@ -7,3 +7,6 @@ plugged/
 bundle/
 .netrwhist
 history.sqlite
+
+app_config/Sublime/encoding_cache.json
+app_config/Sublime/Package\ Control.last-run

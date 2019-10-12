@@ -1,0 +1,22 @@
+{
+	"bold_folder_labels": true,
+	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Medium) NDC.sublime-color-scheme",
+	"default_encoding": "UTF-8",
+	"draw_white_space": "all",
+	"ensure_newline_at_eof_on_save": true,
+	"font_size": 13,
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"remember_open_files": true,
+	"save_on_focus_lost": true,
+	"soda_classic_tabs": true,
+	"tab_size": 4,
+	"theme": "Adaptive.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_automatic_white_space": true,
+	"trim_trailing_white_space_on_save": true,
+	"word_wrap": "auto"
+}

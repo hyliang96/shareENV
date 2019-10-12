@@ -1,0 +1,14 @@
+<snippet>
+    <content><![CDATA[
+# 可省选项
+-${1:短参数}|--${2:长参数}) case "\$2" in
+    # 无选项
+    "")  ${3:无选项处理} ; shift 2 ;;
+    # 有选项
+    *)   ${4:选项处理}"\$2" ; shift 2 ;;  esac ;;
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>optopt</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <scope>source.shell</scope>
+</snippet>

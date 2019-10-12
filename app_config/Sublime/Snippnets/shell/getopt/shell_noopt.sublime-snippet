@@ -1,0 +1,11 @@
+<snippet>
+    <content><![CDATA[
+# 无选项
+-${1:短参数}|--${2:长参数})  ${3:参数处理} ; shift ;;
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>noopt</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <scope>source.shell</scope>
+</snippet>
+

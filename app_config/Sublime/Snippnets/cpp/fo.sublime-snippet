@@ -1,0 +1,36 @@
+<snippet>
+    <content><![CDATA[
+/*
+                     *
+                 *       *
+               *           *
+             *    _oo8oo_    *
+            *    o8888888o    *
+           *     88" . "88     *
+           *     (| -_- |)     *
+            *    0\  =  /0    *
+             * ___/'==='\___ *
+             .' \\|     |// '.
+            / \\|||  :  |||// \
+           / _||||| -:- |||||_ \
+          |   | \\\  -  /// |   |
+          | \_|  ''\---/''  |_/ |
+          \  .-\__  '-'  __/-.  /
+        ___'. .'  /--.--\  '. .'___
+     ."" '<  '.___\_<|>_/___.'  >' "".
+    | | :  `- `.:`\ _ /`:.`/ -`  : | |
+    \  \ `-.   \_ __\ /__ _/   .-` /  /
+=====`-.____`.___ \_____/ ___.`____.-`=====
+                  `=---=`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ X X X X X X X X X X X X X X X X X X X X X
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          佛祖保佑          永无疤疙
+       Buddha Bless     No Bug Forever
+*/
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>fo</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <scope>source.c++, source.c</scope>
+</snippet>

@@ -1,0 +1,20 @@
+<snippet>
+    <content><![CDATA[
+rand="\$RANDOM"
+log_file="/tmp/parallels\$rand"
+(
+    ${1:for ...}; do
+    {
+        ${2:# content}
+    } >> ${3:2>&1} \$log_file &
+    done
+    wait
+) >& ${4:/dev/null} # stdout, warning, error
+cat \$log_file
+rm \$log_file
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>parrallel</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <scope>source.shell</scope>
+</snippet>

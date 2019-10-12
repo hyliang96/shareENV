@@ -1,0 +1,19 @@
+{
+  // "path": "/usr/local/lib" ,
+  "shell_cmd": "make && open -a Terminal.app '${file_path}/main'",
+  // [
+  //   "bash", "-c",
+  //   "make && open -a Terminal.app '${file_path}/main'"
+  // ],      // 只能自动运行main
+  "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+  "working_dir": "${file_path}",
+  "selector": "source.makefile",
+
+  "variants":
+  [
+    {
+      "name": "Clean",
+      "cmd": ["make", "clean"]
+    },
+  ]
+}

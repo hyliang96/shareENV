@@ -1,0 +1,51 @@
+{
+	"bootstrapped": true,
+	"channels":
+	[
+		"https://packagecontrol.io/channel_v3.json",
+		"https://web.archive.org/web/20150905194312/https://packagecontrol.io/channel_v3.json"
+	],
+	"downloader_precedence":
+	{
+		"linux":
+		[
+			"urllib",
+			"curl",
+			"wget"
+		],
+		"osx":
+		[
+			"curl",
+			"wget"
+		],
+		"windows":
+		[
+			"wininet"
+		]
+	},
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Anaconda",
+		"BufferScroll",
+		"ChineseLocalizations",
+		"Codecs33",
+		"ConvertToUTF8",
+		"Dotfiles Syntax Highlighting",
+		"Emmet",
+		"gruvbox",
+		"Gruvbox Dark",
+		"HostsEdit",
+		"Monokai Extended",
+		"OmniMarkupPreviewer",
+		"Package Control",
+		"rsub",
+		"SFTP",
+		"SideBarEnhancements",
+		"SSH Config",
+		"SublimeREPL",
+		"Theme - SoDaReloaded"
+	]
+}

@@ -1,0 +1,55 @@
+[
+// 作者：biglee
+// 链接：https://www.jianshu.com/p/a5559083c666
+// 來源：简书
+// 简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。
+    {
+        "command": "add_current_time",
+        "keys":["ctrl+shift+."]
+    },
+    {
+        //按F5执行Python编译
+        "keys":["f5"],
+        "caption": "SublimeREPL: Python - RUN current file",
+        "command": "run_existing_window_command", "args":
+        {
+            "id": "repl_python_run",
+            "file": "config/Python/Main.sublime-menu"
+        }
+    },
+    {
+        //按F6打开Python交互式窗口
+        "keys":["f6"],
+        "caption": "SublimeREPL: Python",
+        "command": "run_existing_window_command", "args":
+        {
+            "id": "repl_python",
+            "file": "config/Python/Main.sublime-menu"
+        }
+    },
+    {
+        //按F7执行所选Python代码片段编译
+        "keys":["f7"],
+        "caption": "SublimeREPL: Python - PDB current file",
+        "command": "run_existing_window_command", "args":
+        {
+            "id": "repl_python_pdb",
+            "file": "config/Python/Main.sublime-menu"
+        }
+    },
+
+    {
+        "command": "python_virtualenv_repl",
+        "caption": "SublimeREPL: Python - virtualenv"
+    },
+    {
+        "caption": "SublimeREPL: Python - IPython",
+        "command": "run_existing_window_command", "args":
+        {
+            "id": "repl_python_ipython",
+            "file": "config/Python/Main.sublime-menu"
+        }
+    },
+    { "keys": ["ctrl+d"], "command": "duplicate_line" },
+    { "keys": ["super+shift+d"], "command": "find_all_under" },
+]

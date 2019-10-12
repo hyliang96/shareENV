@@ -1,0 +1,15 @@
+{
+    //忽略各种空格不对, 超过80字, import的函数没有使用的提醒
+    "pep8_ignore": ["E501", "W292", "E303", "W391", "E225", "E302", "W293", "E402"],
+    "pyflakes_explicit_ignore":
+    [
+        "UnusedImport"
+    ],
+    //保存文件后自动pep8格式化
+    "auto_formatting": false,
+    //库函数的提示
+    "enable_signatures_tooltip": true,
+    "merge_signatures_and_doc":true,
+    //禁止代码分析检查
+    "anaconda_linting": false,
+}
