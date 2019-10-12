@@ -741,7 +741,8 @@ alias gi='git init'       # 创建.git:    cd 项目文件夹; gi
 alias gs='git status'     # 查看当前状态:  gs
 alias ga='git add'        # 暂存增改文件:  ga 文件
 alias gaa='git add -A .'  # 暂存所有增删改文件：gaa
-alias gls='git ls-files' # 查看跟踪的文件（不是文件夹，git只跟踪文件，不跟踪文件夹）
+alias gls='git ls-files | awk -F / '\''{print $1}'\'' | uniq | xargs ls -dl --color=auto'
+    # 查看跟踪的文件和文件夹，并自动着色
 alias grm='git rm -rf'    # （删除并）暂存删除： grm 文件             ；用于替代rm
 alias gmv='git mv'        # （移动并）暂存移动： gmv 文件 文件夹       ；用于替代mv
 alias gdf='git diff'      # 改过未add、add了 文件 时，看文件与上次提交的区别：gdf 文件
