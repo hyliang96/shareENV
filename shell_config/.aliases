@@ -745,8 +745,8 @@ alias gaa='git add -A .'  # 暂存所有增删改文件：gaa
 # 查看跟踪的文件和文件夹，并自动着色
 # list files or dirs traced or ignored by git
 # gitls [<path> [<path> ...]] [--ignore] [<other-args-of-ls>]
-#   --ignore         : ls files or dirs ignored by git
-#   without --ignore : ls files or dirs traced by git
+#   --ignore         : ls files ignored by git, and dirs contain such files
+#   without --ignore : ls files traced by git, and dirs contain such files
 #   without <path>   : ls files or dirs under current path
 # auto colored
 gls()
@@ -1259,3 +1259,5 @@ timezone()
     target_time="$(echo $target_time | sed 's/周0/周日/g')"
     echo $target_TZ $target_time
 }
+
+
