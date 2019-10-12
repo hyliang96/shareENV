@@ -741,8 +741,34 @@ alias gi='git init'       # 创建.git:    cd 项目文件夹; gi
 alias gs='git status'     # 查看当前状态:  gs
 alias ga='git add'        # 暂存增改文件:  ga 文件
 alias gaa='git add -A .'  # 暂存所有增删改文件：gaa
-alias gls='git ls-files | awk -F / '\''{print $1}'\'' | uniq | xargs ls -dl --color=auto'
-    # 查看跟踪的文件和文件夹，并自动着色
+
+# 查看跟踪的文件和文件夹，并自动着色,
+# 几个文件一行，不显示文件详细信息
+gls()
+{
+    local git_args=''
+    local ls_args=''
+    while test $# -gt 0
+    do
+        case "$1" in
+            -i) local git_args='-o -i --exclude-standard' ;;
+            -*) local ls_args="$ls_args $1"  ;;
+            --*) local ls_args="$ls_args $1" ;;
+            # -*) echo "bad option $1" ;;
+            *) ;;
+        esac
+        shift
+    done
+
+    git ls-files $git_args
+    # eval "git ls-files $git_args | awk -F / '{print $1}' | uniq | sed 's/\ /\\\ /g' | xargs ls -d --color=auto $ls_args"
+}
+alias gl='gls'
+# 一个文件一行，显示详细信息
+alias gll='gls -l'
+
+# alias gll='git ls-files | awk -F / '\''{print $1}'\'' | uniq | sed '\''s/\ /\\\ /g'\'' | xargs ls -dl --color=auto'
+
 alias grm='git rm -rf'    # （删除并）暂存删除： grm 文件             ；用于替代rm
 alias gmv='git mv'        # （移动并）暂存移动： gmv 文件 文件夹       ；用于替代mv
 alias gdf='git diff'      # 改过未add、add了 文件 时，看文件与上次提交的区别：gdf 文件
