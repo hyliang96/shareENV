@@ -96,16 +96,21 @@ ww()
     echo $wwip
 }
 # 查看端口
+# _dk [<port1> [<port2> ... ]]
+# 其中不写端口是查看所有端口的占用情况
 _dk()
 {
-    local ports=
-    local i=
-    for port in "$@"; do
-        ports="$ports$port,"
-    done
-    eval "lsof -Pn -i:$ports"
+    if [ $# -eq 0 ]; then
+        lsof -Pn
+    else
+        local ports=
+        local i=
+        for port in "$@"; do
+            ports="$ports$port,"
+        done
+        eval "lsof -Pn -i:$ports"
+    fi
 }
-
 
 # strU8DiffLen () {
     # local bytlen oLang=$LANG oLcAll=$LC_ALL
@@ -115,9 +120,14 @@ _dk()
     # return $(( bytlen - ${#1} ))
 # }
 
-# 查看占用这些端口的进程
+# 查看占用某些端口的进程, 并输出端口信息、进程的信息，至少写一个端口
+# _dk <port1> [<port2> ... ]
 dk()
 {
+    if [ $# -eq 0 ]; then
+        return
+    fi
+
     local dk_return="$(_dk $@)"
     local title="$(echo $dk_return|head -n 1)"
     local content="$(echo $dk_return|sed '1d')"
@@ -126,6 +136,10 @@ dk()
     local dk_short="$title_short\n$content_short"
 
     local pids=($(echo $content|awk '{print $2}'))
+    if [ ${#pids} -eq 0 ]; then
+        return
+    fi
+
     local jch_return=
     declare -a jch_return
     local pid=
@@ -146,6 +160,7 @@ dk()
     done
 }
 
+# 杀掉监听某个端口的进程
 # dkd <一个端口>
 kdk()
 {
