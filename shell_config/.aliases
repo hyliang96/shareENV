@@ -100,6 +100,11 @@ dk()
 {
     eval "lsof -i:$1"
 }
+kdk()
+# dkd <一个端口>
+{
+    kill -9 $(lsof -i:$1 | grep '(LISTEN)' | awk '{print $2}' | uniq)
+}
 
 # 测网速
 ws()
@@ -172,10 +177,10 @@ alias v=nvim
 alias vi=vim
 
 # 设置默认编辑器
-if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
-   ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
-    alias default_editor='code'
-elif [ -x $serverENV/nvim/usr/bin/nvim ]; then
+# if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
+   # ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
+    # alias default_editor='code'
+if [ -x $serverENV/nvim/usr/bin/nvim ]; then
     alias default_editor=nvim
 else
     alias default_editor=vim
