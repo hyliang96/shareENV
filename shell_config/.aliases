@@ -101,14 +101,14 @@ ww()
 _dk()
 {
     if [ $# -eq 0 ]; then
-        lsof -Pn
+        sudo lsof -Pn
     else
         local ports=
         local i=
         for port in "$@"; do
             ports="$ports$port,"
         done
-        eval "lsof -Pn -i:$ports"
+        eval "sudo lsof -Pn -i:$ports"
     fi
 }
 
