@@ -791,8 +791,10 @@ gls()
 }
 # 几个文件一行，不显示文件详细信息
 alias gl='gls'
+alias gli='gls --ignore'
 # 一个文件一行，显示详细信息
 alias gll='gls -l'
+alias glli='gls -l --ignore'
 
 # alias gll='git ls-files | awk -F / '\''{print $1}'\'' | uniq | sed '\''s/\ /\\\ /g'\'' | xargs ls -dl --color=auto'
 
