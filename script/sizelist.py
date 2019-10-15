@@ -57,9 +57,9 @@ if __name__ == '__main__':
     sumsize = getsize(path)
 
     size_name_list = sorted(zip(size_list,name_list),
-            key=lambda size_name:size_name[0],reverse=True)
+            key=lambda size_name:size_name[0],reverse=False)  # 升序
 
-    size_name_list = [(sumsize,path)]+size_name_list
+    size_name_list = size_name_list + [(sumsize,path)]
     hsize_name_list = [(human_size(size),name) for size, name in size_name_list]
 
     hsizelen = max([len(hsize) for hsize,name in hsize_name_list])
