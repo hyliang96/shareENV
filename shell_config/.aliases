@@ -15,7 +15,8 @@ alias gpujch='nvidia-who'            # 看用哪个进程在用显卡
 # `gpuid 0` 并不能使得接下来一直默认用GPU0运行各个程序
 gpuid()
 {
-    eval "CUDA_VISIBLE_DEVICES=$*"
+    local gpuids="$1"; shift
+    CUDA_VISIBLE_DEVICES=$gpuids $@
 }
 # use no gpu i.e. cpu only
 alias nogpu='CUDA_VISIBLE_DEVICES=-1 '
@@ -763,10 +764,43 @@ alias py3='python3'
 alias py2='python2'
 alias ipy='ipython'
 alias nb='jupyter notebook' # open local jupyter notebook, it will automatically call safari to open the webpage
-alias tb='tensorboard --logdir' # `tb <tensorboar_dir>`
-# there are files under tensorboar_dir
-#   events.out.tfevents.1570948422.jungpu3.12463.0  tensorboard_output
 
+# tb [装event文件的目录(默认为.)], 不能是event，可以是其下一级或多级含有event的目录
+# tb 实验名: 装event文件的目录 实验名: 装event文件的目录 实验名: 装event文件的目录 ...
+tb()
+{
+    local dir_paths
+    declare -a dir_paths
+    while [ $# -ne 0 ]; do
+        if [[ "$1" =~ "^-"  ]]; then
+            break
+        else
+            if [[ "$1" =~ ':$' ]]; then
+                local dir_path="$1$2"
+                shift
+            else
+                local dir_path="$1"
+            fi
+            dir_paths=("${dir_paths[@]}" "$dir_path")
+            shift
+        fi
+    done
+
+    if [ ${#dir_paths} -eq 0 ]; then
+        local dir_arg='--logdir=.'
+    # elif [ ${#dir_paths} -eq 1 ]; then
+        # local dir_arg="--logdir=${dir_paths[1]}"
+    else
+        dir_arg='--logdir_spec='
+        local i
+        for i in "${dir_paths[@]}"; do
+            dir_arg="${dir_arg}${i},"
+        done
+        dir_arg="${dir_arg:0:-1}"
+    fi
+
+    tensorboard $dir_arg $@
+}
 # -----------------  alias to tmux ------------------
 # list all session of tmux session
 alias tl='tmux ls'
