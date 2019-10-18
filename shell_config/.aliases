@@ -827,12 +827,11 @@ tka()
 alias itm='tmux -CC attach -t'
 itm() {
     echo "itm $@"
-    exit
     if [ $# = 0 ]; then
-        tmux -CC attach ||  tmux -CC new -s default
+        command tmux -CC attach || command tmux -CC new -s default
     else
         local session="$1"
-        tmux -CC attach -t "${session}" || tmux -CC new -s "${session}"
+        command tmux -CC attach -t "${session}" || command tmux -CC new -s "${session}"
     fi
 }
 alias tm='tmux attach -t'
