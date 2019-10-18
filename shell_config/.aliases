@@ -15,8 +15,18 @@ alias gpujch='nvidia-who'            # 看用哪个进程在用显卡
 # `gpuid 0` 并不能使得接下来一直默认用GPU0运行各个程序
 gpuid()
 {
-    local gpuids="$1"; shift
-    CUDA_VISIBLE_DEVICES=$gpuids $@
+    # local gpuids="$1"; shift
+    # eval CUDA_VISIBLE_DEVICES=$gpuids $@
+    local args=""
+    for i in "$@"; do
+        if [[ "$i" =~ ' ' ]]; then
+            local args="$args'$i' "
+        else
+            local args="$args$i "
+        fi
+    done
+    echo "args=$args"
+    eval "CUDA_VISIBLE_DEVICES=${args}"
 }
 # use no gpu i.e. cpu only
 alias nogpu='CUDA_VISIBLE_DEVICES=-1 '
