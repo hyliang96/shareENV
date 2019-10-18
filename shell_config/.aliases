@@ -238,9 +238,13 @@ fi
     # fi
 # }
 code-remote() {
-    local hostname="echo $1 | awk -F: '{print \$1}'"
-    local abspath="echo $1 | awk -F: '{print \$2}'"
-    if [ "$(ssh $hostname '[ -f $abspath ] && file')" = 'file' ]; then
+    local hostname=$(echo $1 | awk -F : '{print $1}')
+    local abspath=$(echo $1 | awk -F : '{print $2}')
+    echo $hostname
+    echo $abspath
+    local has_file="$(ssh $hostname '[ -f $abspath ] && file')"
+    echo $has_file
+    if [ "$has_file" = 'file' ]; then
         code --file-uri vscode-remote://${hostname}${abspath}
     elif [ "$(ssh $hostname '[ -d $abspath ] && dir')" = 'dir' ]; then
         code --folder-uri vscode-remote://${hostname}${abspath}
