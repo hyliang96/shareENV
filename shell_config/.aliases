@@ -826,8 +826,9 @@ tka()
 # tm：不关联iterm2的tmux
 alias _tmux='tmux'
 alias itm='_tmux -CC attach -t'
-itm() {
-    echo "itm $@"
+
+function itm {
+    echo "iterm2 $@"
     if [ $# = 0 ]; then
         command tmux -CC attach || command tmux -CC new -s default
     else
@@ -835,8 +836,9 @@ itm() {
         command tmux -CC attach -t "${session}" || command tmux -CC new -s "${session}"
     fi
 }
+
 alias tm='_tmux attach -t'
-tm() {
+function tm {
     if [ $# = 0 ]; then
         tmux attach || tmux new -s default
     else
