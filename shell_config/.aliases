@@ -830,23 +830,23 @@ tka()
 _itm() {
     echo "iterm2 $@"
     if [ $# = 0 ]; then
-        command tmux -CC attach || command tmux -CC new -s default
+        tmux -CC attach || tmux -CC new -s default
     else
         local session="$1"
-        command tmux -CC attach -t "${session}" || command tmux -CC new -s "${session}"
+        tmux -CC attach -t "${session}" || tmux -CC new -s "${session}"
     fi
 }
-alias itm='zsh -c '\''_itm $@'\'' || echo || tmux attach -t '
+alias itm='zsh -c '\''_itm $@'\'' _ || echo -n || tmux attach -t'
 
-# alias tm='_tmux attach -t'
-# function tm {
-    # if [ $# = 0 ]; then
-        # tmux attach || tmux new -s default
-    # else
-        # local session=$1
-        # tmux attach -t ${session} || tmux new -s ${session}
-    # fi
-# }
+_tm() {
+    if [ $# = 0 ]; then
+        tmux attach || tmux new -s default
+    else
+        local session=$1
+        tmux attach -t ${session} || tmux new -s ${session}
+    fi
+}
+alias tm='zsh -c '\''_tm $@'\'' _ || echo -n || tmux attach -t'
 
 # ------------------ git ----------------------------
 # 初创
