@@ -25,7 +25,6 @@ gpuid()
             local args="$args$i "
         fi
     done
-    echo "args=$args"
     eval "CUDA_VISIBLE_DEVICES=${args}"
 }
 # use no gpu i.e. cpu only
