@@ -506,7 +506,7 @@ alias scp="scp -r"
 # 自动端点续传，传送失败后隔180秒自动重新连接
 # autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
 alias autots='rsync'
-autots() {
+function autots {
     local retry_time=180 # second
     while [ 1 ]
     do
@@ -825,12 +825,14 @@ tka()
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
 alias itm='tmux -CC attach -t'
-function itm {
+itm() {
+    echo "itm $@"
+    exit
     if [ $# = 0 ]; then
         tmux -CC attach ||  tmux -CC new -s default
     else
-        local session=$1
-        tmux -CC attach -t ${session} || tmux -CC new -s ${session}
+        local session="$1"
+        tmux -CC attach -t "${session}" || tmux -CC new -s "${session}"
     fi
 }
 alias tm='tmux attach -t'
