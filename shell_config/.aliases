@@ -506,7 +506,7 @@ alias scp="scp -r"
 # 自动端点续传，传送失败后隔180秒自动重新连接
 # autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
 alias autots='rsync'
-function autots {
+autots() {
     local retry_time=180 # second
     while [ 1 ]
     do
