@@ -824,7 +824,7 @@ tka()
 # 有tmux session 时   attach最近的session         attach该session       创建session
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
-alias itm='command tmux -CC attach -t'
+alias itm='tmux -CC attach -t'
 itm() {
     echo "itm $@"
     if [ $# = 0 ]; then
@@ -834,7 +834,7 @@ itm() {
         command tmux -CC attach -t "${session}" || command tmux -CC new -s "${session}"
     fi
 }
-alias tm='command tmux attach -t'
+alias tm='tmux attach -t'
 tm() {
     if [ $# = 0 ]; then
         command tmux attach || command tmux new -s default
