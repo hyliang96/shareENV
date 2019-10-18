@@ -507,6 +507,7 @@ alias scp="scp -r"
 # autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
 alias autots='rsync'
 function autots {
+    echo yes
     local retry_time=180 # second
     while [ 1 ]
     do
@@ -827,8 +828,8 @@ tka()
 # _itm() { tmux attach -t }
 # alias itm='_itm'
 
-_itm() {
-    echo "iterm2 $@"
+itm() {
+    # echo "iterm2 $@"
     if [ $# = 0 ]; then
         tmux -CC attach || tmux -CC new -s default
     else
@@ -836,9 +837,10 @@ _itm() {
         tmux -CC attach -t "${session}" || tmux -CC new -s "${session}"
     fi
 }
-alias itm='zsh -c '\''_itm $@'\'' _ || echo -n || tmux attach -t'
+# alias itm='_itm # echo'
+# || echo -n || tmux attach -t'
 
-_tm() {
+tm() {
     if [ $# = 0 ]; then
         tmux attach || tmux new -s default
     else
@@ -846,7 +848,7 @@ _tm() {
         tmux attach -t ${session} || tmux new -s ${session}
     fi
 }
-alias tm='zsh -c '\''_tm $@'\'' _ || echo -n || tmux attach -t'
+# alias tm='zsh -c '\''_tm $@'\'' _ || echo -n || tmux attach -t'
 
 # ------------------ git ----------------------------
 # 初创
