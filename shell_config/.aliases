@@ -838,10 +838,10 @@ itm() {
 alias tm='_tmux attach -t'
 tm() {
     if [ $# = 0 ]; then
-        command tmux attach || command tmux new -s default
+        tmux attach || tmux new -s default
     else
         local session=$1
-        command tmux attach -t ${session} || command tmux new -s ${session}
+        tmux attach -t ${session} || tmux new -s ${session}
     fi
 }
 
