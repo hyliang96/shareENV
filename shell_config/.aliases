@@ -229,7 +229,34 @@ kjob()
 if ( ! [ -x "`which code`" ] ) && [ -x "`which code-insiders`" ]; then
   alias code='code-insiders'
 fi
-alias co='code'
+
+# _code(){
+    # if ( ! [ -x "`which code`" ] ) && [ -x "`which code-insiders`" ]; then
+        # command code-insiders
+    # else
+        # command code
+    # fi
+# }
+code-remote() {
+    local hostname="echo $1 | awk -F: '{print \$1}'"
+    local abspath="echo $1 | awk -F: '{print \$2}'"
+    if [ "$(ssh $hostname '[ -f $abspath ] && file')" = 'file' ]; then
+        code --file-uri vscode-remote://${hostname}${abspath}
+    elif [ "$(ssh $hostname '[ -d $abspath ] && dir')" = 'dir' ]; then
+        code --folder-uri vscode-remote://${hostname}${abspath}
+    else
+        echo '$hostname:$abspath not exists'
+    fi
+}
+co(){
+    if [[ "$1" =~ ':' ]]; then
+        code-remote $@
+    else
+        code $@
+    fi
+}
+# alias co='code'
+
 
 # 设置vim
 if [ -x /usr/bin/vim.gnome ]; then
