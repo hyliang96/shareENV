@@ -860,7 +860,7 @@ tka()
 }
 
 
-echo $SHELL
+echo $SHELL >&2
 a() { echo A }
 autoload compinit && compinit
 compdef _hosts a
