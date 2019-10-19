@@ -865,16 +865,21 @@ tka()
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
 # compinit
-tmux_itm() {
-    echo 
-}
+if [ "$(which compdef)" = '' ]; then
+    tmux_itm() {
+        echo
+    }
+    compdef _tmux tmux_itm
+    alias itm='tmux_itm -CC attach -t'
+fi
+# rm -f ~/.zcompdump; compinit
+
+
 # echo _tmux
 # which _tmux
-compdef _tmux tmux_itm
 # compinit
 # compdef '_dispatch tmux tmux' tmux_itm
 
-alias itm='tmux_itm -CC attach -t'
 itm() {
     # echo "iterm2 $@"
     if [ $# = 0 ]; then
@@ -886,12 +891,14 @@ itm() {
 }
 
 
+if [ "$(which compdef)" = '' ]; then
+    tmux_tm() {
+        echo
+    }
+    compdef _tmux tmux_tm
+    alias tm='tmux_tm attach -t'
+fi
 
-tmux_tm() {
-    echo
-}
-compdef _tmux tmux_tm
-alias tm='tmux_tm attach -t'
 tm() {
     if [ $# = 0 ]; then
         tmux attach || tmux new -s default
