@@ -307,6 +307,7 @@ KEYTIMEOUT=1
 # }
 # zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync|ts):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 a() { echo A }
+autoload compinit && compinit
 compdef _hosts a
 
 # ------------- 其他 -------------
