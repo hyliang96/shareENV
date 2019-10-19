@@ -893,7 +893,7 @@ itm() {
 
 
 if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_tm() { 
+    tmux_tm() {
         :
     }
     compdef _tmux tmux_tm
@@ -901,7 +901,7 @@ if [ "$(which compdef 2>/dev/null)" != '' ]; then
 fi
 
 tm() {
-    for i in {1..3}; do shift; done
+    for i in {1..2}; do shift; done
     echo "tm $@"
     if [ $# = 0 ]; then
         tmux attach || tmux new -s default
