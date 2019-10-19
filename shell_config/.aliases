@@ -881,7 +881,7 @@ fi
 # compdef '_dispatch tmux tmux' tmux_itm
 
 itm() {
-    # echo "iterm2 $@"
+    echo "iterm2 $@"
     if [ $# = 0 ]; then
         tmux -CC attach || tmux -CC new -s default
     else
