@@ -72,6 +72,7 @@ if [ "$(uname)" = "Darwin" ]; then
     if [  -x "$(command -v autojump)"  ]; then
         _autojump_path='/usr/local/etc/profile.d/autojump.sh'
         if [ -f $_autojump_path ]; then
+            echo yes
             . $_autojump_path &
         else
 
