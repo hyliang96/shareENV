@@ -323,7 +323,6 @@ compdef _hosts a
 tmux_itm() {   :    }
 compdef _tmux tmux_itm
 alias itm='tmux_itm -CC attach -t'
-unalias itm
 # itm() {    :    } >/dev/null 2>&1
 # fi
 
@@ -331,6 +330,9 @@ unalias itm
 tmux_tm() {   :    }
 compdef _tmux tmux_tm
 alias tm='tmux_tm attach -t'
+
+autoload compinit && compinit
+unalias itm
 unalias tm
 # tm() {   :    }  >/dev/null 2>&1
 # fi
