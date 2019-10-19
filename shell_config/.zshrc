@@ -278,54 +278,54 @@ zstyle ':completion:*:*sh:*:' tag-order files
     # fi
 # fi
 
+if [ "$(uname)" = "Darwin" ]; then
+    check_mac_ls_color()
+    {
+        if [ -x "$(command -v brew)" ]; then
+            echo 'You have installed `brew`'
+        else
+            echo 'You have not installed `brew`'
+            return
+        fi
 
-check_mac_ls_color()
-{
-    if [ -x "$(command -v brew)" ]; then
-        echo 'You have installed `brew`'
-    else
-        echo 'You have not installed `brew`'
-        return
-    fi
+        if [ "$(brew list | grep coreutils)" != "" ]; then
+            echo 'You have installed `coreutils` with `brew`'
+        else
+            echo 'You have not installed `coreutils` with `brew`'
+            echo 'without `coreutils`, `ls` will be colored vanillaly'
+            echo 'To install `coreutils`, run `brew install coreutils`'
+            return
+        fi
 
-    if [ "$(brew list | grep coreutils)" != "" ]; then
-        echo 'You have installed `coreutils` with `brew`'
-    else
-        echo 'You have not installed `coreutils` with `brew`'
-        echo 'without `coreutils`, `ls` will be colored vanillaly'
-        echo 'To install `coreutils`, run `brew install coreutils`'
-        return
-    fi
+        if [  -x "$(command -v gls)"  ]; then
+            echo 'You have command `gls`, which is a submodule of `coreutils`'
+        else
+            echo 'You have no command `gls`, which is a submodule of `coreutils`'
+            echo 'To check gls link is alive, check if there is a link'
+            echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
+            return
+        fi
 
-    if [  -x "$(command -v gls)"  ]; then
-        echo 'You have command `gls`, which is a submodule of `coreutils`'
-    else
-        echo 'You have no command `gls`, which is a submodule of `coreutils`'
-        echo 'To check gls link is alive, check if there is a link'
-        echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
-        return
-    fi
+        local coreutils_path="$(brew --prefix coreutils)/libexec/gnubin"
+        if [ -d "$coreutils_path" ]; then
+            echo "the path of \`coreutils\` is $coreutils_path, it should be added into PATH"
+            echo "everything is ok with the gls's color scheme on your mac"
+            echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
+        else
+            echo 'The  path of `coreutils` is missing, it should be $(brew --prefix coreutils)/libexec/gnubin/'
+            echo 'while $(brew --prefix coreutils) return wrongly, it might be "/usr/local/opt/coreutils"'
+            return
+        fi
+    }
 
-    local coreutils_path="$(brew --prefix coreutils)/libexec/gnubin"
-    if [ -d "$coreutils_path" ]; then
-        echo "the path of \`coreutils\` is $coreutils_path, it should be added into PATH"
-        echo "everything is ok with the gls's color scheme on your mac"
-        echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
-    else
-        echo 'The  path of `coreutils` is missing, it should be $(brew --prefix coreutils)/libexec/gnubin/'
-        echo 'while $(brew --prefix coreutils) return wrongly, it might be "/usr/local/opt/coreutils"'
-        return
-    fi
-}
-
-# 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
-# PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-# between quotation marks is the tool output for LS_COLORS
-alias ls='/usr/local/bin/gls --show-control-chars  --color=auto'
-# gls 被 git ls-files 的alias占用了，使用上面写绝对路径
-eval `gdircolors -b $HOME/.dir_colors`
-
+    # 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
+    # PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+    PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    # between quotation marks is the tool output for LS_COLORS
+    alias ls='/usr/local/bin/gls --show-control-chars  --color=auto'
+    # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
+    eval `gdircolors -b $HOME/.dir_colors`
+fi
 # linux 的 ls默认上色了，加载 coreutils 配色
 
 
