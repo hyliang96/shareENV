@@ -5,6 +5,7 @@
 ANTIGEN="$HOME/.local/bin/antigen.zsh"
 
 
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - instal zsh >&2
 # Install antigen.zsh if not exist
 install_zsh()
 {
@@ -34,6 +35,8 @@ install_zsh()
 }
 install_zsh
 
+[ $DotFileDebug -ne 0 ] && echo share .zshrc -  Initialize command prompt >&2
+
 # Initialize command prompt
 export PS1="%n@%m:%~%# "
 
@@ -52,6 +55,8 @@ _INIT_SH_NOFUN=1
 [ -d "/mnt/c" ] && [[ "$(uname -a)" == *Microsoft* ]] && unsetopt BG_NICE
 
 
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - Initialize antigen >&2
+
 # Initialize antigen
 source "$ANTIGEN"
 
@@ -60,10 +65,15 @@ source "$ANTIGEN"
 antigen use oh-my-zsh
 
 # antigen bundle autojump # 自动跳转
-# mac装了 brew，且可以直autojump，则接用antigen加载
-if [ -x "$(command -v brew)" ] && [  -x "$(command -v autojump)"  ]; then
-    antigen bundle autojump
+if [ "$(uname)" = "Darwin" ]; then
+    # mac
+    if [  -x "$(command -v autojump)"  ]; then
+        antigen bundle autojump
+    else
+        echo 'no `autojump` on your mac, run `brew instal autojump` to install it'
+    fi
 else
+    # linux
     if ! [ -d ~/.autojump ]; then
         # 安装autojump
         cd $my
@@ -73,9 +83,11 @@ else
         cd $my
         rm autojump -rf
     fi
-    # linux上用户装在自己的home下，则需要手动加载
+    # linux上用户装在自己的home下，则用bundle加载不了，要在这里手动加载
     [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
 fi
+
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -157,6 +169,7 @@ antigen apply
     # cp $shareENV/shell_config/agnoster.zsh-theme.antigen-compat ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme.antigen-compat
 # fi
 
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - set bindkey >&2
 
 # setup for deer
 autoload -U deer
@@ -199,6 +212,8 @@ setopt noflowcontrol
 
 # stty -ixon
 
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
+
 # options
 unsetopt correct_all
 
@@ -223,6 +238,7 @@ zstyle ':completion:*:complete:-command-:*:*' ignored-patterns '*.pdf|*.exe|*.dl
 zstyle ':completion:*:*sh:*:' tag-order files
 
 
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - color scheme >&2
 # ------------- 配色 -------------
 # 终端使用 Coreutils 配色方案
 # 采用Coreutils的gdircolor配色，修改~/.dir_colors(自定义配色)
@@ -248,25 +264,55 @@ zstyle ':completion:*:*sh:*:' tag-order files
         # echo '-------------------------------------------------------------------------'
     # fi
 # fi
-if [ -x "$(command -v brew)" ]; then
-    if [  -x "$(command -v gls)"  ] &&  [ "$(brew list | grep coreutils)" != "" ]; then
-        # 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
-        PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-        # between quotation marks is the tool output for LS_COLORS
-        alias ls='/usr/local/bin/gls --show-control-chars  --color=auto'
-        # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
-        eval `gdircolors -b $HOME/.dir_colors`
+
+
+check_mac_ls_color()
+{
+    if [ -x "$(command -v brew)" ]; then
+        echo 'You have installed `brew`'
     else
-        echo '-------------------------------------------------------------------------'
-        echo 'Your mac has brew; but not coreutils and gls is installed, thus `ls` '
-        echo 'will not be colored normally. gls is a submodule of coreutils'
+        echo 'You have not installed `brew`'
+        return
+    fi
+
+    if [ "$(brew list | grep coreutils)" != "" ]; then
+        echo 'You have installed `coreutils` with `brew`'
+    else
+        echo 'You have not installed `coreutils` with `brew`'
+        echo 'without `coreutils`, `ls` will be colored vanillaly'
+        echo 'To install `coreutils`, run `brew install coreutils`'
+        return
+    fi
+
+    if [  -x "$(command -v gls)"  ]; then
+        echo 'You have command `gls`, which is a submodule of `coreutils`'
+    else
+        echo 'You have no command `gls`, which is a submodule of `coreutils`'
         echo 'To check gls link is alive, check if there is a link'
         echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
-        echo 'To install them, just run'
-        echo '                      `brew install coreutils`                           '
-        echo '-------------------------------------------------------------------------'
+        return
     fi
-fi
+
+    local coreutils_path="$(brew --prefix coreutils)/libexec/gnubin"
+    if [ -d "$coreutils_path" ]; then
+        echo "the path of \`coreutils\` is $coreutils_path, it should be added into PATH"
+        echo "everything is ok with the gls's color scheme on your mac"
+        echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
+    else
+        echo 'The  path of `coreutils` is missing, it should be $(brew --prefix coreutils)/libexec/gnubin/'
+        echo 'while $(brew --prefix coreutils) return wrongly, it might be "/usr/local/opt/coreutils"'
+        return
+    fi
+}
+
+# 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
+# PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+# between quotation marks is the tool output for LS_COLORS
+alias ls='/usr/local/bin/gls --show-control-chars  --color=auto'
+# gls 被 git ls-files 的alias占用了，使用上面写绝对路径
+eval `gdircolors -b $HOME/.dir_colors`
+
 # linux 的 ls默认上色了，加载 coreutils 配色
 
 
@@ -314,6 +360,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # -------------------------------------------------------------------------
 # 自动补全的复用
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - reuse completions >&2
+#
 autoload compinit && compinit
 
 tmux_itm() {   :    }
@@ -327,4 +375,4 @@ alias tm='tmux_tm attach -t'
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 
-
+[ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
