@@ -320,14 +320,10 @@ autoload compinit && compinit >&2
 compdef _hosts a >&2
 
 # if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_itm() {
-        :
-    }
+    tmux_itm() {   :    }
     compdef _tmux tmux_itm
     alias itm='tmux_itm -CC attach -t'
-    itm() {
-        :
-    } >/dev/null 2>&1
+    itm() {    :    } >/dev/null 2>&1
 # fi
 
 # if [ "$(which compdef 2>/dev/null)" != '' ]; then
