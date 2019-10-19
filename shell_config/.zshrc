@@ -332,8 +332,8 @@ compdef _tmux tmux_tm
 alias tm='tmux_tm attach -t'
 
 # compinit
-unalias itm
-unalias tm
+# unalias itm
+# unalias tm
 
 # tm() {   :    }  >/dev/null 2>&1
 # fi
