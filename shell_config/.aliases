@@ -866,9 +866,9 @@ tka()
 # tm：不关联iterm2的tmux
 # compinit
 tmux_itm() { }
-echo _tmux
-which _tmux
-#compdef _tmux tmux_itm
+# echo _tmux
+# which _tmux
+compdef _tmux tmux_itm
 # compinit
 # compdef '_dispatch tmux tmux' tmux_itm
 

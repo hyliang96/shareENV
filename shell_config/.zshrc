@@ -306,7 +306,8 @@ KEYTIMEOUT=1
     # done
 # }
 # zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync|ts):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
-# compdef _hosts ts
+a() { echo A }
+compdef _hosts a
 
 # ------------- 其他 -------------
 # iterm2_shell_integration
