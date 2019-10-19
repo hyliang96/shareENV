@@ -315,7 +315,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 
 echo $SHELL >&2
-# autoload compinit && compinit
+autoload compinit && compinit
 a() { echo A }
 compdef _hosts a
 
