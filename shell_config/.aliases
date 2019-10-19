@@ -865,7 +865,8 @@ tka()
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
 # compinit
-tmux_itm() { }
+tmux_itm() {
+}
 # echo _tmux
 # which _tmux
 compdef _tmux tmux_itm
@@ -885,7 +886,8 @@ itm() {
 
 
 
-tmux_tm() { }
+tmux_tm() {
+}
 compdef _tmux tmux_tm
 alias tm='tmux_tm attach -t'
 tm() {
