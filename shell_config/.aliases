@@ -880,7 +880,7 @@ fi
 # compinit
 # compdef '_dispatch tmux tmux' tmux_itm
 
-function itm {
+itm() {
     echo "iterm2 $@"
     if [ $# = 0 ]; then
         tmux -CC attach || tmux -CC new -s default
