@@ -1,5 +1,5 @@
 [oh-my-zsh]
-    hide-status = 1
+    hide-status = 0
 [user]
     name = hyliang96
     email = hyliang96@hotmail.com
