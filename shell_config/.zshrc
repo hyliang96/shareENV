@@ -320,21 +320,21 @@ autoload compinit && compinit >&2
 compdef _hosts a >&2
 
 # if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_itm() {   :    }
-    compdef _tmux tmux_itm
-    echo itm
-    which itm
-    alias itm='tmux_itm -CC attach -t'
-    echo itm
-    which itm
-    itm() {    :    } >/dev/null 2>&1
+# tmux_itm() {   :    }
+# compdef _tmux tmux_itm
+# echo itm
+# which itm
+# alias itm='tmux_itm -CC attach -t'
+# echo itm
+# which itm
+# itm() {    :    } >/dev/null 2>&1
 # fi
 
 # if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_tm() {   :    }
-    compdef _tmux tmux_tm
-    alias tm='tmux_tm attach -t'
-    tm() {   :    }  >/dev/null 2>&1
+tmux_tm() {   :    }
+compdef _tmux tmux_tm
+alias tm='tmux_tm attach -t'
+tm() {   :    }  >/dev/null 2>&1
 # fi
 
 
