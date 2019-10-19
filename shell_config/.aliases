@@ -866,7 +866,9 @@ tka()
 # tm：不关联iterm2的tmux
 # compinit
 if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_itm() { : }
+    tmux_itm() {
+        :
+    }
     compdef _tmux tmux_itm
     alias itm='tmux_itm -CC attach -t'
 fi
@@ -891,7 +893,9 @@ itm() {
 
 
 if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_tm() { : }
+    tmux_tm() { 
+        :
+    }
     compdef _tmux tmux_tm
     alias tm='tmux_tm attach -t'
 fi
