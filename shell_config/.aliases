@@ -860,10 +860,7 @@ tka()
 }
 
 
-echo $SHELL >&2
-a() { echo A }
-autoload compinit && compinit
-compdef _hosts a
+
 
 #              命令   (i)tm                      (i)tm 已有session名    (i)tm 新session名
 # 无tmux session 时   创建名为的default的session    --                   创建session
@@ -871,13 +868,8 @@ compdef _hosts a
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
 # compinit
-if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_itm() {
-        :
-    }
-    compdef _tmux tmux_itm
-    alias itm='tmux_itm -CC attach -t'
-fi
+
+
 # rm -f ~/.zcompdump; compinit
 
 
@@ -898,13 +890,7 @@ itm() {
 }
 
 
-if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_tm() {
-        :
-    }
-    compdef _tmux tmux_tm
-    alias tm='tmux_tm attach -t'
-fi
+
 
 tm() {
     for i in {1..2}; do shift; done

@@ -314,6 +314,29 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 
 
+echo $SHELL >&2
+a() { echo A }
+autoload compinit && compinit
+compdef _hosts a
+
+# if [ "$(which compdef 2>/dev/null)" != '' ]; then
+    tmux_itm() {
+        :
+    }
+    compdef _tmux tmux_itm
+    alias itm='tmux_itm -CC attach -t'
+# fi
+
+# if [ "$(which compdef 2>/dev/null)" != '' ]; then
+    tmux_tm() {
+        :
+    }
+    compdef _tmux tmux_tm
+    alias tm='tmux_tm attach -t'
+# fi
+
+
+
 
 
 
