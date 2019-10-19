@@ -375,7 +375,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # 自动补全的复用
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - reuse completions >&2
 #
-autoload compinit && compinit
+autoload -U compinit && compinit
 
 tmux_itm() {   :    }
 compdef _tmux tmux_itm
