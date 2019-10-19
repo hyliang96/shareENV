@@ -859,6 +859,12 @@ tka()
     fi
 }
 
+
+echo $SHELL
+a() { echo A }
+autoload compinit && compinit
+compdef _hosts a
+
 #              命令   (i)tm                      (i)tm 已有session名    (i)tm 新session名
 # 无tmux session 时   创建名为的default的session    --                   创建session
 # 有tmux session 时   attach最近的session         attach该session       创建session
