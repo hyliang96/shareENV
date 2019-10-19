@@ -864,7 +864,8 @@ tka()
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
 tmux_itm() { }
-compdef _tmux tmux_itm
+# compdef _tmux tmux_itm
+compdef '_dispatch tmux tmux' tmux_itm
 alias itm='tmux_itm -CC attach -t'
 itm() {
     # echo "iterm2 $@"
