@@ -312,48 +312,19 @@ KEYTIMEOUT=1
 # iterm2_shell_integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-
-
-echo $SHELL >&2
+# -------------------------------------------------------------------------
+# 自动补全的复用
 autoload compinit && compinit
-a() { echo A }
-compdef _hosts a
 
-# if [ "$(which compdef 2>/dev/null)" != '' ]; then
 tmux_itm() {   :    }
 compdef _tmux tmux_itm
 alias itm='tmux_itm -CC attach -t'
-# itm() {    :    } >/dev/null 2>&1
-# fi
 
-# if [ "$(which compdef 2>/dev/null)" != '' ]; then
 tmux_tm() {   :    }
 compdef _tmux tmux_tm
 alias tm='tmux_tm attach -t'
 
-set -o ALIAS_FUNC_DEF > /dev/null 2>&1 
-# compinit
-# unalias itm
-# unalias tm
-
-# tm() {   :    }  >/dev/null 2>&1
-# fi
-
-
-
-
-# alias test_override_alias=''
-# (
-    # test_override_alias() { : }
-# ) > /dev/null 2>&1
-
-
-# alias test_override_alias1=''
-# (
-    # test_override_alias1() { : }
-# ) > /dev/null 2>&1
-
-
+set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 
 
