@@ -72,7 +72,7 @@ if [ "$(uname)" = "Darwin" ]; then
     if [  -x "$(command -v autojump)"  ]; then
         _autojump_path='/usr/local/etc/profile.d/autojump.sh'
         if [ -f $_autojump_path ]; then
-            . $_autojump_path
+            . $_autojump_path &
         else
 
             _autojump_path="$(brew --prefix)/etc/profile.d/autojump.sh"
