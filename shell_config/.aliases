@@ -880,7 +880,7 @@ fi
 # compinit
 # compdef '_dispatch tmux tmux' tmux_itm
 
-itm() {
+function itm {
     echo "iterm2 $@"
     if [ $# = 0 ]; then
         tmux -CC attach || tmux -CC new -s default
@@ -891,22 +891,22 @@ itm() {
 }
 
 
-if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_tm() {
-        echo
-    }
-    compdef _tmux tmux_tm
-    alias tm='tmux_tm attach -t'
-fi
+# if [ "$(which compdef 2>/dev/null)" != '' ]; then
+    # tmux_tm() {
+        # echo
+    # }
+    # compdef _tmux tmux_tm
+    # alias tm='tmux_tm attach -t'
+# fi
 
-tm() {
-    if [ $# = 0 ]; then
-        tmux attach || tmux new -s default
-    else
-        local session=$1
-        tmux attach -t ${session} || tmux new -s ${session}
-    fi
-}
+# tm() {
+    # if [ $# = 0 ]; then
+        # tmux attach || tmux new -s default
+    # else
+        # local session=$1
+        # tmux attach -t ${session} || tmux new -s ${session}
+    # fi
+# }
 # alias tm='zsh -c '\''_tm $@'\'' _ || echo -n || tmux attach -t'
 
 # ------------------ git ----------------------------
