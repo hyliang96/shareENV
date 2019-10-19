@@ -865,9 +865,9 @@ tka()
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
 # compinit
-if [ "$(which compdef 2>/dev/null)" = '' ]; then
-    echo compdef 1>&2
-    which compdef 1>&2
+if [ "$(which compdef 2>/dev/null)" != '' ]; then
+    # echo compdef 1>&2
+    # which compdef 1>&2
     tmux_itm() {
         echo
     }
@@ -893,7 +893,7 @@ itm() {
 }
 
 
-if [ "$(which compdef 2>/dev/null)" = '' ]; then
+if [ "$(which compdef 2>/dev/null)" != '' ]; then
     tmux_tm() {
         echo
     }
