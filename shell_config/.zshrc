@@ -70,12 +70,12 @@ antigen use oh-my-zsh
 if [ "$(uname)" = "Darwin" ]; then
     # mac
     if [  -x "$(command -v autojump)"  ]; then
-        if [ -f /usr/local/etc/profile.d/autojump.sh ]; then
-            # . /usr/local/etc/profile.d/autojump.sh
-        else
-            echo 'can not find the path to autojump' >&2
-        fi
-        # antigen bundle autojump
+        # if [ -f /usr/local/etc/profile.d/autojump.sh ]; then
+            # # . /usr/local/etc/profile.d/autojump.sh
+        # else
+            # echo 'can not find the path to autojump' >&2
+        # fi
+        antigen bundle autojump
     else
         echo 'no `autojump` on your mac, run `brew instal autojump` to install it' >&2
     fi
