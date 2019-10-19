@@ -866,9 +866,7 @@ tka()
 # tm：不关联iterm2的tmux
 # compinit
 if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    tmux_itm() {
-        echo
-    }
+    tmux_itm() { }
     compdef _tmux tmux_itm
     alias itm='tmux_itm -CC attach -t'
 fi
@@ -882,7 +880,7 @@ fi
 
 itm() {
     for i in {1..3}; do shift; done
-    echo "iterm2 $@"
+    echo "itm $@"
     if [ $# = 0 ]; then
         tmux -CC attach || tmux -CC new -s default
     else
@@ -892,22 +890,22 @@ itm() {
 }
 
 
-# if [ "$(which compdef 2>/dev/null)" != '' ]; then
-    # tmux_tm() {
-        # echo
-    # }
-    # compdef _tmux tmux_tm
-    # alias tm='tmux_tm attach -t'
-# fi
+if [ "$(which compdef 2>/dev/null)" != '' ]; then
+    tmux_tm() { }
+    compdef _tmux tmux_tm
+    alias tm='tmux_tm attach -t'
+fi
 
-# tm() {
-    # if [ $# = 0 ]; then
-        # tmux attach || tmux new -s default
-    # else
-        # local session=$1
-        # tmux attach -t ${session} || tmux new -s ${session}
-    # fi
-# }
+tm() {
+    for i in {1..3}; do shift; done
+    echo "tm $@"
+    if [ $# = 0 ]; then
+        tmux attach || tmux new -s default
+    else
+        local session=$1
+        tmux attach -t ${session} || tmux new -s ${session}
+    fi
+}
 # alias tm='zsh -c '\''_tm $@'\'' _ || echo -n || tmux attach -t'
 
 # ------------------ git ----------------------------
