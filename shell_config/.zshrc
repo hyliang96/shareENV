@@ -333,16 +333,19 @@ alias tm='tmux_tm attach -t'
 # tm() {   :    }  >/dev/null 2>&1
 # fi
 
-alias test_override_alias=''
-(
-    test_override_alias() { : }
-) > /dev/null 2>&1
 
 
-alias test_override_alias1=''
-(
-    test_override_alias1() { : }
-) > /dev/null 2>&1
+
+# alias test_override_alias=''
+# (
+    # test_override_alias() { : }
+# ) > /dev/null 2>&1
+
+
+# alias test_override_alias1=''
+# (
+    # test_override_alias1() { : }
+# ) > /dev/null 2>&1
 
 
 
