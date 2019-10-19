@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+
 
 # 服务器、笔记本、WSL 共享的alias配置
 
@@ -863,9 +864,11 @@ tka()
 # 有tmux session 时   attach最近的session         attach该session       创建session
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
+compinit
 tmux_itm() { }
-# compdef _tmux tmux_itm
-compdef '_dispatch tmux tmux' tmux_itm
+compdef _tmux tmux_itm
+# compdef '_dispatch tmux tmux' tmux_itm
+
 alias itm='tmux_itm -CC attach -t'
 itm() {
     # echo "iterm2 $@"
