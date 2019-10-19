@@ -64,13 +64,33 @@ source "$ANTIGEN"
 # Initialize oh-my-zsh
 antigen use oh-my-zsh
 
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
+
 # antigen bundle autojump # 自动跳转
 if [ "$(uname)" = "Darwin" ]; then
     # mac
     if [  -x "$(command -v autojump)"  ]; then
-        antigen bundle autojump
+        _autojump_path='/usr/local/etc/profile.d/autojump.sh'
+        if [ -f $_autojump_path ]; then
+            . $_autojump_path
+        else
+
+            _autojump_path="$(brew --prefix)/etc/profile.d/autojump.sh"
+            if [ -f $_autojump_path ]; then
+                . $_autojump_path
+            else
+
+                _autojump_path='/usr/share/autojump/autojump.zsh'
+                if [ -f $_autojump_path ]; then
+                    . $_autojump_path
+                else
+                    echo 'can not find the path to autojump' >&2
+                fi
+            fi
+        fi
+        # antigen bundle autojump
     else
-        echo 'no `autojump` on your mac, run `brew instal autojump` to install it'
+        echo 'no `autojump` on your mac, run `brew instal autojump` to install it' >&2
     fi
 else
     # linux
