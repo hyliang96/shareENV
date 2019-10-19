@@ -71,7 +71,7 @@ if [ "$(uname)" = "Darwin" ]; then
     # mac
     if [  -x "$(command -v autojump)"  ]; then
         if [ -f /usr/local/etc/profile.d/autojump.sh ]; then
-            . /usr/local/etc/profile.d/autojump.sh
+            # . /usr/local/etc/profile.d/autojump.sh
         else
             echo 'can not find the path to autojump' >&2
         fi
@@ -129,6 +129,8 @@ if [[ -o login ]]; then
     [ -f "$HOME/.local/etc/login.zsh" ] && source "$HOME/.local/etc/login.zsh"
 fi
 
+[ $DotFileDebug -ne 0 ] && echo share .zshrc set highlight >&2
+
 # syntax color definition
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
@@ -165,6 +167,9 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 
 # enable syntax highlighting
 antigen bundle zsh-users/zsh-syntax-highlighting
+
+
+[ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
 
 antigen apply
 
