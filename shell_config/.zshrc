@@ -378,7 +378,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 autoload -U compinit && compinit
 
 # 复用 rsync, ssh等的补全函数
-compdef _host autots
+compdef _hosts autots
 
 tmux_itm() {   :    }
 compdef _tmux tmux_itm
