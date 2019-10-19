@@ -325,6 +325,9 @@ compdef _hosts a >&2
     }
     compdef _tmux tmux_itm
     alias itm='tmux_itm -CC attach -t'
+    itm() {
+        :
+    } >/dev/null 2>&1
 # fi
 
 # if [ "$(which compdef 2>/dev/null)" != '' ]; then
@@ -333,6 +336,9 @@ compdef _hosts a >&2
     }
     compdef _tmux tmux_tm
     alias tm='tmux_tm attach -t'
+    tm() {
+        :
+    }  >/dev/null 2>&1
 # fi
 
 
