@@ -322,7 +322,11 @@ compdef _hosts a >&2
 # if [ "$(which compdef 2>/dev/null)" != '' ]; then
     tmux_itm() {   :    }
     compdef _tmux tmux_itm
+    echo itm
+    which itm
     alias itm='tmux_itm -CC attach -t'
+    echo itm
+    which itm
     itm() {    :    } >/dev/null 2>&1
 # fi
 
