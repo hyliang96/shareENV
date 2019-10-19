@@ -316,7 +316,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 echo $SHELL >&2
 a() { echo A }
-autoload compinit && compinit
+# autoload compinit && compinit
 compdef _hosts a
 
 # if [ "$(which compdef 2>/dev/null)" != '' ]; then
