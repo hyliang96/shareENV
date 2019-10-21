@@ -545,7 +545,6 @@ alias scp="scp -r"
 # 自动端点续传，传送失败后隔180秒自动重新连接
 # autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
 autots() {
-    echo yes
     local retry_time=180 # second
     while [ 1 ]
     do
@@ -868,22 +867,11 @@ tka()
 # 有tmux session 时   attach最近的session         attach该session       创建session
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
-# compinit
-
-
-# rm -f ~/.zcompdump; compinit
-
-
-# echo _tmux
-# which _tmux
-# compinit
-# compdef '_dispatch tmux tmux' tmux_itm
 
 itm() {
     if [ "$(alias itm 2> /dev/null)" != '' ]; then
         for i in {1..3}; do shift; done
     fi
-    echo "itm $@"
     if [ $# = 0 ]; then
         tmux -CC attach || tmux -CC new -s default
     else
@@ -892,13 +880,10 @@ itm() {
     fi
 }
 
-
-
 tm() {
     if [ "$(alias tm 2> /dev/null)" != '' ]; then
         for i in {1..2}; do shift; done
     fi
-    echo "tm $@"
     if [ $# = 0 ]; then
         tmux attach || tmux new -s default
     else
@@ -906,7 +891,6 @@ tm() {
         tmux attach -t ${session} || tmux new -s ${session}
     fi
 }
-# alias tm='zsh -c '\''_tm $@'\'' _ || echo -n || tmux attach -t'
 
 # ------------------ git ----------------------------
 # 初创

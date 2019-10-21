@@ -374,10 +374,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # -------------------------------------------------------------------------
 # 自动补全的复用
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - reuse completions >&2
-#
+# 初始化zsh的自动补全，从而conpdef函数有定义了
 autoload -U compinit && compinit
 
-# 复用 rsync, ssh等的补全函数
+# 复用 rsync 等的补全函数
 compdef _rsync autots
 
 tmux_itm() {   :    }
