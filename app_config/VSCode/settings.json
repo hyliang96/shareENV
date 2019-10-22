@@ -30,8 +30,6 @@
         "terminal.ansiMagenta": "#c930c7",
         "terminal.ansiBrightMagenta": "#ff76ff",
     },
-    // 工作区（包括代码，侧栏）配色
-    "workbench.colorTheme": "Gruvbox Dark (Medium)",
 
     // shell语言的格式化插件
     // "[shellscript]": {
@@ -55,7 +53,7 @@
     "editor.tabSize": 4,
     // 按tab输入editor.tabSize个空格
     "editor.insertSpaces": true,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": -1,
 
     // // macros 插件，支持自定义组合命令
     // // 打开、隐藏内置终端，
@@ -91,4 +89,5 @@
     "files.trimTrailingWhitespace": true,
     "python.insidersChannel": "off",
     "terminal.integrated.inheritEnv": false,
+    "workbench.colorTheme": "Gruvbox Dark (Medium)",
 }

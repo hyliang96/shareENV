@@ -40,7 +40,7 @@
     // 光标在一个词中未选中一片区域，直接cmd+d：整词匹配
     // 选中下一个和当前一样的：cmd+d
     // 回到上一个：cmd+U
-    // 跳过当前的：cmd+K, cmd+U
+    // 跳过当前的：cmd+K, cmd+D
     // alt+cmd+C/W/R：  开关Case sensitive/whole word/RegEx
     // 选中所有和当前一样的
     { "key": "shift+cmd+d",    "command": "editor.action.selectHighlights"},
