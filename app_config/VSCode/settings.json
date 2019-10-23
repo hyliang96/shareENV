@@ -42,6 +42,8 @@
     "editor.tabCompletion": "on",
     // 根据语法自动确定缩进
     "editor.autoIndent": true,
+    // 遇到“else”"elif"之类的也会自动缩进
+    "editor.formatOnType": true,
     // 显示tab和空格
     "editor.renderWhitespace": "all",
 
@@ -53,7 +55,7 @@
     "editor.tabSize": 4,
     // 按tab输入editor.tabSize个空格
     "editor.insertSpaces": true,
-    "window.zoomLevel": -1,
+    "window.zoomLevel": 0,
 
     // // macros 插件，支持自定义组合命令
     // // 打开、隐藏内置终端，
@@ -90,4 +92,6 @@
     "python.insidersChannel": "off",
     "terminal.integrated.inheritEnv": false,
     "workbench.colorTheme": "Gruvbox Dark (Medium)",
+
+
 }
