@@ -1,6 +1,6 @@
 <snippet>
     <content><![CDATA[
-json.dump(${1:object}, ${2:file}, ensure_ascii=False, encoding='utf-8')
+json.dump(${1:object}, ${2:file}, indent=4, ensure_ascii=False, encoding='utf-8')
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
     <tabTrigger>jsondump</tabTrigger>
