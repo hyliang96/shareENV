@@ -228,18 +228,9 @@ kjob()
 # 当有 vscode 时，有 `code` 命令
 # 当有 vscode-insiders 而无 vscode 时，将 `code-insiders` 命令 alias 为 `code`
 if ( ! [ -x "`which code`" ] ) && [ -x "`which code-insiders`" ]; then
-    echo alias code to code-insiders
     alias code='code-insiders'
 fi
-which code
 
-# _code(){
-    # if ( ! [ -x "`which code`" ] ) && [ -x "`which code-insiders`" ]; then
-        # command code-insiders
-    # else
-        # command code
-    # fi
-# }
 _code-remote() {
     local hostname=$(echo $1 | awk -F : '{print $1}')
     local abspath=$(echo $1 | awk -F : '{print $2}')
@@ -260,7 +251,6 @@ co(){
         code $@
     fi
 }
-# alias co='code'
 
 
 # 设置vim
@@ -390,7 +380,7 @@ _open() {
 
 if [ "$(uname)" != "Darwin" ]; then
     # 不是mac
-    if ! [ -x "`which code`" ]; then
+    if ! [ -x "`which code`" ] && ! [ -x "`which code-insiders`" ]  ; then
         # 没有code命令（即在服务器上，且目前不是用vscode远程登录）
         alias code='_open code'
     fi
