@@ -14,17 +14,19 @@
 
 
     "workbench.colorCustomizations": {
-        // "[Material Theme High Contrast]": {
-
-        //   }
         // 编辑器配色
-        // "editor.lineHighlightBorder": "#3b3b3b",
-        // "editor.lineHighlightBackground": "#4c4744",
-        // "editor.selectionBackground": "#4c4744", //Current SELECTED text
-        // "editor.selectionHighlightBorder": "#b0b0b0", //same content as the selection
-        // "editor.selectionHighlightBackground": "#4c4744", //same content as the selection
-        // "editor.findMatchBackground": "#00cc44a8", //Current SEARCH MATCH
-        // "editor.findMatchHighlightBackground": "#ff7b00a1", //Other SEARCH MATCHES
+        // "[针对的配色方案名]": {
+            // "editor.lineHighlightBorder": "#4c4744",
+            // "editor.lineHighlightBackground": "#4c4744",
+            // // "editor.inactiveSelectionBackground": "#ff0000",
+            // "editor.selectionBorder": "#ffffff", //Current SELECTED text
+            // "editor.selectionBackground": "#4c4744", //Current SELECTED text
+            // "editor.selectionHighlightBorder": "#ffffff", //same content as the selection
+            // "editor.selectionHighlightBackground": "#4c4744", //same content as the selection
+            // "editor.findMatchBackground": "#00cc44a8", //Current SEARCH MATCH
+            // "editor.findMatchHighlightBackground": "#ff7b00a1", //Other SEARCH MATCHES
+        //   },
+
         // 终端配色
         "terminal.background": "#28282a",
         "terminal.foreground": "#c7c7c7",
@@ -47,9 +49,6 @@
         "terminal.ansiMagenta": "#c930c7",
         "terminal.ansiBrightMagenta": "#ff76ff",
     },
-
-    // 工作区配色
-    "workbench.colorTheme": "Gruvbox Dark (Medium)",
 
     // 按tab弹出自动补全
     "editor.tabCompletion": "on",
@@ -90,7 +89,8 @@
 
     // 数字显示原精度
     "csv-preview.formatValues": "never",
-    "csv-preview.theme":"light",
+    "csv-preview.theme": "light",
+    "workbench.colorTheme": "Gruvbox Dark (Medium)",
     // darkly
 
 
