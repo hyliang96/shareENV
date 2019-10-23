@@ -252,6 +252,10 @@ co(){
     fi
 }
 
+if ! [ "$(uname)" = "Darwin" ]; then
+    # 当vscode远程连接无法正常使用时，则运行之，以杀死所有vscode(-insiders)进程
+    alias code-kill='pgrep -f "vscode" | xargs kill'
+fi
 
 # 设置vim
 if [ -x /usr/bin/vim.gnome ]; then
@@ -593,11 +597,11 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
 #  -G  in a long listing, don't print group names
 #  -h  文件大用kMG单位
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
-alias ll='ls -AlFh'
+alias ll='ls -AlFh --sort=version'
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
-alias la='ls -CAF'
+alias la='ls -CAF --sort=version'
 # 显 文件(xxx)文件夹(xxx/)
-alias l='ls -CF'
+alias l='ls -CF --sort=version'
 
 
 # safe remove
