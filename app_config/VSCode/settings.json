@@ -47,55 +47,55 @@
     // 显示tab和空格
     "editor.renderWhitespace": "all",
 
-    // 打开文件时检测文件内容，以自动决定 `editor.tabSize`， `editor.insertSpaces`，即
-    // 若一个文件内容用 tab符 缩进，则 editor.insertSpaces 设为 false
-    // 若一个文件内容用n个空格缩进，则 editor.insertSpaces 设为 true，editor.tabSize=n
-    "editor.detectIndentation": true,
-    // 一个tab符的显示宽度
-    "editor.tabSize": 4,
-    // 按tab输入editor.tabSize个空格
-    "editor.insertSpaces": true,
-    "window.zoomLevel": 0,
+    // // 打开文件时检测文件内容，以自动决定 `editor.tabSize`， `editor.insertSpaces`，即
+    // // 若一个文件内容用 tab符 缩进，则 editor.insertSpaces 设为 false
+    // // 若一个文件内容用n个空格缩进，则 editor.insertSpaces 设为 true，editor.tabSize=n
+    // "editor.detectIndentation": true,
+    // // 一个tab符的显示宽度
+    // "editor.tabSize": 4,
+    // // 按tab输入editor.tabSize个空格
+    // "editor.insertSpaces": true,
+    // "window.zoomLevel": 0,
 
-    // // macros 插件，支持自定义组合命令
-    // // 打开、隐藏内置终端，
-    // "macros": {
-    //     "toggleTerminal": [
-    //         "workbench.action.terminal.focus",
-    //         "workbench.action.terminal.toggleTerminal"
-    //     ]
-    // },
+    // // // macros 插件，支持自定义组合命令
+    // // // 打开、隐藏内置终端，
+    // // "macros": {
+    // //     "toggleTerminal": [
+    // //         "workbench.action.terminal.focus",
+    // //         "workbench.action.terminal.toggleTerminal"
+    // //     ]
+    // // },
 
-    // // multiCommand 插件，支持自定义组合命令
-    // "multiCommand.commands": [
-    //     {
-    //         "command": "multiCommand.toggleTerminal",
-    //         "sequence": [
-    //             "workbench.action.terminal.focus",
-    //             "workbench.action.terminal.toggleTerminal"
-    //         ]
-    //     }
+    // // // multiCommand 插件，支持自定义组合命令
+    // // "multiCommand.commands": [
+    // //     {
+    // //         "command": "multiCommand.toggleTerminal",
+    // //         "sequence": [
+    // //             "workbench.action.terminal.focus",
+    // //             "workbench.action.terminal.toggleTerminal"
+    // //         ]
+    // //     }
 
-    // "terminal.integrated.cwd": "${cwd}",
-    // `code  文件夹`, 则融合终端开启新tab从项目文件夹目录开启
-    // 融合终端左右分屏，新窗口从左侧的窗口的当前目录开启
-    "terminal.integrated.rendererType": "dom", // 创建新终端，初始目录在"/home/$USER"
-    "terminal.integrated.cursorStyle": "line", // 终端光标改为竖线
-    // "terminal.integrated.cursorBlinking": false, // 终端光标会闪烁
+    // // "terminal.integrated.cwd": "${cwd}",
+    // // `code  文件夹`, 则融合终端开启新tab从项目文件夹目录开启
+    // // 融合终端左右分屏，新窗口从左侧的窗口的当前目录开启
+    // "terminal.integrated.rendererType": "dom", // 创建新终端，初始目录在"/home/$USER"
+    // "terminal.integrated.cursorStyle": "line", // 终端光标改为竖线
+    // // "terminal.integrated.cursorBlinking": false, // 终端光标会闪烁
 
-    // "terminal.integrated.cwd": "${workspaceFolder}",
-    // ${workspaceFolder}
-    // "terminal.integrated.env.windows": {
-        // "PATH": "${env:PATH};${setting:go.gopath}"
-    // }
+    // // "terminal.integrated.cwd": "${workspaceFolder}",
+    // // ${workspaceFolder}
+    // // "terminal.integrated.env.windows": {
+    //     // "PATH": "${env:PATH};${setting:go.gopath}"
+    // // }
 
-    // 保存文件后自动删除行尾空格
-    "files.trimTrailingWhitespace": true,
-    "python.insidersChannel": "off",
-    "terminal.integrated.inheritEnv": false,
-    "workbench.colorTheme": "Gruvbox Dark (Medium)",
+    // // 保存文件后自动删除行尾空格
+    // "files.trimTrailingWhitespace": true,
+    // "python.insidersChannel": "off",
+    // "terminal.integrated.inheritEnv": false,
+    // "workbench.colorTheme": "Gruvbox Dark (Medium)",
+
+
     // "terminal.integrated.shell.linux": "/bin/zsh",
     // "terminal.integrated.shell.osx": "/bin/zsh",
-
-
 }
