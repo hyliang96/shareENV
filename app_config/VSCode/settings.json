@@ -11,8 +11,21 @@
     "terminal.integrated.shell.osx": "/bin/zsh",
 
 
-    // 终端配色
+
+
     "workbench.colorCustomizations": {
+        // "[Material Theme High Contrast]": {
+
+        //   }
+        // 编辑器配色
+        // "editor.lineHighlightBorder": "#3b3b3b",
+        "editor.lineHighlightBackground": "#504a4a",
+        "editor.selectionBackground": "#504a4a", //Current SELECTED text
+        // "editor.selectionHighlightBorder": "#b0b0b0", //same content as the selection
+        "editor.selectionHighlightBackground": "#302f2f", //same content as the selection
+        // "editor.findMatchBackground": "#00cc44a8", //Current SEARCH MATCH
+        // "editor.findMatchHighlightBackground": "#ff7b00a1", //Other SEARCH MATCHES
+        // 终端配色
         "terminal.background": "#28282a",
         "terminal.foreground": "#c7c7c7",
         "terminalCursor.background": "#3b3b3b",
@@ -75,8 +88,10 @@
     "files.trimTrailingWhitespace": true,
     "python.insidersChannel": "off",
 
-
-
+    // 数字显示原精度
+    "csv-preview.formatValues": "never",
+    "csv-preview.theme":"light",
+    // darkly
 
 
     // // macros 插件，支持自定义组合命令
