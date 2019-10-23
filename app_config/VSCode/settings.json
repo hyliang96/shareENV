@@ -92,7 +92,7 @@
     // 保存文件后自动删除行尾空格
     "files.trimTrailingWhitespace": true,
     "python.insidersChannel": "off",
-    "terminal.integrated.inheritEnv": false,
+    "terminal.integrated.inheritEnv": true,
     "workbench.colorTheme": "Gruvbox Dark (Medium)",
 
 
