@@ -7,6 +7,10 @@
     "python.dataScience.sendSelectionToInteractiveWindow": true,
     "python.pythonPath": "/Users/mac/miniconda3/bin/python",
 
+    "terminal.integrated.shell.linux": "/bin/zsh",
+    "terminal.integrated.shell.osx": "/bin/zsh",
+
+
     // 终端配色
     "workbench.colorCustomizations": {
         "terminal.background": "#28282a",
@@ -31,12 +35,8 @@
         "terminal.ansiBrightMagenta": "#ff76ff",
     },
 
-    // shell语言的格式化插件
-    // "[shellscript]": {
-    //     "editor.defaultFormatter": "foxundermoon.shell-format"
-    // },
-    // 保存时格式化代码
-    // "editor.formatOnSave": true,
+    // 工作区配色
+    "workbench.colorTheme": "Gruvbox Dark (Medium)",
 
     // 按tab弹出自动补全
     "editor.tabCompletion": "on",
@@ -57,6 +57,28 @@
     "editor.insertSpaces": true,
     "window.zoomLevel": 0,
 
+
+    // "terminal.integrated.cwd": "${cwd}",
+    // `code  文件夹`, 则融合终端开启新tab从项目文件夹目录开启
+    // 融合终端左右分屏，新窗口从左侧的窗口的当前目录开启
+    "terminal.integrated.inheritEnv": true,
+    // 创建新终端，初始目录在"/home/$USER"
+    "terminal.integrated.rendererType": "dom",
+    // 终端光标改为竖线
+    "terminal.integrated.cursorStyle": "line",
+    // 终端光标会闪烁
+    // "terminal.integrated.cursorBlinking": false,
+
+
+
+    // 保存文件后自动删除行尾空格
+    "files.trimTrailingWhitespace": true,
+    "python.insidersChannel": "off",
+
+
+
+
+
     // // macros 插件，支持自定义组合命令
     // // 打开、隐藏内置终端，
     // "macros": {
@@ -76,26 +98,17 @@
     //         ]
     //     }
 
-    // "terminal.integrated.cwd": "${cwd}",
-    // `code  文件夹`, 则融合终端开启新tab从项目文件夹目录开启
-    // 融合终端左右分屏，新窗口从左侧的窗口的当前目录开启
-    "terminal.integrated.rendererType": "dom", // 创建新终端，初始目录在"/home/$USER"
-    "terminal.integrated.cursorStyle": "line", // 终端光标改为竖线
-    // "terminal.integrated.cursorBlinking": false, // 终端光标会闪烁
-
     // "terminal.integrated.cwd": "${workspaceFolder}",
     // ${workspaceFolder}
     // "terminal.integrated.env.windows": {
     //     "PATH": "${env:PATH};${setting:go.gopath}"
-    // }
-
-    // 保存文件后自动删除行尾空格
-    "files.trimTrailingWhitespace": true,
-    "python.insidersChannel": "off",
-    "terminal.integrated.inheritEnv": true,
-    "workbench.colorTheme": "Gruvbox Dark (Medium)",
+    // },
 
 
-    "terminal.integrated.shell.linux": "/bin/zsh",
-    "terminal.integrated.shell.osx": "/bin/zsh",
+    // shell语言的格式化插件
+    // "[shellscript]": {
+    //     "editor.defaultFormatter": "foxundermoon.shell-format"
+    // },
+    // 保存时格式化代码
+    // "editor.formatOnSave": true,
 }
