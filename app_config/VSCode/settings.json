@@ -47,34 +47,34 @@
     // 显示tab和空格
     "editor.renderWhitespace": "all",
 
-    // // 打开文件时检测文件内容，以自动决定 `editor.tabSize`， `editor.insertSpaces`，即
-    // // 若一个文件内容用 tab符 缩进，则 editor.insertSpaces 设为 false
-    // // 若一个文件内容用n个空格缩进，则 editor.insertSpaces 设为 true，editor.tabSize=n
-    // "editor.detectIndentation": true,
-    // // 一个tab符的显示宽度
-    // "editor.tabSize": 4,
-    // // 按tab输入editor.tabSize个空格
-    // "editor.insertSpaces": true,
-    // "window.zoomLevel": 0,
+    // 打开文件时检测文件内容，以自动决定 `editor.tabSize`， `editor.insertSpaces`，即
+    // 若一个文件内容用 tab符 缩进，则 editor.insertSpaces 设为 false
+    // 若一个文件内容用n个空格缩进，则 editor.insertSpaces 设为 true，editor.tabSize=n
+    "editor.detectIndentation": true,
+    // 一个tab符的显示宽度
+    "editor.tabSize": 4,
+    // 按tab输入editor.tabSize个空格
+    "editor.insertSpaces": true,
+    "window.zoomLevel": 0,
 
-    // // // macros 插件，支持自定义组合命令
-    // // // 打开、隐藏内置终端，
-    // // "macros": {
-    // //     "toggleTerminal": [
-    // //         "workbench.action.terminal.focus",
-    // //         "workbench.action.terminal.toggleTerminal"
-    // //     ]
-    // // },
+    // // macros 插件，支持自定义组合命令
+    // // 打开、隐藏内置终端，
+    // "macros": {
+    //     "toggleTerminal": [
+    //         "workbench.action.terminal.focus",
+    //         "workbench.action.terminal.toggleTerminal"
+    //     ]
+    // },
 
-    // // // multiCommand 插件，支持自定义组合命令
-    // // "multiCommand.commands": [
-    // //     {
-    // //         "command": "multiCommand.toggleTerminal",
-    // //         "sequence": [
-    // //             "workbench.action.terminal.focus",
-    // //             "workbench.action.terminal.toggleTerminal"
-    // //         ]
-    // //     }
+    // // multiCommand 插件，支持自定义组合命令
+    // "multiCommand.commands": [
+    //     {
+    //         "command": "multiCommand.toggleTerminal",
+    //         "sequence": [
+    //             "workbench.action.terminal.focus",
+    //             "workbench.action.terminal.toggleTerminal"
+    //         ]
+    //     }
 
     // // "terminal.integrated.cwd": "${cwd}",
     // // `code  文件夹`, 则融合终端开启新tab从项目文件夹目录开启
