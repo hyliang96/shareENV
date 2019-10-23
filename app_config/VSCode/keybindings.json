@@ -35,7 +35,7 @@
     // 上下分窗
     { "key": "shift+cmd+\\",    "command": "workbench.action.splitEditorOrthogonal"},
 
-    // 多选区、多光标功能：
+    // 多选区、多光标功能：xw
     // 选中一个区域再cmd+d：非整词匹配
     // 光标在一个词中未选中一片区域，直接cmd+d：整词匹配
     // 选中下一个和当前一样的：cmd+d

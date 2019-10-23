@@ -76,7 +76,9 @@
     //         ]
     //     }
 
-    "terminal.integrated.cwd": "${cwd}",
+    // "terminal.integrated.cwd": "${cwd}",
+    // `code  文件夹`, 则融合终端开启新tab从项目文件夹目录开启
+    // 融合终端左右分屏，新窗口从左侧的窗口的当前目录开启
     "terminal.integrated.rendererType": "dom", // 创建新终端，初始目录在"/home/$USER"
     "terminal.integrated.cursorStyle": "line", // 终端光标改为竖线
     // "terminal.integrated.cursorBlinking": false, // 终端光标会闪烁
