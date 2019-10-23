@@ -19,10 +19,10 @@
         //   }
         // 编辑器配色
         // "editor.lineHighlightBorder": "#3b3b3b",
-        "editor.lineHighlightBackground": "#504a4a",
-        "editor.selectionBackground": "#504a4a", //Current SELECTED text
+        // "editor.lineHighlightBackground": "#4c4744",
+        // "editor.selectionBackground": "#4c4744", //Current SELECTED text
         // "editor.selectionHighlightBorder": "#b0b0b0", //same content as the selection
-        "editor.selectionHighlightBackground": "#302f2f", //same content as the selection
+        // "editor.selectionHighlightBackground": "#4c4744", //same content as the selection
         // "editor.findMatchBackground": "#00cc44a8", //Current SEARCH MATCH
         // "editor.findMatchHighlightBackground": "#ff7b00a1", //Other SEARCH MATCHES
         // 终端配色
