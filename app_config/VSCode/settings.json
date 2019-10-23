@@ -94,7 +94,8 @@
     "python.insidersChannel": "off",
     "terminal.integrated.inheritEnv": false,
     "workbench.colorTheme": "Gruvbox Dark (Medium)",
-    "terminal.integrated.shell.linux": "/bin/zsh",
+    // "terminal.integrated.shell.linux": "/bin/zsh",
+    // "terminal.integrated.shell.osx": "/bin/zsh",
 
 
 }
