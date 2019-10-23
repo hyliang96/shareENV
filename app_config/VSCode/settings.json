@@ -86,16 +86,16 @@
     // "terminal.integrated.cwd": "${workspaceFolder}",
     // ${workspaceFolder}
     // "terminal.integrated.env.windows": {
-        // "PATH": "${env:PATH};${setting:go.gopath}"
+    //     "PATH": "${env:PATH};${setting:go.gopath}"
     // }
 
-    // // 保存文件后自动删除行尾空格
-    // "files.trimTrailingWhitespace": true,
-    // "python.insidersChannel": "off",
-    // "terminal.integrated.inheritEnv": false,
-    // "workbench.colorTheme": "Gruvbox Dark (Medium)",
+    // 保存文件后自动删除行尾空格
+    "files.trimTrailingWhitespace": true,
+    "python.insidersChannel": "off",
+    "terminal.integrated.inheritEnv": false,
+    "workbench.colorTheme": "Gruvbox Dark (Medium)",
 
 
-    // "terminal.integrated.shell.linux": "/bin/zsh",
-    // "terminal.integrated.shell.osx": "/bin/zsh",
+    "terminal.integrated.shell.linux": "/bin/zsh",
+    "terminal.integrated.shell.osx": "/bin/zsh",
 }
