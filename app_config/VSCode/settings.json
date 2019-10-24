@@ -5,7 +5,7 @@
     "terminal.integrated.copyOnSelection": true,
 
     "python.dataScience.sendSelectionToInteractiveWindow": true,
-    "python.pythonPath": "/Users/mac/miniconda3/bin/python",
+    "python.pythonPath": "/home/haoyu/ENV/localENV/anaconda3/bin/python",
 
     "terminal.integrated.shell.linux": "/usr/bin/zsh",
     "terminal.integrated.shell.osx": "/bin/zsh",
