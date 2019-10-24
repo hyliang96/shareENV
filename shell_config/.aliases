@@ -458,10 +458,10 @@ zo=~/.zlogout
 # others
 alias vtmux='default_editor ~/.tmux.conf'
 alias stmux='tmux source-file ~/.tmux.conf'
-alias vv='vim ~/.vimrc'           # vim 免source，重新开vim即生效
-alias vvp='vim ~/.vimrc.bundles'      # vim 的插件
-alias ivp="vim  +'PlugInstall --sync' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件
-alias uvp="vim  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件
+alias vv='default_editor ~/.vimrc'           # vim 免source，重新开vim即生效
+alias vvp='default_editor ~/.vimrc.bundles'      # vim 的插件
+alias ivp="vi  +'PlugInstall --sync' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件
+alias uvp="vi  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件
 alias make_ycm='$HOME/.vim/plugged/YouCompleteMe/install.sh' # 编译YouCompleteMe
 fix_ycm() {
     # 参考：https://www.lizenghai.com/archives/22681.html
@@ -628,8 +628,8 @@ srm()
     for i in $*; do
         local base="$(basename $i)"
         if [ -e "$trash/$base" ] || [ -L "$trash/$base" ]; then
-            local prefix=$(date "+%Y-%m-%d-%H:%M:%S")
-            mv "$i" "$trash/$prefix.$base"
+            local suffix=$(date "+%Y-%m-%d-%H:%M:%S")
+            mv "$i" "$trash/$base.$suffix"
         else
             mv "$i" "$trash"
         fi
