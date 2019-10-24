@@ -778,21 +778,50 @@ tuna()
     fi
 }
 
-alias act='conda activate'
-alias dea='conda deactivate'
-alias els='conda info -e' # 列出conda的环境
-enew() # enew 环境名字 python的版本  其他参数
+#  ce: conda environment
+alias ceact='conda activate'
+alias cedea='conda deactivate'
+alias cels='conda info -e' # 列出conda的环境
+cenew() # enew 环境名字 python的版本  其他参数
 {
     conda create -n $1 python=$2 ${@:3:$#}
 }
-ecp() # ecp 源环境名字 新环境名字
+cecp() # ecp 源环境名字 新环境名字
 {
     conda create -n $2 --clone $1
 }
-erm() # erm 环境的名字
+cerm() # erm 环境的名字
 {
     conda remove -n $1 --all
 }
+
+# ----------------- python虚拟环境 ------------------
+
+venew()
+{
+    if ! [ -x "$(command -v virtualenv)" ]; then
+        echo 'You have no command "virtualenv"'
+        local answer=$(bash -c "read  -n 1 -p 'Run \"pip install virtualenv\" to install it? [Y|N] ' c; echo \$c"); echo
+        if [ "$answer" = 'Y' ] || [ "$answer" = 'y' ]; then
+            pip install virtualenv
+        else
+            echo "Install virtualenv before re-running me."
+            return
+        fi
+    fi
+    local version=$(bash -c "read -p 'python version (default \"3\")? ' c; echo \$c"); echo
+    if [ "$version" = '' ]; then
+        local version='3'
+    fi
+    local envdir=$(bash -c "read -p 'env dir name (default \"env\")? ' c; echo \$c"); echo
+    if [ "$envdir" = '' ]; then
+        local envdir='venv'
+    fi
+    virtualenv --no-site-packages -p python$version $envdir
+} 
+
+alias veact='source venv/bin/activate'
+alias vedea='deactivate'
 
 # ---------------- alias to python ------------------
 alias py='python'
