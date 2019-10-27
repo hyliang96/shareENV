@@ -818,7 +818,7 @@ venew()
         local envdir='venv'
     fi
     virtualenv --no-site-packages -p python$version $envdir
-} 
+}
 
 alias veact='source venv/bin/activate'
 alias vedea='deactivate'
