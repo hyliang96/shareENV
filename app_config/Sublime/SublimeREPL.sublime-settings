@@ -1,0 +1,4 @@
+{
+    // 让REPL默认用miniconda的python及python包
+    "default_extend_env": {"PATH": "/Users/mac/miniconda3/bin:{PATH}"}
+}
