@@ -30,8 +30,8 @@
         "prefix": "houtai",
         "body": [
             "( (",
-            "    \\${1:# content}",
-            ") & ) > \\${2:/dev/null} 2>&1",
+            "    ${1:# content}",
+            ") & ) > ${2:/dev/null} 2>&1",
         ],
         "description": "run in background"
     },
