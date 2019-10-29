@@ -196,8 +196,8 @@ bindkey '\eh' backward-char
 bindkey '\el' forward-char
 bindkey '\ej' down-line-or-history
 bindkey '\ek' up-line-or-history
-bindkey '^[[A' up-line-or-search                                                
-bindkey '^[[B' down-line-or-search
+bindkey '\e[A' up-line-or-search
+bindkey '\e[B' down-line-or-search
 # bindkey '\eu' undo
 bindkey '\eH' backward-word
 bindkey '\eL' forward-word
