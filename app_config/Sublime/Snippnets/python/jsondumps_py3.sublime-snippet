@@ -1,9 +1,9 @@
 <snippet>
     <content><![CDATA[
-json.dumps(${1:object}, indent=4, ensure_ascii=False, encoding='utf-8')
+json.dumps(${1:object}, indent=4, ensure_ascii=False)
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-    <tabTrigger>jsondumps</tabTrigger>
+    <tabTrigger>jsondumps_py3</tabTrigger>
     <!-- Optional: Set a scope to limit where the snippet will trigger -->
     <scope>source.python</scope>
 </snippet>
