@@ -32,7 +32,6 @@
             "( (",
             "    \\${1:# content}",
             ") & ) > \\${2:/dev/null} 2>&1",
-            "]]>\",",
         ],
         "description": "run in background"
     },

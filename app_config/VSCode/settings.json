@@ -91,6 +91,7 @@
     "csv-preview.formatValues": "never",
     "csv-preview.theme": "light",
     "workbench.colorTheme": "Gruvbox Dark (Medium)",
+    "git.autofetch": true,
     // darkly
 
 
