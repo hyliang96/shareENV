@@ -34,7 +34,8 @@ space_args() {
     local args=()
     for arg in "$@"; do
         if [[ "$arg" =~ ' ' ]] || [[ "$arg" =~ $'\t' ]] ||  [[ "$arg" =~ $'\n' ]]; then
-            args+=("'${arg//'/'\\''}'")
+            local tmp="${arg//'/'\\''}"
+            args+=("'${tmp}'")
         else
             args+=("${arg}")
         fi
