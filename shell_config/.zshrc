@@ -106,8 +106,8 @@ antigen bundle svn-fast-info
 
 # 支持把unicode字符粘到zsh命令行下
 antigen bundle safe-paste
-autoload -Uz bracketed-paste-magic
-zle -N bracketed-paste bracketed-paste-magic
+# autoload -Uz bracketed-paste-magic
+# zle -N bracketed-paste bracketed-paste-magic
 
 antigen bundle colorize
 antigen bundle github
@@ -397,5 +397,7 @@ alias tm='tmux_tm attach -t'
 
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
+
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
