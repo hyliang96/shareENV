@@ -104,15 +104,6 @@ antigen bundle pip
 antigen bundle svn-fast-info
 # antigen bundle command-not-find
 
-# 支持把unicode字符粘到zsh命令行下
-# antigen bundle safe-paste
-# autoload -Uz bracketed-paste-magic
-# zle -N bracketed-paste bracketed-paste-magic
-DISABLE_MAGIC_FUNCTIONS=true
-# ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
-# export LC_ALL=en_US.UTF-8
-# export LANG=en_US.UTF-8
-
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
@@ -253,6 +244,7 @@ setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history 
 setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
 setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
 # setopt interactivecomments       # 允许终端允许的命令行里带注释
+DISABLE_MAGIC_FUNCTIONS=true     # 禁用bracketed-paste-magic, 避免把unicode字符粘到zsh命令行下时出乱码
 
 # source function.sh if it exists
 [ -f "$HOME/.local/etc/function.sh" ] && . "$HOME/.local/etc/function.sh"
