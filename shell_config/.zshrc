@@ -105,14 +105,14 @@ antigen bundle svn-fast-info
 # antigen bundle command-not-find
 
 # 支持把unicode字符粘到zsh命令行下
-# antigen bundle safe-paste
+antigen bundle safe-paste
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
 antigen bundle rupa/z z.sh
 # antigen bundle z
 
-# antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 # antigen bundle supercrabtree/k
 antigen bundle Vifon/deer
