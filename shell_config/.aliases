@@ -14,20 +14,50 @@ alias gpujch='nvidia-who'            # 看用哪个进程在用显卡
 # 用法
 # `gpuid 0 python xxx.py` 现在暂时用GPU0运行 xxx.py
 # `gpuid 0` 并不能使得接下来一直默认用GPU0运行各个程序
-gpuid()
-{
-    # local gpuids="$1"; shift
-    # eval CUDA_VISIBLE_DEVICES=$gpuids $@
-    local args=""
-    for i in "$@"; do
-        if [[ "$i" =~ ' ' ]]; then
-            local args="$args'$i' "
+# gpuid()
+# {
+    # # local gpuids="$1"; shift
+    # # eval CUDA_VISIBLE_DEVICES=$gpuids $@
+    # local args=""
+    # for i in "$@"; do
+        # if [[ "$i" =~ ' ' ]]; then
+            # local args="$args'$i' "
+        # else
+            # local args="$args$i "
+        # fi
+    # done
+    # eval "CUDA_VISIBLE_DEVICES=${args}"
+# }
+
+space_args() {
+    local name="$1"; shift
+    local args=()
+    for arg in "$@"; do
+        if [[ "$arg" =~ ' ' ]] || [[ "$arg" =~ $'\t' ]] ||  [[ "$arg" =~ $'\n' ]]; then
+            args+=("'${arg//'/'\\''}'")
         else
-            local args="$args$i "
+            args+=("${arg}")
         fi
     done
-    eval "CUDA_VISIBLE_DEVICES=${args}"
+
+    eval "$name"'=("$args[@]")'
+    declare -p $name
 }
+
+gpuid() {
+    local gpuid_setting="CUDA_VISIBLE_DEVICES=$1"; shift
+    gpuid_args=()
+    space_args gpuid_args "$@"
+    declare -p gpuid_args
+    eval "$gpuid_setting" "${gpuid_args[@]}"
+    unset gpuid_args
+}
+
+# gpuid() {
+    # local _gpuids="$1"; shift
+    # "CUDA_VISIBLE_DEVICES=$_gpuids" "$@"
+# }
+
 # use no gpu i.e. cpu only
 alias nogpu='CUDA_VISIBLE_DEVICES=-1 '
 
