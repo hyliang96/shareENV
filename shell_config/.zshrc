@@ -106,6 +106,9 @@ antigen bundle svn-fast-info
 
 # 支持把unicode字符粘到zsh命令行下
 antigen bundle safe-paste
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
+
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
