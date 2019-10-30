@@ -60,7 +60,8 @@ _INIT_SH_NOFUN=1
 
 
 
-DISABLE_MAGIC_FUNCTIONS=true     # 禁用bracketed-paste-magic, 避免把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
+DISABLE_MAGIC_FUNCTIONS=true     # 禁用bracketed-paste-magic, 避免zsh5.1.1中把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
+# 详见：https://github.com/robbyrussell/oh-my-zsh/issues/5569#issuecomment-491504337
 
 # Initialize antigen
 source "$ANTIGEN"
