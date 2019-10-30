@@ -108,6 +108,10 @@ antigen bundle svn-fast-info
 # antigen bundle safe-paste
 # autoload -Uz bracketed-paste-magic
 # zle -N bracketed-paste bracketed-paste-magic
+DISABLE_MAGIC_FUNCTIONS=true
+# ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
+# export LC_ALL=en_US.UTF-8
+# export LANG=en_US.UTF-8
 
 antigen bundle colorize
 antigen bundle github
@@ -398,8 +402,6 @@ alias tm='tmux_tm attach -t'
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 
-# ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
