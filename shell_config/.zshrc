@@ -105,7 +105,7 @@ antigen bundle svn-fast-info
 # antigen bundle command-not-find
 
 # 支持把unicode字符粘到zsh命令行下
-# antigen bundle safe-paste
+antigen bundle safe-paste
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
