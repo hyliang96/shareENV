@@ -57,6 +57,11 @@ _INIT_SH_NOFUN=1
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - Initialize antigen >&2
 
+
+
+
+DISABLE_MAGIC_FUNCTIONS=true     # 禁用bracketed-paste-magic, 避免把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
+
 # Initialize antigen
 source "$ANTIGEN"
 
@@ -244,7 +249,6 @@ setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history 
 setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
 setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
 # setopt interactivecomments       # 允许终端允许的命令行里带注释
-DISABLE_MAGIC_FUNCTIONS=true     # 禁用bracketed-paste-magic, 避免把unicode字符粘到zsh命令行下时出乱码
 
 # source function.sh if it exists
 [ -f "$HOME/.local/etc/function.sh" ] && . "$HOME/.local/etc/function.sh"
