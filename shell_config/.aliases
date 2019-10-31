@@ -295,10 +295,12 @@ if [ -x /usr/bin/vim.gnome ]; then
 fi
 
 # 设置nvim
-if [ -x $serverENV/nvim/usr/bin/nvim ]; then
-# 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
-    export PATH=$serverENV/nvim/usr/bin/:$PATH
-    # alias nvim=$serverENV/nvim/usr/bin/nvim
+if ! [ "$(uname)" = "Darwin" ]; then
+    if [ -x $serverENV/nvim/usr/bin/nvim ]; then
+    # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
+        export PATH=$serverENV/nvim/usr/bin/:$PATH
+        # alias nvim=$serverENV/nvim/usr/bin/nvim
+    fi
 fi
 
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
@@ -307,6 +309,8 @@ alias nvi=nvim
 alias nv=nvim
 alias v=nvim
 alias vi=vim
+
+alias sv='sudo '"$(which nvim)"
 
 # 设置默认编辑器
 # if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
