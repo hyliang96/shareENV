@@ -310,7 +310,7 @@ alias nv=nvim
 alias v=nvim
 alias vi=vim
 
-alias sv='sudo '"$(which nvim)"
+alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
 
 # 设置默认编辑器
 # if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
