@@ -310,6 +310,7 @@ alias nv=nvim
 alias v=nvim
 alias vi=vim
 
+# 让sudo vim 能用nvim
 alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
 
 # 设置默认编辑器
