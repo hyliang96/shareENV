@@ -1112,7 +1112,7 @@ gb()                      # 新建分支并检出到此分支： gb 分支名
 alias gbrm='git branch -d' # 删除分支：gbrm 分支名
 alias gbls='git branch -avv' # 列出所有本地枝，及其关联的远枝： gbls
 alias gch='git checkout'    # 切换分支：gch 分支名/历史提交编号/HEAD^/HEAD/HEAD~n/HEAD@{n}, 要先git commit一次才能gch
-alias gmg='git merge'       # 将其与当前枝合并：gmg 待合并分支
+alias gmg='git merge --no-ff' # 将当前枝与此分支合并（非快进）
 # 历史
 alias glg="git log --graph --oneline --all --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %s' --abbrev-commit --date=short"  #列出提交历史图谱，含远仓、本仓
 alias glgs='glg --simplify-by-decoration'               #列出简化历史图谱
@@ -1219,6 +1219,41 @@ gmed()  # 修改提交信息：  gmed <版本id>
     GIT_SEQUENCE_EDITOR="sed -i -re 's/^pick ${commitid}/r ${commitid}/'" git rebase -i ${commitid}^
 }
 
+
+alias gpr='git pull --rebase'
+
+# 弯弓提交到上游分支
+gbps() {
+    local current="$(git rev-parse --abbrev-ref HEAD)"
+    if [ "$current" = 'HEAD' ]; then
+        echo "You are not at the end of a branch, please checkout to a branch before 'bow push'."
+        return
+    fi
+    git pull --rebase
+    local upstream="$(git rev-parse --abbrev-ref ${current}@{upstream})"
+    local remote=$(echo "${updtream}" | awk -F '/' '{print $1}')
+    local remote_repo=$(echo "${updtream}" | awk -F '/' '{print $2}')
+    git checkout $updtream
+    git merge --no-ff $current
+    git push $remote HEAD:$remote_repo
+    git checkout $current
+    git merge $updtream
+}
+
+# 弯弓提交到目标分支
+gbmg () {
+    local target="$1"
+    local current="$(git rev-parse --abbrev-ref HEAD)"
+    if [ "$current" = 'HEAD' ]; then
+        echo "You are not at the end of a branch, please checkout to a branch before 'bow merge'."
+        return
+    fi
+    git rebase ${target}
+    git checkout ${target}
+    git merge --no-ff ${current}
+    git checkout ${current}
+    git merge ${target}
+}
 # -------------------------------------------------------------
 # -- 自动添加.gitkeep到文件夹下，以使得git add能加入空文件夹
 
@@ -1321,7 +1356,7 @@ gh()
         ssh -T git@github.com # 测试github的ssh连接
     elif [ "$1" = 'ls' ]; then
     # list all remote repo
-        echo $(curl -H "Authorization: token $(<~/.ssh/github.token)" https://api.github.com/user/repos 2>/dev/null | \
+        echo $(curl -H "Authorization: token $(<~/.ssh/github.token)" "https://api.github.com/user/repos?per_page=100" 2>/dev/null | \
         grep -E '^    "name":|^    "private": ' ) | \
         sed 's/"name": "/\
 /g' | \
@@ -1335,7 +1370,7 @@ gh()
         else
             local ifPrivate=true
         fi
-        curl -H "Authorization: token $(<~/.ssh/github.token)" https://api.github.com/user/repos --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
+        curl -H "Authorization: token $(<~/.ssh/github.token)" "https://api.github.com/user/repos?per_page=100" --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
     elif [ "$1" = 'add' ]; then
         shift
         grgh $@
