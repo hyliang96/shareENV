@@ -790,6 +790,11 @@ macdotrm()
     fi
     rm -rf __MACOSX
 }
+
+
+# ----------------- alias to pip ---------------
+alias pip='pip --default-timeout=100'  # 避免报错 Read timed out.
+
 # ---------------- alias to conda --------------
 # 清华tuna源，官网https://mirrors.tuna.tsinghua.edu.cn/news/#oh-my-tuna
 # # 国内默认使用tuna，装包会快很多
