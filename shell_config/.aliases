@@ -221,6 +221,9 @@ ws()
     fi
 }
 
+# 路由表
+alias lyb='netstat -nr'
+
 # -------------------- 进程管理 --------------------
 # 搜索进程
 # alias jc='ps aux | awk 'NR==1'; ps aux | grep -v grep | grep'
@@ -1520,5 +1523,7 @@ timezone()
     target_time="$(echo $target_time | sed 's/周0/周日/g')"
     echo $target_TZ $target_time
 }
+
+
 
 
