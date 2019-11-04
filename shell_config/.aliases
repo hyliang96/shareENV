@@ -221,8 +221,10 @@ ws()
     fi
 }
 
-# 路由表
+# 查看路由表
 alias lyb='netstat -nr'
+# 修改静态路由
+alias jtly='/etc/network/interfaces'
 
 # -------------------- 进程管理 --------------------
 # 搜索进程
