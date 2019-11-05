@@ -95,6 +95,16 @@
     // darkly
 
 
+    // to solve "Visual Studio Code is unable to watch for file changes in this large workspace" (error ENOSPC)"
+    "files.watcherExclude": {
+        "**/__data__/**": true,
+        "**/__result__/**": true,
+        "**/venv/**": true,
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+    },
+
+
     // // macros 插件，支持自定义组合命令
     // // 打开、隐藏内置终端，
     // "macros": {
