@@ -42,14 +42,12 @@ space_args() {
     done
 
     eval "$name"'=("$args[@]")'
-    declare -p $name
 }
 
 gpuid() {
     local gpuid_setting="CUDA_VISIBLE_DEVICES=$1"; shift
     gpuid_args=()
     space_args gpuid_args "$@"
-    declare -p gpuid_args
     eval "$gpuid_setting" "${gpuid_args[@]}"
     unset gpuid_args
 }
