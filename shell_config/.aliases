@@ -1239,13 +1239,13 @@ gbps() {
     fi
     git pull --rebase
     local upstream="$(git rev-parse --abbrev-ref ${current}@{upstream})"
-    local remote=$(echo "${updtream}" | awk -F '/' '{print $1}')
-    local remote_repo=$(echo "${updtream}" | awk -F '/' '{print $2}')
-    git checkout $updtream
+    local remote=$(echo "${upstream}" | awk -F '/' '{print $1}')
+    local remote_repo=$(echo "${upstream}" | awk -F '/' '{print $2}')
+    git checkout $upstream
     git merge --no-ff $current
     git push $remote HEAD:$remote_repo
     git checkout $current
-    git merge $updtream
+    git merge $upstream
 }
 
 # 弯弓提交到目标分支
