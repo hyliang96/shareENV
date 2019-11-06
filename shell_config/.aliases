@@ -967,7 +967,16 @@ alias gi='git init'       # 创建.git:    cd 项目文件夹; gi
 # 暂存
 alias gs='git status'     # 查看当前状态:  gs
 alias ga='git add'        # 暂存增改文件:  ga 文件
-alias gaa='git add -A .'  # 暂存所有增删改文件：gaa
+gaa() {
+    if [ $# -eq 0 ]; then
+        local git_path="$(git rev-parse --show-toplevel)"
+    else
+        local git_path="$1"
+    fi
+    git add -A "$git_path"
+}
+# alias gaa="git add -A "
+# alias gaa='git add -A .'  # 暂存所有增删改文件：gaa
 
 # 查看跟踪的文件和文件夹，并自动着色
 # list files or dirs traced or ignored by git
