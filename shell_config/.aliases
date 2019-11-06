@@ -1514,10 +1514,14 @@ alias sshfs_jch='jch sshfs'
 # 实用小工具
 timezone()
 {
+    if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = help ]; then
+        echo 'timezone source-timezone yyyy-mm-dd hh:mm:ss [target-timezone=Asia/Shanghai]'
+        return
+    fi
     local source_TZ="$1"
-    local source_time="$2"
-    if [ $# -eq 3 ]; then
-        local target_TZ="$3"
+    local source_time="$2 $3"
+    if [ $# -eq 4 ]; then
+        local target_TZ="$4"
     else
         local target_TZ='Asia/Shanghai'
     fi
