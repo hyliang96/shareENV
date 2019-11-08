@@ -314,15 +314,17 @@ alias v=nvim
 alias vi=vim
 
 # 让sudo vim 能用nvim
-alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
+
 
 # 设置默认编辑器
 # if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
    # ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
     # alias default_editor='code'
-if [ -x $serverENV/nvim/usr/bin/nvim ]; then
+if [ -x $(which nvim) ]; then
+    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
     alias default_editor=nvim
-else
+elif [ -x $(which vim) ]; then
+    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
     alias default_editor=vim
 fi
 
