@@ -401,7 +401,7 @@ abspath(){
     # }
 # fi
 
-_open() {
+my_open() {
     local app="$1"
     shift
     local dirs=
@@ -427,10 +427,10 @@ if [ "$(uname)" != "Darwin" ]; then
     # 不是mac
     if ! [ -x "`which code`" ] && ! [ -x "`which code-insiders`" ]  ; then
         # 没有code命令（即在服务器上，且目前不是用vscode远程登录）
-        alias code='_open code'
+        alias code='my_open code'
     fi
-    alias open='_open open'
-    alias sub='_open sub'
+    alias open='my_open open'
+    alias sub='my_open sub'
 else
     if [ -d /Applications/Sublime\ Text.app ]; then
         # 本地是Mac，且有sublime

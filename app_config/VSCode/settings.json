@@ -5,7 +5,7 @@
     "terminal.integrated.copyOnSelection": true,
 
     "python.dataScience.sendSelectionToInteractiveWindow": true,
-    "python.pythonPath": "/home/haoyu/ENV/localENV/anaconda3/bin/python",
+    "python.pythonPath": "/Users/mac/miniconda3/bin/python",
 
     "terminal.integrated.shell.linux": "/usr/bin/zsh",
     "terminal.integrated.shell.osx": "/bin/zsh",
@@ -85,12 +85,12 @@
 
     // 保存文件后自动删除行尾空格
     "files.trimTrailingWhitespace": true,
-    "python.insidersChannel": "off",
+    "python.insidersChannel": "daily",
 
     // 数字显示原精度
     "csv-preview.formatValues": "never",
     "csv-preview.theme": "light",
-    "workbench.colorTheme": "Gruvbox Dark (Medium)",
+    "workbench.colorTheme": "Gruvbox Light (Medium)",
     "git.autofetch": true,
     // darkly
 
@@ -103,6 +103,7 @@
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
     },
+    "python.dataScience.askForKernelRestart": false,
 
 
     // // macros 插件，支持自定义组合命令
