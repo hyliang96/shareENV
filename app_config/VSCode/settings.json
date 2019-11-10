@@ -90,7 +90,7 @@
     // 数字显示原精度
     "csv-preview.formatValues": "never",
     "csv-preview.theme": "light",
-    "workbench.colorTheme": "Gruvbox Light (Medium)",
+    "workbench.colorTheme": "Gruvbox Dark (Medium)",
     "git.autofetch": true,
     // darkly
 
