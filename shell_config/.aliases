@@ -401,7 +401,7 @@ abspath(){
     # }
 # fi
 
-_open() {
+my_open() {
     local app="$1"
     shift
     local dirs=
@@ -427,10 +427,10 @@ if [ "$(uname)" != "Darwin" ]; then
     # 不是mac
     if ! [ -x "`which code`" ] && ! [ -x "`which code-insiders`" ]  ; then
         # 没有code命令（即在服务器上，且目前不是用vscode远程登录）
-        alias code='_open code'
+        alias code='my_open code'
     fi
-    alias open='_open open'
-    alias sub='_open sub'
+    alias open='my_open open'
+    alias sub='my_open sub'
 else
     if [ -d /Applications/Sublime\ Text.app ]; then
         # 本地是Mac，且有sublime
@@ -964,14 +964,24 @@ tm() {
 }
 
 # ------------------ git ----------------------------
+# git utils
+git_root() {
+    git rev-parse --show-toplevel
+}
+git_path_to_root() {
+    local abs_path="$(abspath $1)"
+    local git_path="$(git_root)"
+    echo "${abs_path/${git_path}/}"
+}
+
 # 初创
-alias gi='git init'       # 创建.git:    cd 项目文件夹; gi
+alias gin='git init'       # 创建.git:    cd 项目文件夹; gi
 # 暂存
 alias gs='git status'     # 查看当前状态:  gs
 alias ga='git add'        # 暂存增改文件:  ga 文件
 gaa() {
     if [ $# -eq 0 ]; then
-        local git_path="$(git rev-parse --show-toplevel)"
+        local git_path="$(git_root)"
     else
         local git_path="$1"
     fi
@@ -1030,24 +1040,33 @@ alias glli='gls -l --ignore'
 
 alias grm='git rm -rf'    # （删除并）暂存删除： grm 文件             ；用于替代rm
 alias gmv='git mv'        # （移动并）暂存移动： gmv 文件 文件夹       ；用于替代mv
-alias gdf='git diff'      # 改过未add、add了 文件 时，看文件与上次提交的区别：gdf 文件
+gdf() {
+    if [ "$1" = 'help' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
+        echo 'gdf             显示当前全repo中 已经跟踪的文件 与最新一次`git commit`的区别'
+        echo 'gdf -u|-unadd   显示当前全repo中 已经跟踪且未`git add`的文件 与最新一次comit的区别'
+    elif [ $# -eq 0 ]; then
+        git diff HEAD #  看已经跟踪的文件与上次提交的区别
+    elif [ "$1" = '--unadd' ] || [ "$1" = '-u' ]; then
+        git diff      #  看已经跟踪 且 未add 的文件与上次提交的区别
+    fi
+}
 gum(){
-    if [ $# = 0 ]; then
-        echo 'Usage: 撤销未暂存的修改. 无法撤销修改先前未跟踪的文件'
+    if [ $# = 0 ] || [ "$1" = 'help' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] ; then
+        echo 'Usage: 撤销对 已跟踪文件 未`git add`的修改，无法撤销修改先前未跟踪的文件'
         echo ' gum  <filename> [ <filename> [ <filename> ...]]'
-        echo ' gum  -all : 所有为暂存的修改'
-    elif [ "$1" = "-all" ]; then
+        echo ' gum  -a|--all : 所有为暂存的修改'
+    elif [ "$1" = '-a' ] || [ "$1" = "--all" ]; then
         git checkout .
     else
         git checkout -- $*
     fi
 }
 gua(){
-    if [ $# = 0 ]; then
+    if [ $# = 0 ] || [ "$1" = 'help' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
         echo 'Usage: 撤销暂存，对 `git add` `git rm`有效 '
         echo ' gua  <filename> [ <filename> [ <filename> ...]]'
-        echo ' gua  -all : 撤销所有暂存'
-    elif [ "$1" = "-all" ]; then
+        echo ' gua   -a|--all : 撤销所有暂存'
+    elif [ "$1" = '-a' ] || [ "$1" = "--all" ]; then
         git reset HEAD
     else
         git reset HEAD $*
@@ -1116,10 +1135,32 @@ grcm() # 反向提交到某个版本
     fi
 }
 
-gig()   # 修改.gitignore 后，commit一版
+# git [要忽略的文件(夹) 的 相对当前目录的路径 或 绝对路径] x n，将其添加到repo根目录下的.gitignore
+gi() { # git ignore
+    for i in "$@"; do
+        local target_path_to_git_root="$(git_path_to_root $i)"
+        local gitignore="$(git_root)/.gitignore"
+        echo "$target_path_to_git_root" >> $gitignore
+    done
+}
+
+# 显示repo到repo根目录下的.gitignore
+gic() { # git ignroe cat
+    local gitignore="$(git_root)/.gitignore"
+    cat $gitignore
+}
+
+# 编辑repo到repo根目录下的.gitignore
+giv() { # git ignore vim
+    local gitignore="$(git_root)/.gitignore"
+    default_editor "$gitignore"
+}
+
+# 依照最新的.gitignore文件 忽略整个repo中的文件(夹)
+giu()   # git ignore update: 修改.gitignore 后，忽略其中的文件，commit一版
 {
     git rm -r --cached .  #清除缓存
-    git add . #重新trace file
+    git add "$(git_root)" #重新trace file
     git commit -m "update .gitignore" #提交和注释
 }
 
