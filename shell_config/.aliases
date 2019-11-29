@@ -603,7 +603,7 @@ alias ts='rsync -aHhvz --progress'
 # 下载到Downloads
 download()
 {
-    local download_path="~/Downloads"
+    local download_path="$HOME/Downloads"
     if [ -d $download_path ]; then
         rsync -aHhvz --progress $@ $download_path
     else
