@@ -387,6 +387,7 @@ autoload -U compinit && compinit
 
 # 复用 rsync 等的补全函数
 compdef _rsync autots
+compdef _rsync download
 
 tmux_itm() {   :    }
 compdef _tmux tmux_itm
