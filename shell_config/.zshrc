@@ -116,6 +116,8 @@ antigen bundle python
 antigen bundle rupa/z z.sh
 # antigen bundle z
 
+# enable syntax highlighting
+antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 # antigen bundle supercrabtree/k
@@ -172,8 +174,7 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 [ -f "$HOME/.local/etc/config.zsh" ] && source "$HOME/.local/etc/config.zsh"
 [ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
-# enable syntax highlighting
-antigen bundle zsh-users/zsh-syntax-highlighting
+
 
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
