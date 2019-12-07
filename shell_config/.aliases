@@ -686,6 +686,18 @@ srm()
         fi
     done
 }
+srm-clean()
+{
+    if [ -d "$trash" ] && [ "$trash" != '' ] && [ "$trash" != '/' ] && [ "$trash" != './' ] && [ "$trash" != '.' ]; then
+        local answer=$(bash -c "read  -n 1 -p 'irrevertabley clean $trash ? [Y|N]' c; echo \$c"); echo
+        if [ "$answer" = 'Y' ] || [ "$answer" = 'y' ]; then
+            rm -rf $trash/*
+            rm -rf $trash/.*
+        fi
+    else
+        echo "trash dir not exists: $trash"
+    fi
+}
 # 安全清空目录，包括隐藏文件（夹）
 srm_under()
 {
