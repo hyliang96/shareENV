@@ -67,7 +67,7 @@
     "editor.tabSize": 4,
     // 按tab输入editor.tabSize个空格
     "editor.insertSpaces": true,
-    "window.zoomLevel": -1,
+    "window.zoomLevel": 0,
 
 
     // "terminal.integrated.cwd": "${cwd}",
@@ -107,7 +107,16 @@
     "workbench.activityBar.visible": true,
     "workbench.statusBar.visible": true,
     "editor.minimap.enabled": false,
+    "markdown-preview-enhanced.enableExtendedTableSyntax": true,
+    "markdown-preview-enhanced.previewTheme": "monokai.css",
 
+
+
+    // // https://github.com/pytorch/pytorch/issues/701#issuecomment-438215838
+    // "python.linting.pylintArgs": [
+    //     "--errors-only",
+    //     "--generated-members=numpy.* ,torch.* ,cv2.* , cv.*"
+    // ]
 
     // // macros 插件，支持自定义组合命令
     // // 打开、隐藏内置终端，
