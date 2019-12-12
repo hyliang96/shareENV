@@ -25,6 +25,8 @@
 	},
 	"in_process_packages":
 	[
+		"Anaconda",
+		"SSH Config"
 	],
 	"installed_packages":
 	[

@@ -8,6 +8,8 @@
 	"highlight_line": true,
 	"ignored_packages":
 	[
+		"Anaconda",
+		"SSH Config",
 		"Vintage"
 	],
 	"remember_open_files": true,
