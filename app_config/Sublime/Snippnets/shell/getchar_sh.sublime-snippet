@@ -1,0 +1,9 @@
+<snippet>
+    <content><![CDATA[
+answer=\$(bash -c "read  -n 1 -p '${1:提示内容} ? [Y|N]' c; echo \\\$c"); echo
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>getchar</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <scope>source.shell</scope>
+</snippet>
