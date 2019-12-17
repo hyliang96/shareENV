@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
 # Antigen: https://github.com/zsh-users/antigen

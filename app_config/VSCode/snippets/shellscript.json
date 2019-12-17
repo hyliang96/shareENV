@@ -147,4 +147,11 @@
         ],
         "description": "get one char"
     },
+    "ifmac": {
+        "prefix": "ifmac",
+        "body": [
+            "if [ \"\\$(uname)\" = \"Darwin\" ];",
+        ],
+        "description": "prompt"
+    },
 }
