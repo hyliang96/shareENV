@@ -570,7 +570,7 @@ rmpa()
 # ssh
 alias vssh='default_editor ~/.ssh/config';
 alias vhost='default_editor /etc/hosts' # 系统文件，个人账号用sub看不了
-alias sendkey='ssh-copy-id'     # 发送公钥
+alias sendkey='ssh-copy-id -i'     # 发送公钥
 
 
 # ---------------- alias cp、scp ----------------
@@ -1438,7 +1438,7 @@ gh()
         ssh -T git@github.com # 测试github的ssh连接
     elif [ "$1" = 'ls' ]; then
     # list all remote repo
-        echo $(curl -H "Authorization: token $(<~/.ssh/github.token)" "https://api.github.com/user/repos?per_page=100" 2>/dev/null | \
+        echo $(curl -H "Authorization: token $(<~/.ssh/github/github.token)" "https://api.github.com/user/repos?per_page=100" 2>/dev/null | \
         grep -E '^    "name":|^    "private": ' ) | \
         sed 's/"name": "/\
 /g' | \
@@ -1452,7 +1452,7 @@ gh()
         else
             local ifPrivate=true
         fi
-        curl -H "Authorization: token $(<~/.ssh/github.token)" "https://api.github.com/user/repos?per_page=100" --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
+        curl -H "Authorization: token $(<~/.ssh/github/github.token)" "https://api.github.com/user/repos?per_page=100" --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
     elif [ "$1" = 'add' ]; then
         shift
         grgh $@
