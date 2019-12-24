@@ -111,6 +111,12 @@
     "markdown-preview-enhanced.previewTheme": "monokai.css",
 
 
+    // 文件尾缀对应的文件格式
+    "files.associations": {
+        ".env": "shellscript"
+    },
+
+
 
     // // https://github.com/pytorch/pytorch/issues/701#issuecomment-438215838
     // "python.linting.pylintArgs": [

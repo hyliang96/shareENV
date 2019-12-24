@@ -143,8 +143,22 @@
     "getchar": {
         "prefix": "getchar",
         "body": [
-            "answer=\\$(bash -c \"read  -n 1 -p '${1:提示内容}? [Y/N] ' c; echo \\\\\\$c\"); echo",
+            "answer=\\$(bash -c \"read -n 1 -p '${1:提示内容}? [Y/N] ' c; echo \\\\\\$c\"); echo",
         ],
         "description": "get one char"
+    },
+    "getline": {
+        "prefix": "getline",
+        "body": [
+            "answer=\\$(bash -c \"read -p '${1:提示内容}? ' c; echo \\\\\\$c\"); echo",
+        ],
+        "description": "get one line"
+    },
+    "ifmac": {
+        "prefix": "ifmac",
+        "body": [
+            "if [ \"\\$(uname)\" = \"Darwin\" ];",
+        ],
+        "description": "prompt"
     },
 }
