@@ -1020,44 +1020,276 @@ gaa() {
 #   without --ignore : ls files traced by git, and dirs contain such files
 #   without <path>   : ls files or dirs under current path
 # auto colored
-gls()
-{
-    local git_args=''
-    local ls_args=''
-    local dir_paths
-    declare -a dir_paths
-    while test $# -gt 0
-    do
+
+# gls()
+# {
+    # local git_args=''
+    # local ls_args=''
+    # local dir_paths
+    # declare -a dir_paths
+    # while test $# -gt 0
+    # do
+        # case "$1" in
+            # --ignore)  git_args='-o -i --exclude-standard' ;;
+            # -*)        ls_args="$ls_args $1"  ;;
+            # --*)       ls_args="$ls_args $1" ;;
+            # *)         dir_paths=("${dir_paths[@]}" "$1");;
+        # esac
+        # shift
+    # done
+
+    # local gls_command="git ls-files $git_args | awk -F / '{print \$1}' | uniq | sed 's/\ /\\\ /g' | xargs ls -dh --color=auto $ls_args"
+
+    # if [ ${#dir_paths} -eq 0 ]; then
+        # eval "$gls_command"
+    # else
+        # local here_path="$(pwd | sed 's/\ /\\\ /g')"
+        # for dir_path in "${dir_paths[@]}"; do
+            # echo
+            # echo -E "$dir_path:" | sed 's/\ /\\\ /g'
+            # cd $dir_path
+            # eval "$gls_command"
+            # cd $here_path
+        # done
+    # fi
+# }
+# direct subrepo
+
+has_dot_git() {
+    while read data; do
+        echo -E "$data"
+    done | \
+    sed 's/\/$//g' | \
+    sed 's/$/&\/.git/g' | \
+    sed 's/\ /\\\ /g' | xargs ls -d1 2>/dev/null | \
+    sed 's/\/.git$//g' | \
+    sort | uniq
+    # echo -E $@ |  sed 's/\/$//g' | sed 's/$/&\/.git/g' | xargs ls -d1 2>/dev/null | sed 's/\/.git$//g'
+}
+
+subrepo_() {
+    if [ "$1" = '--all' ]; then
+        (git ls-files & git ls-files -o) | has_dot_git
+    elif [ "$1" = '--track' ]; then
+        git ls-files | has_dot_git
+    elif [ "$1" = '--untrack' ]; then
+        git ls-files -o | has_dot_git
+    elif [ "$1" = '--ignore' ]; then
+        subrepo_ --untrack | sed 's/\ /\\\ /g' | xargs git check-ignore
+    elif [ "$1" = '--unadd' ]; then
+        (subrepo_ --ignore & subrepo_ --untrack) | sort | uniq -u
+    else
+        echo "wrong args $@ for \`subrepo_\`." >&2
+    fi
+}
+
+subrepo() {
+    local git_type='--track'
+    local ls_args=()
+    local dir_paths=()
+    while test $# -gt 0 ; do
         case "$1" in
-            --ignore)  git_args='-o -i --exclude-standard' ;;
-            -*)        ls_args="$ls_args $1"  ;;
-            --*)       ls_args="$ls_args $1" ;;
-            *)         dir_paths=("${dir_paths[@]}" "$1");;
+            --all|--track|--untrack|--ignore|--unadd) git_type="$1" ;;
+            -*|--*)    ls_args+=("$1") ;;
+            *)         dir_paths+=("$1");;
         esac
         shift
     done
 
-    local gls_command="git ls-files $git_args | awk -F / '{print \$1}' | uniq | sed 's/\ /\\\ /g' | xargs ls -dh --color=auto $ls_args"
-
     if [ ${#dir_paths} -eq 0 ]; then
-        eval "$gls_command"
+        subrepo_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
     else
         local here_path="$(pwd | sed 's/\ /\\\ /g')"
         for dir_path in "${dir_paths[@]}"; do
             echo
             echo -E "$dir_path:" | sed 's/\ /\\\ /g'
             cd $dir_path
-            eval "$gls_command"
+            subrepo_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
+            cd $here_path
+        done
+    fi
+
+}
+
+git-tree_() {
+    if [ "$1" = '--all' ]; then
+        (git-tree_ --track & git-tree_ --untrack) | sort | uniq
+    elif [ "$1" = '--track' ] ; then
+        git ls-files
+    elif [ "$1" = '--untrack' ]; then
+        git ls-files -o | sed 's/\/$//g'
+    elif [ "$1" = '--ignore-file' ]; then
+        git ls-files -o -i --exclude-standard
+    elif [ "$1" = '--ignore-repo' ]; then
+        subrepo_ ignored
+    elif [ "$1" = '--ignore' ]; then
+        ( git-tree_ --ignore-file & git-tree_ --ignore-repo) | sort | uniq
+    elif [ "$1" = '--unadd' ]; then
+        (git-tree_ --ignore & git-tree_ --untrack) | sort | uniq -u
+    else
+        echo "wrong args $@ for \`git-tree_\`." >&2
+    fi
+}
+
+git-tree() {
+    local git_type='--track'
+    local ls_args=()
+    local dir_paths=()
+    while test $# -gt 0 ; do
+        case "$1" in
+            --all|--track|--untrack|--ignore-file|--ignore-repo|--ignore|--unadd) git_type="$1" ;;
+            -*|--*)    ls_args+=("$1") ;;
+            *)         dir_paths+=("$1");;
+        esac
+        shift
+    done
+
+    if [ ${#dir_paths} -eq 0 ]; then
+        git-tree_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
+        # eval "$gls_command"
+    else
+        local here_path="$(pwd | sed 's/\ /\\\ /g')"
+        for dir_path in "${dir_paths[@]}"; do
+            echo
+            echo -E "$dir_path:" | sed 's/\ /\\\ /g'
+            cd $dir_path
+            git-tree_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
             cd $here_path
         done
     fi
 }
+
+
+first_layer() {
+    while read data; do
+        echo -E "$data"
+    done | awk -F / '{print $1}' | sort | uniq
+}
+
+git-ls() {
+    local git_type='--track'
+    local ls_args=()
+    local dir_paths=()
+    while test $# -gt 0 ; do
+        case "$1" in
+            --all|--track|--untrack|--has-untrack|--ignore|--has-ignore|--unadd|--has-unadd) git_type="$1" ;;
+            -*|--*)    ls_args+=("$1") ;;
+            *)         dir_paths+=("$1");;
+        esac
+        shift
+    done
+
+    if [ "$git_type" = '--all' ]; then
+        \ls -1a | grep -v -E '^(.|..|.git)$'
+    elif [ "$git_type" = '--track' ]; then
+        git ls-files | first_layer
+    elif [ "$git_type" = '--untrack' ]; then
+        (git-ls --all & git-ls --track) | sort | uniq -u
+    elif [ "$git_type" = '--has-untrack' ]; then
+        git ls-files -o | first_layer
+
+    elif [ "$git_type" = '--ignore' ]; then
+        git-ls --all | sed 's/\ /\\\ /g' | xargs git check-ignore
+    elif [ "$git_type" = '--has-ignore' ]; then
+        git-tree_ --ignore | first_layer
+    elif [ "$git_type" = '--unadd' ]; then
+        (git-ls --ignore & git-ls --untrack) | sort | uniq -u
+    elif [ "$git_type" = '--has-unadd' ]; then
+        git-tree_ --unadd | first_layer
+    else
+        echo "wrong arg $git_type for \`git-ls\`." >&2
+    fi | sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
+}
+
+gls()
+{
+    local ls_args=()
+    local dir_paths=()
+    # declare -a dir_paths
+    while test $# -gt 0
+    do
+        case "$1" in
+            -*|--*)    ls_args+=("$1") ;;
+            *)         dir_paths+=("$1");;
+        esac
+        shift
+    done
+
+    # local gls_command="git-ls $file_type  | awk -F / '{print \$1}' | uniq | sed 's/\ /\\\ /g' | xargs ls -dh --color=auto $ls_args"
+
+    if [ ${#dir_paths} -eq 0 ]; then
+        git-ls $ls_args
+        # eval "$gls_command"
+    else
+        local here_path="$(pwd | sed 's/\ /\\\ /g')"
+        for dir_path in "${dir_paths[@]}"; do
+            echo
+            echo -E "$dir_path:" | sed 's/\ /\\\ /g'
+            cd $dir_path
+            git-ls "${ls_args[@]}"
+            # eval "$gls_command"
+            cd $here_path
+        done
+    fi
+}
+
+# is tracked
+# git_tracked() { git ls-files | first_layer; }
+# # git ls-files | awk -F / '{print $1}' | sort | uniq
+
+# git_contained_ignored_files() { git ls-files -o -i --exclude-standard | first_layer; }
+# git_contained_ignored_repo() { ignored_subrepo | first_layer; }
+# git_contained_ignored() { ignored_subrepo | first_layer; }
+# contained ignored:
+    # contained ignored files
+    # contrained ignored subrepo
+ # (git ls-files -o -i --exclude-standard & ignored_subrepo ) | awk -F / '{print $1}' | sort | uniq
+
+# is ignored 中
+# \ls -1 | xargs git check-ignore
+
+# has untraked
+# gt ls-files -o | awk -F / '{print $1}' | sort | uniq
+
+# 文件(夹)不在 .gitignore 中
+# (\ls -1; \ls -1 | xargs git check-ignore) | sort | uniq -u
+
+# --------------------
+
+
+# # all subrepo
+# all_subrepo() { (git ls-files & git ls-files -o) | has_dot_git; }
+    # # has_dot_git "$(git ls-files; git ls-files -o)"
+# # (git ls-files; git ls-files -o) | sed 's/\/$//g' | sed 's/$/&\/.git/g' | xargs ls -d1 2>/dev/null | sed 's/\/.git$//g'
+
+# # tracked subrepo
+# tracked_subrepo() { git ls-files | has_dot_git; }
+# # git ls-files | sed 's/\/$//g' | sed 's/$/&\/.git/g' | xargs ls -d1 2>/dev/null | sed 's/\/.git$//g'
+
+# # ignored subrepo
+# ignored_subrepo() { untracked_subrepo | xargs git check-ignore; }
+# # git ls-files -o | sed 's/\/$//g' | sed 's/$/&\/.git/g' | xargs ls -d1 2>/dev/null | sed 's/\/.git$//g' | xargs git check-ignore
+
+# # untracked subrepo
+# untracked_subrepo() { git ls-files -o | has_dot_git; }
+# # git ls-files -o | sed 's/\/$//g' | sed 's/$/&\/.git/g' | xargs ls -d1 2>/dev/null | sed 's/\/.git$//g'
+
+# # untracked unignored subrepo
+# untracked_unignored_subrepo() {
+    # (untracked_subrepo & ignored_subrepo) | sort | uniq -u
+# }
+# # git ls-files -o | sed 's/\/$//g' | sed 's/$/&\/.git/g' | xargs ls -d1 2>/dev/null | sed 's/\/.git$//g' | xargs git check-ignore
+
+# --------------------
+
 # 几个文件一行，不显示文件详细信息
 alias gl='gls'
 alias gli='gls --ignore'
+alias glhi='gls --has-ignore'
 # 一个文件一行，显示详细信息
-alias gll='gls -l'
-alias glli='gls -l --ignore'
+alias gll='gls -lh'
+alias glli='gls -lh --ignore'
+alias gllhi='gls -lh --has-ignore'
 
 # alias gll='git ls-files | awk -F / '\''{print $1}'\'' | uniq | sed '\''s/\ /\\\ /g'\'' | xargs ls -dl --color=auto'
 
@@ -1095,6 +1327,9 @@ gua(){
         git reset HEAD $*
     fi
 }
+# git untrack
+alias gut='git rm -r --cached'
+
 # 提交
 alias gcm='git commit -m'  # 提交：gcm "xxx" [options]
 alias gcma='git commit --amend' # 先add，再覆盖上一次提交：gcma，然后弹出文本编辑器，编辑上次提交的说明
