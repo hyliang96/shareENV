@@ -1012,6 +1012,7 @@ gaa() {
 # alias gaa="git add -A "
 # alias gaa='git add -A .'  # 暂存所有增删改文件：gaa
 
+
 # 查看跟踪的文件和文件夹，并自动着色
 # list files or dirs traced or ignored by git
 # gitls [<path> [<path> ...]] [--ignore] [<other-args-of-ls>]
