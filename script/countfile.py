@@ -79,8 +79,8 @@ if __name__ == '__main__':
         subdir_list += ['./-files-']
         num_list += [len(file_list)]
 
-        subdir_list += ['./']
-        num_list += [count('./')]
+        subdir_list += [args.path]
+        num_list += [count(args.path)]
 
         subdir_num_lsit = sorted(zip(subdir_list,num_list),
             key=lambda subdir_num:subdir_num[1],reverse=True)
