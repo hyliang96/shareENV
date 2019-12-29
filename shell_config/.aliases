@@ -1056,7 +1056,7 @@ subrepo_() {
     elif [ "$1" = '--untrack' ]; then
         git ls-files -o | has_dot_git
     elif [ "$1" = '--ignore' ]; then
-        subrepo_ --untrack | sed 's/\ /\\\ /g' | xargs git check-ignore
+        subrepo_ --untrack | sed 's/\ /\\\ /g' | xargs git check-ignore 2>&1 | grep -v  'fatal: no path specified'
     elif [ "$1" = '--unadd' ]; then
         (subrepo_ --ignore & subrepo_ --untrack) | sort | uniq -u
     else
@@ -1078,18 +1078,17 @@ subrepo() {
     done
 
     if [ ${#dir_paths} -eq 0 ]; then
-        subrepo_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
+        subrepo_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}" | grep -v -E '^.$'
     else
         local here_path="$(pwd | sed 's/\ /\\\ /g')"
         for dir_path in "${dir_paths[@]}"; do
             echo
             echo -E "$dir_path:" | sed 's/\ /\\\ /g'
             cd $dir_path
-            subrepo_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
+            subrepo_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}" | grep -v -E '^.$'
             cd $here_path
         done
     fi
-
 }
 
 git-ls-r_() {
@@ -1102,7 +1101,7 @@ git-ls-r_() {
     elif [ "$1" = '--ignore-file' ]; then
         git ls-files -o -i --exclude-standard
     elif [ "$1" = '--ignore-repo' ]; then
-        subrepo_ ignored
+        subrepo_ --ignore
     elif [ "$1" = '--ignore' ]; then
         ( git-ls-r_ --ignore-file & git-ls-r_ --ignore-repo) | sort | uniq
     elif [ "$1" = '--unadd' ]; then
@@ -1127,14 +1126,15 @@ git-ls-r() {
 
     if [ ${#dir_paths} -eq 0 ]; then
         git-ls-r_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
-        # eval "$gls_command"
+        # | grep -v -E '^.$'
     else
         local here_path="$(pwd | sed 's/\ /\\\ /g')"
         for dir_path in "${dir_paths[@]}"; do
             echo
             echo -E "$dir_path:" | sed 's/\ /\\\ /g'
             cd $dir_path
-            git-ls-r_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
+            git-ls-r_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}" 
+            # | grep -v -E '^.$'
             cd $here_path
         done
     fi
@@ -1180,6 +1180,7 @@ git-ls() {
     else
         echo "wrong arg $git_type for \`git-ls\`." >&2
     fi | sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
+    # | grep -v -E '^.$'
 }
 
 gls()
