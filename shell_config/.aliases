@@ -1133,7 +1133,7 @@ git-ls-r() {
             echo
             echo -E "$dir_path:" | sed 's/\ /\\\ /g'
             cd $dir_path
-            git-ls-r_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}" 
+            git-ls-r_ "$git_type" |  sed 's/\ /\\\ /g' | xargs ls -d --color=auto "${ls_args[@]}"
             # | grep -v -E '^.$'
             cd $here_path
         done
@@ -1366,6 +1366,7 @@ alias gbrm='git branch -d' # 删除分支：gbrm 分支名
 alias gbls='git branch -avv' # 列出所有本地枝，及其关联的远枝： gbls
 alias gch='git checkout'    # 切换分支：gch 分支名/历史提交编号/HEAD^/HEAD/HEAD~n/HEAD@{n}, 要先git commit一次才能gch
 alias gmg='git merge --no-ff' # 将当前枝与此分支合并（非快进）
+alias gmgc='git merge --continue'
 # 历史
 alias glg="git log --graph --oneline --all --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %s' --abbrev-commit --date=short"  #列出提交历史图谱，含远仓、本仓
 alias glgs='glg --simplify-by-decoration'               #列出简化历史图谱
@@ -1474,6 +1475,7 @@ gmed()  # 修改提交信息：  gmed <版本id>
 
 
 alias gpr='git pull --rebase'
+alias grbc='git rebase --continue'
 
 # 弯弓提交到上游分支
 gbps() {
