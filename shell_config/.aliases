@@ -1230,25 +1230,42 @@ alias gllhi='gls -lh --has-ignore'
 
 alias grm='git rm -rf'    # （删除并）暂存删除： grm 文件             ；用于替代rm
 alias gmv='git mv'        # （移动并）暂存移动： gmv 文件 文件夹       ；用于替代mv
+
 gdf() {
     if [ "$1" = 'help' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
-        echo 'gdf             显示当前全repo中 已经跟踪的文件 与最新一次`git commit`的区别'
-        echo 'gdf -u|-unadd   显示当前全repo中 已经跟踪且未`git add`的文件 与最新一次comit的区别'
-    elif [ $# -eq 0 ]; then
-        git diff HEAD #  看已经跟踪的文件与上次提交的区别
-    elif [ "$1" = '--unadd' ] || [ "$1" = '-u' ]; then
-        git diff      #  看已经跟踪 且 未add 的文件与上次提交的区别
+        echo 'Usage:'
+        echo '当前节点内:'
+        echo '  gdf                [options] [ -- (诸)文件(夹) ] : 跟踪文件未暂存的修改 : 工作目录 与 索引   的区别'
+        echo '  gdf-s[tage]        [options] [ -- (诸)文件(夹) ] : 跟踪文件已暂存的修改 : 所有 与 HEAD提交版本 的区别'
+        echo '  gdf-d[ir]          [options] [ -- (诸)文件(夹) ] : 跟踪文件的修改       : 工作目录 与 HEAD提交版本 的区别'
+        echo
+        echo '节点之间:'
+        echo '  gdf    <node>      [options] [ -- (诸)文件(夹) ] : --                   : 工作目录 与 <node>提交版本 的区别'
+        echo '  gdf-s  <node>      [options] [ -- (诸)文件(夹) ] : --                   : 索引 与 <node>提交版本 的区别'
+        echo '  gdf    <node> <node> [options] [ -- (诸)文件(夹) ] : 两个node的区别'
+    else
+        git diff "$@"
     fi
 }
-gum(){
+alias gdf-s='git diff --staged'
+alias gdf-stage='git diff --staged'
+alias gdf-d='git diff HEAD'
+alias gdf-dir='git diff HEAD'
+
+guam(){
     if [ $# = 0 ] || [ "$1" = 'help' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] ; then
-        echo 'Usage: 撤销对 已跟踪文件 未`git add`的修改，无法撤销修改先前未跟踪的文件'
+        echo 'Usage: 撤销对 已跟踪文件 的修改与暂存，无法撤销修改先前未跟踪的文件'
         echo ' gum  <filename> [ <filename> [ <filename> ...]]'
         echo ' gum  -a|--all : 所有为暂存的修改'
     elif [ "$1" = '-a' ] || [ "$1" = "--all" ]; then
-        git checkout .
+        # cd `git rev-parse --show-toplevel`
+        # git checkout HEAD .
+        gua -a
+        gum -a
     else
-        git checkout -- $*
+        # git checkout HEAD "$@"
+        gua "$@"
+        gum "$@"
     fi
 }
 gua(){
@@ -1259,72 +1276,139 @@ gua(){
     elif [ "$1" = '-a' ] || [ "$1" = "--all" ]; then
         git reset HEAD
     else
-        git reset HEAD $*
+        for i in "$@"; do
+            git reset HEAD "$i"
+        done
     fi
 }
+gum(){
+    if [ $# = 0 ] || [ "$1" = 'help' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] ; then
+        echo 'Usage: 撤销对 已跟踪文件 [未`git add`]的修改，无法撤销修改先前未跟踪的文件'
+        echo ' gum  <filename> [ <filename> [ <filename> ...]]'
+        echo ' gum  -a|--all : 所有为暂存的修改'
+    elif [ "$1" = '-a' ] || [ "$1" = "--all" ]; then
+        cd `git rev-parse --show-toplevel`
+        git checkout  .
+    else
+        for i in "$@"; do
+            git checkout -- "$i"
+        done
+    fi
+}
+
+
 # git untrack
 alias gut='git rm -r --cached'
 
 # 提交
+alias gacm='git commit -am' # 即先gaa, 然后gcm
 alias gcm='git commit -m'  # 提交：gcm "xxx" [options]
 alias gcma='git commit --amend' # 先add，再覆盖上一次提交：gcma，然后弹出文本编辑器，编辑上次提交的说明
 gucm() # 直接回到历史版本
 {
     if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-        echo 'Usage: 恢复到历史版本， alias =`git reset --hard`'
-        echo ' gucm 0: 恢复到最近一次git commit后'
-        echo ' gucm ^: 恢复到父版本'
-        echo ' gucm ^n: 恢复到n父版本'
-        echo ' gucm -n: 恢复到HEAD@{n}'
-        echo '     `ghs`: 查看所有版本操作的哈希码和HEAD@{n}，如`git commit/reset/revert`'
-        echo '            其中 HEAD@{n}: 依时间顺序，倒数第n个版本（当前版本为第0）'
-        echo '            例如 `gucm ^` 再 `gucm -1`, 等价于`gucm 0`'
-        echo ' `gucm 哈希码/HEAD@{n}/HEAD/HEAD^/HEAD~n`'
-        echo '     `glg`: 查看历史版本的的哈希码'
-    else
-        local answer=$(bash -c "read  -n 1 -p '请先git commit再reset，不然抛弃暂存和修改 无法恢复。是否继续reset [Y|N]' c; echo \$c")
+        echo 'gumc: 封装了 `git reset --hard`'
+        echo 'Usage: 恢复到历史上某个时间点, glg会复原, ghs会增加一个版本操作'
         echo
-        if [ "$answer" = "y" ] || [  "$answer" = "Y"  ]; then
-            local target_version=$1
-            if [ "$1" = "0" ]; then
-                echo git reset --hard HEAD
-                git reset --hard HEAD
-            elif [ "$1" = "^" ]; then
-                echo git reset --hard HEAD^
-                git reset --hard HEAD^
-            elif [ "${target_version:0:1}" = "^" ]; then
-                local n=${target_version:1:${#target_version}}
-                echo git reset --hard HEAD~$n
-                git reset --hard HEAD~$n
-            elif [ "${target_version:0:1}" = "-" ]; then
-                local n=${target_version:1:${#target_version}}
-                echo git reset --hard HEAD@{$n}
-                git reset --hard HEAD@{$n}
-            else
-                echo git reset --hard $1
-                git reset --hard $1
-            fi
+        echo ' glg                  : git log, 查看版本关系图, 选择要恢复到哪'
+        echo '                        最后一次commit为HEAD, HEAD的n父版本为HEAD{n}'
+        echo '   gucm 0  | HEAD     : 恢复到最近一次git commit后'
+        echo '   gucm ^  | HEAD^    : 恢复到父版本'
+        echo '   gucm ^n | HEAD~n   : 恢复到n父版本'
+        echo '   gucm 哈希码        : 恢复到指定哈希码的版本'
+        echo
+        echo ' ghs                  : git reflog, 查看版本操作的历史, 选择要恢复到哪'
+        echo '                        依时间顺序显示, HEAD{0}为最后一次版本操作, 再往前第n个版本操作为HEAD@{n}'
+        echo '   gucm -  | HEAD@{1} : 恢复到1次版本操作之前, 即HEAD@{1}版本操作完成后'
+        echo '   gucm -n | HEAD@{n} : 恢复到n次版本操作之前, 即HEAD@{n}版本操作完成后'
+        echo '   gucm ghs中的哈希码 : 恢复到指定哈希码的版本操作完成后'
+        return
+    elif ! [ -z "$(git status --porcelain)" ]; then
+        echo '请先git commit再reset，不然抛弃暂存和修改 无法恢复'
+        return
+    else
+        # local answer=$(bash -c "read  -n 1 -p '请先git commit再reset，不然抛弃暂存和修改 无法恢复。是否继续reset [Y|N]' c; echo \$c")
+        # echo
+        # if [ "$answer" = "y" ] || [  "$answer" = "Y"  ]; then
+        local target_version=$1
+        if [ "$1" = "0" ]; then
+            echo git reset --hard HEAD
+            git reset --hard HEAD
+        elif [ "$1" = "^" ]; then
+            echo git reset --hard HEAD^
+            git reset --hard HEAD^
+        elif [ "${target_version:0:1}" = "^" ]; then
+            local n=${target_version:1:${#target_version}}
+            echo git reset --hard HEAD~$n
+            git reset --hard HEAD~$n
+        elif [ "$1" = "-" ]; then
+            echo git reset --hard HEAD@{1}
+            git reset --hard HEAD@{1}
+        elif [ "${target_version:0:1}" = "-" ]; then
+            local n=${target_version:1:${#target_version}}
+            echo git reset --hard HEAD@{$n}
+            git reset --hard HEAD@{$n}
+        else
+            echo git reset --hard $1
+            git reset --hard $1
         fi
+        # fi
     fi
 }
 grcm() # 反向提交到某个版本
 {
     if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-        echo 'Usage: 反向提交返回历史版本， alias = `git revert`'
-        echo ' grcm ^: 到上一版本'
-        echo ' grcm ^n: 到前n版本'
-        echo ' grcm <版本哈希/HEAD^/HEAD~n>: 反向提交若干次，回到上此<版本>，它必需是HEAD的祖宗版本'
-        echo ' 若有暂存、修改，则无法执行，需先git commit 或 抛弃暂存、修改（`gucm 0`）'
+        echo 'grcm: 封装了`git revert`'
+        echo 'Usage: 反向提交以返回历史版本'
+        echo
+        echo ' glg                  : git log, 查看版本关系图, 选择要恢复到哪'
+        echo '                        最后一次commit为HEAD, HEAD的n父版本为HEAD{n}'
+        echo ' grcm ^   | HEAD^     : 到上一版本'
+        echo ' grcm ^n  | HEAD~n    : 到前n版本'
+        echo ' grcm glg中的哈希码   : 回到指定哈希的版本, 它不必是HEAD的祖宗版本, 可以是其他分支的'
+        echo
+        echo ' 若有暂存、修改，则无法执行，需先git commit 或 抛弃暂存与修改（即`gucm 0`）'
     else
         local target_version=$1
         if [ "${target_version}" = "^" ]; then
-            git revert HEAD^..HEAD      # 反向提交一次，回到上一版本
+            local old_hash="$(git rev-parse HEAD^ | cut -c 1-8)"
+            git revert HEAD^..HEAD --no-edit --no-commit      # 反向提交一次，回到上一版本
+            git commit -m "Revert HEAD~$n..HEAD; now same as ${old_hash}"
         elif [ "${target_version:0:1}" = "^" ]; then
             local n=${target_version:1:${#target_version}}
-            git revert HEAD~${n}..HEAD      # 反向提交一次，回到上一版本
+            local old_hash="$(git rev-parse HEAD~${n} | cut -c 1-8)"
+            git revert HEAD~${n}..HEAD --no-edit  --no-commit     # 反向提交一次，回到上一版本
+            git commit -m "Revert HEAD~$n..HEAD; now same as ${old_hash}"
         else
-            git revert $1..HEAD  # 反向提交若干次，回到$1版本，$1为版本哈希/HEAD^/HEAD~n
+            git revert $1..HEAD --no-edit  --no-commit # 反向提交若干次，回到$1版本，$1为版本哈希/HEAD^/HEAD~n
+            git commit -m "Revert $1..HEAD; now same as $1"
         fi
+    fi
+}
+
+gch()
+{
+    if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+        echo '检出整个节点:'
+        echo '  gch <node>                  : 前往指定节点'
+        echo '  gch <node> --replace        : git rm 当前节点所有跟踪文件(夹), 再将指定节点的所有跟踪文件(夹)拷贝过来'
+        echo '所有被跟踪文件(不论 修改未add/修改并add)必需先commit, 不然不会执行'
+        echo '未被跟踪的文件不必commit, 检出后保持不变'
+        echo
+        echo '检出部分文件: '
+        echo '  gch <node> <file-or-dir>(s) : 将指定节点的指定文件(夹)拷到当前节点'
+        echo '  gch <node> --all            : 将指定节点的所有跟踪文件(夹)拷到当前节点'
+        echo '被拷贝过来的文件(不论 被跟踪/修改未add/修改并add)均必需先commit, 不然不会执行'
+        echo '未被拷贝过来的文件, 检出后保持不变'
+        echo
+        echo '<node> = 分支名/glg中的版本哈希/HEAD/HEAD^/HEAD~n/HEAD@{n}'
+    elif [ "$2" = '--all' ]; then
+        cd `git rev-parse --show-toplevel`
+        git checkout "$1" .
+    elif [ "$2" = '--replace' ]; then
+        git read-tree -um HEAD "$1"
+    else
+        git checkout "$@"
     fi
 }
 
@@ -1364,7 +1448,7 @@ gb()                      # 新建分支并检出到此分支： gb 分支名
 }
 alias gbrm='git branch -d' # 删除分支：gbrm 分支名
 alias gbls='git branch -avv' # 列出所有本地枝，及其关联的远枝： gbls
-alias gch='git checkout'    # 切换分支：gch 分支名/历史提交编号/HEAD^/HEAD/HEAD~n/HEAD@{n}, 要先git commit一次才能gch
+# alias gch='git checkout'    # 切换分支：gch 分支名/历史提交编号/HEAD^/HEAD/HEAD~n/HEAD@{n}, 要先git commit一次才能gch
 alias gmg='git merge --no-ff' # 将当前枝与此分支合并（非快进）
 alias gmgc='git merge --continue'
 # 历史
