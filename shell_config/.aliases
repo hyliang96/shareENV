@@ -1235,22 +1235,24 @@ gdf() {
     if [ "$1" = 'help' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
         echo 'Usage:'
         echo '当前节点内:'
-        echo '  gdf                [options] [ -- (诸)文件(夹) ] : 跟踪文件未暂存的修改 : 工作目录 与 索引   的区别'
-        echo '  gdf-s[tage]        [options] [ -- (诸)文件(夹) ] : 跟踪文件已暂存的修改 : 所有 与 HEAD提交版本 的区别'
-        echo '  gdf-d[ir]          [options] [ -- (诸)文件(夹) ] : 跟踪文件的修改       : 工作目录 与 HEAD提交版本 的区别'
+        echo '  gdf                [options] [[--] (诸)文件(夹)] : 跟踪文件未暂存的修改 '
+        echo '  gdf-s[tage]        [options] [[--] (诸)文件(夹)] : ........已暂存...... '
+        echo '  gdf-a[ll]          [options] [[--] (诸)文件(夹)] : ........一切的...... '
         echo
         echo '节点之间:'
-        echo '  gdf    <node>      [options] [ -- (诸)文件(夹) ] : --                   : 工作目录 与 <node>提交版本 的区别'
-        echo '  gdf-s  <node>      [options] [ -- (诸)文件(夹) ] : --                   : 索引 与 <node>提交版本 的区别'
-        echo '  gdf    <node> <node> [options] [ -- (诸)文件(夹) ] : 两个node的区别'
+        echo '  gdf    <node>      [options] [[--] (诸)文件(夹)] : 工作目录 与 <node>提交版本 的区别'
+        echo '  gdf-s  <node>      [options] [[--] (诸)文件(夹)] : 索引 与 <node>提交版本 的区别'
+        echo '  gdf  <node> <node> [options] [[--] (诸)文件(夹)] : 两个node的区别'
+        echo
+        echo '<node> = 分支名/glg中的版本哈希/HEAD/HEAD^/HEAD~n/HEAD@{n}'
     else
         git diff "$@"
     fi
 }
 alias gdf-s='git diff --staged'
 alias gdf-stage='git diff --staged'
-alias gdf-d='git diff HEAD'
-alias gdf-dir='git diff HEAD'
+alias gdf-a='git diff HEAD'
+alias gdf-all='git diff HEAD'
 
 guam(){
     if [ $# = 0 ] || [ "$1" = 'help' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] ; then
@@ -1322,10 +1324,13 @@ gucm() # 直接回到历史版本
         echo '   gucm -  | HEAD@{1} : 恢复到1次版本操作之前, 即HEAD@{1}版本操作完成后'
         echo '   gucm -n | HEAD@{n} : 恢复到n次版本操作之前, 即HEAD@{n}版本操作完成后'
         echo '   gucm ghs中的哈希码 : 恢复到指定哈希码的版本操作完成后'
-        return
     elif ! [ -z "$(git status --porcelain)" ]; then
-        echo '请先git commit再reset，不然抛弃暂存和修改 无法恢复'
-        return
+        echo '请先git commit再gucm, 以使得目录clean(无未跟踪的文件, 无未提交的修改)'
+        # `git reset --hard 版本`的原理: 将目标节点的跟踪文件全部拷贝到过来并暂存之, 然后commit
+        #      无增量的跟踪文件 : 替换为目标节点的文件
+        #      有增量(不论 跟踪未暂存/跟踪且暂存)的跟踪文件 : 全部删除增量, 不留档, 然后替换为目标节点的文件
+        #      未跟踪的文件, 且在目标节点中有被跟踪同路径的文件, 则删除此未跟踪文件, 不存档, 然后替换为目标节点的文件
+        #      未跟踪的文件, 且在目标节点中无被跟踪同路径的文件, 则保留此文件
     else
         # local answer=$(bash -c "read  -n 1 -p '请先git commit再reset，不然抛弃暂存和修改 无法恢复。是否继续reset [Y|N]' c; echo \$c")
         # echo
@@ -1365,24 +1370,28 @@ grcm() # 反向提交到某个版本
         echo '                        最后一次commit为HEAD, HEAD的n父版本为HEAD{n}'
         echo ' grcm ^   | HEAD^     : 到上一版本'
         echo ' grcm ^n  | HEAD~n    : 到前n版本'
-        echo ' grcm glg中的哈希码   : 回到指定哈希的版本, 它不必是HEAD的祖宗版本, 可以是其他分支的'
+        echo ' grcm glg中的哈希码   : 回到指定哈希的版本, 必需是HEAD的祖宗版本'
         echo
         echo ' 若有暂存、修改，则无法执行，需先git commit 或 抛弃暂存与修改（即`gucm 0`）'
+    elif ! [ -z "$(git status --porcelain)" ]; then
+        echo '需先git commit再grcm, 以使得目录clean(无未跟踪的文件, 无未提交的修改)'
+        # `git revert` 的 原理:
+        #       将HEAD 重置为 目标节点 : 即HEAD中跟踪文件全部git rm, 再将目标节点文件都拷贝过来, HEAD跟踪拷过来的文件
+        #       工作目录中有增量(不论 未跟踪/跟踪未暂存/跟踪且暂存)的文件尽可能原样不变, 除非重新计算增量发生冲突 则[拒绝执行]
+        #       工作目录中无增量的跟踪文件直接被替换成目标节点的文件
     else
         local target_version=$1
         if [ "${target_version}" = "^" ]; then
-            local old_hash="$(git rev-parse HEAD^ | cut -c 1-8)"
-            git revert HEAD^..HEAD --no-edit --no-commit      # 反向提交一次，回到上一版本
-            git commit -m "Revert HEAD~$n..HEAD; now same as ${old_hash}"
+            local old_name="HEAD^"
         elif [ "${target_version:0:1}" = "^" ]; then
             local n=${target_version:1:${#target_version}}
-            local old_hash="$(git rev-parse HEAD~${n} | cut -c 1-8)"
-            git revert HEAD~${n}..HEAD --no-edit  --no-commit     # 反向提交一次，回到上一版本
-            git commit -m "Revert HEAD~$n..HEAD; now same as ${old_hash}"
+            local old_name="HEAD~${n}"
         else
-            git revert $1..HEAD --no-edit  --no-commit # 反向提交若干次，回到$1版本，$1为版本哈希/HEAD^/HEAD~n
-            git commit -m "Revert $1..HEAD; now same as $1"
+            local old_name="$1"
         fi
+        git revert ${old_name}..HEAD --no-edit  --no-commit     # 反向提交一次，回到上一版本
+        local old_hash="$(git rev-parse ${old_name} | cut -c 1-7)"
+        git commit -m "Revert ${old_name}..HEAD; now same as ${old_hash}"
     fi
 }
 
@@ -1391,15 +1400,16 @@ gch()
     if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
         echo '检出整个节点:'
         echo '  gch <node>                  : 前往指定节点'
-        echo '  gch <node> --replace        : git rm 当前节点所有跟踪文件(夹), 再将指定节点的所有跟踪文件(夹)拷贝过来'
-        echo '所有被跟踪文件(不论 修改未add/修改并add)必需先commit, 不然不会执行'
-        echo '未被跟踪的文件不必commit, 检出后保持不变'
+        echo '  gch <node> --replace        : git rm 当前节点所有跟踪文件(夹), 再将指定节点的所有跟踪文件(夹)拷贝过来 并git add'
+        echo '需先git commit再gch, 以使得目录clean(无未跟踪的文件, 无未提交的修改)'
+        # echo '所有被跟踪文件(不论 修改未add/修改并add)必需先commit, 不然拒绝执行'
+        # echo '未被跟踪的文件不必commit, 若被检出的同名文件覆盖,  则拒绝执行'
+        # echo '未被跟踪的文件不必commit, 若未被检出的同名文件覆盖,  检出后保持不变'
         echo
         echo '检出部分文件: '
-        echo '  gch <node> <file-or-dir>(s) : 将指定节点的指定文件(夹)拷到当前节点'
-        echo '  gch <node> --all            : 将指定节点的所有跟踪文件(夹)拷到当前节点'
-        echo '被拷贝过来的文件(不论 被跟踪/修改未add/修改并add)均必需先commit, 不然不会执行'
-        echo '未被拷贝过来的文件, 检出后保持不变'
+        echo '  gch <node> <file-or-dir>(s) : 将指定节点的指定文件(夹)拷到当前节点 并git add'
+        echo '  gch <node> --all            : 将指定节点的所有跟踪文件(夹)拷到当前节点 并git add'
+        echo '不论拷过来的文件, 在当前是什么状态(未跟踪/跟踪且未暂存/跟踪且已暂存/跟踪且无增量), 均可直接执行'
         echo
         echo '<node> = 分支名/glg中的版本哈希/HEAD/HEAD^/HEAD~n/HEAD@{n}'
     elif [ "$2" = '--all' ]; then
