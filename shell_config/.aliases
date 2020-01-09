@@ -1722,6 +1722,23 @@ gitkeep()
 
 # -------------------------------------------------------------------------
 # github api
+gh-help()
+{
+cat << EOF
+gh test                   : test github ssh connection
+gh ls                     : list all your repo, show whether is private
+gh new {repo_name}        : create a private repo
+gh new {repo_name} public : create a public repo
+gh cl|clone [{protocol}://][{github_username}:]{remote_repo_name} [git_clone_options]
+                          : git clone from github
+    {protocol} = https | ssh(default)
+gh add [{remote} [{github_username}]] {remote_repo_name}
+                          : add a github repo as
+    default {remote} = origin
+    default {github_username} = local git username, see in \`git config user.name\`'
+EOF
+}
+
 gh()
 {
     if [ "$1" = 'test' ]; then
@@ -1746,17 +1763,11 @@ gh()
     elif [ "$1" = 'add' ]; then
         shift
         grgh "$@"
-    else
-        echo '`gh test` : test github ssh connection'
-        echo '`gh ls` : list all your repo, it can inform you whether they are private'
-        echo '`gh new {repo_name}` : create a private repo'
-        echo '`gh new {repo_name} public` : create a public repo'
-        echo '`gh add [{remote} [{github_username}]] {remote_repo_name}` : add a github repo as '
-        echo '    default {remote}: origin'
-        echo '    default {github_username}: local git username, see in `git config user.name`'
     elif [[ "$1" =~ '^(clone|cl)$'  ]]; then
         shift
         ghcl "$@"
+    else
+        gh-help
     fi
 }
 # git remote git hub
