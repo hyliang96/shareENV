@@ -1559,10 +1559,26 @@ alias gcl='git clone'           # 克隆远枝：gcl 远仓网址
                                 # 请用http格式，若用ssh格式则需要验证密钥
 ghcl() {
     local url="$1"; shift
-    local protocol="${url%%://*}"  # 第一个':'左侧
-    if [ "" ]
-    local user_repo="${url#*://}" # 第一个':'右侧
-    local user_
+    local protocol="${url%%://*}"  # 第一个'://'左侧
+    local user_repo="${url#*://}"  # 第一个'://'右侧
+    if [ "$protocol" = "$url" ]; then
+        local protocol='ssh'
+    fi
+    if ! [[ "$protocol" =~ '^(https|ssh)$' ]]; then
+        echo 'invaslid $protocol' >&2
+    fi
+
+    local user="${user_repo%%:*}"  # 第一个':'左侧
+    local repo="${user_repo#*:}"   # 第一个':'右侧
+    if [ "$user" = "$user_repo" ]; then
+        local user='hyliang96'
+    fi
+
+    if [ "$protocol" = 'ssh' ]; then
+        git clone "git@github.com:${user}/${repo}" "$@"
+    elif [ "$protocol" = 'https' ]; then
+        git clone https://github.com/${user}/${repo} "$@"
+    fi
 }
 
 gmed()  # 修改提交信息：  gmed <版本id>
@@ -1729,7 +1745,7 @@ gh()
         curl -H "Authorization: token $(<~/.ssh/github/github.token)" "https://api.github.com/user/repos?per_page=100" --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
     elif [ "$1" = 'add' ]; then
         shift
-        grgh $@
+        grgh "$@"
     else
         echo '`gh test` : test github ssh connection'
         echo '`gh ls` : list all your repo, it can inform you whether they are private'
@@ -1738,6 +1754,9 @@ gh()
         echo '`gh add [{remote} [{github_username}]] {remote_repo_name}` : add a github repo as '
         echo '    default {remote}: origin'
         echo '    default {github_username}: local git username, see in `git config user.name`'
+    elif [[ "$1" =~ '^(clone|cl)$'  ]]; then
+        shift
+        ghcl "$@"
     fi
 }
 # git remote git hub
