@@ -1557,6 +1557,13 @@ alias gpl='git pull'            # 拉去到当前枝并与之合并：  gpl [ �
                                 # 若还只关联一个远仓，则[ 远仓名 [远枝名]]不写
 alias gcl='git clone'           # 克隆远枝：gcl 远仓网址
                                 # 请用http格式，若用ssh格式则需要验证密钥
+ghcl() {
+    local url="$1"; shift
+    local protocol="${url%%://*}"  # 第一个':'左侧
+    if [ "" ]
+    local user_repo="${url#*://}" # 第一个':'右侧
+    local user_
+}
 
 gmed()  # 修改提交信息：  gmed <版本id>
 #    只接收一个版本id
