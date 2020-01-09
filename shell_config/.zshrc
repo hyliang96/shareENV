@@ -131,7 +131,7 @@ antigen bundle willghatch/zsh-cdr
 # antigen theme bureau
 # antigen theme agnoster
 # antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
-antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
+# antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
 
 # check login shell
 if [[ -o login ]]; then
