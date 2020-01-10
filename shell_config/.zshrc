@@ -133,8 +133,8 @@ antigen bundle willghatch/zsh-cdr
 # antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
 
 # diasble original virtualenv/conda prompt, so as to replace them with my_agnoster
-antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
-# agnoster_env_force=1
+# antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
+agnoster_env_force=1
 agnoster_time=1
 agnoster_newline=1
 
