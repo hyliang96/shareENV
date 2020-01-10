@@ -138,8 +138,8 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 if command -v conda &>/dev/null; then
   conda config --set changeps1 False;
 fi
-# agnoster_time=1
-# agnoster_newline=1
+agnoster_time=1
+agnoster_newline=1
 
 
 # check login shell
