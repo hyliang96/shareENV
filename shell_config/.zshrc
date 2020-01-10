@@ -128,16 +128,16 @@ antigen bundle willghatch/zsh-cdr
 
 # 换主题: agnoster, ys
 # 更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
-antigen theme bureau
+# antigen theme bureau
 # antigen theme agnoster
 # antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
 
 # diasble original virtualenv/conda prompt, so as to replace them with my_agnoster
-# export VIRTUAL_ENV_DISABLE_PROMPT=1
-# if command -v conda &>/dev/null; then
-  # conda config --set changeps1 False;
-# fi
-# antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+if command -v conda &>/dev/null; then
+  conda config --set changeps1 False;
+fi
+antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
 
 # check login shell
 if [[ -o login ]]; then
