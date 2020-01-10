@@ -184,7 +184,7 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
 
-# antigen apply
+antigen apply
 
 # if ! [ -f ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme ]; then
     # cp $shareENV/shell_config/agnoster.zsh-theme ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme
