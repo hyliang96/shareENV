@@ -132,7 +132,8 @@ antigen bundle willghatch/zsh-cdr
 # antigen theme agnoster
 # antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
 
-# export VIRTUAL_ENV_DISABLE_PROMPT=1
+# diasble original virtualenv/conda prompt, so as to replace them with my_agnoster
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 if command -v conda &>/dev/null; then
   conda config --set changeps1 False;
 fi
