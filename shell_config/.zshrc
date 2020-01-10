@@ -131,6 +131,11 @@ antigen bundle willghatch/zsh-cdr
 # antigen theme bureau
 # antigen theme agnoster
 # antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+if command -v conda &>/dev/null; then
+  conda config --set changeps1 False;
+fi
 antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
 
 # check login shell

@@ -881,7 +881,7 @@ venew()
     if [ "$version" = '' ]; then
         local version='3'
     fi
-    local envdir=$(bash -c "read -p 'env dir name (default \"env\")? ' c; echo \$c"); echo
+    local envdir=$(bash -c "read -p 'env dir name (default \"venv\")? ' c; echo \$c"); echo
     if [ "$envdir" = '' ]; then
         local envdir='venv'
     fi
