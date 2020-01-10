@@ -132,7 +132,7 @@ antigen bundle willghatch/zsh-cdr
 # antigen theme agnoster
 # antigen theme https://github.com/apjanke/agnosterj-zsh-theme.git
 # antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
-antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
+# antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
 # agnoster_time=1
 agnoster_env_force=1
 agnoster_newline=1
