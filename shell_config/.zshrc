@@ -183,8 +183,8 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 antigen apply
 
 # agnoster_time=1
-agnoster_env_force=1
-agnoster_newline=1
+# agnoster_env_force=1
+# agnoster_newline=1
 
 
 # if ! [ -f ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme ]; then
