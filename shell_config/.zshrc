@@ -132,6 +132,9 @@ antigen bundle willghatch/zsh-cdr
 # antigen theme agnoster
 # antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
 antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
+# agnoster_time=1
+agnoster_env_force=1
+agnoster_newline=1
 
 # check login shell
 if [[ -o login ]]; then
@@ -181,11 +184,6 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 [ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
 
 antigen apply
-
-# agnoster_time=1
-# agnoster_env_force=1
-# agnoster_newline=1
-
 
 # if ! [ -f ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme ]; then
     # cp $shareENV/shell_config/agnoster.zsh-theme ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme
