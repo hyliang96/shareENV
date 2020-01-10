@@ -136,7 +136,7 @@ export VIRTUAL_ENV_DISABLE_PROMPT=''
 if command -v conda &>/dev/null; then
   conda config --set changeps1 False;
 fi
-# antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
+antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
 
 # check login shell
 if [[ -o login ]]; then
