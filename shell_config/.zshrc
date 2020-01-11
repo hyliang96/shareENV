@@ -136,7 +136,7 @@ antigen bundle willghatch/zsh-cdr
 antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
 # agnoster_time=1
 # agnoster_env_force=1
-# agnoster_newline=1
+agnoster_newline=1
 
 # check login shell
 if [[ -o login ]]; then
