@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-export LC_ALL=zh_CN:UTF-8
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
 # Antigen: https://github.com/zsh-users/antigen
