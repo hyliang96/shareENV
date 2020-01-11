@@ -1464,7 +1464,7 @@ alias gmgc='git merge --continue'
 # 历史
 # alias glg="git log --graph --oneline --all --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %s' --abbrev-commit --date=short"  #列出提交历史图谱，含远仓、本仓
 alias glg="git log  --graph --abbrev-commit --oneline --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %s' --date=short --all"  #列出提交历史图谱，含远仓、本仓
-alias glg1="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+alias glg1="git log --graph --abbrev-commit --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all" # --decorate 
 alias glg2="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
 alias glgs='glg --simplify-by-decoration'               #列出简化历史图谱
