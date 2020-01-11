@@ -1470,15 +1470,22 @@ alias gmgc='git merge --continue'
 # alias glg=" "
 glg()
 {
-    if [ "$1" = '--all-stash' ]; then
+    if [ $# -eq 0 ]; then
+        local cmd=' --all'
+    elif [ "$1" = '--all-stash' ]; then
         local cmd=' --all $(git reflog show --format="%h" stash)'
     elif [ "$1" = '--no-stash' ]; then
         local cmd=' --exclude=refs/stash --all'
     else
-        local cmd=' --all'
+        cat << EOF
+glg                  : show the current one stash on each node
+glg --all-stash      : show all stashes on each node
+glg --no-stash       : show no stash on each node
+EOF
+        return
     fi
     alias _glg="git log --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d %H:%I:%S' --format=format:'%C(yellow)%h%C(reset)  %C(green)%>|(50)%ad%C(reset)  %C(blue)%<(16,trunc)%an%C(reset) %C(bold 0)%>|(1)%s%C(reset) %C(auto)%d%C(reset)' $cmd"
-    _glg
+    eval _glg
 }
 # "$(git for-each-ref --format="%(refname)" refs/heads/ refs/remotes/ | grep -v "\.stgit$")"
 #
