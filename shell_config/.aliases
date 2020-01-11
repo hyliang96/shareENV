@@ -1484,7 +1484,8 @@ glg --no-stash       : show no stash on each node
 EOF
         return
     fi
-    alias _glg="git log --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d %H:%I:%S' --format=format:'%C(yellow)%h%C(reset)  %C(green)%>|(50)%ad%C(reset)  %C(blue)%<(16,trunc)%an%C(reset) %C(bold 0)%>|(1)%s%C(reset) %C(auto)%d%C(reset)' $cmd"
+    alias _glg="git log --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d %H:%I:%S' --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %C(bold 0)%s%C(reset)' $cmd"
+    alias _glg_table="git log --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d %H:%I:%S' --format=format:'%C(yellow)%h%C(reset) %C(auto)%d%C(reset) %C(green)%>|(50)%ad%C(reset)  %C(blue)%<(16,trunc)%an%C(reset) %C(bold 0)%>|(1)%s%C(reset)' $cmd"
     eval _glg
 }
 # "$(git for-each-ref --format="%(refname)" refs/heads/ refs/remotes/ | grep -v "\.stgit$")"
