@@ -291,6 +291,7 @@ gua(){
         echo ' gua  <filename> [ <filename> [ <filename> ...]]'
         echo ' gua   -a|--all : 撤销所有暂存'
     elif [ "$1" = '-a' ] || [ "$1" = "--all" ]; then
+        # 无需 cd `git_root`, 直接重置整个repo
         git reset HEAD
     else
         # 有一个文件不存在, 不影响其他文件被清理
@@ -538,8 +539,8 @@ EOF
 #
 alias glgs='glg --simplify-by-decoration'               #列出简化历史图谱
 # alias ghs='git reflog'   # 按时间顺序列出 版本重置（git reset）、提交（git commit）
-alias ghs="git reflog --abbrev-commit --pretty=format:'%C(yellow)%h%C(reset)%C(yellow) - %gd%C(reset)%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %C(bold white)%gs%C(reset) %C(bold 0)%s%C(reset)'"
-alias ghs-no-action="git reflog --abbrev-commit --pretty=format:'%C(yellow)%h%C(reset)%C(yellow) - %gd%C(reset)%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %C(bold 0)%s%C(reset)'"
+alias ghs="git reflog --abbrev-commit --pretty=format:'%C(yellow)%h%C(reset)%C(yellow) - %gd%C(reset)%C(auto)%d%Creset %C(green)%cr%C(reset) %C(bold blue)%an%C(reset) %C(bold white)%gs%C(reset) %C(bold 0)%s%C(reset)'"
+alias ghs-no-action="git reflog --abbrev-commit --pretty=format:'%C(yellow)%h%C(reset)%C(yellow) - %gd%C(reset)%C(auto)%d%C(reset) %C(green)%cr%C(reset) %C(bold blue)%an%C(reset) %C(bold 0)%s%C(reset)'"
 # 远仓
 alias gra='git remote add'        # 关联远仓：gra 远仓名（即远程repo在本地的名字） 远程repo的网址
 
