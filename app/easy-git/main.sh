@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 # ------------------ git ----------------------------
 # git utils
@@ -787,7 +787,8 @@ gh()
         ssh -T git@github.com # 测试github的ssh连接
     elif [ "$1" = 'ls' ]; then
     # list all remote repo
-        echo $(curl -H "Authorization: token $(~/.ssh/github/github.token)" "https://api.github.com/user/repos?per_page=100" 2>/dev/null | \
+        echo $(curl -H "Authorization: token $(cat ~/.ssh/github/github.token)" \
+               "https://api.github.com/user/repos?per_page=100" 2>/dev/null | \
         grep -E '^    "name":|^    "private": ' ) | \
         sed 's/"name": "/\
 /g' | \
@@ -801,7 +802,7 @@ gh()
         else
             local ifPrivate=true
         fi
-        curl -H "Authorization: token $(<~/.ssh/github/github.token)" "https://api.github.com/user/repos?per_page=100" --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
+        curl -H "Authorization: token $(cat ~/.ssh/github/github.token)" "https://api.github.com/user/repos?per_page=100" --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
     elif [ "$1" = 'add' ]; then
         shift
         grgh "$@"
@@ -812,6 +813,7 @@ gh()
         gh-help
     fi
 }
+
 # git remote git hub
 grgh()  # 关联github上的远程repo
 # 先在github上建立一个repo
