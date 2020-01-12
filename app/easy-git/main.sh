@@ -787,7 +787,7 @@ gh()
         ssh -T git@github.com # 测试github的ssh连接
     elif [ "$1" = 'ls' ]; then
     # list all remote repo
-        echo $(curl -H "Authorization: token $(<~/.ssh/github/github.token)" "https://api.github.com/user/repos?per_page=100" 2>/dev/null | \
+        echo $(curl -H "Authorization: token $(~/.ssh/github/github.token)" "https://api.github.com/user/repos?per_page=100" 2>/dev/null | \
         grep -E '^    "name":|^    "private": ' ) | \
         sed 's/"name": "/\
 /g' | \
