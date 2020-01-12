@@ -552,9 +552,19 @@ gbu()
 alias gbuu='git branch --unset-upstream' # 将当前枝取关远枝：   guu [本地分支名，默认为当前分支]
 
 
+
+# -------------------------------------------------------------------------
+# git stash
+gtps='git stash push -u -m'
+gtpl='git stash apply --index'
+gtls='git stash list'
+gtsh='git stash show'
+gtrm='git stash drop'
+
+
+# -------------------------------------------------------------------------
+
 # 推拉
-
-
 
 gpsu()
 {
@@ -668,6 +678,7 @@ gbmg () {
     git checkout ${current}
     git merge ${target}
 }
+
 # -------------------------------------------------------------
 # -- 自动添加.gitkeep到文件夹下，以使得git add能加入空文件夹
 
@@ -788,10 +799,10 @@ gh()
     elif [ "$1" = 'ls' ]; then
     # list all remote repo
         echo $(curl -H "Authorization: token $(cat ~/.ssh/github/github.token)" \
-               "https://api.github.com/user/repos?per_page=100" 2>/dev/null | \
-        grep -E '^    "name":|^    "private": ' ) | \
-        sed 's/"name": "/'$'\n''/g' | \
-        sed 's/"\, "private": false\,//g' | \
+               "https://api.github.com/user/repos?per_page=100" 2>/dev/null |
+        grep -E '^    "name":|^    "private": ' ) |
+        sed 's/"name": "/'$'\\\n''/g' |
+        sed 's/"\, "private": false\,//g' |
         sed 's/"\, "private": true,/ \[private\]/g'
     elif [ "$1" = 'new' ]; then
     # create new remote repo
