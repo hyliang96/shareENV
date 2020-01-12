@@ -232,6 +232,11 @@ bindkey '\ev' deer
 bindkey \^U backward-kill-line
 # iterm2 maps sfhit+backspace to  ᜤ , 删除一行
 
+# 当前命令加入历史, 并清空, 之后可上翻找到它
+to-history() { print -S $BUFFER ; BUFFER=; }
+zle -N to-history
+bindkey 'ç' to-history # alt+c, 也可换成 '^q'
+
 # 解绑 ctrl+s ctrl+q
 stty start undef
 stty stop undef

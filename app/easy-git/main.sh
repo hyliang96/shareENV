@@ -275,7 +275,7 @@ guam(){
         echo ' gum  <filename> [ <filename> [ <filename> ...]]'
         echo ' gum  -a|--all : 所有为暂存的修改'
     elif [ "$1" = '-a' ] || [ "$1" = "--all" ]; then
-        # cd `git rev-parse --show-toplevel`
+        # cd `git_root`
         # git checkout HEAD .
         gua -a
         gum -a
@@ -293,9 +293,13 @@ gua(){
     elif [ "$1" = '-a' ] || [ "$1" = "--all" ]; then
         git reset HEAD
     else
+        # 有一个文件不存在, 不影响其他文件被清理
         for i in "$@"; do
             git reset HEAD "$i"
         done
+
+        # 有一个文件不存在, 整个命令就无法执行, 不会有文件被清理
+        # git reset HEAD "$@"
     fi
 }
 gum(){
@@ -304,11 +308,36 @@ gum(){
         echo ' gum  <filename> [ <filename> [ <filename> ...]]'
         echo ' gum  -a|--all : 所有为暂存的修改'
     elif [ "$1" = '-a' ] || [ "$1" = "--all" ]; then
-        cd `git rev-parse --show-toplevel`
+        (cd `git_root`
         git checkout  .
+        git clean -df .)
     else
+        # 有一个文件不存在, 不影响其他文件被清理
         for i in "$@"; do
             git checkout -- "$i"
+            git clean -df "$i"
+        done
+
+        # 有一个文件不存在, 整个命令就无法执行, 不会有文件被清理
+        # git checkout -- "$@"
+        # git clean -df "$@"
+    fi
+}
+
+gcln()
+{
+    if [ $# -eq 0 ] || [[ "$1" =~ '^(-h|--help|help)$' ]]; then
+        cat << EOF
+Usage: git clean的封装, 清理未被跟踪也未被忽略的文件(夹)
+gcln <path>s   : 若<path>s中有 未跟踪也未忽略 的文件(夹), 则rm之
+gcln -a|--all  : 整个repo中的 未跟踪也未忽略 的文件(夹), 皆rm之
+EOF
+    elif [[ "$1" =~ '^(-a|--all)$' ]]; then
+        (cd `git_root`
+        git clean -df .)
+    else
+        for i in "$@"; do
+            git clean -df "$i"
         done
     fi
 }
@@ -339,40 +368,42 @@ gucm() # 直接回到历史版本
         echo '   gucm -  | HEAD@{1} : 恢复到1次版本操作之前, 即HEAD@{1}版本操作完成后'
         echo '   gucm -n | HEAD@{n} : 恢复到n次版本操作之前, 即HEAD@{n}版本操作完成后'
         echo '   gucm ghs中的哈希码 : 恢复到指定哈希码的版本操作完成后'
-    elif ! [ -z "$(git status --porcelain)" ]; then
-        echo '请先git commit再gucm, 以使得目录clean(无未跟踪的文件, 无未提交的修改)'
-        # `git reset --hard 版本`的原理: 将目标节点的跟踪文件全部拷贝到过来并暂存之, 然后commit
-        #      无增量的跟踪文件 : 替换为目标节点的文件
-        #      有增量(不论 跟踪未暂存/跟踪且暂存)的跟踪文件 : 全部删除增量, 不留档, 然后替换为目标节点的文件
-        #      未跟踪的文件, 且在目标节点中有被跟踪同路径的文件, 则删除此未跟踪文件, 不存档, 然后替换为目标节点的文件
-        #      未跟踪的文件, 且在目标节点中无被跟踪同路径的文件, 则保留此文件
+        return
+    fi
+
+    # `git reset --hard 版本`的原理: 将目标节点的跟踪文件全部拷贝到过来并暂存之, 然后commit
+    #      无增量的跟踪文件 : 替换为目标节点的文件
+    #      有增量(不论 跟踪未暂存/跟踪且暂存)的跟踪文件 : 全部删除增量, 不留档, 然后替换为目标节点的文件
+    #      未跟踪的文件, 且在目标节点中有被跟踪同路径的文件, 则删除此未跟踪文件, 不存档, 然后替换为目标节点的文件
+    #      未跟踪的文件, 且在目标节点中无被跟踪同路径的文件, 则保留此文件
+
+    if ! [ -z "$(git status --porcelain)" ]; then
+        local waring=$'请先git commit再gucm, 以使得目录clean(无未跟踪的文件, 无未提交的修改)\n是否继续reset [Y|N] '
+        local answer=$(bash -c "read -p '$waring' c; echo \$c"); echo
+        ( ! [[ "$answer" =~ "^(y|Y)$" ]] )  && return
+    fi
+
+    local target_version="$1"
+    if [ "$1" = "0" ]; then
+        echo git reset --hard HEAD
+        git reset --hard HEAD
+    elif [ "$1" = "^" ]; then
+        echo git reset --hard HEAD^
+        git reset --hard HEAD^
+    elif [ "${target_version:0:1}" = "^" ]; then
+        local n=${target_version:1:${#target_version}}
+        echo git reset --hard HEAD~$n
+        git reset --hard HEAD~$n
+    elif [ "$1" = "-" ]; then
+        echo git reset --hard HEAD@{1}
+        git reset --hard HEAD@{1}
+    elif [ "${target_version:0:1}" = "-" ]; then
+        local n=${target_version:1:${#target_version}}
+        echo git reset --hard HEAD@{$n}
+        git reset --hard HEAD@{$n}
     else
-        # local answer=$(bash -c "read  -n 1 -p '请先git commit再reset，不然抛弃暂存和修改 无法恢复。是否继续reset [Y|N]' c; echo \$c")
-        # echo
-        # if [ "$answer" = "y" ] || [  "$answer" = "Y"  ]; then
-        local target_version=$1
-        if [ "$1" = "0" ]; then
-            echo git reset --hard HEAD
-            git reset --hard HEAD
-        elif [ "$1" = "^" ]; then
-            echo git reset --hard HEAD^
-            git reset --hard HEAD^
-        elif [ "${target_version:0:1}" = "^" ]; then
-            local n=${target_version:1:${#target_version}}
-            echo git reset --hard HEAD~$n
-            git reset --hard HEAD~$n
-        elif [ "$1" = "-" ]; then
-            echo git reset --hard HEAD@{1}
-            git reset --hard HEAD@{1}
-        elif [ "${target_version:0:1}" = "-" ]; then
-            local n=${target_version:1:${#target_version}}
-            echo git reset --hard HEAD@{$n}
-            git reset --hard HEAD@{$n}
-        else
-            echo git reset --hard $1
-            git reset --hard $1
-        fi
-        # fi
+        echo git reset --hard $1
+        git reset --hard $1
     fi
 }
 grcm() # 反向提交到某个版本
@@ -405,7 +436,7 @@ grcm() # 反向提交到某个版本
             local old_name="$1"
         fi
         git revert ${old_name}..HEAD --no-edit  --no-commit     # 反向提交一次，回到上一版本
-        local old_hash="$(git rev-parse ${old_name} | cut -c 1-7)"
+        local old_hash="$(git rev-parse --short ${old_name})"
         git commit -m "Revert ${old_name}..HEAD; now same as ${old_hash}"
     fi
 }
@@ -428,8 +459,8 @@ gch()
         echo
         echo '<node> = 分支名/glg中的版本哈希/HEAD/HEAD^/HEAD~n/HEAD@{n}'
     elif [ "$2" = '--all' ]; then
-        cd `git rev-parse --show-toplevel`
-        git checkout "$1" .
+        (cd `git_root`
+        git checkout "$1" .)
     elif [ "$2" = '--replace' ]; then
         git read-tree -um HEAD "$1"
     else
@@ -486,16 +517,16 @@ alias gmgc='git merge --continue'
 glg()
 {
     if [ $# -eq 0 ]; then
-        local cmd=' --all'
-    elif [ "$1" = '--all-stash' ]; then
         local cmd=' --all $(git reflog show --format="%h" stash)'
+    elif [ "$1" = '--one-stash' ]; then
+        local cmd=' --all'
     elif [ "$1" = '--no-stash' ]; then
         local cmd=' --exclude=refs/stash --all'
     else
         cat << EOF
-glg                  : show the current one stash on each node
-glg --all-stash      : show all stashes on each node
-glg --no-stash       : show no stash on each node
+glg                  : 显示分支图中所有stash
+glg --noe-stash      : 整个分支图只显示当前一个stash
+glg --no-stash       : 不显示任何stash
 EOF
         return
     fi
@@ -506,7 +537,9 @@ EOF
 # "$(git for-each-ref --format="%(refname)" refs/heads/ refs/remotes/ | grep -v "\.stgit$")"
 #
 alias glgs='glg --simplify-by-decoration'               #列出简化历史图谱
-alias ghs='git reflog'   # 按时间顺序列出 版本重置（git reset）、提交（git commit）
+# alias ghs='git reflog'   # 按时间顺序列出 版本重置（git reset）、提交（git commit）
+alias ghs="git reflog --abbrev-commit --pretty=format:'%C(yellow)%h%C(reset)%C(yellow) - %gd%C(reset)%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %C(bold white)%gs%C(reset) %C(bold 0)%s%C(reset)'"
+alias ghs-no-action="git reflog --abbrev-commit --pretty=format:'%C(yellow)%h%C(reset)%C(yellow) - %gd%C(reset)%C(auto)%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %C(bold 0)%s%C(reset)'"
 # 远仓
 alias gra='git remote add'        # 关联远仓：gra 远仓名（即远程repo在本地的名字） 远程repo的网址
 
@@ -557,9 +590,45 @@ alias gbuu='git branch --unset-upstream' # 将当前枝取关远枝：   guu [�
 # git stash
 alias gtps='git stash push -u -m'
 alias gtpl='git stash apply --index'
-alias gtls='git stash list'
+# alias gtls-a='git stash list --oneline'   # 列出分支图中所有stash, 而不仅仅是当前节点的stash
+alias gtls-a='ghs-no-action stash'   # 列出分支图中所有stash, 而不仅仅是当前节点的stash
+# git stash list =  git reflog stash
+gtls() # 只显示当前节点的stash
+{
+    if [[ "$1" =~ '^(-a|--all)$' ]]; then
+        gtls-a
+        return
+    fi
+
+    local stash_on_HEAD
+
+    git stash list --oneline --parents |
+    grep $(git rev-parse --short HEAD) |
+    awk '{printf $1"|"}' |sed 's/|$//' |
+    read stash_on_HEAD
+
+    gtls-a --color=always |
+    grep --color=never -E ${stash_on_HEAD} |
+    less
+}
+# gtls1()
+# {
+    # local stash_on_HEAD
+
+    # git stash list --oneline --parents |
+    # grep $(git rev-parse --short HEAD) |
+    # awk '{printf $1" "}' |
+    # read stash_on_HEAD
+
+    # stash_on_HEAD=($(echo "$stash_on_HEAD"))
+
+    # # git show stash --quiet --abbrev-commit --decorate=no --date=format:'%Y-%m-%d %H:%I:%S' --pretty=format:'%C(yellow)%h%Creset%C(auto)%gd%d%Creset %Cgreen%cr %C(bold blue)%an%Creset %C(bold 0)%s%C(reset)'
+    # ghs stash "${stash_on_HEAD[@]}"
+# }
+
 alias gtsh='git stash show'
 alias gtrm='git stash drop'
+alias gtrma='git stash clear' # 删除所有节点的stash
 
 
 # -------------------------------------------------------------------------
