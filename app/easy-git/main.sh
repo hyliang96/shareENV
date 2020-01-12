@@ -790,8 +790,7 @@ gh()
         echo $(curl -H "Authorization: token $(cat ~/.ssh/github/github.token)" \
                "https://api.github.com/user/repos?per_page=100" 2>/dev/null | \
         grep -E '^    "name":|^    "private": ' ) | \
-        sed 's/"name": "/\
-/g' | \
+        sed 's/"name": "/'$'\n''/g' | \
         sed 's/"\, "private": false\,//g' | \
         sed 's/"\, "private": true,/ \[private\]/g'
     elif [ "$1" = 'new' ]; then
@@ -802,7 +801,9 @@ gh()
         else
             local ifPrivate=true
         fi
-        curl -H "Authorization: token $(cat ~/.ssh/github/github.token)" "https://api.github.com/user/repos?per_page=100" --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
+        curl -H "Authorization: token $(cat ~/.ssh/github/github.token)" \
+            "https://api.github.com/user/repos?per_page=100"  \
+            --data "{ \"name\": \"$repo_name\",  \"private\": $ifPrivate }"
     elif [ "$1" = 'add' ]; then
         shift
         grgh "$@"
