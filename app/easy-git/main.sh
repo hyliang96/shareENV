@@ -555,11 +555,11 @@ alias gbuu='git branch --unset-upstream' # 将当前枝取关远枝：   guu [�
 
 # -------------------------------------------------------------------------
 # git stash
-gtps='git stash push -u -m'
-gtpl='git stash apply --index'
-gtls='git stash list'
-gtsh='git stash show'
-gtrm='git stash drop'
+alias gtps='git stash push -u -m'
+alias gtpl='git stash apply --index'
+alias gtls='git stash list'
+alias gtsh='git stash show'
+alias gtrm='git stash drop'
 
 
 # -------------------------------------------------------------------------
