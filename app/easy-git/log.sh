@@ -12,7 +12,11 @@
 glg()
 {
     if [ $# -eq 0 ]; then
-        local cmd=' --all $(git reflog show --format="%h" stash)'
+        if [ "$(git stash list)" = '' ]; then
+            local cmd=' --all'
+        else
+            local cmd=' --all $(git reflog show --format="%h" stash)'
+        fi
     elif [ "$1" = '--one-stash' ]; then
         local cmd=' --all'
     elif [ "$1" = '--no-stash' ]; then

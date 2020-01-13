@@ -17,7 +17,7 @@ gtls() # 只显示当前节点的stash
     local stash_on_HEAD
 
     git stash list --oneline --parents |
-    grep $(git rev-parse --short HEAD) |
+    grep $(get_hash HEAD) |
     awk '{printf $1"|"}' |sed 's/|$//' |
     read stash_on_HEAD
 
@@ -30,7 +30,7 @@ gtls() # 只显示当前节点的stash
     # local stash_on_HEAD
 
     # git stash list --oneline --parents |
-    # grep $(git rev-parse --short HEAD) |
+    # grep $(get_hash --short HEAD) |
     # awk '{printf $1" "}' |
     # read stash_on_HEAD
 

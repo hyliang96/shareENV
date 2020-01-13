@@ -89,20 +89,20 @@ gpsu()
 
 # 弯弓提交到上游分支
 gbps() {
-    local current="$(git rev-parse --abbrev-ref HEAD)"
+    local current="$(get_node_name HEAD)"
     if [ "$current" = 'HEAD' ]; then
         echo "You are not at the end of a branch, please checkout to a branch before 'bow push'."
         return
     fi
     git pull --rebase
-    local upstream="$(git rev-parse --abbrev-ref ${current}@{upstream})"
+    local upstream="$(get_node_name ${current}@{upstream})"
     local remote=$(echo "${upstream}" | awk -F '/' '{print $1}')
     local remote_repo=$(echo "${upstream}" | awk -F '/' '{print $2}')
     git checkout $upstream
-    git merge --no-ff $current
+    git merge --no-ff --no-edit $current
     git push $remote HEAD:$remote_repo
     git checkout $current
-    git merge $upstream
+    # git merge $upstream
 }
 
 

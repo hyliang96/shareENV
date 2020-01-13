@@ -13,9 +13,11 @@ easy_git_dir=$(cd "$(dirname "${BASH_SOURCE[0]-$0}")"; pwd)
 
 . $easy_git_dir/in_version.sh
 . $easy_git_dir/version.sh
+. $easy_git_dir/branch.sh
 . $easy_git_dir/stash.sh
 . $easy_git_dir/remote.sh
 . $easy_git_dir/github.sh
+
 
 # release this variable in the end of file
 unset -v easy_git_dir

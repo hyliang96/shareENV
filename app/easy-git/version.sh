@@ -104,7 +104,7 @@ grcm() # 反向提交到某个版本
             local old_name="$1"
         fi
         git revert ${old_name}..HEAD --no-edit  --no-commit     # 反向提交一次，回到上一版本
-        local old_hash="$(git rev-parse --short ${old_name})"
+        local old_hash="$(get_hash ${old_name})"
         git commit -m "Revert ${old_name}..HEAD; now same as ${old_hash}"
     fi
 }
