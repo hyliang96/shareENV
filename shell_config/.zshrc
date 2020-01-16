@@ -103,6 +103,40 @@ fi
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
 
+# # 设置fzf路径
+# # Exit if fzf is not installed
+# if builtin type fzf >/dev/null 2>&1; then
+    # # Setup fzf
+    # if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+        # export PATH="$PATH:/usr/local/opt/fzf/bin"
+    # fi
+    # # Man path
+    # if [[ ! "$MANPATH" == */usr/local/opt/fzf/man* && -d "/usr/local/opt/fzf/man" ]]; then
+        # export MANPATH="$MANPATH:/usr/local/opt/fzf/man"
+    # fi
+    # # Auto-completion
+    # [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+    # # Key bindings
+    # source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+    # # 加载fzf插件
+    # antigen bundle fzf
+    # bindkey '^f' fzf-history-widget
+# fi
+
+if ! builtin type fzf >/dev/null 2>&1; then
+    if [ "$(uname)" = "Darwin" ]; then
+        if [ -x "$(command -v brew)" ]; then
+            brew install fzf
+        fi
+    else
+        :
+    fi
+fi
+
+antigen bundle fzf
+
+
+
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
 # antigen bundle git
@@ -116,6 +150,54 @@ antigen bundle github
 antigen bundle python
 antigen bundle rupa/z z.sh
 # antigen bundle z
+
+# 历史命令搜索
+# antigen bundle zsh-users/zsh-history-substring-search
+# bindkey '\e[A' history-substring-search-up
+# bindkey '\e[B' history-substring-search-down
+# bindkey "$terminfo[kcuu1]" history-substring-search-up
+# bindkey "$terminfo[kcud1]" history-substring-search-down
+
+
+# antigen bundle ytet5uy4/fzf-widgets
+
+# # if antigen list | grep 'ytet5uy4/fzf-widgets' ; then
+  # # Map widgets to key
+  # bindkey '^@'  fzf-select-widget
+  # bindkey '^@.' fzf-edit-dotfiles
+  # bindkey '^@c' fzf-change-directory
+  # bindkey '^@n' fzf-change-named-directory
+  # bindkey '^@f' fzf-edit-files
+  # bindkey '^@k' fzf-kill-processes
+  # bindkey '^@s' fzf-exec-ssh
+  # bindkey '^\'  fzf-change-recent-directory
+  # bindkey '^r'  fzf-insert-history
+  # bindkey '^xf' fzf-insert-files
+  # bindkey '^xd' fzf-insert-directory
+  # bindkey '^xn' fzf-insert-named-directory
+
+  # ## Git
+  # bindkey '^@g'  fzf-select-git-widget
+  # bindkey '^@ga' fzf-git-add-files
+  # bindkey '^@gc' fzf-git-change-repository
+
+  # # GitHub
+  # bindkey '^@h'  fzf-select-github-widget
+  # bindkey '^@hs' fzf-github-show-issue
+  # bindkey '^@hc' fzf-github-close-issue
+
+  # ## Docker
+  # bindkey '^@d'  fzf-select-docker-widget
+  # bindkey '^@dc' fzf-docker-remove-containers
+  # bindkey '^@di' fzf-docker-remove-images
+  # bindkey '^@dv' fzf-docker-remove-volumes
+
+  # # Enable Exact-match by fzf-insert-history
+  # # FZF_WIDGET_OPTS[insert-history]='--exact'
+
+  # # Start fzf in a tmux pane
+  # FZF_WIDGET_TMUX=1
+# # fi
 
 # enable syntax highlighting
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -228,6 +310,8 @@ bindkey '\e[F' end-of-line # End
 
 bindkey '\ev' deer
 
+
+
 # ctrl+u
 bindkey \^U backward-kill-line
 # iterm2 maps sfhit+backspace to  ᜤ , 删除一行
@@ -237,10 +321,17 @@ to-history() { print -S $BUFFER ; BUFFER=; }
 zle -N to-history
 bindkey 'ç' to-history # alt+c, 也可换成 '^q'
 
+
+# autoload -Uz history-beginning-search-menu
+# zle -N history-beginning-search-menu
+# bindkey '^f' history-beginning-search-menu
+# bindkey  'ᜅ' history-search-backward
+# bindkey  'ᜆ'   history-search-forward
+
 # 解绑 ctrl+s ctrl+q
-stty start undef
-stty stop undef
-setopt noflowcontrol
+# stty start undef
+# stty stop undef
+# setopt noflowcontrol
 
 # stty -ixon
 
