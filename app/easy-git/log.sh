@@ -33,8 +33,8 @@ EOF
         fi
     fi
 
-    alias _glg="git log --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d' --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %Cgreen%cd %cr%C(bold blue)%an%Creset %C(bold 0)%s%C(reset)' $cmd"
-    alias _glg_table="git log --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d' --format=format:'%C(yellow)%h%C(reset) %C(auto)%d%C(reset) %C(green)%>|(50)%ad %ar%C(reset)  %C(blue)%<(16,trunc)%an%C(reset) %C(bold 0)%>|(1)%s%C(reset)' $cmd"
+    alias _glg="git log --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d' --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %Cgreen%cd %cr %C(bold blue)%an%Creset %C(bold 0)%s%C(reset)' $cmd"
+    alias _glg_table="git log --graph --abbrev-commit --decorate=no --date=format:'%Y-%m-%d' --format=format:'%C(yellow)%h%C(reset) %C(auto)%d%C(reset) %C(green)%>|(50)%ad %ar %C(reset)  %C(blue)%<(16,trunc)%an%C(reset) %C(bold 0)%>|(1)%s%C(reset)' $cmd"
     #  --date=format:'%Y-%m-%d %H:%I:%S'
     eval _glg "$@"
 }
