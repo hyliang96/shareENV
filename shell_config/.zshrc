@@ -123,7 +123,8 @@ fi
     # bindkey '^f' fzf-history-widget
 # fi
 
-if ! builtin type fzf >/dev/null 2>&1; then
+if [ -x "$(command -v fzf)" ]; then
+# if ! builtin type fzf >/dev/null 2>&1; then
     if [ "$(uname)" = "Darwin" ]; then
         if [ -x "$(command -v brew)" ]; then
             brew install fzf
