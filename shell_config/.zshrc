@@ -129,7 +129,8 @@ if ! builtin type fzf >/dev/null 2>&1; then
             brew install fzf
         fi
     else
-        :
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        ~/.fzf/install
     fi
 fi
 
