@@ -2,14 +2,15 @@
 
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
-# Antigen: https://github.com/zsh-users/antigen
-ANTIGEN="$HOME/.local/bin/antigen.zsh"
 
+# -------------------------------------------------------------------------
+# 定义安装函数
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - instal zsh >&2
 # Install antigen.zsh if not exist
-install_zsh()
+check_antigen_install()
 {
+    [ $DotFileDebug -ne 0 ] && echo share .zshrc - instal zsh >&2
+
     if [ ! -f "$ANTIGEN" ]; then
         echo "Installing antigen ..."
         [ ! -d "$HOME/.local" ] && mkdir -p "$HOME/.local" 2> /dev/null
@@ -33,32 +34,9 @@ install_zsh()
         echo "move $TMPFILE to $ANTIGEN"
         mv "$TMPFILE" "$ANTIGEN"
     fi
+
+    [ $DotFileDebug -ne 0 ] && echo share .zshrc -  Initialize command prompt >&2
 }
-install_zsh
-
-[ $DotFileDebug -ne 0 ] && echo share .zshrc -  Initialize command prompt >&2
-
-# Initialize command prompt
-export PS1="%n@%m:%~%# "
-
-# Enable 256 color to make auto-suggestions look nice
-export TERM="xterm-256color"
-
-
-# Load local bash/zsh compatible settings
-_INIT_SH_NOFUN=1
-[ -f "$HOME/.local/etc/init.sh" ] && source "$HOME/.local/etc/init.sh"
-
-# exit for non-interactive shell
-[[ $- != *i* ]] && return
-
-# WSL (aka Bash for Windows) doesn't work well with BG_NICE
-[ -d "/mnt/c" ] && [[ "$(uname -a)" == *Microsoft* ]] && unsetopt BG_NICE
-
-
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - Initialize antigen >&2
-
-
 
 check_jump_install()
 {
@@ -118,12 +96,42 @@ check_fzf_install()
 }
 
 
-DISABLE_MAGIC_FUNCTIONS=true     # 禁用bracketed-paste-magic, 避免zsh5.1.1中把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
-# 详见：https://github.com/robbyrussell/oh-my-zsh/issues/5569#issuecomment-491504337
+# -------------------------------------------------------------------------
+# shell 基础设置
 
+# Initialize command prompt
+export PS1="%n@%m:%~%# "
+
+# Enable 256 color to make auto-suggestions look nice
+export TERM="xterm-256color"
+
+# Load local bash/zsh compatible settings
+_INIT_SH_NOFUN=1
+[ -f "$HOME/.local/etc/init.sh" ] && source "$HOME/.local/etc/init.sh"
+
+# exit for non-interactive shell
+[[ $- != *i* ]] && return
+
+# WSL (aka Bash for Windows) doesn't work well with BG_NICE
+[ -d "/mnt/c" ] && [[ "$(uname -a)" == *Microsoft* ]] && unsetopt BG_NICE
+
+# 禁用bracketed-paste-magic, 避免zsh5.1.1中把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
+# 详见：https://github.com/robbyrussell/oh-my-zsh/issues/5569#issuecomment-491504337
+DISABLE_MAGIC_FUNCTIONS=true
+
+
+# -------------------------------------------------------------------------
+# antigen
+
+# Antigen: https://github.com/zsh-users/antigen
+ANTIGEN="$HOME/.local/bin/antigen.zsh"
+# install zsh
+check_antigen_install
+
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - Initialize antigen >&2
 # Initialize antigen
 source "$ANTIGEN"
-
+# -------------------------------------------------------------------------
 
 # Initialize oh-my-zsh
 antigen use oh-my-zsh
