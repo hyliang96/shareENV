@@ -157,8 +157,8 @@ antigen bundle python
 antigen bundle z               # 跳转历史目录
 # antigen bundle rupa/z z.sh
 
-# enable syntax highlighting
-antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
+antigen bundle zdharma/fast-syntax-highlighting
+# antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
 antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
 antigen bundle zsh-users/zsh-completions         # tab键自动补全
 # antigen bundle supercrabtree/k
@@ -192,7 +192,7 @@ antigen apply
 
 # ZSH_HIGHLIGHT_STYLES[default]=none
 # ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
-# ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=009,standout
+# ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=red,bold  # =fg=009,standout
 # ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
 # ZSH_HIGHLIGHT_STYLES[builtin]=fg=cyan,bold
 # ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
