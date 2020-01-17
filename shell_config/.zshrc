@@ -126,14 +126,18 @@ fi
 echo fzf path: $(command -v fzf)
 builtin type fzf
 # if ! [ -x "$(command -v fzf)" ]; then
-if ! builtin type fzf >/dev/null 2>&1; then
-    if [ "$(uname)" = "Darwin" ]; then
+# if ! builtin type fzf >/dev/null 2>&1; then
+if [ "$(uname)" = "Darwin" ]; then
+    if ! builtin type fzf >/dev/null 2>&1; then
         if [ -x "$(command -v brew)" ]; then
             brew install fzf
         fi
-    else
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-        ~/.fzf/install
+    fi
+else
+    export PATH="$PATH:$serverENV/app/fzf/bin"
+    if ! builtin type fzf >/dev/null 2>&1; then
+        git clone --depth 1 https://github.com/junegunn/fzf.git $serverENV/app/fzf
+        $serverENV/app/fzf/install
     fi
 fi
 
