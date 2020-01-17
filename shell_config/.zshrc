@@ -152,10 +152,8 @@ antigen bundle svn-fast-info
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
-antigen bundle rupa/z z.sh
-# antigen bundle z
-
-
+# antigen bundle rupa/z z.sh
+antigen bundle z
 
 # enable syntax highlighting
 antigen bundle zsh-users/zsh-syntax-highlighting
