@@ -157,7 +157,7 @@ antigen bundle z               # 跳转历史目录
 
 antigen bundle zdharma/fast-syntax-highlighting
 FAST_WORK_DIR=$shareENV/shell_config/fast_theme
-# fast-theme
+fast-theme
 
 # antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
 antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
