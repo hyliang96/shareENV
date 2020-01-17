@@ -207,7 +207,7 @@ zf()
         echo '1'
         shift  # z匹配当前路径 的历史子路径 -> fzf模糊匹配
         if [ $# -eq 0 ]; then
-            z -I -c
+            z -I -c .
         else
             z -I -c "$@"
         fi
