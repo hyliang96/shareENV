@@ -152,8 +152,8 @@ antigen bundle svn-fast-info
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
+antigen bundle z               # 跳转历史目录
 # antigen bundle rupa/z z.sh
-antigen bundle z
 
 # enable syntax highlighting
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -176,6 +176,12 @@ agnoster_time=1
 agnoster_env=1
 agnoster_newline=1
 
+[ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
+
+antigen apply
+
+# -------------------------------------------------------------------------
+
 # check login shell
 if [[ -o login ]]; then
     [ -f "$HOME/.local/etc/login.sh" ] && source "$HOME/.local/etc/login.sh"
@@ -184,6 +190,7 @@ fi
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set highlight >&2
 
+# -------------------------------------------------------------------------
 # syntax color definition
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
@@ -219,18 +226,7 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 [ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
 
-
-
-[ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
-
-antigen apply
-
-# if ! [ -f ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme ]; then
-    # cp $shareENV/shell_config/agnoster.zsh-theme ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme
-# fi
-# if ! [ -f ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme.antigen-compat ]; then
-    # cp $shareENV/shell_config/agnoster.zsh-theme.antigen-compat ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme.antigen-compat
-# fi
+# -------------------------------------------------------------------------
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set bindkey >&2
 
@@ -303,7 +299,7 @@ bindkey 'ç' to-history-clear # alt+c  保存到命令历史, 并清空当前命
 
 
 
-
+# -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
 
 # options
@@ -330,6 +326,7 @@ zstyle ':completion:*:complete:-command-:*:*' ignored-patterns '*.pdf|*.exe|*.dl
 zstyle ':completion:*:*sh:*:' tag-order files
 
 
+# -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - color scheme >&2
 # ------------- 配色 -------------
 # 终端使用 Coreutils 配色方案
@@ -446,7 +443,8 @@ KEYTIMEOUT=1
 # zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync|ts):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
 
-# ------------- 其他 -------------
+# -------------------------------------------------------------------------
+# 其他 
 # iterm2_shell_integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
