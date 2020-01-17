@@ -138,7 +138,7 @@ bindkey -r '^r'
 to-history() { print -S $BUFFER; }
 zle -N to-history
 # to-history-clear() { print -S $BUFFER ; BUFFER=; }
-to-history-clear() { print -S $BUFFER ; BUFFER=; exit ; }
+to-history-clear() { print -S $BUFFER ; BUFFER= }
 zle -N to-history-clear
 bindkey '^s' to-history      # ctrl+s 保存到命令历史
 bindkey 'ç' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
