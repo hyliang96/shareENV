@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# DotFileDebug=1
+DotFileDebug=1
 [ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
 
 # -------------------------------------------------------------------------
@@ -342,6 +342,7 @@ if [ "$(uname)" = "Darwin" ]; then
             return
         fi
 
+        echo '$(command -v gls)' "$(command -v gls)"
         if [  -x "$(command -v gls)"  ]; then
             echo 'You have command `gls`, which is a submodule of `coreutils`'
         else
