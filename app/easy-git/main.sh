@@ -6,7 +6,7 @@ easy_git_dir=$(cd "$(dirname "${BASH_SOURCE[0]-$0}")"; pwd)
 
 if [ "$(uname)" = "Darwin" ]; then
     if ! [ -x "$(command -v tig)" ]; then
-        brew install tig
+        echo 'run `brew install tig`'
     fi
 else
     export PATH=$PATH:${easy_git_dir}/bin
