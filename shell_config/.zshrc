@@ -128,6 +128,7 @@ bindkey '^f' fzf-history-widget
 stty start undef
 stty stop undef
 # setopt noflowcontrol
+stty -ixon
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
