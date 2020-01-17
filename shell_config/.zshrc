@@ -310,12 +310,15 @@ setopt noflowcontrol
 
 # bindkey '^f' fzf-history-widget
 
+to-clipboard() { nc localhost 8377 <<< "$BUFFER"; }
+zle -N to-clipboard
 to-history() { print -S $BUFFER; }
 zle -N to-history
 to-history-clear() { print -S $BUFFER ; BUFFER= }
 zle -N to-history-clear
+bindkey 'ç' to-clipboard     # alt+c  当前目录复制到剪切板
 bindkey '^s' to-history      # ctrl+s 保存到命令历史
-bindkey 'ç' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
+bindkey '^q' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
 
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
