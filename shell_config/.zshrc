@@ -123,7 +123,7 @@ fi
     # bindkey '^f' fzf-history-widget
 # fi
 
-echo $(command -v fzf)
+echo fzf path: $(command -v fzf)
 if ! [ -x "$(command -v fzf)" ]; then
 # if ! builtin type fzf >/dev/null 2>&1; then
     if [ "$(uname)" = "Darwin" ]; then
