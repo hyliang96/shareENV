@@ -156,6 +156,29 @@ antigen bundle python
 # antigen bundle rupa/z z.sh
 antigen bundle skywind3000/z.lua # https://www.v2ex.com/t/532304
 
+export _ZL_ADD_ONCE=1   # 若为0 则prompt显示一次则计数加1, 若为1则 cd到目录一次则计数加1
+export _ZL_MATCH_MODE=1 # 启用增强匹配模式, 以下字段均可用正则表达式
+export _ZL_NO_ALIASES=0 # 用自己定义的alias
+
+#  z 路径中间字段 路径中间字段 路径结尾字段
+#  z 路径中间字段 路径中间字段 路径未必结尾字段 $
+#  z 路径中间字段 路径中间字段 /
+#
+alias zz='z -i'    # 交互匹配历史路径
+alias zzc='zz -c'  # 交互严格匹配当前子路径
+alias zc='z -c'    # 严格匹配当前路径的子路径
+zf()               # z匹配 -> fzf模糊匹配
+{
+    if [ $# -eq 0 ]; then
+        z -I .
+    else
+        z -I "$@"
+    fi
+}
+alias zb='z -b'
+alias zh='z -I -t .' # 按历史排序, fzf模糊匹配
+
+
 
 antigen bundle zdharma/fast-syntax-highlighting    # zsh 命令的语法高亮
 # antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
@@ -179,26 +202,6 @@ agnoster_env=1
 [ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
 antigen apply
 
-
-export _ZL_ADD_ONCE=1   # 若为0 则prompt显示一次则计数加1, 若为1则 cd到目录一次则计数加1
-export _ZL_MATCH_MODE=1 # 启用增强匹配模式, 以下字段均可用正则表达式
-#  z 路径中间字段 路径中间字段 路径结尾字段
-#  z 路径中间字段 路径中间字段 路径未必结尾字段 $
-#  z 路径中间字段 路径中间字段 /
-#
-alias zz='z -i'    # 交互匹配历史路径
-alias zzc='zz -c'  # 交互严格匹配当前子路径
-alias zc='z -c'    # 严格匹配当前路径的子路径
-zf()               # z匹配 -> fzf模糊匹配
-{
-    if [ $# -eq 0 ]; then
-        z -I .
-    else
-        z -I "$@"
-    fi
-}
-alias zb='z -b'
-alias zh='z -I -t .' # 按历史排序, fzf模糊匹配
 
 
 # #
