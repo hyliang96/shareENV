@@ -131,8 +131,15 @@ stty -ixon
 stty -ixoff
 
 antigen bundle fzf
+
 bindkey '^f' fzf-history-widget
-bindkey '^s' ''
+
+to-history() { print -S $BUFFER; }
+zle -N to-history
+to-history-clear() { print -S $BUFFER ; BUFFER=; }
+zle -N to-history-clear
+bindkey '^s' to-history      # ctrl+s 保存到命令历史
+bindkey 'ç' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
 
 
 # default bundles
@@ -314,10 +321,7 @@ bindkey '\ev' deer
 bindkey \^U backward-kill-line
 # iterm2 maps sfhit+backspace to  ᜤ , 删除一行
 
-# 当前命令加入历史, 并清空, 之后可上翻找到它
-to-history() { print -S $BUFFER ; BUFFER=; }
-zle -N to-history
-bindkey 'ç' to-history # alt+c, 也可换成 '^q'
+
 
 
 # autoload -Uz history-beginning-search-menu
