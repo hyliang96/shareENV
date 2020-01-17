@@ -134,6 +134,7 @@ if [ "$(uname)" = "Darwin" ]; then
         fi
     fi
 else
+    export FZF_BASE="$serverENV/app/fzf"
     export PATH="$PATH:$serverENV/app/fzf/bin"
     if ! builtin type fzf >/dev/null 2>&1; then
         git clone --depth 1 https://github.com/junegunn/fzf.git $serverENV/app/fzf
