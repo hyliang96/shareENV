@@ -178,7 +178,6 @@ antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.g
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
 
-antigen apply
 
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
@@ -437,5 +436,6 @@ fi
 [ -f "$HOME/.local/etc/config.zsh" ] && source "$HOME/.local/etc/config.zsh"
 [ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
+antigen apply
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
