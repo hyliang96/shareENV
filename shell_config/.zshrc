@@ -188,22 +188,33 @@ antigen apply
 #  z 路径中间字段 路径中间字段 路径未必结尾字段 $
 #  z 路径中间字段 路径中间字段 /
 #
-alias zz='z -i'    # 交互匹配历史路径
-alias zzc='zz -c'  # 交互严格匹配当前子路径
-alias zc='z -c'    # 严格匹配当前路径的子路径
-zc(){              # z匹配当前路径 的历史子路径 -> fzf模糊匹配
-    if [ $# -eq 0 ]; then
-        z -I -c
-    else
-        z -I -c "$@"
-    fi
-}
-zf()               # z匹配历史路径, 按访问频率排序 -> fzf模糊匹配
+# alias zz='z -i'    # 交互匹配历史路径
+# alias zzc='zz -c'  # 交互严格匹配当前子路径
+# alias zc='z -c'    # 严格匹配当前路径的子路径
+
+# zc(){
+    # if [ $# -eq 0 ]; then
+        # z -I -c
+    # else
+        # z -I -c "$@"
+    # fi
+# }
+
+zf()
 {
-    if [ $# -eq 0 ]; then
-        z -I .
-    else
-        z -I "$@"
+    if [ "$1" = '.' ]; then
+        shift  # z匹配当前路径 的历史子路径 -> fzf模糊匹配
+        if [ $# -eq 0 ]; then
+            z -I -c
+        else
+            z -I -c "$@"
+        fi
+    else # z匹配历史路径, 按访问频率排序 -> fzf模糊匹配
+        if [ $# -eq 0 ]; then
+            z -I .
+        else
+            z -I "$@"
+        fi
     fi
 }
 alias zb='z -b'
