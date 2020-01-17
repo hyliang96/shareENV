@@ -161,8 +161,8 @@ export _ZL_MATCH_MODE=1 # 启用增强匹配模式, 以下字段均可用正则�
 export _ZL_NO_ALIASES=0 # 不用预设alias, 用自己定义的alias
 
 
-# antigen bundle zdharma/fast-syntax-highlighting    # zsh 命令的语法高亮
-antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
+antigen bundle zdharma/fast-syntax-highlighting    # zsh 命令的语法高亮
+# antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
 antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
 antigen bundle zsh-users/zsh-completions         # tab键自动补全
 # antigen bundle supercrabtree/k
@@ -240,37 +240,37 @@ bindkey '^h' zh
 
 # ------------
 # zdharma/fast-syntax-highlighting 的主题
-# fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
+fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
 # -----------------
 # zsh-users/zsh-syntax-highlighting 的主题
+#
+# # syntax color definition
+# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
-# syntax color definition
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+# typeset -A ZSH_HIGHLIGHT_STYLES
 
-typeset -A ZSH_HIGHLIGHT_STYLES
-
-ZSH_HIGHLIGHT_STYLES[default]=none
-ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
-ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=red,bold  # =fg=009,standout
-ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
-ZSH_HIGHLIGHT_STYLES[builtin]=fg=cyan,bold
-ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
-ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
-ZSH_HIGHLIGHT_STYLES[precommand]=fg=white,underline
-ZSH_HIGHLIGHT_STYLES[commandseparator]=none
-ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=009
-ZSH_HIGHLIGHT_STYLES[path]=fg=214,underline
-ZSH_HIGHLIGHT_STYLES[globbing]=fg=063
-ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=white,underline
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=none
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=none
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=063
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=063
-ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=009
-ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=009
-ZSH_HIGHLIGHT_STYLES[assign]=none
+# ZSH_HIGHLIGHT_STYLES[default]=none
+# ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
+# ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=red,bold  # =fg=009,standout
+# ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
+# ZSH_HIGHLIGHT_STYLES[builtin]=fg=cyan,bold
+# ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
+# ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
+# ZSH_HIGHLIGHT_STYLES[precommand]=fg=white,underline
+# ZSH_HIGHLIGHT_STYLES[commandseparator]=none
+# ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=009
+# ZSH_HIGHLIGHT_STYLES[path]=fg=214,underline
+# ZSH_HIGHLIGHT_STYLES[globbing]=fg=063
+# ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=white,underline
+# ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=none
+# ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=none
+# ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
+# ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=063
+# ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=063
+# ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=009
+# ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=009
+# ZSH_HIGHLIGHT_STYLES[assign]=none
 
 
 # -------------------------------------------------------------------------
