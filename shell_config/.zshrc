@@ -171,7 +171,8 @@ antigen bundle willghatch/zsh-cdr
 # antigen theme agnoster
 # antigen theme https://github.com/apjanke/agnosterj-zsh-theme.git
 # antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
-antigen theme https://github.com/hyliang96/my_agnoster.git
+# antigen theme https://github.com/hyliang96/my_agnoster.git
+antigen theme hyliang96/my_agnoster
 agnoster_time=1
 agnoster_env=1
 agnoster_newline=1
@@ -444,7 +445,7 @@ KEYTIMEOUT=1
 
 
 # -------------------------------------------------------------------------
-# 其他 
+# 其他
 # iterm2_shell_integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
