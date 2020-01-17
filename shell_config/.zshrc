@@ -103,28 +103,8 @@ fi
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
 
-# # 设置fzf路径
-# # Exit if fzf is not installed
-# if builtin type fzf >/dev/null 2>&1; then
-    # # Setup fzf
-    # if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-        # export PATH="$PATH:/usr/local/opt/fzf/bin"
-    # fi
-    # # Man path
-    # if [[ ! "$MANPATH" == */usr/local/opt/fzf/man* && -d "/usr/local/opt/fzf/man" ]]; then
-        # export MANPATH="$MANPATH:/usr/local/opt/fzf/man"
-    # fi
-    # # Auto-completion
-    # [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
-    # # Key bindings
-    # source "/usr/local/opt/fzf/shell/key-bindings.zsh"
-    # # 加载fzf插件
-    # antigen bundle fzf
-    # bindkey '^f' fzf-history-widget
-# fi
 
-# echo fzf path: $(command -v fzf)
-# builtin type fzf
+
 # if ! [ -x "$(command -v fzf)" ]; then
 # if ! builtin type fzf >/dev/null 2>&1; then
 if [ "$(uname)" = "Darwin" ]; then
@@ -143,7 +123,7 @@ else
 fi
 
 antigen bundle fzf
-
+# bindkey '^f' fzf-history-widget
 
 
 # default bundles
