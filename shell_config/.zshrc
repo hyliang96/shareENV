@@ -203,7 +203,7 @@ z()
         else
             _zlua -I -c "$@"
         fi
-    else # z匹配历史路径, 按访问频率排序 -> fzf模糊匹配
+    elif ! [[ "$1" =~ '^-' ]]; then # z匹配历史路径, 按访问频率排序 -> fzf模糊匹配
         if [ $# -eq 0 ]; then
             _zlua -I .
         else
