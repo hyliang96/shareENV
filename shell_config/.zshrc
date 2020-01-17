@@ -173,7 +173,7 @@ antigen bundle willghatch/zsh-cdr
 agnoster_time=1
 agnoster_env=1
 agnoster_newline=1
-# antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
+antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
 
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
