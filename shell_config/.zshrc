@@ -188,7 +188,7 @@ export _ZL_MATCH_MODE=1 # 启用增强匹配模式, 以下字段均可用正则�
 
 # alias zc='z -c'        # 严格匹配当前路径的子路径
 # alias zi='z -i'        # 使用交互式选择模式
-alias fzf-history-dir='cd "$(z -l -t -s | fzf --reverse --height 35%)"'
+fzf-history-dir(){ cd "$(z -l -t -s | fzf --reverse --height 35%)" }
 alias zt=fzf-history-dir    # 搭配 fzf 模糊匹配, 按访问历史排序
 alias zf='cd "$(z -l -s | fzf --reverse --height 35%)"'       # 搭配 fzf 模糊匹配, 按访问频率排序
 alias zi='cd $(z -l -s | fzf --reverse --height 35% --exact)' # 搭配 fzf 严格模式, 按访问频率排序 : 路径中间字段 路径中间字段 路径未必结尾字段
