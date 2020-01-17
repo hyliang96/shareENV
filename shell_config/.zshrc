@@ -123,26 +123,9 @@ else
 fi
 
 
-# 解绑 ctrl+s ctrl+q
-stty start undef
-stty stop undef
-setopt noflowcontrol
-# stty -ixon
-# stty -ixoff
+
 
 antigen bundle fzf
-
-bindkey -r '^r'
-# bindkey '^f' fzf-history-widget
-
-to-history() { print -S $BUFFER; }
-zle -N to-history
-# to-history-clear() { print -S $BUFFER ; BUFFER=; }
-to-history-clear() { print -S $BUFFER ; BUFFER= }
-zle -N to-history-clear
-bindkey '^s' to-history      # ctrl+s 保存到命令历史
-bindkey 'ç' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
-
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -325,6 +308,26 @@ bindkey \^U backward-kill-line
 
 
 
+# 解绑 ctrl+s ctrl+q
+stty start undef
+stty stop undef
+setopt noflowcontrol
+# stty -ixon
+# stty -ixoff
+
+# bindkey -r '^r'
+# bindkey '^f' fzf-history-widget
+
+to-history() { print -S $BUFFER; }
+zle -N to-history
+# to-history-clear() { print -S $BUFFER ; BUFFER=; }
+to-history-clear() { print -S $BUFFER ; BUFFER= }
+zle -N to-history-clear
+bindkey '^s' to-history      # ctrl+s 保存到命令历史
+bindkey 'ç' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
+
+
+
 
 # autoload -Uz history-beginning-search-menu
 # zle -N history-beginning-search-menu
@@ -334,7 +337,6 @@ bindkey \^U backward-kill-line
 
 
 
-# stty -ixon
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
 
