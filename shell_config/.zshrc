@@ -162,7 +162,7 @@ export _ZL_MATCH_MODE=1 # 启用增强匹配模式
 #  z 路径正则表达式
 alias zc='z -c'      # 严格匹配当前路径的子路径
 alias zi='z -i'      # 使用交互式选择模式
-alias zh='cd "$(z -l -t -s | fzf --reverse --height 35%)"'   # 搭配 fzf 进行历史路径模糊匹配
+alias zt='cd "$(z -l -t -s | fzf --reverse --height 35%)"'   # 搭配 fzf 进行历史路径模糊匹配
 alias zf='cd "$(z -l -s | fzf --reverse --height 35%)"'   # 搭配 fzf 进行历史路径模糊匹配
 
 antigen bundle zdharma/fast-syntax-highlighting    # zsh 命令的语法高亮
