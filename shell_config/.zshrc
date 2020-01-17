@@ -122,14 +122,18 @@ else
     fi
 fi
 
-antigen bundle fzf
-bindkey '^f' fzf-history-widget
+
 # 解绑 ctrl+s ctrl+q
 stty start undef
 stty stop undef
 # setopt noflowcontrol
 stty -ixon
 stty -ixoff
+
+antigen bundle fzf
+bindkey '^f' fzf-history-widget
+bindkey '^s' fzf-history-widget
+
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
