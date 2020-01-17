@@ -5,7 +5,6 @@
 
 [ $DotFileDebug -ne 0 ] && echo share .bash_aliases >&2
 
-[ $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
 
 # ---------------- alias to resource ----------------
 alias nvd='watch -n 10 nvidia-smi'  # 查GPU使用
@@ -1095,5 +1094,5 @@ timezone()
 }
 
 
-
-
+# git 的 alias
+[ $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
