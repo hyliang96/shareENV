@@ -125,10 +125,11 @@ fi
 antigen bundle fzf
 bindkey '^f' fzf-history-widget
 # 解绑 ctrl+s ctrl+q
-# stty start undef
-# stty stop undef
+stty start undef
+stty stop undef
 # setopt noflowcontrol
 stty -ixon
+stty -ixoff
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
