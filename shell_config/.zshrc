@@ -174,10 +174,10 @@ antigen bundle willghatch/zsh-cdr
 # 换主题
 # 更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
 # bureau, ys, agnoster, pujanke/agnoster-zsh-theme
-antigen theme pujanke/agnoster-zsh-theme
+antigen theme https://github.com/agnoster/agnoster-zsh-theme.git
 # antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
-agnoster_time=1
-agnoster_env=1
+# agnoster_time=1
+# agnoster_env=1
 # agnoster_newline=1
 
 
