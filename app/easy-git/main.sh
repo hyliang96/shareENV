@@ -4,7 +4,7 @@
 # if you want transfer symbolic link to true path, just change `pwd` to `pwd -P`
 easy_git_dir=$(cd "$(dirname "${BASH_SOURCE[0]-$0}")"; pwd)
 
-export PATH=${easy_git_dir}/tig:$PATH
+export PATH=$PATH:${easy_git_dir}/bin
 
 . $easy_git_dir/utils.sh
 
