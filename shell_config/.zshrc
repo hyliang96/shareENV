@@ -71,37 +71,37 @@ source "$ANTIGEN"
 # Initialize oh-my-zsh
 antigen use oh-my-zsh
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
+# [ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
 
-# antigen bundle autojump # 自动跳转
-if [ "$(uname)" = "Darwin" ]; then
-    # mac
-    if [  -x "$(command -v autojump)"  ]; then
-        # if [ -f /usr/local/etc/profile.d/autojump.sh ]; then
-            # # . /usr/local/etc/profile.d/autojump.sh
-        # else
-            # echo 'can not find the path to autojump' >&2
-        # fi
-        antigen bundle autojump
-    else
-        echo 'no `autojump` on your mac, run `brew instal autojump` to install it' >&2
-    fi
-else
-    # linux
-    if ! [ -d ~/.autojump ]; then
-        # 安装autojump
-        cd $my
-        git clone git://github.com/joelthelion/autojump.git
-        cd autojump
-        ./install.py
-        cd $my
-        rm autojump -rf
-    fi
-    # linux上用户装在自己的home下，则用bundle加载不了，要在这里手动加载
-    [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
-fi
+# # antigen bundle autojump # 自动跳转
+# if [ "$(uname)" = "Darwin" ]; then
+    # # mac
+    # if [  -x "$(command -v autojump)"  ]; then
+        # # if [ -f /usr/local/etc/profile.d/autojump.sh ]; then
+            # # # . /usr/local/etc/profile.d/autojump.sh
+        # # else
+            # # echo 'can not find the path to autojump' >&2
+        # # fi
+        # antigen bundle autojump
+    # else
+        # echo 'no `autojump` on your mac, run `brew instal autojump` to install it' >&2
+    # fi
+# else
+    # # linux
+    # if ! [ -d ~/.autojump ]; then
+        # # 安装autojump
+        # cd $my
+        # git clone git://github.com/joelthelion/autojump.git
+        # cd autojump
+        # ./install.py
+        # cd $my
+        # rm autojump -rf
+    # fi
+    # # linux上用户装在自己的home下，则用bundle加载不了，要在这里手动加载
+    # [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
+# fi
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
+# [ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
 
 
 
