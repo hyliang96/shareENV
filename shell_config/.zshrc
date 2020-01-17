@@ -132,7 +132,7 @@ stty -ixoff
 
 antigen bundle fzf
 bindkey '^f' fzf-history-widget
-bindkey '^s' undef
+bindkey '^s' ''
 
 
 # default bundles
