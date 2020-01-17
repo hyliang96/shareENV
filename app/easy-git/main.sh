@@ -3,6 +3,9 @@
 # get absoltae path to the dir this is in, work in bash, zsh
 # if you want transfer symbolic link to true path, just change `pwd` to `pwd -P`
 easy_git_dir=$(cd "$(dirname "${BASH_SOURCE[0]-$0}")"; pwd)
+
+export PATH=${easy_git_dir}/tig:$PATH
+
 . $easy_git_dir/utils.sh
 
 . $easy_git_dir/ignore.sh
