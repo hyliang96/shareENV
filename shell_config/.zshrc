@@ -132,6 +132,8 @@ check_antigen_install
 # Initialize antigen
 source "$ANTIGEN"
 # -------------------------------------------------------------------------
+# zsh 插件
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen boundle >&2
 
 # Initialize oh-my-zsh
 antigen use oh-my-zsh
@@ -178,16 +180,8 @@ agnoster_newline=1
 antigen apply
 
 # -------------------------------------------------------------------------
+[ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
 
-# check login shell
-if [[ -o login ]]; then
-    [ -f "$HOME/.local/etc/login.sh" ] && source "$HOME/.local/etc/login.sh"
-    [ -f "$HOME/.local/etc/login.zsh" ] && source "$HOME/.local/etc/login.zsh"
-fi
-
-[ $DotFileDebug -ne 0 ] && echo share .zshrc set highlight >&2
-
-# -------------------------------------------------------------------------
 # syntax color definition
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
@@ -218,14 +212,12 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=009
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=009
 ZSH_HIGHLIGHT_STYLES[assign]=none
 
-# load local config
-[ -f "$HOME/.local/etc/config.zsh" ] && source "$HOME/.local/etc/config.zsh"
-[ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
-
 
 # -------------------------------------------------------------------------
-
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set bindkey >&2
+
+# 10ms for key sequences
+KEYTIMEOUT=1
 
 # setup for deer
 autoload -U deer
@@ -285,16 +277,11 @@ zle -N to-history-clear
 bindkey '^s' to-history      # ctrl+s 保存到命令历史
 bindkey 'ç' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
 
-
-
-
 # autoload -Uz history-beginning-search-menu
 # zle -N history-beginning-search-menu
 # bindkey '^f' history-beginning-search-menu
 # bindkey  'ᜅ' history-search-backward
 # bindkey  'ᜆ'   history-search-forward
-
-
 
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
@@ -324,8 +311,8 @@ zstyle ':completion:*:*sh:*:' tag-order files
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - color scheme >&2
-# ------------- 配色 -------------
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - Coreutils color scheme >&2
+
 # 终端使用 Coreutils 配色方案
 # 采用Coreutils的gdircolor配色，修改~/.dir_colors(自定义配色)
 # 以修改ls命令使用的环境变量LS_COLORS（BSD是LSCOLORS）
@@ -335,21 +322,6 @@ zstyle ':completion:*:*sh:*:' tag-order files
 # mac上ls不支持 --show-control-chars --color=auto
 # 当安装了coreutils时， gls --color=auto 默认加载 coreutils 配色
 # coreutils安装方法：brew install coreutils
-# if [ -x "$(command -v brew)" ] && [  -x "$(command -v gls)"  ] ; then
-    # if brew list | grep coreutils > /dev/null ; then
-        # # 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
-        # PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-        # # between quotation marks is the tool output for LS_COLORS
-        # alias ls='gls --show-control-chars --color=auto'
-        # eval `gdircolors -b $HOME/.dir_colors`
-    # else
-        # echo '-------------------------------------------------------------------------'
-        # echo 'Your mac has brew and gls; but not coreutils is installed, thus `ls` '
-        # echo 'will not be colored normally. Please install it by running'
-        # echo '                      `brew install coreutils`                           '
-        # echo '-------------------------------------------------------------------------'
-    # fi
-# fi
 
 if [ "$(uname)" = "Darwin" ]; then
     check_mac_ls_color()
@@ -414,34 +386,13 @@ alias fgrep='fgrep --color'
 # 使得zsh的补全配色与ls一致
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-# 没有找到文件（夹），仍然继续执行
-# 如 rm -rf 一个文件夹/{*,.*}
-# 即使没有 .* 文件，也会把 * 文件删了
-setopt no_nomatch
-
-# 10ms for key sequences
-KEYTIMEOUT=1
-
-# ts()
-# {
-    # local retry_time=180 # second
-    # while [ 1 ]
-    # do
-        # rsync -aHhvzP $*
-        # if [ "$?" = "0" ] ; then
-            # echo "rsync completed normally"
-            # exit
-        # else
-            # echo "Rsync failure. Backing off and retrying in $retry_time seconds..."
-            # sleep $retry_time
-        # fi
-    # done
-# }
-# zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync|ts):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
-
-
 # -------------------------------------------------------------------------
 # 其他
+
+# 没有找到文件（夹），仍然继续执行
+# 如 rm -rf 一个文件夹/{*,.*}, 即使没有 .* 文件，也会把 * 文件删了
+setopt no_nomatch
+
 # iterm2_shell_integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -466,6 +417,18 @@ alias tm='tmux_tm attach -t'
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 
+# -------------------------------------------------------------------------
+[ $DotFileDebug -ne 0 ] && echo share .zshrc load local zsh login/logout and local config >&2
+
+# check login shell
+if [[ -o login ]]; then
+    [ -f "$HOME/.local/etc/login.sh" ] && source "$HOME/.local/etc/login.sh"
+    [ -f "$HOME/.local/etc/login.zsh" ] && source "$HOME/.local/etc/login.zsh"
+fi
+
+# load local config
+[ -f "$HOME/.local/etc/config.zsh" ] && source "$HOME/.local/etc/config.zsh"
+[ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
