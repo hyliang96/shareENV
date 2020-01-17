@@ -202,9 +202,9 @@ antigen apply
 
 zf()
 {
-    echo "$1"
+    # echo "$1"
     if [ "$1" = '.' ]; then
-        echo '1'
+        # echo '1'
         shift  # z匹配当前路径 的历史子路径 -> fzf模糊匹配
         if [ $# -eq 0 ]; then
             z -I -c .
