@@ -132,7 +132,7 @@ stty -ixoff
 
 antigen bundle fzf
 
-bindkey -r "^r"
+bindkey -r '^r'
 bindkey '^f' fzf-history-widget
 
 to-history() { print -S $BUFFER; }
