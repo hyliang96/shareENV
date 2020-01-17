@@ -139,7 +139,7 @@ antigen use oh-my-zsh
 # 历史命令搜索
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
-antigen bundle fzf
+antigen bundle fzf   # 模糊历史搜索
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -156,9 +156,9 @@ antigen bundle z               # 跳转历史目录
 # antigen bundle rupa/z z.sh
 
 # enable syntax highlighting
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-completions
+antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
+antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
+antigen bundle zsh-users/zsh-completions         # tab键自动补全
 # antigen bundle supercrabtree/k
 antigen bundle Vifon/deer
 
