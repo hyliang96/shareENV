@@ -208,7 +208,7 @@ z()
         fi
     fi
 }
-alias zb='_zlua -b' # 跳转到父目录中名称以 foo 开头的那一级
+alias z..='_zlua -b' # 跳转到父目录中 名称含foo的那一级
 
 
 
