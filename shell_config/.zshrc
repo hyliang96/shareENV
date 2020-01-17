@@ -165,14 +165,10 @@ antigen bundle Vifon/deer
 antigen bundle willghatch/zsh-cdr
 # antigen bundle zsh-users/zaw
 
-# 换主题: agnoster, ys
+# 换主题
 # 更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
-# antigen theme bureau
-# antigen theme agnoster
-# antigen theme https://github.com/apjanke/agnosterj-zsh-theme.git
-# antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
-# antigen theme https://github.com/hyliang96/my_agnoster.git
-antigen theme hyliang96/my_agnoster
+# bureau, ys, agnoster, pjanke/agnosterj-zsh-theme
+antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
 agnoster_time=1
 agnoster_env=1
 agnoster_newline=1
