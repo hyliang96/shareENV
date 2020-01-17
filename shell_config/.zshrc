@@ -310,7 +310,7 @@ setopt noflowcontrol
 
 # bindkey '^f' fzf-history-widget
 
-to-clipboard() { nc localhost 8377 <<< "$BUFFER"; }
+to-clipboard() { stty -icanon && nc localhost 8377 <<< "$BUFFER"; }
 zle -N to-clipboard
 to-history() { print -S $BUFFER; }
 zle -N to-history
