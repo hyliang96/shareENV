@@ -4,12 +4,12 @@
 # if you want transfer symbolic link to true path, just change `pwd` to `pwd -P`
 easy_git_dir=$(cd "$(dirname "${BASH_SOURCE[0]-$0}")"; pwd)
 
-if ! [ "$(uname)" = "Darwin" ]; then
-    export PATH=$PATH:${easy_git_dir}/bin
-else
-    if [ -x "$(command -v tig)" ]; then
+if [ "$(uname)" = "Darwin" ]; then
+    if ! [ -x "$(command -v tig)" ]; then
         brew install tig
     fi
+else
+    export PATH=$PATH:${easy_git_dir}/bin
 fi
 
 . $easy_git_dir/utils.sh
