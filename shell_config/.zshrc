@@ -152,9 +152,10 @@ antigen bundle svn-fast-info
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
-antigen bundle z               # 跳转历史目录
+# antigen bundle z               # 跳转历史目录
 # antigen bundle rupa/z z.sh
-antigen bundle fzf-z
+antigen bundle skywind3000/z.lua
+# antigen bundle fzf-z
 
 antigen bundle zdharma/fast-syntax-highlighting    # zsh 命令的语法高亮
 # antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
