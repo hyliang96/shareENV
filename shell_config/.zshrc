@@ -124,8 +124,9 @@ fi
 # fi
 
 echo fzf path: $(command -v fzf)
-if ! [ -x "$(command -v fzf)" ]; then
-# if ! builtin type fzf >/dev/null 2>&1; then
+builtin type fzf
+# if ! [ -x "$(command -v fzf)" ]; then
+if ! builtin type fzf >/dev/null 2>&1; then
     if [ "$(uname)" = "Darwin" ]; then
         if [ -x "$(command -v brew)" ]; then
             brew install fzf
