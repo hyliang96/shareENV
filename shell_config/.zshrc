@@ -115,6 +115,10 @@ _INIT_SH_NOFUN=1
 # WSL (aka Bash for Windows) doesn't work well with BG_NICE
 [ -d "/mnt/c" ] && [[ "$(uname -a)" == *Microsoft* ]] && unsetopt BG_NICE
 
+# 禁用bracketed-paste-magic, 避免zsh5.1.1中把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
+# 详见：https://github.com/robbyrussell/oh-my-zsh/issues/5569#issuecomment-491504337
+DISABLE_MAGIC_FUNCTIONS=true
+
 
 # -------------------------------------------------------------------------
 # antigen
@@ -387,11 +391,6 @@ alias fgrep='fgrep --color'
 
 # 使得zsh的补全配色与ls一致
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
-# 禁用bracketed-paste-magic, 避免zsh5.1.1中把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
-# 详见：https://github.com/robbyrussell/oh-my-zsh/issues/5569#issuecomment-491504337
-DISABLE_MAGIC_FUNCTIONS=true
-
 
 # -------------------------------------------------------------------------
 # 其他
