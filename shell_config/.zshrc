@@ -181,7 +181,7 @@ antigen apply
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
 
-fast-theme $shareENV/shell_config/fast_theme/my_theme.ini >/dev/null
+fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
 # # syntax color definition
 # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
