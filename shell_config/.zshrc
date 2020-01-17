@@ -191,14 +191,14 @@ antigen apply
 alias zz='z -i'    # 交互匹配历史路径
 alias zzc='zz -c'  # 交互严格匹配当前子路径
 alias zc='z -c'    # 严格匹配当前路径的子路径
-zc(){              # z匹配当前路径的子路径 -> fzf模糊匹配
+zc(){              # z匹配当前路径 的历史子路径 -> fzf模糊匹配
     if [ $# -eq 0 ]; then
-        z -I -c .
+        z -I -c
     else
         z -I -c "$@"
     fi
 }
-zf()               # z匹配, 按访问频率排序 -> fzf模糊匹配
+zf()               # z匹配历史路径, 按访问频率排序 -> fzf模糊匹配
 {
     if [ $# -eq 0 ]; then
         z -I .
@@ -207,7 +207,7 @@ zf()               # z匹配, 按访问频率排序 -> fzf模糊匹配
     fi
 }
 alias zb='z -b'
-zh(){             # z匹配 按历史排序 -> fzf模糊匹配
+zh(){             # z匹配历史路径 按历史排序 -> fzf模糊匹配
     if [ $# -eq 0 ]; then
         z -I -t .
     else
