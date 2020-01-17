@@ -123,8 +123,11 @@ else
 fi
 
 antigen bundle fzf
-# bindkey '^f' fzf-history-widget
-
+bindkey '^f' fzf-history-widget
+# 解绑 ctrl+s ctrl+q
+stty start undef
+stty stop undef
+# setopt noflowcontrol
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -317,10 +320,7 @@ bindkey 'ç' to-history # alt+c, 也可换成 '^q'
 # bindkey  'ᜅ' history-search-backward
 # bindkey  'ᜆ'   history-search-forward
 
-# 解绑 ctrl+s ctrl+q
-# stty start undef
-# stty stop undef
-# setopt noflowcontrol
+
 
 # stty -ixon
 
