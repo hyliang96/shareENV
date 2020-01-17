@@ -215,9 +215,15 @@ z()
     else
         _zlua "$@"
     fi
-
 }
 alias z..='_zlua -b' # 跳转到父目录中 名称含foo的那一级
+zh(){        # z匹配历史路径, 按之间排序 -> fzf模糊匹配
+    if [ $# -eq 0 ]; then
+        _zlua -I -t .
+    else
+        _zlua -I -t "$@"
+    fi
+}
 
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
