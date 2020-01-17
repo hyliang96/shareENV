@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-DotFileDebug=1
+# DotFileDebug=1
 [ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
 
 # -------------------------------------------------------------------------
