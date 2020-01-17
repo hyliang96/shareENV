@@ -200,7 +200,14 @@ zf()               # z匹配 -> fzf模糊匹配
     fi
 }
 alias zb='z -b'
-alias zh='z -I -t .' # 按历史排序, fzf模糊匹配
+zh(){             # z匹配 按历史排序 -> fzf模糊匹配
+    if [ $# -eq 0 ]; then
+        z -I -t .
+    else
+        z -I -t "$@"
+    fi
+}
+
 
 
 
