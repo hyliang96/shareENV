@@ -182,15 +182,17 @@ antigen apply
 
 export _ZL_ADD_ONCE=1   # 若为0 则prompt显示一次则计数加1, 若为1则 cd到目录一次则计数加1
 export _ZL_MATCH_MODE=1 # 启用增强匹配模式, 以下字段均可用正则表达式
-#  z 路径中间字段 路径中间字段 路径未必结尾字段
+#  z 路径中间字段 路径中间字段 路径结尾字段
 #  z 路径中间字段 路径中间字段 路径未必结尾字段 $
 #  z 路径中间字段 路径中间字段 /
-alias zc='z -c'      # 严格匹配当前路径的子路径
-# alias zi='z -i'      # 使用交互式选择模式
-alias zi='cd $(z -l -s | fzf --reverse --height 35% --exact)' # 搭配 fzf 严格模式 
-alias zt='cd "$(z -l -t -s | fzf --reverse --height 35%)"'    # 搭配 fzf 按访问历史排序
-alias zf='cd "$(z -l -s | fzf --reverse --height 35%)"'       # 搭配 fzf 进行历史路径模糊匹配
 
+# alias zc='z -c'        # 严格匹配当前路径的子路径
+# alias zi='z -i'        # 使用交互式选择模式
+alias fzf-history-dir='cd "$(z -l -t -s | fzf --reverse --height 35%)"'    # 搭配 fzf 模糊匹配, 按访问历史排序
+alias zf='cd "$(z -l -s | fzf --reverse --height 35%)"'       # 搭配 fzf 模糊匹配, 按访问频率排序
+alias zi='cd $(z -l -s | fzf --reverse --height 35% --exact)' # 搭配 fzf 严格模式, 按访问频率排序 : 路径中间字段 路径中间字段 路径未必结尾字段
+zle -N fzf-history-dir
+bindkey '^H'  zle -N fzf-history-dir
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
 
