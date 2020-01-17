@@ -123,8 +123,8 @@ fi
     # bindkey '^f' fzf-history-widget
 # fi
 
-echo fzf path: $(command -v fzf)
-builtin type fzf
+# echo fzf path: $(command -v fzf)
+# builtin type fzf
 # if ! [ -x "$(command -v fzf)" ]; then
 # if ! builtin type fzf >/dev/null 2>&1; then
 if [ "$(uname)" = "Darwin" ]; then
@@ -135,7 +135,7 @@ if [ "$(uname)" = "Darwin" ]; then
     fi
 else
     export FZF_BASE="$serverENV/app/fzf"
-    export PATH="$PATH:$serverENV/app/fzf/bin"
+    # export PATH="$PATH:$serverENV/app/fzf/bin"
     if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
         git clone --depth 1 https://github.com/junegunn/fzf.git $serverENV/app/fzf
         # $serverENV/app/fzf/install
