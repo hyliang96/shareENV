@@ -187,7 +187,9 @@ antigen apply
 #  z 路径中间字段 路径中间字段 路径未必结尾字段 $
 #  z 路径中间字段 路径中间字段 /
 
-zf()
+unalias z
+alias zz=_zlua
+z()
 {
     # echo "$1"
     if [ "$1" = '.' ]; then
@@ -206,8 +208,6 @@ zf()
         fi
     fi
 }
-unalias z
-alias z=zf
 alias zb='_zlua -b' # 跳转到父目录中名称以 foo 开头的那一级
 
 
