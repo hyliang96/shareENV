@@ -436,6 +436,5 @@ fi
 [ -f "$HOME/.local/etc/config.zsh" ] && source "$HOME/.local/etc/config.zsh"
 [ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
-antigen apply
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
