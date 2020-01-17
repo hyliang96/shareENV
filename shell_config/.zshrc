@@ -60,6 +60,63 @@ _INIT_SH_NOFUN=1
 
 
 
+check_jump_install()
+{
+    [ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
+
+    # antigen bundle autojump # 自动跳转
+    if [ "$(uname)" = "Darwin" ]; then
+        # mac
+        if [  -x "$(command -v autojump)"  ]; then
+            # if [ -f /usr/local/etc/profile.d/autojump.sh ]; then
+                # # . /usr/local/etc/profile.d/autojump.sh
+            # else
+                # echo 'can not find the path to autojump' >&2
+            # fi
+            antigen bundle autojump
+        else
+            echo 'no `autojump` on your mac, run `brew instal autojump` to install it' >&2
+        fi
+    else
+        # linux
+        if ! [ -d ~/.autojump ]; then
+            # 安装autojump
+            cd $my
+            git clone git://github.com/joelthelion/autojump.git
+            cd autojump
+            ./install.py
+            cd $my
+            rm autojump -rf
+        fi
+        # linux上用户装在自己的home下，则用bundle加载不了，要在这里手动加载
+        [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
+    fi
+
+    [ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
+}
+
+check_fzf_install()
+{
+    if [ "$(uname)" = "Darwin" ]; then
+        # if ! [ -x "$(command -v fzf)" ]; then
+        # if ! builtin type fzf >/dev/null 2>&1; then
+        if ! builtin type fzf >/dev/null 2>&1; then
+            if [ -x "$(command -v brew)" ]; then
+                brew install fzf
+            else
+                echo 'there is no brew on your mac; cannot `brew  install fzf`' >&2
+            fi
+        fi
+    else
+        export FZF_BASE="$serverENV/app/fzf"
+        # export PATH="$PATH:$serverENV/app/fzf/bin"
+        if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
+            git clone --depth 1 https://github.com/junegunn/fzf.git $serverENV/app/fzf
+            # $serverENV/app/fzf/install
+        fi
+    fi
+}
+
 
 DISABLE_MAGIC_FUNCTIONS=true     # 禁用bracketed-paste-magic, 避免zsh5.1.1中把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
 # 详见：https://github.com/robbyrussell/oh-my-zsh/issues/5569#issuecomment-491504337
@@ -71,60 +128,9 @@ source "$ANTIGEN"
 # Initialize oh-my-zsh
 antigen use oh-my-zsh
 
-# [ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
-
-# # antigen bundle autojump # 自动跳转
-# if [ "$(uname)" = "Darwin" ]; then
-    # # mac
-    # if [  -x "$(command -v autojump)"  ]; then
-        # # if [ -f /usr/local/etc/profile.d/autojump.sh ]; then
-            # # # . /usr/local/etc/profile.d/autojump.sh
-        # # else
-            # # echo 'can not find the path to autojump' >&2
-        # # fi
-        # antigen bundle autojump
-    # else
-        # echo 'no `autojump` on your mac, run `brew instal autojump` to install it' >&2
-    # fi
-# else
-    # # linux
-    # if ! [ -d ~/.autojump ]; then
-        # # 安装autojump
-        # cd $my
-        # git clone git://github.com/joelthelion/autojump.git
-        # cd autojump
-        # ./install.py
-        # cd $my
-        # rm autojump -rf
-    # fi
-    # # linux上用户装在自己的home下，则用bundle加载不了，要在这里手动加载
-    # [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
-# fi
-
-# [ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
-
-
-
-# if ! [ -x "$(command -v fzf)" ]; then
-# if ! builtin type fzf >/dev/null 2>&1; then
-if [ "$(uname)" = "Darwin" ]; then
-    if ! builtin type fzf >/dev/null 2>&1; then
-        if [ -x "$(command -v brew)" ]; then
-            brew install fzf
-        fi
-    fi
-else
-    export FZF_BASE="$serverENV/app/fzf"
-    # export PATH="$PATH:$serverENV/app/fzf/bin"
-    if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
-        git clone --depth 1 https://github.com/junegunn/fzf.git $serverENV/app/fzf
-        # $serverENV/app/fzf/install
-    fi
-fi
-
-
-
-
+# 历史命令搜索
+# antigen bundle zsh-users/zsh-history-substring-search
+check_fzf_install
 antigen bundle fzf
 
 # default bundles
@@ -141,53 +147,7 @@ antigen bundle python
 antigen bundle rupa/z z.sh
 # antigen bundle z
 
-# 历史命令搜索
-# antigen bundle zsh-users/zsh-history-substring-search
-# bindkey '\e[A' history-substring-search-up
-# bindkey '\e[B' history-substring-search-down
-# bindkey "$terminfo[kcuu1]" history-substring-search-up
-# bindkey "$terminfo[kcud1]" history-substring-search-down
 
-
-# antigen bundle ytet5uy4/fzf-widgets
-
-# # if antigen list | grep 'ytet5uy4/fzf-widgets' ; then
-  # # Map widgets to key
-  # bindkey '^@'  fzf-select-widget
-  # bindkey '^@.' fzf-edit-dotfiles
-  # bindkey '^@c' fzf-change-directory
-  # bindkey '^@n' fzf-change-named-directory
-  # bindkey '^@f' fzf-edit-files
-  # bindkey '^@k' fzf-kill-processes
-  # bindkey '^@s' fzf-exec-ssh
-  # bindkey '^\'  fzf-change-recent-directory
-  # bindkey '^r'  fzf-insert-history
-  # bindkey '^xf' fzf-insert-files
-  # bindkey '^xd' fzf-insert-directory
-  # bindkey '^xn' fzf-insert-named-directory
-
-  # ## Git
-  # bindkey '^@g'  fzf-select-git-widget
-  # bindkey '^@ga' fzf-git-add-files
-  # bindkey '^@gc' fzf-git-change-repository
-
-  # # GitHub
-  # bindkey '^@h'  fzf-select-github-widget
-  # bindkey '^@hs' fzf-github-show-issue
-  # bindkey '^@hc' fzf-github-close-issue
-
-  # ## Docker
-  # bindkey '^@d'  fzf-select-docker-widget
-  # bindkey '^@dc' fzf-docker-remove-containers
-  # bindkey '^@di' fzf-docker-remove-images
-  # bindkey '^@dv' fzf-docker-remove-volumes
-
-  # # Enable Exact-match by fzf-insert-history
-  # # FZF_WIDGET_OPTS[insert-history]='--exact'
-
-  # # Start fzf in a tmux pane
-  # FZF_WIDGET_TMUX=1
-# # fi
 
 # enable syntax highlighting
 antigen bundle zsh-users/zsh-syntax-highlighting
