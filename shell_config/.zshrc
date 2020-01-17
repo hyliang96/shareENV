@@ -201,21 +201,21 @@ alias zb='z -b'
 alias zh='z -I -t .' # 按历史排序, fzf模糊匹配
 
 
-#
-fzf-history-dir(){ cd "$(z -l -t -s "$@" | fzf --reverse --height 35%)"; }
-alias zt=fzf-history-dir    # 搭配 fzf 模糊匹配, 按访问历史排序
-# 搭配 fzf 模糊匹配, 按访问频率排序
-fzf-z-lua()
-{
-    cd "$(z -l -s "$@" | fzf --reverse --height 35%)";
-}
-# alias zf=fzf-z-lua
+# #
+# fzf-history-dir(){ cd "$(z -l -t -s "$@" | fzf --reverse --height 35%)"; }
+# alias zt=fzf-history-dir    # 搭配 fzf 模糊匹配, 按访问历史排序
+# # 搭配 fzf 模糊匹配, 按访问频率排序
+# fzf-z-lua()
+# {
+    # cd "$(z -l -s "$@" | fzf --reverse --height 35%)";
+# }
+# # alias zf=fzf-z-lua
 
-# 搭配 fzf 严格模式, 按访问频率排序 : 路径中间字段 路径中间字段 路径未必结尾字段
-fzf-z-lua-exact(){ cd "$(z -l -s "$@" | fzf --reverse --height 35% --exact)"; }
-alias zi=fzf-z-lua-exact
-zle -N fzf-history-dir
-bindkey '^H' fzf-history-dir
+# # 搭配 fzf 严格模式, 按访问频率排序 : 路径中间字段 路径中间字段 路径未必结尾字段
+# fzf-z-lua-exact(){ cd "$(z -l -s "$@" | fzf --reverse --height 35% --exact)"; }
+# alias zi=fzf-z-lua-exact
+# zle -N fzf-history-dir
+# bindkey '^H' fzf-history-dir
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
 
