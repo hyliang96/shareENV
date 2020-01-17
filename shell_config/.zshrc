@@ -126,14 +126,14 @@ fi
 # 解绑 ctrl+s ctrl+q
 stty start undef
 stty stop undef
-# setopt noflowcontrol
-stty -ixon
-stty -ixoff
+setopt noflowcontrol
+# stty -ixon
+# stty -ixoff
 
 antigen bundle fzf
 
 bindkey -r '^r'
-bindkey '^f' fzf-history-widget
+# bindkey '^f' fzf-history-widget
 
 to-history() { print -S $BUFFER; }
 zle -N to-history
