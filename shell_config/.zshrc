@@ -1,15 +1,16 @@
 #!/usr/bin/env zsh
 
-
+# DotFileDebug=1
 [ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
-# Antigen: https://github.com/zsh-users/antigen
-ANTIGEN="$HOME/.local/bin/antigen.zsh"
 
+# -------------------------------------------------------------------------
+# 定义安装函数
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - instal zsh >&2
 # Install antigen.zsh if not exist
-install_zsh()
+check_antigen_install()
 {
+    [ $DotFileDebug -ne 0 ] && echo share .zshrc - instal zsh >&2
+
     if [ ! -f "$ANTIGEN" ]; then
         echo "Installing antigen ..."
         [ ! -d "$HOME/.local" ] && mkdir -p "$HOME/.local" 2> /dev/null
@@ -33,17 +34,76 @@ install_zsh()
         echo "move $TMPFILE to $ANTIGEN"
         mv "$TMPFILE" "$ANTIGEN"
     fi
-}
-install_zsh
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc -  Initialize command prompt >&2
+    [ $DotFileDebug -ne 0 ] && echo share .zshrc -  Initialize command prompt >&2
+}
+
+check_jump_install()
+{
+    [ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
+
+    # antigen bundle autojump # 自动跳转
+    if [ "$(uname)" = "Darwin" ]; then
+        # mac
+        if [  -x "$(command -v autojump)"  ]; then
+            # if [ -f /usr/local/etc/profile.d/autojump.sh ]; then
+                # # . /usr/local/etc/profile.d/autojump.sh
+            # else
+                # echo 'can not find the path to autojump' >&2
+            # fi
+            antigen bundle autojump
+        else
+            echo 'no `autojump` on your mac, run `brew instal autojump` to install it' >&2
+        fi
+    else
+        # linux
+        if ! [ -d ~/.autojump ]; then
+            # 安装autojump
+            cd $my
+            git clone git://github.com/joelthelion/autojump.git
+            cd autojump
+            ./install.py
+            cd $my
+            rm autojump -rf
+        fi
+        # linux上用户装在自己的home下，则用bundle加载不了，要在这里手动加载
+        [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
+    fi
+
+    [ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
+}
+
+check_fzf_install()
+{
+    if [ "$(uname)" = "Darwin" ]; then
+        # if ! [ -x "$(command -v fzf)" ]; then
+        # if ! builtin type fzf >/dev/null 2>&1; then
+        if ! builtin type fzf >/dev/null 2>&1; then
+            if [ -x "$(command -v brew)" ]; then
+                brew install fzf
+            else
+                echo 'there is no brew on your mac; cannot `brew  install fzf`' >&2
+            fi
+        fi
+    else
+        export FZF_BASE="$serverENV/app/fzf"
+        # export PATH="$PATH:$serverENV/app/fzf/bin"
+        if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
+            git clone --depth 1 https://github.com/junegunn/fzf.git $serverENV/app/fzf
+            # $serverENV/app/fzf/install
+        fi
+    fi
+}
+
+
+# -------------------------------------------------------------------------
+# shell 基础设置
 
 # Initialize command prompt
 export PS1="%n@%m:%~%# "
 
 # Enable 256 color to make auto-suggestions look nice
 export TERM="xterm-256color"
-
 
 # Load local bash/zsh compatible settings
 _INIT_SH_NOFUN=1
@@ -55,53 +115,33 @@ _INIT_SH_NOFUN=1
 # WSL (aka Bash for Windows) doesn't work well with BG_NICE
 [ -d "/mnt/c" ] && [[ "$(uname -a)" == *Microsoft* ]] && unsetopt BG_NICE
 
+# 禁用bracketed-paste-magic, 避免zsh5.1.1中把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
+# 详见：https://github.com/robbyrussell/oh-my-zsh/issues/5569#issuecomment-491504337
+DISABLE_MAGIC_FUNCTIONS=true
+
+
+# -------------------------------------------------------------------------
+# antigen
+
+# Antigen: https://github.com/zsh-users/antigen
+ANTIGEN="$HOME/.local/bin/antigen.zsh"
+# install zsh
+check_antigen_install
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - Initialize antigen >&2
-
-
-
-
-DISABLE_MAGIC_FUNCTIONS=true     # 禁用bracketed-paste-magic, 避免zsh5.1.1中把unicode字符粘到zsh命令行下时出乱码, 必需在加载oh-my-zsh前写本行
-# 详见：https://github.com/robbyrussell/oh-my-zsh/issues/5569#issuecomment-491504337
-
 # Initialize antigen
 source "$ANTIGEN"
-
+# -------------------------------------------------------------------------
+# zsh 插件
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen boundle >&2
 
 # Initialize oh-my-zsh
 antigen use oh-my-zsh
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
-
-# antigen bundle autojump # 自动跳转
-if [ "$(uname)" = "Darwin" ]; then
-    # mac
-    if [  -x "$(command -v autojump)"  ]; then
-        # if [ -f /usr/local/etc/profile.d/autojump.sh ]; then
-            # # . /usr/local/etc/profile.d/autojump.sh
-        # else
-            # echo 'can not find the path to autojump' >&2
-        # fi
-        antigen bundle autojump
-    else
-        echo 'no `autojump` on your mac, run `brew instal autojump` to install it' >&2
-    fi
-else
-    # linux
-    if ! [ -d ~/.autojump ]; then
-        # 安装autojump
-        cd $my
-        git clone git://github.com/joelthelion/autojump.git
-        cd autojump
-        ./install.py
-        cd $my
-        rm autojump -rf
-    fi
-    # linux上用户装在自己的home下，则用bundle加载不了，要在这里手动加载
-    [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
-fi
-
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
+# 历史命令搜索
+# antigen bundle zsh-users/zsh-history-substring-search
+check_fzf_install
+antigen bundle fzf   # 模糊历史搜索
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -114,49 +154,42 @@ antigen bundle svn-fast-info
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
-antigen bundle rupa/z z.sh
-# antigen bundle z
+antigen bundle z               # 跳转历史目录
+# antigen bundle rupa/z z.sh
 
-# enable syntax highlighting
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-completions
+# antigen bundle zdharma/fast-syntax-highlighting
+antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
+antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
+antigen bundle zsh-users/zsh-completions         # tab键自动补全
 # antigen bundle supercrabtree/k
 antigen bundle Vifon/deer
 
 antigen bundle willghatch/zsh-cdr
 # antigen bundle zsh-users/zaw
 
-# 换主题: agnoster, ys
+# 换主题
 # 更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
-# antigen theme bureau
-# antigen theme agnoster
-# antigen theme https://github.com/apjanke/agnosterj-zsh-theme.git
-# antigen theme git@github.com:hyliang96/my_agnoster.git my_agnoster
-antigen theme https://github.com/hyliang96/my_agnoster.git my_agnoster
+# bureau, ys, agnoster, pjanke/agnosterj-zsh-theme
 agnoster_time=1
 agnoster_env=1
 agnoster_newline=1
+antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
 
-# check login shell
-if [[ -o login ]]; then
-    [ -f "$HOME/.local/etc/login.sh" ] && source "$HOME/.local/etc/login.sh"
-    [ -f "$HOME/.local/etc/login.zsh" ] && source "$HOME/.local/etc/login.zsh"
-fi
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc set highlight >&2
+[ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
+antigen apply
+
+# -------------------------------------------------------------------------
+[ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
 
 # syntax color definition
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 typeset -A ZSH_HIGHLIGHT_STYLES
 
-# ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
-# ZSH_HIGHLIGHT_STYLES[alias]='fg=magenta,bold'
-
 ZSH_HIGHLIGHT_STYLES[default]=none
 ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
-ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=009,standout
+ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=red,bold  # =fg=009,standout
 ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
 ZSH_HIGHLIGHT_STYLES[builtin]=fg=cyan,bold
 ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
@@ -176,25 +209,12 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=009
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=009
 ZSH_HIGHLIGHT_STYLES[assign]=none
 
-# load local config
-[ -f "$HOME/.local/etc/config.zsh" ] && source "$HOME/.local/etc/config.zsh"
-[ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
-
-
-
-[ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
-
-antigen apply
-
-# if ! [ -f ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme ]; then
-    # cp $shareENV/shell_config/agnoster.zsh-theme ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme
-# fi
-# if ! [ -f ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme.antigen-compat ]; then
-    # cp $shareENV/shell_config/agnoster.zsh-theme.antigen-compat ~/.antigen/bundles/robbyrussell/oh-my-zsh/themes/my_agnoster.zsh-theme.antigen-compat
-# fi
-
+# -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set bindkey >&2
+
+# 10ms for key sequences
+KEYTIMEOUT=1
 
 # setup for deer
 autoload -U deer
@@ -228,17 +248,39 @@ bindkey '\e[F' end-of-line # End
 
 bindkey '\ev' deer
 
+
+
 # ctrl+u
 bindkey \^U backward-kill-line
 # iterm2 maps sfhit+backspace to  ᜤ , 删除一行
+
+
 
 # 解绑 ctrl+s ctrl+q
 stty start undef
 stty stop undef
 setopt noflowcontrol
-
 # stty -ixon
+# stty -ixoff
 
+# bindkey -r '^r'
+# bindkey '^f' fzf-history-widget
+
+to-history() { print -S $BUFFER; }
+zle -N to-history
+# to-history-clear() { print -S $BUFFER ; BUFFER=; }
+to-history-clear() { print -S $BUFFER ; BUFFER= }
+zle -N to-history-clear
+bindkey '^s' to-history      # ctrl+s 保存到命令历史
+bindkey 'ç' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
+
+# autoload -Uz history-beginning-search-menu
+# zle -N history-beginning-search-menu
+# bindkey '^f' history-beginning-search-menu
+# bindkey  'ᜅ' history-search-backward
+# bindkey  'ᜆ'   history-search-forward
+
+# -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
 
 # options
@@ -265,8 +307,9 @@ zstyle ':completion:*:complete:-command-:*:*' ignored-patterns '*.pdf|*.exe|*.dl
 zstyle ':completion:*:*sh:*:' tag-order files
 
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - color scheme >&2
-# ------------- 配色 -------------
+# -------------------------------------------------------------------------
+[ $DotFileDebug -ne 0 ] && echo share .zshrc - Coreutils color scheme >&2
+
 # 终端使用 Coreutils 配色方案
 # 采用Coreutils的gdircolor配色，修改~/.dir_colors(自定义配色)
 # 以修改ls命令使用的环境变量LS_COLORS（BSD是LSCOLORS）
@@ -276,25 +319,14 @@ zstyle ':completion:*:*sh:*:' tag-order files
 # mac上ls不支持 --show-control-chars --color=auto
 # 当安装了coreutils时， gls --color=auto 默认加载 coreutils 配色
 # coreutils安装方法：brew install coreutils
-# if [ -x "$(command -v brew)" ] && [  -x "$(command -v gls)"  ] ; then
-    # if brew list | grep coreutils > /dev/null ; then
-        # # 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
-        # PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-        # # between quotation marks is the tool output for LS_COLORS
-        # alias ls='gls --show-control-chars --color=auto'
-        # eval `gdircolors -b $HOME/.dir_colors`
-    # else
-        # echo '-------------------------------------------------------------------------'
-        # echo 'Your mac has brew and gls; but not coreutils is installed, thus `ls` '
-        # echo 'will not be colored normally. Please install it by running'
-        # echo '                      `brew install coreutils`                           '
-        # echo '-------------------------------------------------------------------------'
-    # fi
-# fi
 
 if [ "$(uname)" = "Darwin" ]; then
-    check_mac_ls_color()
+    check_coreutils_install()
     {
+        if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
+            return
+        fi
+
         if [ -x "$(command -v brew)" ]; then
             echo 'You have installed `brew`'
         else
@@ -308,6 +340,7 @@ if [ "$(uname)" = "Darwin" ]; then
             echo 'You have not installed `coreutils` with `brew`'
             echo 'without `coreutils`, `ls` will be colored vanillaly'
             echo 'To install `coreutils`, run `brew install coreutils`'
+            brew install coreutils
             return
         fi
 
@@ -315,8 +348,11 @@ if [ "$(uname)" = "Darwin" ]; then
             echo 'You have command `gls`, which is a submodule of `coreutils`'
         else
             echo 'You have no command `gls`, which is a submodule of `coreutils`'
+            echo '`command -v gls` returns'
+            command -v gls
             echo 'To check gls link is alive, check if there is a link'
             echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
+            ls -l /usr/local/bin/gls
             return
         fi
 
@@ -327,18 +363,19 @@ if [ "$(uname)" = "Darwin" ]; then
             echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
         else
             echo 'The  path of `coreutils` is missing, it should be $(brew --prefix coreutils)/libexec/gnubin/'
-            echo 'while $(brew --prefix coreutils) return wrongly, it might be "/usr/local/opt/coreutils"'
+            echo 'while `brew --prefix coreutils` returns wrongly:'
+            brew --prefix coreutils
+            echo 'it might be "/usr/local/opt/coreutils"'
             return
         fi
     }
 
-    # 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
-    # PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-    PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    # between quotation marks is the tool output for LS_COLORS
-    alias ls='/usr/local/bin/gls --show-control-chars  --color=auto'
-    # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
-    eval `gdircolors -b $HOME/.dir_colors`
+    check_coreutils_install
+    if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
+        PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
+        alias ls='/usr/local/bin/gls --show-control-chars  --color=auto' # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
+        eval `gdircolors -b $HOME/.dir_colors`   # 启用配色方案
+    fi
 fi
 # linux 的 ls默认上色了，加载 coreutils 配色
 
@@ -355,33 +392,13 @@ alias fgrep='fgrep --color'
 # 使得zsh的补全配色与ls一致
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+# -------------------------------------------------------------------------
+# 其他
+
 # 没有找到文件（夹），仍然继续执行
-# 如 rm -rf 一个文件夹/{*,.*}
-# 即使没有 .* 文件，也会把 * 文件删了
+# 如 rm -rf 一个文件夹/{*,.*}, 即使没有 .* 文件，也会把 * 文件删了
 setopt no_nomatch
 
-# 10ms for key sequences
-KEYTIMEOUT=1
-
-# ts()
-# {
-    # local retry_time=180 # second
-    # while [ 1 ]
-    # do
-        # rsync -aHhvzP $*
-        # if [ "$?" = "0" ] ; then
-            # echo "rsync completed normally"
-            # exit
-        # else
-            # echo "Rsync failure. Backing off and retrying in $retry_time seconds..."
-            # sleep $retry_time
-        # fi
-    # done
-# }
-# zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync|ts):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
-
-
-# ------------- 其他 -------------
 # iterm2_shell_integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -406,6 +423,18 @@ alias tm='tmux_tm attach -t'
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 
+# -------------------------------------------------------------------------
+[ $DotFileDebug -ne 0 ] && echo share .zshrc load local zsh login/logout and local config >&2
+
+# check login shell
+if [[ -o login ]]; then
+    [ -f "$HOME/.local/etc/login.sh" ] && source "$HOME/.local/etc/login.sh"
+    [ -f "$HOME/.local/etc/login.zsh" ] && source "$HOME/.local/etc/login.zsh"
+fi
+
+# load local config
+[ -f "$HOME/.local/etc/config.zsh" ] && source "$HOME/.local/etc/config.zsh"
+[ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
