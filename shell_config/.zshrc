@@ -154,9 +154,9 @@ antigen bundle github
 antigen bundle python
 antigen bundle z               # 跳转历史目录
 # antigen bundle rupa/z z.sh
+antigen bundle fzf-z
 
-antigen bundle zdharma/fast-syntax-highlighting
-
+antigen bundle zdharma/fast-syntax-highlighting    # zsh 命令的语法高亮
 # antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
 antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
 antigen bundle zsh-users/zsh-completions         # tab键自动补全
@@ -181,8 +181,13 @@ antigen apply
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
 
+# ------------
+# zdharma/fast-syntax-highlighting 的主题
 fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
+# -----------------
+# zsh-users/zsh-syntax-highlighting 的主题
+#
 # # syntax color definition
 # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
@@ -255,8 +260,6 @@ bindkey '\ev' deer
 bindkey \^U backward-kill-line
 # iterm2 maps sfhit+backspace to  ᜤ , 删除一行
 
-
-
 # 解绑 ctrl+s ctrl+q
 stty start undef
 stty stop undef
@@ -264,22 +267,14 @@ setopt noflowcontrol
 # stty -ixon
 # stty -ixoff
 
-# bindkey -r '^r'
 # bindkey '^f' fzf-history-widget
 
 to-history() { print -S $BUFFER; }
 zle -N to-history
-# to-history-clear() { print -S $BUFFER ; BUFFER=; }
 to-history-clear() { print -S $BUFFER ; BUFFER= }
 zle -N to-history-clear
 bindkey '^s' to-history      # ctrl+s 保存到命令历史
 bindkey 'ç' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
-
-# autoload -Uz history-beginning-search-menu
-# zle -N history-beginning-search-menu
-# bindkey '^f' history-beginning-search-menu
-# bindkey  'ᜅ' history-search-backward
-# bindkey  'ᜆ'   history-search-forward
 
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
