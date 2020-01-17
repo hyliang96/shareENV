@@ -157,8 +157,8 @@ antigen bundle python
 antigen bundle z               # 跳转历史目录
 # antigen bundle rupa/z z.sh
 
-antigen bundle zdharma/fast-syntax-highlighting
-# antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
+# antigen bundle zdharma/fast-syntax-highlighting
+antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
 antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
 antigen bundle zsh-users/zsh-completions         # tab键自动补全
 # antigen bundle supercrabtree/k
@@ -186,9 +186,6 @@ antigen apply
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 typeset -A ZSH_HIGHLIGHT_STYLES
-
-# ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
-# ZSH_HIGHLIGHT_STYLES[alias]='fg=magenta,bold'
 
 ZSH_HIGHLIGHT_STYLES[default]=none
 ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
@@ -324,8 +321,12 @@ zstyle ':completion:*:*sh:*:' tag-order files
 # coreutils安装方法：brew install coreutils
 
 if [ "$(uname)" = "Darwin" ]; then
-    check_mac_ls_color()
+    check_coreutils_install()
     {
+        if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
+            return
+        fi
+
         if [ -x "$(command -v brew)" ]; then
             echo 'You have installed `brew`'
         else
@@ -369,12 +370,11 @@ if [ "$(uname)" = "Darwin" ]; then
         fi
     }
 
+    check_coreutils_install
     if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
         PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
         alias ls='/usr/local/bin/gls --show-control-chars  --color=auto' # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
         eval `gdircolors -b $HOME/.dir_colors`   # 启用配色方案
-    else
-        check_mac_ls_color
     fi
 fi
 # linux 的 ls默认上色了，加载 coreutils 配色
