@@ -182,35 +182,35 @@ antigen apply
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
 
-# syntax color definition
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+# # syntax color definition
+# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
-typeset -A ZSH_HIGHLIGHT_STYLES
+# typeset -A ZSH_HIGHLIGHT_STYLES
 
+# # ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
+# # ZSH_HIGHLIGHT_STYLES[alias]='fg=magenta,bold'
+
+# ZSH_HIGHLIGHT_STYLES[default]=none
+# ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
+# ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=009,standout
+# ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
+# ZSH_HIGHLIGHT_STYLES[builtin]=fg=cyan,bold
+# ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
 # ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
-# ZSH_HIGHLIGHT_STYLES[alias]='fg=magenta,bold'
-
-ZSH_HIGHLIGHT_STYLES[default]=none
-ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
-ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=009,standout
-ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
-ZSH_HIGHLIGHT_STYLES[builtin]=fg=cyan,bold
-ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
-ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
-ZSH_HIGHLIGHT_STYLES[precommand]=fg=white,underline
-ZSH_HIGHLIGHT_STYLES[commandseparator]=none
-ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=009
-ZSH_HIGHLIGHT_STYLES[path]=fg=214,underline
-ZSH_HIGHLIGHT_STYLES[globbing]=fg=063
-ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=white,underline
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=none
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=none
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=063
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=063
-ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=009
-ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=009
-ZSH_HIGHLIGHT_STYLES[assign]=none
+# ZSH_HIGHLIGHT_STYLES[precommand]=fg=white,underline
+# ZSH_HIGHLIGHT_STYLES[commandseparator]=none
+# ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=009
+# ZSH_HIGHLIGHT_STYLES[path]=fg=214,underline
+# ZSH_HIGHLIGHT_STYLES[globbing]=fg=063
+# ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=white,underline
+# ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=none
+# ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=none
+# ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
+# ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=063
+# ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=063
+# ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=009
+# ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=009
+# ZSH_HIGHLIGHT_STYLES[assign]=none
 
 
 # -------------------------------------------------------------------------
@@ -339,17 +339,19 @@ if [ "$(uname)" = "Darwin" ]; then
             echo 'You have not installed `coreutils` with `brew`'
             echo 'without `coreutils`, `ls` will be colored vanillaly'
             echo 'To install `coreutils`, run `brew install coreutils`'
+            brew install coreutils
             return
         fi
 
-        echo '$(command -v gls)' "$(command -v gls)"
         if [  -x "$(command -v gls)"  ]; then
             echo 'You have command `gls`, which is a submodule of `coreutils`'
         else
             echo 'You have no command `gls`, which is a submodule of `coreutils`'
+            echo '`command -v gls` returns'
+            command -v gls
             echo 'To check gls link is alive, check if there is a link'
             echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
-            ll -l /usr/local/bin/gls
+            ls -l /usr/local/bin/gls
             return
         fi
 
@@ -360,18 +362,20 @@ if [ "$(uname)" = "Darwin" ]; then
             echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
         else
             echo 'The  path of `coreutils` is missing, it should be $(brew --prefix coreutils)/libexec/gnubin/'
-            echo 'while `brew --prefix coreutils` returns wrongly, it might be "/usr/local/opt/coreutils"'
+            echo 'while `brew --prefix coreutils` returns wrongly:'
+            brew --prefix coreutils
+            echo 'it might be "/usr/local/opt/coreutils"'
             return
         fi
     }
 
-    # 在mac系统下安装了brew，并安装了coreutils，本句判断才为true
-    # PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-    PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    # between quotation marks is the tool output for LS_COLORS
-    alias ls='/usr/local/bin/gls --show-control-chars  --color=auto'
-    # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
-    eval `gdircolors -b $HOME/.dir_colors`
+    if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
+        PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
+        alias ls='/usr/local/bin/gls --show-control-chars  --color=auto' # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
+        eval `gdircolors -b $HOME/.dir_colors`   # 启用配色方案
+    else
+        check_mac_ls_color
+    fi
 fi
 # linux 的 ls默认上色了，加载 coreutils 配色
 
