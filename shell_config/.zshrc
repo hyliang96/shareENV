@@ -349,6 +349,7 @@ if [ "$(uname)" = "Darwin" ]; then
             echo 'You have no command `gls`, which is a submodule of `coreutils`'
             echo 'To check gls link is alive, check if there is a link'
             echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
+            ll -l /usr/local/bin/gls
             return
         fi
 
@@ -359,7 +360,7 @@ if [ "$(uname)" = "Darwin" ]; then
             echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
         else
             echo 'The  path of `coreutils` is missing, it should be $(brew --prefix coreutils)/libexec/gnubin/'
-            echo 'while $(brew --prefix coreutils) return wrongly, it might be "/usr/local/opt/coreutils"'
+            echo 'while `brew --prefix coreutils` returns wrongly, it might be "/usr/local/opt/coreutils"'
             return
         fi
     }
