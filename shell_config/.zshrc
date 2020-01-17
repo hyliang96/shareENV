@@ -76,9 +76,8 @@ check_jump_install()
 check_fzf_install()
 {
     if [ "$(uname)" = "Darwin" ]; then
-        # if ! [ -x "$(command -v fzf)" ]; then
+        if ! [ -x "$(command -v fzf)" ]; then
         # if ! builtin type fzf >/dev/null 2>&1; then
-        if ! builtin type fzf >/dev/null 2>&1; then
             if [ -x "$(command -v brew)" ]; then
                 brew install fzf
             else
