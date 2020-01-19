@@ -157,7 +157,7 @@ antigen bundle python
 antigen bundle skywind3000/z.lua # https://www.v2ex.com/t/532304
 
 export _ZL_ADD_ONCE=1   # 若为0 则prompt显示一次则计数加1, 若为1则 cd到目录一次则计数加1
-export _ZL_MATCH_MODE=0 # 启用增强匹配模式, 以下字段均可用正则表达式
+# export _ZL_MATCH_MODE=1 # 启用增强匹配模式, 以下字段均可用正则表达式
 export _ZL_NO_ALIASES=0 # 不用预设alias, 用自己定义的alias
 
 
