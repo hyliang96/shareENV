@@ -202,11 +202,12 @@ z()
 {
     if [[ "$1" =~ '^(-h|--help)$' ]]; then
         cat << EOF
-_zlua (-c|-I)封装的帮助:
+_zlua [-c] 的封装的帮助:
     z [options] [.] 路径中间字段 路径中间字段 路径结尾字段
     z [options] [.] 路径中间字段 路径中间字段 路径未必结尾字段 $
     z [options] [.] 路径中间字段 路径中间字段 /
     加 . : 从当前路径往下匹配
+_zlua [其他option] 没有封装
 EOF
         echo
         echo 原生的帮助:
