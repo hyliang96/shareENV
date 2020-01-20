@@ -250,8 +250,8 @@ bindkey '^h' zh
 fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
 # -----------------
-# zsh-users/zsh-syntax-highlighting 的主题
-#
+# # zsh-users/zsh-syntax-highlighting 的主题
+
 # # syntax color definition
 # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 

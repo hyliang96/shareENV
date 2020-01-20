@@ -26,7 +26,7 @@ EOF
         shift
         local cmd=' --exclude=refs/stash --all'
     else
-        if [ "$(git stash list)" = '' ]; then
+        if [ "$(git stash list 2>/dev/null)" = '' ]; then
             local cmd=' --all'
         else
             local cmd=' --all $(git reflog show --format="%h" stash)'
