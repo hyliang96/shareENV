@@ -58,7 +58,7 @@ alias gpl='git pull'            # 拉去到当前枝并与之合并：  gpl [ �
                                 # 若还只关联一个远仓，则[ 远仓名 [远枝名]]不写
 
 alias gpr='git pull --rebase'
-alias grbc='git rebase --continue'
+
 
 
 # 初次推送用，关联远枝并推送，若远仓无此远枝，则创建之
