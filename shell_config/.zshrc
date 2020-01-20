@@ -207,6 +207,7 @@ z [options] [.] 路径中间字段 路径中间字段 路径未必结尾字段 $
 z [options] [.] 路径中间字段 路径中间字段 /
 加 . : 从当前路径往下匹配
 EOF
+        _zlua -h
     elif [ "$1" = '.' ]; then
         shift  # z匹配当前路径 的历史子路径 -> fzf模糊匹配
         if [ $# -eq 0 ]; then
