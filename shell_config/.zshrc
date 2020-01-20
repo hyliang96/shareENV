@@ -85,8 +85,8 @@ check_fzf_install()
         fi
     else
         export FZF_BASE="$serverENV/app/fzf"
-        echo 'There is no fzf. Installing to '"$FZF_BASE" >&2
         if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
+            echo 'There is no fzf. Installing to '"$FZF_BASE" >&2
             git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_BASE
             # $serverENV/app/fzf/install
         fi
