@@ -85,9 +85,9 @@ check_fzf_install()
         fi
     else
         export FZF_BASE="$serverENV/app/fzf"
-        # export PATH="$PATH:$serverENV/app/fzf/bin"
+        echo 'There is no fzf. Installing to '"$FZF_BASE" >&2
         if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
-            git clone --depth 1 https://github.com/junegunn/fzf.git $serverENV/app/fzf
+            git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_BASE
             # $serverENV/app/fzf/install
         fi
     fi
@@ -157,7 +157,7 @@ antigen bundle python
 antigen bundle skywind3000/z.lua # https://www.v2ex.com/t/532304
 
 export _ZL_ADD_ONCE=1   # 若为0 则prompt显示一次则计数加1, 若为1则 cd到目录一次则计数加1
-export _ZL_MATCH_MODE=1 # 启用增强匹配模式, 以下字段均可用正则表达式
+export _ZL_MATCH_MODE=1 # 启用增强匹配模式
 export _ZL_NO_ALIASES=0 # 不用预设alias, 用自己定义的alias
 
 
@@ -195,17 +195,19 @@ antigen apply
 # -------------------------------------------------------------------------
 # 快速跳转的alias
 
-unalias z
+unalias z     # 解绑antigen bundle z.lua当中的alias z, 换为zz
 alias zz=_zlua
-
-#  z [options] [.] 路径中间字段 路径中间字段 路径结尾字段
-#  z [options] [.] 路径中间字段 路径中间字段 路径未必结尾字段 $
-#  z [options] [.] 路径中间字段 路径中间字段 /
-#  加 . : 从当前路径往下匹配
 
 z()
 {
-    if [ "$1" = '.' ]; then
+    if [[ "$1" =~ '^(-h|--help)$' ]]; then
+        cat << EOF
+z [options] [.] 路径中间字段 路径中间字段 路径结尾字段
+z [options] [.] 路径中间字段 路径中间字段 路径未必结尾字段 $
+z [options] [.] 路径中间字段 路径中间字段 /
+加 . : 从当前路径往下匹配
+EOF
+    elif [ "$1" = '.' ]; then
         shift  # z匹配当前路径 的历史子路径 -> fzf模糊匹配
         if [ $# -eq 0 ]; then
             _zlua -I -c .
@@ -333,7 +335,7 @@ zle -N to-history
 to-history-clear() { print -S $BUFFER ; BUFFER= }
 zle -N to-history-clear
 bindkey 'ç'  to-clipboard     # alt+c  当前目录复制到剪切板
-bindkey '^s' to-history      # ctrl+s 保存到命令历史
+bindkey '^s' to-history       # ctrl+s 保存到命令历史
 bindkey '^q' to-history-clear # alt+c  保存到命令历史, 并清空当前命令
 
 # -------------------------------------------------------------------------
