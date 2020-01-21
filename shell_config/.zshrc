@@ -341,8 +341,11 @@ to-history-clear() { print -S $BUFFER ; BUFFER= }
 zle -N to-history-clear
 bindkey 'ç'  to-clipboard     # alt+c  当前目录复制到剪切板
 bindkey '^s' to-history       # ctrl+s 保存到命令历史
-bindkey '^q' push-line # 情况当前命令, 在下个prompt自动弹出此命令
-# to-history-clear # ctrl+q  保存到命令历史, 并清空当前命令
+bindkey '^q' push-line-or-edit  # 暂存当前命令(不是存到命令历史), 并清空当前命令, 在下个prompt自动弹出此命令
+# 但多行命令若显示形如"> if", "> function"的代码块提示则无法清空, 需要徒手ctrl+c
+# 会自动在下一个prompt弹出无代码块提示的多行命令, 再按ctrl+q, 则可清空
+
+# bindkey '^q' to-history-clear # ctrl+q  保存到命令历史, 并清空当前命令
 
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
