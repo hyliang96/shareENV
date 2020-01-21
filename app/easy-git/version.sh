@@ -9,14 +9,46 @@ alias gacm='git commit -am' # 即先gaa, 然后gcm
 alias gcm='git commit -m'  # 提交：gcm "xxx" [options]
 alias gcma='git commit --amend' # 先add，再覆盖上一次提交：gcma，然后弹出文本编辑器，编辑上次提交的说明
 
+__git_rebase_i()
+{
+    local commitid="$1"
+    echo $commitid
+    local git_seq_editor="$2"
+    echo $git_seq_editor
+
+    local root_long_hash="$(git_root_commit)"
+    echo $root_long_hash
+
+    local commit_long_hash="$(get_long_hash "$commitid")"
+    echo $commit_long_hash
+
+    if [ "$root_long_hash" = "$commit_long_hash" ]; then
+        GIT_SEQUENCE_EDITOR="$git_seq_editor" git rebase -i --root
+    else
+        GIT_SEQUENCE_EDITOR="$git_seq_editor" git rebase -i ${commitid}^
+    fi
+}
+
 # 修改提交信息：  gcme <版本id>
-#    只接收一个版本id
-#    只接收版本hash，不接受HEAD, HEAD^, HEAD@{n}
+#    接收一个版本hash, 或HEAD, HEAD^, HEAD@{n}, 或branch名(表示这个分支最末的commit)
+gcmr() {
+    local commitid="$(get_hash $1)"
+    local git_seq_editor="sed -i -re 's/^pick ${commitid}/reword ${commitid}/'"
+    __git_rebase_i "$commitid" "$git_seq_editor"
+}
+
+# 修改提交信息：  gcme <版本id>
+#    接收一个版本hash, 或HEAD, HEAD^, HEAD@{n}, 或branch名(表示这个分支最末的commit)
 #    不能是第一个版本
 gcme() {
-    local commitid="$1"
-    GIT_SEQUENCE_EDITOR="sed -i -re 's/^pick ${commitid}/r ${commitid}/'" git rebase -i ${commitid}^
+    local commitid="$(get_hash $1)"
+    local git_seq_editor="sed -i -re 's/^pick ${commitid}/edit ${commitid}/'"
+    __git_rebase_i "$commitid" "$git_seq_editor"
+    # GIT_SEQUENCE_EDITOR="sed -i -re 's/^pick ${commitid}/edit ${commitid}/'" git rebase -i ${commitid}^
 }
+
+# gcme, gcmr, 只能对当前一个分支奏效, 其他分支的祖先commmit都保留原样, 不会一起被改动;
+# 因此当前分支和其他分支的分叉节点可能会挪动
 
 gucm() # 直接回到历史版本
 {

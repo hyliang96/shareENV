@@ -11,18 +11,40 @@ alias gbls='git branch -avv' # 列出所有本地枝，及其关联的远枝： 
 # alias gch='git checkout'    # 切换分支：gch 分支名/历史提交编号/HEAD^/HEAD/HEAD~n/HEAD@{n}, 要先git commit一次才能gch
 alias gff='git merge'         # 快进式merge
 
+
+alias gpk='git cherry-pick -x' # 依次apply一或多个提交的增量到HEAD, 并依次产生新提交; -x 保留原提交message
+
+
 # 在A分支, 挑选一或多次别的分支的任意提交的增量, 依次apply到HEAD, 在A分支生成一次提交
 # 可能需要多次解决冲突, 每次解决冲突后`gaa`再`gcm`
 # 解决完所有冲突后, 当前目录干净, 此时需执行一次 `gpkc`
 # 然后目录里出现所有被挑选来的节点的文件, 均已经add, 直接`gcm '<信息>'`即完成提交
-alias gpk='git cherry-pick -x -n' # gpk [文件夹名]'s
+# git pick squash
+alias gpksq='git cherry-pick -x -n' # gpk [文件夹名]'s
+
 alias gpkc='git cherry-pick --continue'
 alias gpka='git cherry-pick --abort'
 alias gpko='gmgo' # git checkout --ours [文件夹名]'s
 alias gpkt='gmgt' # git checkout --theirs [文件夹名]'s
 
 
-gsq() # git merge --squash
+
+# 在[当前分支]执行 `gsmg [目标分支]`
+            # git squash merge
+# 用于: merge而不产生横向连接
+
+# 提交前的分支图
+
+#  t=[目标分支] -o-o-o-o-o(t)
+#
+#  c=[当前分支]    o1-o2-o3(c)
+
+# 提交后的分支图
+#  t=[目标分支] -o-o-o-o---o(t) [包含了o1~o3]
+#
+#  c=[当前分支]    o1-o2-o3(c)
+
+gsmg() # git merge --squash
 {
     local target="$1"
     local current="$(get_node_name HEAD)"
@@ -36,6 +58,8 @@ gsq() # git merge --squash
     # 弹出vim, 编辑commit信息
     git checkout "$current"
 }
+
+alias gsqc='git commit'
 
 
 alias gmg='git merge --no-ff' # 将当前枝与此分支合并（非快进）
@@ -122,14 +146,14 @@ gbmg () {
 
 # 提交前的分支图
 #  r: 根
-#  t=[目标分支] -r-o-o-o-R(t)
-#                 \
+#  t=[目标分支] -o-o-o-o-o(t)
+#
 #  c=[当前分支]    o-o-o(c)
 
 # 提交后的分支图
-#  t=[目标分支] -r-o-o-o---o(t)
-#                 \     \ /
-#  c=[当前分支]    o-o-o-o(c)
+#  t=[目标分支] -o-o-o-o---M(t)
+#                       \ /
+#  c=[当前分支]    o-o-o-M(c)
 
 gtmg() {
     local target="$1"
