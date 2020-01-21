@@ -341,7 +341,7 @@ to-history-clear() { print -S $BUFFER ; BUFFER= }
 zle -N to-history-clear
 bindkey 'ç'  to-clipboard     # alt+c  当前目录复制到剪切板
 bindkey '^s' to-history       # ctrl+s 保存到命令历史
-bindkey '^q' push-line-or-edit #
+bindkey '^q' push-line # 情况当前命令, 在下个prompt自动弹出此命令
 # to-history-clear # ctrl+q  保存到命令历史, 并清空当前命令
 
 # -------------------------------------------------------------------------
