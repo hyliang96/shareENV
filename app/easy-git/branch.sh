@@ -11,11 +11,11 @@ alias gbls='git branch -avv' # 列出所有本地枝，及其关联的远枝： 
 # alias gch='git checkout'    # 切换分支：gch 分支名/历史提交编号/HEAD^/HEAD/HEAD~n/HEAD@{n}, 要先git commit一次才能gch
 alias gff='git merge'         # 快进式merge
 
-# 在A分支, 挑选一或多次别的分支的任意提交的增量, 依次aooly到HEAD, 在A分支生成一次提交
+# 在A分支, 挑选一或多次别的分支的任意提交的增量, 依次apply到HEAD, 在A分支生成一次提交
 # 可能需要多次解决冲突, 每次解决冲突后`gaa`再`gcm`
 # 解决完所有冲突后, 当前目录干净, 此时需执行一次 `gpkc`
 # 然后目录里出现所有被挑选来的节点的文件, 均已经add, 直接`gcm '<信息>'`即完成提交
-alias gpk='git cherry-pick -n' # gpk [文件夹名]'s
+alias gpk='git cherry-pick -x -n' # gpk [文件夹名]'s
 alias gpkc='git cherry-pick --continue'
 alias gpka='git cherry-pick --abort'
 alias gpko='gmgo' # git checkout --ours [文件夹名]'s
