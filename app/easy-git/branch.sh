@@ -6,6 +6,8 @@ gb()                      # 新建分支并检出到此分支： gb 分支名
 
     [ $# -ne 0 ] && git branch $1 && git checkout $1
 }
+
+alias gbmv='git branch -m' # 重命名分支: gbmv [<旧分支名>=<当前分支名>] <新分支名>
 alias gbrm='git branch -D' # 删除分支：gbrm 分支名
 alias gbls='git branch -avv' # 列出所有本地枝，及其关联的远枝： gbls
 # alias gch='git checkout'    # 切换分支：gch 分支名/历史提交编号/HEAD^/HEAD/HEAD~n/HEAD@{n}, 要先git commit一次才能gch
@@ -140,12 +142,67 @@ gbmg () {
     # git merge ${target}
 }
 
-# 三角形提交到目标分支
+
+
+# squash过来, 再提交到目标分支 [不推荐, 因为M(c)和M(t)处会同一个冲突解两次]
 # 用于:
-#    在 dev 分支, 提交 到 master 分支:   `gbmg dev`
+#    在 dev 分支, 提交 到 master 分支:   `gbmg master`
 
 # 提交前的分支图
-#  r: 根
+#  t=[目标分支] -o-o-o-A(t)
+#
+#  c=[当前分支]    o-o-o(c)
+
+# 提交后的分支图
+#  t=[目标分支] -o-o-o-A---M(t)
+#                         /
+#  c=[当前分支]    o-o-o-M(c) (已经merge了A)
+
+gsmg() {
+    local target="$1"
+    local current="$(get_node_name HEAD)"
+    if [ "$current" = 'HEAD' ]; then
+        echo "You are not at the end of a branch, please checkout to a branch before 'bow merge'."
+        return
+    fi
+    git merge --squash ${target}
+    git checkout ${target}
+    git merge --no-ff --no-edit ${current}
+    git checkout ${current}
+}
+
+# git follow
+# 用于:
+#    在 dev 分支, follow master 分支:   `gfl master`
+#   在 feature 分支, fellow  dev 分支:    `gfl dev`
+
+# follow前的分支图
+#  t=[目标分支] -o-o-o-A(t)
+#
+#  c=[当前分支]    o-o-o(c)
+
+# follow squash后的分支图
+#  t=[目标分支] -o-o-o-A(t)
+#
+#  c=[当前分支]    o-o-o-M(c) (已经merge了A)
+gfls()
+{
+    local target_branch="$1"
+    git merge --squash ${target_branch} && gflc "$target_branch"
+}
+gflsc()
+{
+    local target_branch="$1"
+    git commit --no-edit -m "update following \"${target_branch}\" $(get_hash ${target_branch})"
+}
+
+
+
+# 三角形提交到目标分支
+# 用于:
+#    在 dev 分支, 提交 到 master 分支:   `gbmg master`
+
+# 提交前的分支图
 #  t=[目标分支] -o-o-o-o-o(t)
 #
 #  c=[当前分支]    o-o-o(c)
