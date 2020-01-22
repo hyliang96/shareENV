@@ -29,17 +29,43 @@ __git_rebase_i()
     fi
 }
 
-# 修改提交信息：  gcme <版本id>
-#    接收一个版本hash, 或HEAD, HEAD^, HEAD@{n}, 或branch名(表示这个分支最末的commit)
+
+# 把连续的几个历史提压缩成一个, 时间顺序为 [起始提交, 结束提交] 闭区间
+# `gcms 起始提交 结束提交`,   可用hash, 或HEAD, HEAD^, EHAD~n表示
+# 然后弹出vim, 请编辑压缩后的节点的message, 保存退出即可
+
+gcms() {
+    local first_commmit=${1}
+    local last_commmit=${2}
+    git --no-pager log --pretty=format:'%h' ${first_commmit}..${last_commmit}
+    echo
+    local commitids=($(git --no-pager log --pretty=format:'%h' ${first_commmit}..${last_commmit}))
+    if [ ${#commitids} -eq 0 ]; then
+        echo "empty commit range ${first_commmit}..${last_commmit}" >&2
+        return
+    fi
+    # commitids=("$first_commmit" "${commitids[@]}")
+    declare -p commitids
+    local git_seq_editor="sed -i -re '"
+    for commitid in "${commitids[@]}"; do
+        git_seq_editor+="s/^pick ${commitid}/squash ${commitid}/; "
+    done
+    git_seq_editor="${git_seq_editor:0:${#git_seq_editor}-2}"
+    git_seq_editor+="'"
+    echo -E $git_seq_editor
+    __git_rebase_i "$first_commmit" "$git_seq_editor"
+}
+
+# 修改提交信息：  gcmr <版本id> -> 弹出vim, 需改message, 保存退出即可
+#    接收一个版本hash, 或HEAD, HEAD^, HEAD~n, 或branch名(表示这个分支最末的commit)
 gcmr() {
     local commitid="$(get_hash $1)"
     local git_seq_editor="sed -i -re 's/^pick ${commitid}/reword ${commitid}/'"
     __git_rebase_i "$commitid" "$git_seq_editor"
 }
 
-# 修改提交信息：  gcme <版本id>
-#    接收一个版本hash, 或HEAD, HEAD^, HEAD@{n}, 或branch名(表示这个分支最末的commit)
-#    不能是第一个版本
+# 修改提交信息：  gcme <版本id>  ->  gaa -> gcma -> grbc 即可
+#    接收一个版本hash, 或HEAD, HEAD^, HEAD~n, 或branch名(表示这个分支最末的commit)
 gcme() {
     local commitid="$(get_hash $1)"
     local git_seq_editor="sed -i -re 's/^pick ${commitid}/edit ${commitid}/'"
@@ -47,7 +73,7 @@ gcme() {
     # GIT_SEQUENCE_EDITOR="sed -i -re 's/^pick ${commitid}/edit ${commitid}/'" git rebase -i ${commitid}^
 }
 
-# gcme, gcmr, 只能对当前一个分支奏效, 其他分支的祖先commmit都保留原样, 不会一起被改动;
+# gcms, gcme, gcmr, 只能对当前一个分支奏效, 其他分支的祖先commmit都保留原样, 不会一起被改动;
 # 因此当前分支和其他分支的分叉节点可能会挪动
 
 gucm() # 直接回到历史版本
