@@ -12,7 +12,7 @@ alias gbls='git branch -avv' # 列出所有本地枝，及其关联的远枝： 
 alias gff='git merge'         # 快进式merge
 
 
-alias gpk='git cherry-pick -x' # 依次apply一或多个提交的增量到HEAD, 并依次产生新提交; -x 保留原提交message
+alias gpk='git cherry-pick -x' # apply一个提交的增量到HEAD, -x 保留原提交message
 
 
 # 在A分支, 挑选一或多次别的分支的任意提交的增量, 依次apply到HEAD, 在A分支生成一次提交
@@ -20,7 +20,7 @@ alias gpk='git cherry-pick -x' # 依次apply一或多个提交的增量到HEAD, 
 # 解决完所有冲突后, 当前目录干净, 此时需执行一次 `gpkc`
 # 然后目录里出现所有被挑选来的节点的文件, 均已经add, 直接`gcm '<信息>'`即完成提交
 # git pick squash
-alias gpksq='git cherry-pick -x -n' # gpk [文件夹名]'s
+alias gpks='git cherry-pick -x -n' # gpk [文件夹名]'s
 
 alias gpkc='git cherry-pick --continue'
 alias gpka='git cherry-pick --abort'
