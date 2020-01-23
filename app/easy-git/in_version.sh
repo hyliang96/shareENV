@@ -98,6 +98,8 @@ EOF
 
 alias gtgls="git log --abbrev-commit --decorate=no --date=format:'%Y-%m-%d' --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %Cgreen%cd %cr %C(bold blue)%an%Creset %C(bold 0)%s%C(reset)' --tags"
 
+alias gtgls='git for-each-ref --format="%(refname:short) %(taggerdate) %(subject) %(body)" refs/tags'
+
 alias gtg='git tag'      # 添加tag
 alias gtgm='git tag -am' # message
 alias gtge='git tag -a'  # 开editor加message
