@@ -67,7 +67,7 @@
     "editor.tabSize": 4,
     // 按tab输入editor.tabSize个空格
     "editor.insertSpaces": true,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": -1,
 
 
     // "terminal.integrated.cwd": "${cwd}",
@@ -85,7 +85,7 @@
 
     // 保存文件后自动删除行尾空格
     "files.trimTrailingWhitespace": true,
-    "python.insidersChannel": "daily",
+    "python.insidersChannel": "off",
 
     // 数字显示原精度
     "csv-preview.formatValues": "never",
