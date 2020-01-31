@@ -54,6 +54,14 @@
     { "key": "shift+cmd+l",    "command": "workbench.action.reopenClosedEditor"},
 
 
+    // 选择一行, 不带行尾换行符, 依赖于'macros'插件terminalFocus
+    { "key": "cmd+l", "command": "macros.copyWithoutNewLine", "when": "editorTextFocus" },
+    // { "key": "cmd+l", "command": "macros.copyWithoutNewLine", "when": "editorTextFocus && !editorHasSelection" },
+    // 删除整行： shift+backspace
+    { "key":  "shift+backspace",  "command": "editor.action.deleteLines",  "when": "textInputFocus && !editorReadonly" },
+    { "key": "shift+cmd+k", "command": "-editor.action.deleteLines", "when": "textInputFocus && !editorReadonly" },
+
+
     // 终端下(含vim)的键盘映射：完全仿照我的iterm2的设置
     // https://code.visualstudio.com/docs/editor/integrated-terminal#_send-text-from-a-keybinding
     // 参见https://github.com/xtermjs/xterm.js/blob/0e45909c7e79c83452493d2cd46d99c0a0bb585f/src/common/data/EscapeSequences.ts#L31
@@ -78,5 +86,5 @@
     { "key": "shift+alt+delete",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u000b" },  "when": "terminalFocus"  },
     { "key": "cmd+delete",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u000b" },  "when": "terminalFocus"  },
     // 删除整行： shift+backspace
-    { "key": "shift+backspace",  "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u0005\u0015" }, "when": "terminalFocus" },
+    { "key": "shift+backspace", "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u0005\u0015" }, "when": "terminalFocus" }
 ]

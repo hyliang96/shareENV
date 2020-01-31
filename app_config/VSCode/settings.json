@@ -124,7 +124,18 @@
     //     "--generated-members=numpy.* ,torch.* ,cv2.* , cv.*"
     // ]
 
-    // // macros 插件，支持自定义组合命令
+    // 'macros' 插件，支持自定义组合命令
+    // 选择一行, 不带行尾换行符
+    "macros": {
+        "copyWithoutNewLine": [
+            "cursorHome",
+            // "cursorHome", // 还复制缩进
+            "cursorEndSelect",
+            "editor.action.clipboardCopyAction"
+            // "cancelSelection"
+        ]
+    }
+
     // // 打开、隐藏内置终端，
     // "macros": {
     //     "toggleTerminal": [
