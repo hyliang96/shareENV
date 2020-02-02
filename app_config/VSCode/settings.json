@@ -67,7 +67,7 @@
     "editor.tabSize": 4,
     // 按tab输入editor.tabSize个空格
     "editor.insertSpaces": true,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": -1,
 
 
     // "terminal.integrated.cwd": "${cwd}",
