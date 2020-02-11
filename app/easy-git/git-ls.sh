@@ -86,7 +86,7 @@ git-ls-r_() {
     elif [ "$1" = '--untrack' ]; then
         git ls-files -o | sed 's/\/$//g'
     elif [ "$1" = '--ignore-file' ]; then
-        git ls-files -o -i --exclude-standard
+        git ls-files -o -i --exclude-standard | sed 's/\/$//g'
     elif [ "$1" = '--ignore-repo' ]; then
         subrepo_ --ignore
     elif [ "$1" = '--ignore' ]; then
