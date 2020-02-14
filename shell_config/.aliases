@@ -245,12 +245,19 @@ alias jchpid='ps u -p'
 
 
 # 按pid杀死进程
-alias kpid='kill -9'
+kpid()
+{
+    local x=
+    for x in "$@"
+    do
+        kill -9 $x
+    done
+}
 # 按jobs的号码杀掉进程
 kjob()
 {
     local x=
-    for x in $*
+    for x in "$@"
     do
         kill %$x
     done
