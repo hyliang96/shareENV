@@ -79,9 +79,16 @@
     // 终端光标改为竖线
     "terminal.integrated.cursorStyle": "line",
     // 终端光标会闪烁
-    // "terminal.integrated.cursorBlinking": false,
+    "terminal.integrated.cursorBlinking": true,
+    // 终端光标的宽度
+    "terminal.integrated.cursorWidth" : 4,
 
-
+    // 编辑器区光标闪烁方式
+    "editor.cursorBlinking": "smooth",
+    // 编辑区光标为竖线
+    "editor.cursorStyle" : "line",
+    // 编辑区光标的宽度
+    "editor.cursorWidth": 4 ,
 
     // 保存文件后自动删除行尾空格
     "files.trimTrailingWhitespace": true,
@@ -134,7 +141,7 @@
             "editor.action.clipboardCopyAction"
             // "cancelSelection"
         ]
-    }
+    },
 
     // // 打开、隐藏内置终端，
     // "macros": {
