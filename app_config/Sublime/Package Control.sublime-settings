@@ -2,8 +2,7 @@
 	"bootstrapped": true,
 	"channels":
 	[
-		"https://packagecontrol.io/channel_v3.json",
-		"https://web.archive.org/web/20150905194312/https://packagecontrol.io/channel_v3.json"
+		"https://packagecontrol.io/channel_v3.json"
 	],
 	"downloader_precedence":
 	{
