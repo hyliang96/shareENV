@@ -140,19 +140,18 @@
             "cursorEndSelect",
             // "editor.action.clipboardCopyAction",
             // "cancelSelection"
-        ]
+        ],
+        // "otherSideOfSelection": [
+        //     "cursorHome",
+        //     // "cursorHome", // 还复制缩进
+        //     "cursorEndSelect",
+        //     // "editor.action.clipboardCopyAction",
+        //     // "cancelSelection"
+        //     "cursor"
+        // ]
     },
 
-    "macros": {
-        "otherSideOfSelection": [
-            "cursorHome",
-            // "cursorHome", // 还复制缩进
-            "cursorEndSelect",
-            // "editor.action.clipboardCopyAction",
-            // "cancelSelection"
-            "cursor"
-        ]
-    },
+
     // // 打开、隐藏内置终端，
     // "macros": {
     //     "toggleTerminal": [
