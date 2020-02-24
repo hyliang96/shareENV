@@ -67,6 +67,7 @@
 
     // alt+z 光标回上一处
     { "key": "alt+z", "command": "cursorUndo", "when": "textInputFocus" },
+    { "key": "alt+z", "command": "-editor.action.toggleWordWrap" },
     { "key": "cmd+u", "command": "-cursorUndo", "when": "textInputFocus" },
     // shift+alt+z 光标来下一处
     { "key": "shift+alt+z", "command": "cursorRedo" },
@@ -137,5 +138,6 @@
     { "key": "shift+cmd+t",    "command": "workbench.view.debug"},
     // 打开最近关闭的文件（[l]ast）
     { "key": "shift+cmd+l", "command": "workbench.action.reopenClosedEditor" },
+
 
 ]
