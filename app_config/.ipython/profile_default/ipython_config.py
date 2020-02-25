@@ -177,7 +177,7 @@
 ## Use colors for displaying information about objects. Because this information
 #  is passed through a pager (like 'less'), and some pagers get confused with
 #  color codes, this capability can be turned off.
-#c.InteractiveShell.color_info = True
+# c.InteractiveShell.color_info = True
 
 ## Set the color scheme (NoColor, Neutral, Linux, or LightBG).
 c.InteractiveShell.colors = 'Linux'
@@ -311,9 +311,11 @@ c.TerminalInteractiveShell.highlighting_style = "monokai"
 
 from pygments.token import Token, Keyword, Name, Comment, String, Error, \
      Number, Operator, Generic, Whitespace
-## Override highlighting format for specific tokens
+# Override highlighting format for specific tokens
 c.TerminalInteractiveShell.highlighting_style_overrides = {
-
+    # see https://pygments.org/docs/tokens/ for the key in the dict
+    # see https://stackoverflow.com/a/48455387/10974371 for example of this dict 
+    
     ## Standard Pygments tokens (are all used by IPython ?)
 
     # Whitespace:                "#bbbbbb",
@@ -321,19 +323,24 @@ c.TerminalInteractiveShell.highlighting_style_overrides = {
     # Comment.Preproc:           "noitalic",
     # Comment.Special:           "noitalic bold",
 
-    # Keyword:                   "#ff736f", #  8ce98c
-    # Keyword.Pseudo:            "nobold",
-    # Keyword.Type:              "bold #00BB00",
+    Keyword:                       "bold #5fd4f9", #  "#ff736f", #  8ce98c
+    # Keyword.Pseudo:              "nobold",
+    # Keyword.Type:                "bold #ff736f", # "bold #00BB00",
+    # Keyword.Constant:            "#ff736f",
+    # Keyword.Declaration:         "#ff736f",
+    # Keyword.Namespace:           "#ff736f",
+    # Keyword.Reserved:            "#ff736f",
+    # Keyword.Pseudo:              "#ff736f",
 
     # Operator:                  "#ff736f",   #
     # Operator.Word:             "bold #AA22FF",
 
-    Name.Builtin:              "italic #5fd4f9",
+    Name.Builtin:                "#5fd4f9",
     # Name.Function:             "#99f46a", #
     # Name.Class:                "#99f46a", #
     # Name.Namespace:            "bold #99f46a", #
     # Name.Exception:            "italic bold #89f9fc",
-    Name.Variable:             "italic", #
+    # Name.Variable:             "#B8860B", # "italic",
     # Name.Constant:             "#880000",
     # Name.Label:                "#A0A000",
     # Name.Entity:               "bold #999999",
@@ -377,6 +384,7 @@ c.TerminalInteractiveShell.highlighting_style_overrides = {
     Token.OutPrompt: '#ff5753',
     Token.OutPromptNum: '#ff5753 bold',
 }
+
 
 ## Enable mouse support in the prompt
 # c.TerminalInteractiveShell.mouse_support = True
