@@ -106,6 +106,7 @@
     "files.watcherExclude": {
         "**/__data__/**": true,
         "**/__result__/**": true,
+        "**/result/**": true,
         "**/venv/**": true,
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
