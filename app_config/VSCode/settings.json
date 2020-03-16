@@ -152,10 +152,11 @@
         // ]
     },
 
-
-    "sync.gist": "1f9fdc856655048277dafd4d765c6fee",
+    // settings sync 插件的设置
+    "sync.gist": "dd3712375e25e5e5d9eae7606d1e7a20",
     "sync.autoUpload": true,
     "sync.autoDownload": true,
+    "sync.quietSync": true,
 
 
     // // 打开、隐藏内置终端，
