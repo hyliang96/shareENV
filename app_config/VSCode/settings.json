@@ -153,6 +153,11 @@
     },
 
 
+    "sync.gist": "1f9fdc856655048277dafd4d765c6fee",
+    "sync.autoUpload": true,
+    "sync.autoDownload": true,
+
+
     // // 打开、隐藏内置终端，
     // "macros": {
     //     "toggleTerminal": [
