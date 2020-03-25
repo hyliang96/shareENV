@@ -222,7 +222,19 @@ ws()
 # 查看路由表
 alias lyb='netstat -nr'
 # 修改静态路由
-alias jtly='/etc/network/interfaces'
+alias jtly='sv /etc/network/interfaces'
+
+
+# 清理本地dns缓存
+if [ "$(uname)" = "Darwin" ]; then
+    alias dnsrm='sudo killall -HUP mDNSResponder'
+else
+    alias dnsrm='sudo /etc/init.d/nscd restart'
+    # alias dnsrm='sudo /etc/init.d/dns-clean start'
+fi
+
+# 重启本地网络, 让/etc/network/interfaces 生效
+alias network-restart='sudo /etc/init.d/networking restart'
 
 # -------------------- 进程管理 --------------------
 # 搜索进程

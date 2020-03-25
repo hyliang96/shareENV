@@ -43,20 +43,16 @@
     // 右移一词：alt+right
     { "key": "alt+right",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001bf" }, "when": "terminalFocus" },
     // 移动到行首：shift+alt+left  or  cmd+left
-    { "key": "shift+alt+left",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b[H" }, "when": "terminalFocus" },
     { "key": "cmd+left",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b[H" }, "when": "terminalFocus" },
     // 移动到行尾：shift+alt+right or  cmd+right
-    { "key": "shift+alt+right",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b[F" }, "when": "terminalFocus" },
     { "key": "cmd+right",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b[F" }, "when": "terminalFocus" },
     // 左删一词：alt+backspace
     { "key": "alt+backspace",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001b\u007f" },  "when": "terminalFocus"  },
     // 右删一词：alt+delete
     { "key": "alt+delete",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u001bd" },  "when": "terminalFocus"  },
     // 删除到行首：shift+alt+backspace or cmd+backspace
-    { "key": "shift+alt+backspace",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u0015" },  "when": "terminalFocus"  },
     { "key": "cmd+backspace",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u0015" },  "when": "terminalFocus"  },
     // 删除到行尾：shift+alt+delete    or cmd+delete
-    { "key": "shift+alt+delete",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u000b" },  "when": "terminalFocus"  },
     { "key": "cmd+delete",   "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u000b" },  "when": "terminalFocus"  },
     // 删除整行： shift+backspace
     { "key": "shift+backspace", "command": "workbench.action.terminal.sendSequence", "args": { "text": "\u0005\u0015" }, "when": "terminalFocus" },
@@ -67,6 +63,7 @@
 
     // alt+z 光标回上一处
     { "key": "alt+z", "command": "cursorUndo", "when": "textInputFocus" },
+    { "key": "alt+z", "command": "-editor.action.toggleWordWrap" },
     { "key": "cmd+u", "command": "-cursorUndo", "when": "textInputFocus" },
     // shift+alt+z 光标来下一处
     { "key": "shift+alt+z", "command": "cursorRedo" },
@@ -94,12 +91,11 @@
         // 选中一个区域再cmd+d：非整词匹配
         // 光标在一个词中未选中一片区域，直接cmd+d：整词匹配
         // 选中下一个和当前一样的：cmd+d
-        // alt+d 取消当前选区, 去往下一选区
-        { "key": "alt+d", "command": "editor.action.moveSelectionToNextFindMatch", "when": "editorFocus" },
+        // ctrl+d 取消当前选区, 去往下一选区
+        { "key": "ctrl+d", "command": "editor.action.moveSelectionToNextFindMatch", "when": "editorFocus" },
         { "key": "cmd+k cmd+d", "command": "-editor.action.moveSelectionToNextFindMatch", "when": "editorFocus" },
-        // shift+alt+d 取消当前选区, 回到上一选区
-        { "key": "shift+alt+d", "command": "cursorUndo", "when": "textInputFocus" },
-
+        // shift+ctrl+d 取消当前选区, 回到上一选区
+        { "key": "shift+ctrl+d", "command": "cursorUndo", "when": "textInputFocus" },
         // shift+cmd+d: 选中所有和当前一样的
         { "key": "shift+cmd+d",    "command": "editor.action.selectHighlights"},
 
@@ -137,5 +133,6 @@
     { "key": "shift+cmd+t",    "command": "workbench.view.debug"},
     // 打开最近关闭的文件（[l]ast）
     { "key": "shift+cmd+l", "command": "workbench.action.reopenClosedEditor" },
+
 
 ]
