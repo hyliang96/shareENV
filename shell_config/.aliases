@@ -110,7 +110,8 @@ cpu_n()
 
 alias size='du -hd 0' # sl <dir_path>， 查看某个文件、文件夹的大小，<dir_path>缺省则为当前目录
 # 数文件/文件夹个数
-alias sl='python $share_script/sizelist.py' # sl <dir_path> ,查看某个目录及其下一级所有文件、文件夹的大小，<dir_path>缺省则为当前目录
+alias sl='du -ahxd1 | sort -hk1 | while IFS='"$'\t'"' read -r size line; do printf "%s\t" $size; ls -d --color=auto $line; done'
+# alias sl='python $share_script/sizelist.py' # sl <dir_path> ,查看某个目录及其下一级所有文件、文件夹的大小，<dir_path>缺省则为当前目录
 # sl为size ls之意, <dir_path>缺省则为当前目录
 alias count='python $share_script/countfile.py'
 # 列出 指定目录下子目录 含有某字符串的 文件/文件夹 的个数
