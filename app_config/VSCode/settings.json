@@ -101,6 +101,7 @@
     "git.autofetch": true,
     // darkly
 
+    // "search.useIgnoreFiles": true,
     // to solve "Visual Studio Code is unable to watch for file changes in this large workspace" (error ENOSPC)"
     "files.watcherExclude": {
         "**/__data__/**": true,
@@ -109,6 +110,24 @@
         "**/venv/**": true,
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
+    },
+    // 左侧目录树不显示
+    "files.exclude": {
+        "**/*.jpg": true,
+        "**/*.jepg": true,
+        "**/*.JEPG": true,
+        "**/*.png": true,
+        "**/*.PNG": true,
+        // "experimental_results": true
+    },
+    // 搜索不搜
+    "search.exclude": {
+        "**/*.jpg": true,
+        "**/*.jepg": true,
+        "**/*.JEPG": true,
+        "**/*.png": true,
+        "**/*.PNG": true,
+        // "experimental_results": true
     },
     "python.dataScience.askForKernelRestart": false,
     "workbench.activityBar.visible": true,
@@ -152,10 +171,12 @@
     },
 
     // settings sync 插件的设置
-    "sync.gist": "feed554566a4de6778c4a353b2b4f753",
+    "sync.gist": "7f497183a1c14bd331355ae017b323a4",
     "sync.autoUpload": true,
     "sync.autoDownload": true,
     "sync.quietSync": true,
+    "sync.forceDownload": false,
+    "search.useGlobalIgnoreFiles": true,
 
     // // 打开、隐藏内置终端，
     // "macros": {
