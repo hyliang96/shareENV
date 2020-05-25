@@ -171,10 +171,10 @@
     },
 
     // settings sync 插件的设置
-    "sync.gist": "7f497183a1c14bd331355ae017b323a4",
-    "sync.autoUpload": true,
-    "sync.autoDownload": true,
-    "sync.quietSync": true,
+    "sync.gist": "1c811c797f8a399f90f503e949cd7fdb",
+    "sync.autoUpload": false,
+    "sync.autoDownload": false,
+    "sync.quietSync": false,
     "sync.forceDownload": false,
 
 
