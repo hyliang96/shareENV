@@ -101,6 +101,7 @@
     "git.autofetch": true,
     // darkly
 
+    // "search.useIgnoreFiles": true,
     // to solve "Visual Studio Code is unable to watch for file changes in this large workspace" (error ENOSPC)"
     "files.watcherExclude": {
         "**/__data__/**": true,
@@ -109,6 +110,24 @@
         "**/venv/**": true,
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
+    },
+    // 左侧目录树不显示
+    "files.exclude": {
+        "**/*.jpg": true,
+        "**/*.jepg": true,
+        "**/*.JEPG": true,
+        "**/*.png": true,
+        "**/*.PNG": true,
+        // "experimental_results": true
+    },
+    // 搜索不搜
+    "search.exclude": {
+        "**/*.jpg": true,
+        "**/*.jepg": true,
+        "**/*.JEPG": true,
+        "**/*.png": true,
+        "**/*.PNG": true,
+        // "experimental_results": true
     },
     "python.dataScience.askForKernelRestart": false,
     "workbench.activityBar.visible": true,
@@ -152,10 +171,14 @@
     },
 
     // settings sync 插件的设置
-    "sync.gist": "dd3712375e25e5e5d9eae7606d1e7a20",
-    "sync.autoUpload": true,
-    "sync.autoDownload": true,
-    "sync.quietSync": true,
+    "sync.gist": "1c811c797f8a399f90f503e949cd7fdb",
+    "sync.autoUpload": false,
+    "sync.autoDownload": false,
+    "sync.quietSync": false,
+    "sync.forceDownload": false,
+
+
+    "search.useGlobalIgnoreFiles": true,
 
     // // 打开、隐藏内置终端，
     // "macros": {

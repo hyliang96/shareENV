@@ -110,7 +110,13 @@ cpu_n()
 
 alias size='du -hd 0' # sl <dir_path>， 查看某个文件、文件夹的大小，<dir_path>缺省则为当前目录
 # 数文件/文件夹个数
-alias sl='python $share_script/sizelist.py' # sl <dir_path> ,查看某个目录及其下一级所有文件、文件夹的大小，<dir_path>缺省则为当前目录
+sl() {
+    du -ahxd1 "$@" | sort -hk1 | while IFS=$'\t' read -r size line;
+        do printf "%s\t" $size
+        ls -d --color=auto $line
+    done
+}
+# alias sl='python $share_script/sizelist.py' # sl <dir_path> ,查看某个目录及其下一级所有文件、文件夹的大小，<dir_path>缺省则为当前目录
 # sl为size ls之意, <dir_path>缺省则为当前目录
 alias count='python $share_script/countfile.py'
 # 列出 指定目录下子目录 含有某字符串的 文件/文件夹 的个数
@@ -921,6 +927,14 @@ alias nb='jupyter notebook' # open local jupyter notebook, it will automatically
 # tb 实验名: 装event文件的目录 实验名: 装event文件的目录 实验名: 装event文件的目录 ...
 tb()
 {
+    if [[ "$1" =~ "(--help|-h|help)" ]]; then
+        echo 'tb [<tag1>:] <dir1> [<tag2>:<dir2>] [<dir3>]'
+        echo '    default dir=.'
+        echo '    default tag=<dir>'
+        return
+    fi
+
+    i=1
     local dir_paths
     declare -a dir_paths
     while [ $# -ne 0 ]; do
@@ -931,7 +945,13 @@ tb()
                 local dir_path="$1$2"
                 shift
             else
-                local dir_path="$1"
+                local tag="${1//\//∕}"
+                echo $tag
+                local tag="${tag//:/∶}"
+                echo $tag
+                local dir_path="${tag}:$1"
+                echo $dir_path
+                i=$(($i + 1))
             fi
             dir_paths=("${dir_paths[@]}" "$dir_path")
             shift
@@ -943,7 +963,8 @@ tb()
     # elif [ ${#dir_paths} -eq 1 ]; then
         # local dir_arg="--logdir=${dir_paths[1]}"
     else
-        dir_arg='--logdir_spec='
+        # dir_arg='--logdir_spec='
+        dir_arg='--logdir='
         local i
         for i in "${dir_paths[@]}"; do
             dir_arg="${dir_arg}${i},"
