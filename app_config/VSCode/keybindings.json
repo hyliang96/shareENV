@@ -91,12 +91,11 @@
         // 选中一个区域再cmd+d：非整词匹配
         // 光标在一个词中未选中一片区域，直接cmd+d：整词匹配
         // 选中下一个和当前一样的：cmd+d
-        // alt+d 取消当前选区, 去往下一选区
-        { "key": "alt+d", "command": "editor.action.moveSelectionToNextFindMatch", "when": "editorFocus" },
+        // ctrl+d 取消当前选区, 去往下一选区
+        { "key": "ctrl+d", "command": "editor.action.moveSelectionToNextFindMatch", "when": "editorFocus" },
         { "key": "cmd+k cmd+d", "command": "-editor.action.moveSelectionToNextFindMatch", "when": "editorFocus" },
-        // shift+alt+d 取消当前选区, 回到上一选区
-        { "key": "shift+alt+d", "command": "cursorUndo", "when": "textInputFocus" },
-
+        // shift+ctrl+d 取消当前选区, 回到上一选区
+        { "key": "shift+ctrl+d", "command": "cursorUndo", "when": "textInputFocus" },
         // shift+cmd+d: 选中所有和当前一样的
         { "key": "shift+cmd+d",    "command": "editor.action.selectHighlights"},
 
