@@ -1,7 +1,5 @@
 ## 安装vscode-insider的配置的方法
 
-
-
 将`'/Users/mac/Library/Application Support/Code - Insiders/User’`删除到垃圾箱
 
 然后执行
