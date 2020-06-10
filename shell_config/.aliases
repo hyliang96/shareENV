@@ -1031,6 +1031,12 @@ tka()
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
 
+if [ -n "$ZSH_NAME" ]; then
+    tmux_itm() {   :;    }
+    compdef _tmux tmux_itm
+    alias itm='tmux_itm -CC attach -t'
+fi
+
 itm() {
     if [ "$(alias itm 2> /dev/null)" != '' ]; then
         for i in {1..3}; do shift; done
@@ -1042,6 +1048,13 @@ itm() {
         tmux -CC attach -t "${session}" || tmux -CC new -s "${session}"
     fi
 }
+
+
+if [ -n "$ZSH_NAME" ]; then
+    tmux_tm() {   :;    }
+    compdef _tmux tmux_tm
+    alias tm='tmux_tm attach -t'
+fi
 
 tm() {
     if [ "$(alias tm 2> /dev/null)" != '' ]; then

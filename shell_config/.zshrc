@@ -480,13 +480,13 @@ autoload -U compinit && compinit
 compdef _rsync autots
 compdef _rsync download
 
-tmux_itm() {   :    }
-compdef _tmux tmux_itm
-alias itm='tmux_itm -CC attach -t'
+# tmux_itm() {   :;    }
+# compdef _tmux tmux_itm
+# alias itm='tmux_itm -CC attach -t'
 
-tmux_tm() {   :    }
-compdef _tmux tmux_tm
-alias tm='tmux_tm attach -t'
+# tmux_tm() {   :;    }
+# compdef _tmux tmux_tm
+# alias tm='tmux_tm attach -t'
 
 # ls_list() { : }
 # compdef  _ls ls_list
@@ -494,6 +494,7 @@ alias tm='tmux_tm attach -t'
 # alias ll='ls_list'
 # alias l='ls_list'
 
+# 允许在有`alias foo=...`时，再定义函数`foo() {  .... }`
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 
