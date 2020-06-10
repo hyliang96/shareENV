@@ -688,6 +688,7 @@ alias lac='la_core'
 # 显 文件(xxx)文件夹(xxx/)
 alias l_core='ls -CF   --sort=version --color=always'
 # ( alias l 1>/dev/null ) && unalias l
+alias l='l_core'
 l() { l_core "$@" | less -R; }
 alias lc='l_core'
 
