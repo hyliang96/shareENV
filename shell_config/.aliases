@@ -687,7 +687,13 @@ ls_list() { :; }
 
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias llc='ls -AlFh --sort=version --color=always'
-ll() { llc "$@" | less -R; }
+ll() {
+    if [ $(llc "$@" | wc -l) -gt 50 ]; then
+        llc "$@" | less -R
+    else
+        llc "$@"
+    fi
+}
 
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
 alias lac='ls -CAF  --sort=version --color=always'
