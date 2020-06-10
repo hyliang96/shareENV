@@ -606,6 +606,7 @@ alias scp="scp -r"
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
 # autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
+[ -n "$ZSH_NAME" ] && compdef _rsync autots
 autots() {
     local retry_time=180 # second
     while [ 1 ]
@@ -625,7 +626,9 @@ autots() {
 
 # rsync 封装多种参数，但不支持断点续传; ts能够和rsync一样自动补全远程目录
 alias ts='rsync -aHhvz --progress'
+
 # 下载到Downloads
+[ -n "$ZSH_NAME" ] && compdef _rsync download
 download()
 {
     local download_path="$HOME/Downloads"
