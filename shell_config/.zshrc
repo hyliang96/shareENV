@@ -488,6 +488,12 @@ tmux_tm() {   :    }
 compdef _tmux tmux_tm
 alias tm='tmux_tm attach -t'
 
+ls_list() { : }
+compdef  _ls ls_list
+alias la='ls_list'
+alias ll='ls_list'
+alias l='ls_list'
+
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 

@@ -675,19 +675,19 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
 
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias ll_core='ls -AlFh --sort=version --color=always'
-( alias ll 1>/dev/null ) && unalias ll
+# ( alias ll 1>/dev/null ) && unalias ll
 ll() { ll_core "$@" | less -R; }
 alias llc='ll_core'
 
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
 alias la_core='ls -CAF  --sort=version --color=always'
-( alias la 1>/dev/null ) && unalias la
+# ( alias la 1>/dev/null ) && unalias la
 la() { la_core "$@" | less -R; }
 alias lac='la_core'
 
 # 显 文件(xxx)文件夹(xxx/)
 alias l_core='ls -CF   --sort=version --color=always'
-( alias l 1>/dev/null ) && unalias l
+# ( alias l 1>/dev/null ) && unalias l
 l() { l_core "$@" | less -R; }
 alias lc='l_core'
 
