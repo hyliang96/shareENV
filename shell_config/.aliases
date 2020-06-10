@@ -791,25 +791,43 @@ jy()
 {
     if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = 'help' ]; then
         echo 'Usage:'
-        echo 'jy7z xxx.7z 目标目录(缺省为.)  :  解压到`目标目录/xxx_extract`'
+        echo 'jy7z xxx.扩展名 [- 目标目录(缺省为.)] [xxx.扩展名 [- 目标目录(缺省为.)] ...]'
+        echo '解压到`目标目录/xxx_extract`'
     else
-        local file7z=$1; shift 1
-        if [ $# -ne 0 ]; then
-            local target_jieya_path=$1
-        else
-            local target_jieya_path=.
-        fi
-
+        local file7z_list=()
+        local target_jieya_path_list=()
+        while [ $# -ne 0 ]; do
+            local file7z="$1"; shift 1
+            if [ "$1" = '-' ]; then
+                shift
+                if [ $# -ne 0 ]; then
+                    local target_jieya_path="$1"
+                fi
+            else
+                local target_jieya_path=.
+            fi
+            file7z_list+=("$file7z")
+            target_jieya_path_list+=("$target_jieya_path")
+        done
         # local OLD_IFS=$IFS
         # IFS='.'
         # local tmp=($(echo "$file7z"))
         # IFS=$OLD_IFS
         # local filehead="${tmp[1]}"
-        local filename="${file7z}_extract"
 
-        # local filehead=`echo $file7z | sed -E 's/.7z$//g'`
-        # `7z x`一次只能解压一个文件
-        eval "7z x ${file7z} -o${target_jieya_path}/${filename}"
+        for (( i = 1; i < ${#file7z_list[@]}; i++ )); do
+            local file7z=${file7z_list[@]:$i:1}
+            local filename="${file7z}_extract"
+            local target_jieya_path=${target_jieya_path_list[@]:$i:1}
+
+            echo "$file7z"
+            echo "$filename"
+            echo "$target_jieya_path"
+
+            # local filehead=`echo $file7z | sed -E 's/.7z$//g'`
+            # `7z x`一次只能解压一个文件
+            eval "7z x ${file7z} -o${target_jieya_path}/${filename}"
+        done
     fi
 }
 
