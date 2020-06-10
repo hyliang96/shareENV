@@ -674,7 +674,9 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
 #  -h  文件大用kMG单位
 
 ls_list() { : }
-compdef  _ls ls_list
+if [ -n $ZSH_NAME ]; then
+    compdef  _ls ls_list
+fi
 # alias ll='ls_list'
 # alias la='ls_list'
 # alias l='ls_list'
@@ -682,17 +684,17 @@ compdef  _ls ls_list
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias llc='ls -AlFh --sort=version --color=always'
 alias ll='ls_list'
-ll() { llc "$@" | less -R; }
+# ll() { llc "$@" | less -R; }
 
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
 alias lac='ls -CAF  --sort=version --color=always'
 alias la='ls_list'
-la() { lac "$@" | less -R; }
+# la() { lac "$@" | less -R; }
 
 # 显 文件(xxx)文件夹(xxx/)
 alias lc='ls -CF   --sort=version --color=always'
 alias l='ls_list'
-l() { lc "$@" | less -R; }
+# l() { lc "$@" | less -R; }
 
 # safe remove
 # sr file(s) or dir(s)
@@ -1168,3 +1170,4 @@ timezone()
 
 # git 的 alias
 [ $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
+
