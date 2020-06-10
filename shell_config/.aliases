@@ -820,9 +820,9 @@ jy()
             local filename="${file7z}_extract"
             local target_jieya_path=${target_jieya_path_list[@]:$i:1}
 
-            echo "$file7z"
-            echo "$filename"
-            echo "$target_jieya_path"
+            # echo "$file7z"
+            # echo "$filename"
+            # echo "$target_jieya_path"
 
             # local filehead=`echo $file7z | sed -E 's/.7z$//g'`
             # `7z x`一次只能解压一个文件
