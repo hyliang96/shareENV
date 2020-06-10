@@ -673,11 +673,9 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
 #  -G  in a long listing, don't print group names
 #  -h  文件大用kMG单位
 
-ls_list() { : }
-if [ -n $ZSH_NAME ]; then
-    echo yes
-    compdef  _ls ls_list
-fi
+ls_list() { :; }
+# 若当前是zsh
+[ -n "$ZSH_NAME" ] && compdef  _ls ls_list
 
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias llc='ls -AlFh --sort=version --color=always'
