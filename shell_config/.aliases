@@ -675,17 +675,15 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
 
 ls_list() { : }
 compdef  _ls ls_list
-alias la='ls_list'
-alias ll='ls_list'
-alias l='ls_list'
+# alias la='ls_list'
+# alias ll='ls_list'
+# alias l='ls_list'
 
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias ll_core='ls -AlFh --sort=version --color=always'
+alias ll='ls_list'
 # ( alias ll 1>/dev/null ) && unalias ll
-ll()
-{
-    ll_core "$@" | less -R
-}
+ll() { ll_core "$@" | less -R; }
 alias llc='ll_core'
 
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
