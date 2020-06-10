@@ -683,6 +683,8 @@ if [ -n "$ZSH_NAME" ] && [[ -o interactive ]]; then
     alias ll='ls_list'
     alias la='ls_list'
     alias l='ls_list'
+else
+    unalias ll
 fi
 
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
