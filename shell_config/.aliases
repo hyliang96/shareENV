@@ -679,7 +679,7 @@ alias la='ls -CAF --sort=version'
 # 显 文件(xxx)文件夹(xxx/)
 alias _l='ls -CF --sort=version'
 l() {
-    _l --color=always | less -R
+    ls -CF --sort=version --color=always | less -R
 }
 
 
