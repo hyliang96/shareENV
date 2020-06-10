@@ -477,22 +477,22 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 autoload -U compinit && compinit
 
 # 复用 rsync 等的补全函数
-# compdef _rsync autots
-# compdef _rsync download
+compdef _rsync autots
+compdef _rsync download
 
-# tmux_itm() {   :;    }
-# compdef _tmux tmux_itm
-# alias itm='tmux_itm -CC attach -t'
+tmux_itm() {   :;    }
+compdef _tmux tmux_itm
+alias itm='tmux_itm -CC attach -t'
 
-# tmux_tm() {   :;    }
-# compdef _tmux tmux_tm
-# alias tm='tmux_tm attach -t'
+tmux_tm() {   :;    }
+compdef _tmux tmux_tm
+alias tm='tmux_tm attach -t'
 
-# ls_list() { : }
-# compdef  _ls ls_list
-# alias la='ls_list'
-# alias ll='ls_list'
-# alias l='ls_list'
+ls_list() { : }
+compdef  _ls ls_list
+alias ll='ls_list'
+alias la='ls_list'
+alias l='ls_list'
 
 # 允许在有`alias foo=...`时，再定义函数`foo() {  .... }`
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
