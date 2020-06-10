@@ -677,8 +677,8 @@ alias ll='ls -AlFh --sort=version'
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
 alias la='ls -CAF --sort=version'
 # 显 文件(xxx)文件夹(xxx/)
-alias _l='ls -CF --sort=version'
-l() {
+# alias _l='ls -CF --sort=version'
+lls() {
     ls -CF --sort=version --color=always | less -R
 }
 
