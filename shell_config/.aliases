@@ -676,9 +676,9 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
 #  -G  in a long listing, don't print group names
 #  -h  文件大用kMG单位
 
-ls_list() { :; }
 # 若当前是zsh 且为交互模式
 # if [ -n "$ZSH_NAME" ] && [[ -o interactive ]]; then
+    # ls_list() { :; }
     # compdef  _ls ls_list
     # alias ll='ls_list'
     # alias la='ls_list'
