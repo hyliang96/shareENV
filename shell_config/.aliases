@@ -707,7 +707,13 @@ la() {
 
 # 显 文件(xxx)文件夹(xxx/)
 alias lc='ls -CF   --sort=version --color=always'
-l() { lc "$@" | less -R; }
+l() {
+    if [ $(lc "$@" | wc -l) -gt 50 ]; then
+        lc "$@" | less -R
+    else
+        lc "$@"
+    fi
+}
 
 # safe remove
 # sr file(s) or dir(s)
