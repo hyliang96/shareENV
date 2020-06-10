@@ -673,14 +673,19 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
 #  -G  in a long listing, don't print group names
 #  -h  文件大用kMG单位
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
-alias ll='ls -AlFh --sort=version'
+unalias ll
+ll() {
+    ls -AlFh --sort=version --color=always | less -R
+}
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
-alias la='ls -CAF --sort=version'
+unalias la
+la() {
+    ls -CAF  --sort=version --color=always | less -R
+}
 # 显 文件(xxx)文件夹(xxx/)
-# alias l='ls -CF --sort=version'
 unalias l
 l() {
-    ls -CF --sort=version --color=always | less -R
+    ls -CF   --sort=version --color=always | less -R
 }
 
 
