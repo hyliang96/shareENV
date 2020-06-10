@@ -685,11 +685,18 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
     # alias l='ls_list'
 # fi
 
+list_less_line_num=50
+
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias llc='ls -AlFh --sort=version --color=always'
 ll() {
-    if [ $(llc "$@" | wc -l) -gt 50 ]; then
-        llc "$@" | less -R
+    local line_num=$(llc "$@" | wc -l)
+    if [ $line_num -gt $list_less_line_num ]; then
+        # 当超过 $list_less_line_num 行时, 则输出到less
+        {
+            echo "#line = $line_num"
+            llc "$@"
+        } | less -R
     else
         llc "$@"
     fi
@@ -698,8 +705,12 @@ ll() {
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
 alias lac='ls -CAF  --sort=version --color=always'
 la() {
-    if [ $(lac "$@" | wc -l) -gt 50 ]; then
-        lac "$@" | less -R
+    local line_num=$(lac "$@" | wc -l)
+    if [ $line_num -gt $list_less_line_num ]; then
+        {
+            echo "#line = $line_num"
+            lac "$@"
+        } | less -R
     else
         lac "$@"
     fi
@@ -708,8 +719,12 @@ la() {
 # 显 文件(xxx)文件夹(xxx/)
 alias lc='ls -CF   --sort=version --color=always'
 l() {
-    if [ $(lc "$@" | wc -l) -gt 50 ]; then
-        lc "$@" | less -R
+    local line_num=$(lc "$@" | wc -l)
+    if [ $line_num -gt $list_less_line_num ]; then
+        {
+            echo "#line = $line_num"
+            lc "$@" 
+        } | less -R
     else
         lc "$@"
     fi
