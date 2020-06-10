@@ -606,7 +606,7 @@ alias scp="scp -r"
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
 # autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
-[ -n "$ZSH_NAME" ] && compdef _rsync autots
+[ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync autots
 autots() {
     local retry_time=180 # second
     while [ 1 ]
@@ -628,7 +628,7 @@ autots() {
 alias ts='rsync -aHhvz --progress'
 
 # 下载到Downloads
-[ -n "$ZSH_NAME" ] && compdef _rsync download
+[ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync download
 download()
 {
     local download_path="$HOME/Downloads"
@@ -677,22 +677,24 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
 #  -h  文件大用kMG单位
 
 ls_list() { :; }
-# 若当前是zsh
-[ -n "$ZSH_NAME" ] && compdef  _ls ls_list
+# 若当前是zsh 且为交互模式
+if [ -n "$ZSH_NAME" ] && [[ -o interactive ]]; then
+    compdef  _ls ls_list
+    alias ll='ls_list'
+    alias la='ls_list'
+    alias l='ls_list'
+fi
 
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias llc='ls -AlFh --sort=version --color=always'
-alias ll='ls_list'
 ll() { llc "$@" | less -R; }
 
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
 alias lac='ls -CAF  --sort=version --color=always'
-alias la='ls_list'
 la() { lac "$@" | less -R; }
 
 # 显 文件(xxx)文件夹(xxx/)
 alias lc='ls -CF   --sort=version --color=always'
-alias l='ls_list'
 l() { lc "$@" | less -R; }
 
 # safe remove
@@ -1034,7 +1036,7 @@ tka()
 # itm:与iterm2关联的tmux
 # tm：不关联iterm2的tmux
 
-if [ -n "$ZSH_NAME" ]; then
+if [ -n "$ZSH_NAME" ] && [[ -o interactive ]]; then
     tmux_itm() {   :;    }
     compdef _tmux tmux_itm
     alias itm='tmux_itm -CC attach -t'
@@ -1053,7 +1055,7 @@ itm() {
 }
 
 
-if [ -n "$ZSH_NAME" ]; then
+if [ -n "$ZSH_NAME" ] && [[ -o interactive ]]; then
     tmux_tm() {   :;    }
     compdef _tmux tmux_tm
     alias tm='tmux_tm attach -t'
