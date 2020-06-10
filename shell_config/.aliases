@@ -675,6 +675,7 @@ alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出�
 
 ls_list() { : }
 if [ -n $ZSH_NAME ]; then
+    echo yes
     compdef  _ls ls_list
 fi
 # alias ll='ls_list'
