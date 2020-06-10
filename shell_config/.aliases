@@ -697,7 +697,13 @@ ll() {
 
 # 显(xxx)隐(.xxx) 文件与文件夹不区分(xxx)
 alias lac='ls -CAF  --sort=version --color=always'
-la() { lac "$@" | less -R; }
+la() {
+    if [ $(lac "$@" | wc -l) -gt 50 ]; then
+        lac "$@" | less -R
+    else
+        lac "$@"
+    fi
+}
 
 # 显 文件(xxx)文件夹(xxx/)
 alias lc='ls -CF   --sort=version --color=always'
