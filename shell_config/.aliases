@@ -305,9 +305,9 @@ _code-remote() {
 }
 co(){
     if [[ "$1" =~ ':' ]]; then
-        _code-remote $@
+        _code-remote "$@"
     else
-        code $@
+        code "$@"
     fi
 }
 
