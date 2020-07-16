@@ -1195,6 +1195,7 @@ usshfs()
 # 列出目前mount的所有磁盘
 alias sshfs_jch='jch sshfs'
 
+
 # 实用小工具
 timezone()
 {

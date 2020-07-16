@@ -498,6 +498,10 @@ alias ll='ll_list'
 alias la='la_list'
 alias l='l_list'
 
+timezone_ls() { :; }
+compdef _ls timezone_ls
+alias timezone='timezone_ls /usr/share/zoneinfo.default/'
+
 # 允许在有`alias foo=...`时，再定义函数`foo() {  .... }`
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
