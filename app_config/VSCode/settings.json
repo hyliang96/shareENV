@@ -180,6 +180,139 @@
 
     "search.useGlobalIgnoreFiles": true,
 
+
+
+    // latex-workshop
+    "latex-workshop.latex.recipe.default": "lastUsed", // "first"
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "pdflatex -> bibtex -> pdflatex*2",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex",
+                "copy_pdf"
+            ]
+        }, {
+            "name": "xelatex -> bibtex -> xelatex*2",
+            "tools": [
+                "xelatex",
+                "bibtex",
+                "xelatex",
+                "xelatex",
+                "copy_pdf"
+            ]
+        }, {
+            "name": "pdflatex",
+            "tools": [
+                "pdflatex",
+                "copy_pdf"
+            ]
+        }, {
+            "name": "xelatex",
+            "tools": [
+                "xelatex",
+                "copy_pdf"
+            ]
+        }, {
+            "name": "latexmk",
+            "tools": [
+                "latexmk",
+                // "copy_pdf"
+            ]
+        }, {
+            "name": "bibtex",
+            "tools": [
+                "bibtex"
+            ]
+        },
+    ],
+
+
+    "latex-workshop.latex.outDir": "%TMPDIR%",
+    "latex-workshop.latex.tools": [ {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                // "-output-directory=%TMPDIR%",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "%DOCFILE%"
+            ],
+            // "env": {
+            //     "TEXMFOUTPUT": "%TMPDIR%"
+            // }
+        }, {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-output-directory=%TMPDIR%",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        }, {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                // "-output-directory=%TMPDIR%",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        }, {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+                // "%TMPDIR%/%DOCFILE%"
+            ],
+            // "env": {
+            //     "TEXMFOUTPUT": "%TMPDIR%"
+            // }
+        }, {
+            "name": "copy_pdf",
+            "command": "cp",
+            "args": [
+                "%TMPDIR%/%DOCFILE%.pdf",
+                "%DIR%/%DOCFILE%.pdf"
+            ]
+        }
+    ],
+
+    "latex-workshop.latex.autoBuild.run": "never",
+    "latex-workshop.view.pdf.viewer": "tab",
+    // latex 自动删除辅助文件
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.subfolder.enabled": true,
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.synctex.gz"
+    ],
+
     // // 打开、隐藏内置终端，
     // "macros": {
     //     "toggleTerminal": [

@@ -132,7 +132,41 @@
     // 调试 （[t]iaoshi）
     { "key": "shift+cmd+t",    "command": "workbench.view.debug"},
     // 打开最近关闭的文件（[l]ast）
-    { "key": "shift+cmd+l", "command": "workbench.action.reopenClosedEditor" },
+    {
+        "key": "shift+cmd+l",
+        "command": "workbench.action.reopenClosedEditor"
+    },
 
 
+
+    // ----------------------------------------------------------------------------------------------
+    // latex workshop
+    // ----------------------------------------------------------------------------------------------
+    //
+    // {
+    //     "key": "ctrl+b",
+    //     "command": "latex-workshop.build",
+    //     "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId =~ /latex|rsweave|jlweave/"
+    // },
+    // {
+    //     "key": "alt+cmd+b",
+    //     "command": "-latex-workshop.build",
+    //     "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId =~ /latex|rsweave|jlweave/"
+    // },
+    // {
+    //     "key": "ctrl+b",
+    //     "command": "latex-workshop.build",
+    //     "when": "config.latex-workshop.bind.altKeymap.enabled && editorLangId =~ /latex|rsweave|jlweave/"
+    // },
+    // {
+    //     "key": "cmd+l alt+b",
+    //     "command": "-latex-workshop.build",
+    //     "when": "config.latex-workshop.bind.altKeymap.enabled && editorLangId =~ /latex|rsweave|jlweave/"
+    // },
+    //
+    {
+        "key": "cmd+alt+shift+b",
+        "command": "latex-workshop.recipes"
+        // "command": "latex-workshop.latex.recipe.default"
+    },
 ]
