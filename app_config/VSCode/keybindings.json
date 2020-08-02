@@ -169,4 +169,8 @@
         "command": "latex-workshop.recipes"
         // "command": "latex-workshop.latex.recipe.default"
     },
+    {
+        "key": "alt+cmd+q",
+        "command": "latex-workshop.kill"
+    },
 ]

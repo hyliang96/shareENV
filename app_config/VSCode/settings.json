@@ -192,7 +192,7 @@
                 "bibtex",
                 "pdflatex",
                 "pdflatex",
-                "copy_pdf"
+                "mv_pdf"
             ]
         }, {
             "name": "xelatex -> bibtex -> xelatex*2",
@@ -201,25 +201,25 @@
                 "bibtex",
                 "xelatex",
                 "xelatex",
-                "copy_pdf"
+                "mv_pdf"
             ]
         }, {
             "name": "pdflatex",
             "tools": [
                 "pdflatex",
-                "copy_pdf"
+                "mv_pdf"
             ]
         }, {
             "name": "xelatex",
             "tools": [
                 "xelatex",
-                "copy_pdf"
+                "mv_pdf"
             ]
         }, {
             "name": "latexmk",
             "tools": [
                 "latexmk",
-                // "copy_pdf"
+                "mv_pdf"
             ]
         }, {
             "name": "bibtex",
@@ -230,26 +230,26 @@
     ],
 
 
-    "latex-workshop.latex.outDir": "%TMPDIR%",
+    "latex-workshop.latex.outDir": "%DIR%/textemp",  // %TMPDIR%
     "latex-workshop.latex.tools": [ {
             "name": "latexmk",
             "command": "latexmk",
             "args": [
-                // "-output-directory=%TMPDIR%",
+                "-output-directory=%DIR%/textemp",
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
                 "-pdf",
                 "%DOCFILE%"
             ],
-            // "env": {
-            //     "TEXMFOUTPUT": "%TMPDIR%"
-            // }
+            "env": {
+                "TEXMFOUTPUT": "%DIR%/textemp"
+            }
         }, {
             "name": "xelatex",
             "command": "xelatex",
             "args": [
-                "-output-directory=%TMPDIR%",
+                "-output-directory=%DIR%/textemp",
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
@@ -259,7 +259,7 @@
             "name": "pdflatex",
             "command": "pdflatex",
             "args": [
-                // "-output-directory=%TMPDIR%",
+                "-output-directory=%DIR%/textemp",
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
@@ -269,18 +269,19 @@
             "name": "bibtex",
             "command": "bibtex",
             "args": [
-                "%DOCFILE%"
-                // "%TMPDIR%/%DOCFILE%"
+                // "%DOCFILE%"
+                "%DIR%/textemp/%DOCFILE%"
             ],
-            // "env": {
-            //     "TEXMFOUTPUT": "%TMPDIR%"
-            // }
+            "env": {
+                "TEXMFOUTPUT": "%DIR%/textemp"
+            }
         }, {
-            "name": "copy_pdf",
-            "command": "cp",
+            "name": "mv_pdf",
+            "command": "find",
             "args": [
-                "%TMPDIR%/%DOCFILE%.pdf",
-                "%DIR%/%DOCFILE%.pdf"
+                "%DIR%/textemp",
+                "-iname", "*.pdf", "-exec", "mv", "{}",
+                "%DIR%", ";"
             ]
         }
     ],
@@ -288,8 +289,8 @@
     "latex-workshop.latex.autoBuild.run": "never",
     "latex-workshop.view.pdf.viewer": "tab",
     // latex 自动删除辅助文件
-    "latex-workshop.latex.autoClean.run": "onBuilt",
-    "latex-workshop.latex.clean.subfolder.enabled": true,
+    // "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.subfolder.enabled": false,
     "latex-workshop.latex.clean.fileTypes": [
         "*.aux",
         "*.bbl",
