@@ -192,7 +192,7 @@
                 "bibtex",
                 "pdflatex",
                 "pdflatex",
-                "mv_pdf"
+                "copy_pdf"
             ]
         }, {
             "name": "xelatex -> bibtex -> xelatex*2",
@@ -201,25 +201,25 @@
                 "bibtex",
                 "xelatex",
                 "xelatex",
-                "mv_pdf"
+                "copy_pdf"
             ]
         }, {
             "name": "pdflatex",
             "tools": [
                 "pdflatex",
-                "mv_pdf"
+                // "copy_pdf"
             ]
         }, {
             "name": "xelatex",
             "tools": [
                 "xelatex",
-                "mv_pdf"
+                "copy_pdf"
             ]
         }, {
             "name": "latexmk",
             "tools": [
                 "latexmk",
-                "mv_pdf"
+                "copy_pdf"
             ]
         }, {
             "name": "bibtex",
@@ -242,9 +242,9 @@
                 "-pdf",
                 "%DOCFILE%"
             ],
-            "env": {
-                "TEXMFOUTPUT": "%DIR%/textemp"
-            }
+            // "env": {
+            //     "TEXMFOUTPUT": "%DIR%/textemp"
+            // }
         }, {
             "name": "xelatex",
             "command": "xelatex",
@@ -276,11 +276,11 @@
                 "TEXMFOUTPUT": "%DIR%/textemp"
             }
         }, {
-            "name": "mv_pdf",
+            "name": "copy_pdf",
             "command": "find",
             "args": [
                 "%DIR%/textemp",
-                "-iname", "*.pdf", "-exec", "mv", "{}",
+                "-iname", "*.pdf", "-exec", "cp", "{}",
                 "%DIR%", ";"
             ]
         }
