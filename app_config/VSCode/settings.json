@@ -10,8 +10,7 @@
     "terminal.integrated.shell.linux": "/usr/bin/zsh",
     "terminal.integrated.shell.osx": "/bin/zsh",
 
-
-
+    "search.useGlobalIgnoreFiles": true,
 
     "workbench.colorCustomizations": {
         // 编辑器配色
@@ -67,7 +66,7 @@
     "editor.tabSize": 4,
     // 按tab输入editor.tabSize个空格
     "editor.insertSpaces": true,
-    "window.zoomLevel": -1,
+    "window.zoomLevel": 0,
 
 
     // "terminal.integrated.cwd": "${cwd}",
@@ -142,6 +141,12 @@
         ".env": "shellscript"
     },
 
+    // settings sync 插件的设置
+    "sync.gist": "1c811c797f8a399f90f503e949cd7fdb",
+    "sync.autoUpload": false,
+    "sync.autoDownload": false,
+    "sync.quietSync": false,
+    "sync.forceDownload": false,
 
 
     // // https://github.com/pytorch/pytorch/issues/701#issuecomment-438215838
@@ -150,7 +155,7 @@
     //     "--generated-members=numpy.* ,torch.* ,cv2.* , cv.*"
     // ]
 
-    // 'macros' 插件，支持自定义组合命令
+    // -------- 'macros' 插件，支持自定义组合命令 --------------
     // 选择一行, 不带行尾换行符
     "macros": {
         "copyWithoutNewLine": [
@@ -169,16 +174,6 @@
         //     "cursor"
         // ]
     },
-
-    // settings sync 插件的设置
-    "sync.gist": "1c811c797f8a399f90f503e949cd7fdb",
-    "sync.autoUpload": false,
-    "sync.autoDownload": false,
-    "sync.quietSync": false,
-    "sync.forceDownload": false,
-
-
-    "search.useGlobalIgnoreFiles": true,
 
     // // 打开、隐藏内置终端，
     // "macros": {
@@ -211,4 +206,168 @@
     // },
     // 保存时格式化代码
     // "editor.formatOnSave": true,
+
+
+    // ---------------------- latex-workshop -------------------------
+    // 全选 "/ * latextmp * /", 然后 "cmd+/" 开关所在行注释, 以切换临时文件输出的目录:
+/*latextmp*/ // 输出到 `当前项目/`
+// /*latextmp*/ // 输出到 `当前项目/latextmp/`
+
+    "latex-workshop.latex.recipe.default": "lastUsed", // "first"
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk",
+            "tools": [
+                "latexmk",
+// /*latextmp*/     "move_aux",
+// /*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "pdflatex -> bibtex -> pdflatex*2",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex",
+// /*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "xelatex -> bibtex -> xelatex*2",
+            "tools": [
+                "xelatex",
+                "bibtex",
+                "xelatex",
+                "xelatex",
+// /*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "pdflatex",
+            "tools": [
+                "pdflatex",
+// /*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "xelatex",
+            "tools": [
+                "xelatex",
+// /*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "bibtex",
+            "tools": [
+                "bibtex"
+            ]
+        },
+    ],
+
+
+// /*latextmp*/  "latex-workshop.latex.outDir": "%DIR%/latextmp",  // %TMPDIR%
+    "latex-workshop.latex.tools": [ {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+// /*latextmp*/     "-output-directory=%DIR%/latextmp", "-f",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "%DOCFILE%"
+            ]
+        }, {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+// /*latextmp*/     "-output-directory=%DIR%/latextmp",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        }, {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+// /*latextmp*/     "-output-directory=%DIR%/latextmp",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        }, {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+/*reverse*//*latextmp*/     "%DOCFILE%"
+// /*latextmp*/     "%DIR%/latextmp/%DOCFILE%"
+            ],
+// /*latextmp*/    "env": { "TEXMFOUTPUT": "%DIR%/latextmp" }
+        }, {
+            // copy pdf files from %DIR%/latextmp/ to %DIR%/
+            "name": "copy_pdf",
+            "command": "find",
+            "args": [
+                "%DIR%/latextmp",
+                "-iname", "*.pdf",
+                "-exec", "cp", "{}", "%DIR%", ";"
+            ]
+        },  {
+            // move auxiliary files to %DIR%/latextmp/
+            "name": "move_aux",
+            "command": "find",
+            "args": [
+                "%DIR%",
+                "-maxdepth",  "1", "-type", "f",  "(",
+                      "-iname", "*.aux",
+                "-o", "-iname", "*.bbl",
+                "-o", "-iname", "*.blg",
+                "-o", "-iname", "*.idx",
+                "-o", "-iname", "*.ind",
+                "-o", "-iname", "*.lof",
+                "-o", "-iname", "*.lot",
+                "-o", "-iname", "*.out",
+                "-o", "-iname", "*.toc",
+                "-o", "-iname", "*.acn",
+                "-o", "-iname", "*.acr",
+                "-o", "-iname", "*.alg",
+                "-o", "-iname", "*.glg",
+                "-o", "-iname", "*.glo",
+                "-o", "-iname", "*.gls",
+                "-o", "-iname", "*.ist",
+                "-o", "-iname", "*.fls",
+                "-o", "-iname", "*.log",
+                "-o", "-iname", "*.fdb_latexmk",
+                "-o", "-iname", "*.synctex.gz",
+                ")", "-exec", "mv", "{}", "%DIR%/latextmp", ";"
+            ]
+        }
+    ],
+
+    "latex-workshop.latex.autoBuild.run": "onFileChange",
+    "latex-workshop.view.pdf.viewer": "tab",
+    // latex 自动删除辅助文件
+/*reverse*//*latextmp*/ "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.subfolder.enabled": false,
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.synctex.gz"
+    ],
+    "editor.renderControlCharacters": true,
 }

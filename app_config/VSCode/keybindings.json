@@ -132,7 +132,27 @@
     // 调试 （[t]iaoshi）
     { "key": "shift+cmd+t",    "command": "workbench.view.debug"},
     // 打开最近关闭的文件（[l]ast）
-    { "key": "shift+cmd+l", "command": "workbench.action.reopenClosedEditor" },
+    {
+        "key": "shift+cmd+l",
+        "command": "workbench.action.reopenClosedEditor"
+    },
 
 
+
+    // ----------------------------------------------------------------------------------------------
+    // latex workshop
+    // ----------------------------------------------------------------------------------------------
+    // alt+cmd+V : open pdf viewer
+    // alt+cmd+shitf+B : Build with a recipe to select
+    // alt+cmd+B : Build with the last used recipe
+    // alt+cmd+C : clean auxiliary files
+    // alt+cmd+Q : stop building
+    {
+        "key": "cmd+alt+shift+b",
+        "command": "latex-workshop.recipes"
+    },
+    {
+        "key": "alt+cmd+q",
+        "command": "latex-workshop.kill"
+    },
 ]

@@ -305,9 +305,9 @@ _code-remote() {
 }
 co(){
     if [[ "$1" =~ ':' ]]; then
-        _code-remote $@
+        _code-remote "$@"
     else
-        code $@
+        code "$@"
     fi
 }
 
@@ -1194,6 +1194,7 @@ usshfs()
 
 # 列出目前mount的所有磁盘
 alias sshfs_jch='jch sshfs'
+
 
 # 实用小工具
 timezone()
