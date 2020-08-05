@@ -1,0 +1,236 @@
+{
+    // Place your snippets for latex here. Each snippet is defined under a snippet name and has a prefix, body and
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+    // same ids are connected.
+    // Example:
+    // "Print to console": {
+    //     "prefix": "log",
+    //     "body": [
+    //         "console.log('$1');",
+    //         "$2"
+    //     ],
+    //     "description": "Log output to console"
+    // }
+
+
+    "include_all": {
+        "prefix": "include_all",
+        "body": [
+            "% ---------- basic ----------",
+            "% color",
+            "\\\\usepackage{color}",
+            "% figure",
+            "\\\\usepackage{graphicx}",
+            "\\\\usepackage{adjustbox} % include \\\\adjincludegraphics",
+            "\\\\usepackage{wrapfig}   % include \\\\wrapfigure \\\\ wraptable ",
+            "\\\\usepackage{floatflt}  % include \\\\floatingfigure \\\\floatingtable",
+            "% equation",
+            "\\\\usepackage{amsmath,amssymb}  % define this before the line numbering",
+            "\\\\usepackage{bm}        % include \\\\bm{}",
+            "% table",
+            "\\\\usepackage{booktabs}  % include \\\\midrule",
+            "\\\\usepackage{multirow}  % include \\\\multirow \\\\multicolumn",
+            "\\\\newcommand{\\\\tabincell}[2]{\\\\begin{tabular}{@{}#1@{}}#2\\\\end{tabular}} % define command for multirow table cell centering vertically",
+            "% enable \\\\footnote{} in tabular environment",
+            "\\\\usepackage{footnote}",
+            "\\\\makesavenoteenv{tabular}",
+            "\\\\makesavenoteenv{table}",
+            "% algorithm",
+            "\\\\usepackage{algorithm}",
+            "% \\\\usepackage{algorithmic}",
+            "\\\\usepackage{algpseudocode} % http://ctan.org/pkg/algorithmicx",
+            "% comment",
+            "\\\\usepackage{comment}   % include \\\\begin{comment} \\\\end{comment}",
+            "",
+            "% -------- modifier symbol marker for \\\\thanks ---------",
+            "\\\\usepackage{footmisc}",
+            "\\\\DefineFNsymbols{mySymbols}{{\\\\ensuremath\\\\ast}{\\\\ensuremath\\\\dagger}",
+            "{\\\\ensuremath\\\\ddagger}{\\\\ensuremath\\\\mathsection}{\\\\ensuremath\\\\mathparagraph}",
+            "{\\\\ensuremath\\\\parallel}{**}{\\\\ensuremath{\\\\dagger\\\\dagger}}{\\\\ensuremath{\\\\ddagger\\\\ddagger}}}",
+            "\\\\setfnsymbol{mySymbols}",
+            "",
+            "% ------- cross file reference -----",
+            "\\usepackage{xr}",
+            "\\makeatletter",
+            "\\newcommand*{\\addFileDependency}[1]{",
+            "    \\typeout{(#1)}",
+            "    \\@addtofilelist{#1}",
+            "    \\IfFileExists{#1}{}{\\typeout{No file #1.}}",
+            "}",
+            "\\makeatother",
+            "\\newcommand*{\\myexternaldocument}[1]{",
+            "    \\externaldocument{#1}",
+            "    \\addFileDependency{#1.tex}",
+            "    \\addFileDependency{#1.aux}",
+            "}",
+            "% put all the external documents here!",
+            "\\myexternaldocument{${1:supplementary}}",
+            "% ----------- user highlight ---------",
+            "% magenta red blue ...",
+            "\\\\newcommand{\\\\lhy}[1]{{\\\\color{blue}{lhy: #1}}}",
+        ],
+        "description": "include_all"
+    },
+
+    "vspace": {
+        "prefix": "vspace",
+        "body": [
+            "\\vspace{${1:-1}em} % em: height of 'M'",
+        ],
+        "description": "vspace"
+    },
+
+    "vskip": {
+        "prefix": "vskip",
+        "body": [
+            "\\vskip ${1:-1}em % em: height of 'M'",
+        ],
+        "description": "vskip"
+    },
+
+    "multirow": {
+        "prefix": "multirow",
+        "body": [
+            "\\\\multirow{${1:#row}}{*}{\\\\tabincell{c}{${2:content}}}",
+        ],
+        "description": "multirow"
+    },
+
+
+    "multicolumn": {
+        "prefix": "multicolumn",
+        "body": [
+            "\\\\multicolumn{${1:#col}}{${2:c|}}{${3:content}}",
+        ],
+        "description": "multicolumn"
+    },
+
+    "cmidrule": {
+        "prefix": "cmidrule",
+        "body": [
+            "\\\\cmidrule{${1:#col-1}-${2:#col-2}}",
+        ],
+        "description": "cmidrule"
+    },
+
+
+    "figure": {
+        "prefix": "figure",
+        "body": [
+            "\\\\begin{figure}[thbp]",
+            "    \\\\centering",
+            "    \\\\includegraphics[width=${1:1}\\\\textwidth]{${2:img/}}",
+            "    \\\\caption{$3}",
+            "    \\\\label{fig:$4}",
+            "\\\\end{figure}"
+        ],
+        "description": "figure"
+    },
+
+    "floatingfigure": {
+        "prefix": "floatingfigure",
+        "body": [
+            "\\\\begin{floatingfigure}[r]{${1:0.5}\\\\textwidth}",
+            "    \\\\centering",
+            "    \\\\includegraphics[width=${2:0.5}\\\\textwidth]{${3:img/}}",
+            "    \\\\caption{$4}",
+            "    \\\\label{fig:$5}",
+            "\\\\end{floatingfigure}"
+        ],
+        "description": "floatingfigure"
+    },
+
+    "table": {
+        "prefix": "table",
+        "body": [
+            "% \\\\usepackage{floatflt}",
+            "\\\\begin{table}[thbp]",
+            "    \\\\label{tab:$1}",
+            "    \\\\caption{$2}",
+            "    \\\\begin{center}",
+            "    \\\\begin{tabular}{${3:lcc}}",
+            "    \\\\toprule",
+            "    ${4: & & }\\\\\\\\\\\\",
+            "    \\\\midrule",
+            "    ${5: & & }\\\\\\\\\\\\",
+            "    \\\\hline",
+            "    ${6: & & }\\\\\\\\\\\\",
+            "    \\\\bottomrule",
+            "    \\\\end{tabular}",
+            "    \\\\end{center}",
+            "\\\\end{table}",
+        ],
+        "description": "table"
+    },
+
+    "floatingtable": {
+        "prefix": "floatingtable",
+        "body": [
+            "% \\\\usepackage{floatflt}",
+            "\\\\begin{floatingtable}[r]",
+            "    {",
+            "    \\\\begin{tabular}{${1:lcc}}",
+            "    \\\\toprule",
+            "    ${2: & & }\\\\\\\\\\\\",
+            "    \\\\midrule",
+            "    ${3: & & }\\\\\\\\\\\\",
+            "    \\\\hline",
+            "    ${4: & & }\\\\\\\\\\\\",
+            "    \\\\bottomrule",
+            "    \\\\end{tabular}",
+            "    }",
+            "    \\\\centering",
+            "    \\\\caption{$5}",
+            "    \\\\label{tab:$6}",
+            "\\\\end{floatingtable}"
+        ],
+        "description": "floatingtable"
+    },
+
+    "figure_right_caption": {
+        "prefix": "figure_right_caption",
+        "body": [
+            "\\\\begin{figure}[thbp]",
+            "\\\\begin{minipage}[t]{${1:0.5}\\\\textwidth}",
+            "\\\\centering",
+            "\\\\vspace{0pt} \\\\includegraphics[width=1\\\\textwidth]{${2:img/}}",
+            "% \\\\adjincludegraphics[valign=t,width=1\\\\textwidth]{${2:img/}}",
+            "% \\\\usepackage{adjustbox}",
+            "\\\\label{fig:$3}",
+            "\\\\end{minipage}",
+            "\\\\hfill",
+            "\\\\begin{minipage}[t]{${4:0.5}\\\\textwidth}",
+            "\\\\caption{$5}",
+            "\\\\end{minipage}",
+            "\\\\end{figure}",
+        ],
+        "description": "figure_right_caption"
+    },
+
+    "algorithm": {
+        "prefix": "algorithm",
+        "body": [
+            "% \\\\usepackage{algorithm}",
+            "% \\\\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx",
+            "% algorithmic doc: https://en.wikibooks.org/wiki/LaTeX/Algorithms",
+            "\\\\begin{algorithm}[t]",
+            "\\\\caption{$1}",
+            "\\\\label{alg:$2}",
+            "\\\\begin{algorithmic}[1]",
+            "\\\\For{$3}",
+            "    \\\\If{$4}",
+            "        \\\\State $5",
+            "    \\\\ElsIf{$6}",
+            "        \\\\State $7",
+            "    \\\\ElsIf{$8}",
+            "        \\\\State $9",
+            "    \\\\EndIf",
+            "\\\\EndFor",
+            "\\\\end{algorithmic}",
+            "\\\\end{algorithm}",
+        ],
+        "description": "algorithm"
+    },
+
+}

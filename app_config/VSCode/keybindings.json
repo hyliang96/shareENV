@@ -142,32 +142,14 @@
     // ----------------------------------------------------------------------------------------------
     // latex workshop
     // ----------------------------------------------------------------------------------------------
-    //
-    // {
-    //     "key": "ctrl+b",
-    //     "command": "latex-workshop.build",
-    //     "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId =~ /latex|rsweave|jlweave/"
-    // },
-    // {
-    //     "key": "alt+cmd+b",
-    //     "command": "-latex-workshop.build",
-    //     "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId =~ /latex|rsweave|jlweave/"
-    // },
-    // {
-    //     "key": "ctrl+b",
-    //     "command": "latex-workshop.build",
-    //     "when": "config.latex-workshop.bind.altKeymap.enabled && editorLangId =~ /latex|rsweave|jlweave/"
-    // },
-    // {
-    //     "key": "cmd+l alt+b",
-    //     "command": "-latex-workshop.build",
-    //     "when": "config.latex-workshop.bind.altKeymap.enabled && editorLangId =~ /latex|rsweave|jlweave/"
-    // },
-    //
+    // alt+cmd+V : open pdf viewer
+    // alt+cmd+shitf+B : Build with a recipe to select
+    // alt+cmd+B : Build with the last used recipe
+    // alt+cmd+C : clean auxiliary files
+    // alt+cmd+Q : stop building
     {
         "key": "cmd+alt+shift+b",
         "command": "latex-workshop.recipes"
-        // "command": "latex-workshop.latex.recipe.default"
     },
     {
         "key": "alt+cmd+q",
