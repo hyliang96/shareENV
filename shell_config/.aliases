@@ -141,6 +141,17 @@ ww()
     local wwip=`curl ifconfig.me` >/dev/null 2>&1
     echo $wwip
 }
+
+# 查看进程对应的端口号
+jch2dk() {
+    sudo lsof -i -P | awk NR==1
+    for i in "$@"; do
+        sudo lsof -i -P | awk '{ if ($2 == '"$i"') { print } }'
+    done
+    # netstat -natp | grep "$@"
+}
+
+
 # 查看端口
 # _dk [<port1> [<port2> ... ]]
 # 其中不写端口是查看所有端口的占用情况
@@ -723,7 +734,7 @@ l() {
     if [ $line_num -gt $list_less_line_num ]; then
         {
             echo "#line = $line_num"
-            lc "$@" 
+            lc "$@"
         } | less -R
     else
         lc "$@"
