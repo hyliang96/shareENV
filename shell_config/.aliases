@@ -5,6 +5,42 @@
 
 [ $DotFileDebug -ne 0 ] && echo share .bash_aliases >&2
 
+# ---------------------- users ----------------------
+# `gid` 列出所有group及其信息
+# `gid 组名` 若返回非空则此组存在
+gid () {
+    if [ $# -eq 0 ]
+    then
+        getent group | awk -F '[:]' '{print $3, $1":"$2":"$4}' | sort -n
+    else
+        getent group $@
+    fi
+}
+
+grp () {
+    if [  "$1" = "add" ]; then
+        local group="$1"
+        sudo groupadd "$group"
+    elif [ "$1" = "del" ]; then
+        local group="$1"
+        sudo groupdel "$group"
+    elif [ "$1" = "addto" ]; then
+        local user="$1"
+        local group="$2"
+        sudo usermod --append --groups "$group" "$user"
+    elif [ "$1" = "delfrom" ]; then
+        local user="$1"
+        local group="$2"
+        sudo gpasswd -d "$user" "$group"
+    else
+        echo 'grp: group management tool'
+        echo '`grp add <group>` : add a new group'
+        echo '`grp del <group>` : delete a group; this only works when the group contains no users'
+        echo '`grp addto <user> <group>` : add a user to a group'
+        echo '`grp delfrom <user> <group>` : remove a user from a group'
+    fi
+}
+
 
 # ---------------- alias to resource ----------------
 alias nvd='watch -n 10 nvidia-smi'  # 查GPU使用
