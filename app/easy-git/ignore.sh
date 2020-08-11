@@ -2,6 +2,7 @@
 
 # git [要忽略的文件(夹) 的 相对当前目录的路径 或 绝对路径] x n，将其添加到repo根目录下的.gitignore
 gi() { # git ignore
+    local i
     for i in "$@"; do
         local target_path_to_git_root="$(git_path_to_root $i)"
         local gitignore="$(git_root)/.gitignore"
