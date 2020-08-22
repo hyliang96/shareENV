@@ -1248,14 +1248,15 @@ alias sshfs_jch='jch sshfs'
 __tz_check__()
 {
     local timezone="$1"
-    if [[ "$timezone" =~ ^UCT+[0-9]+$ ]]; then
+    if [[ "$timezone" =~ ^UCT[+]{1}[0-9]+$ ]]; then
         local timezone=${timezone/+/-}
-    elif [[ "$timezone" =~ ^UCT-[0-9]+$ ]]; then
+    elif [[ "$timezone" =~ ^UCT\-[0-9]+$ ]]; then
         local timezone=${timezone/-/+}
     elif [ -f "/var/db/timezone/zoneinfo/$timezone" ]; then
-        ;
+        :
     else
         echo "no such time zone $timezone" >&2
+        return
     fi
     echo $timezone
 }
@@ -1282,13 +1283,13 @@ tz()
     fi
 
 
-    local source_TZ="$(__tz_check__ $1 2>/dev/null)"
-    local source_TZ="$(__tz_check__ $1 1>/dev/null 2>&1)"
+    local source_TZ="$(__tz_check__ $1)"
+    [ "$source_TZ" = '' ] && return
 
     local source_time="$2 $3"
     if [ $# -eq 4 ]; then
         local target_TZ="$(__tz_check__ $4)"
-        [ $? -eq 1 ] && return
+        [ "$target_TZ" = '' ] && return
     else
         local target_TZ='Asia/Shanghai'
     fi
