@@ -1248,9 +1248,9 @@ alias sshfs_jch='jch sshfs'
 __tz_check__()
 {
     local timezone="$1"
-    if [[ "$timezone" =~ ^UCT[+]{1}[0-9]+$ ]]; then
+    if [[ "$timezone" =~ ^UTC[+]{1}[0-9]+$ ]]; then
         local timezone=${timezone/+/-}
-    elif [[ "$timezone" =~ ^UCT\-[0-9]+$ ]]; then
+    elif [[ "$timezone" =~ ^UTC\-[0-9]+$ ]]; then
         local timezone=${timezone/-/+}
     elif [ -f "/var/db/timezone/zoneinfo/$timezone" ]; then
         :
@@ -1264,7 +1264,20 @@ __tz_check__()
 tz()
 {
     if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = help ]; then
-        echo 'timezone source-timezone yyyy-mm-dd hh:mm:ss [target-timezone=Asia/Shanghai]'
+        echo 'list valid timezones'
+        echo '    `tz`               list timezones/countries/continents'
+        echo '    `tz <continent>`   list cities in a continent / areas in a country'
+        echo
+        echo 'show time zone info'
+        echo '    `tz <timezone>`'
+        echo
+        echo '<timezone> e.g. '
+        echo '    CST = UTC+8 = PRC = Asia/Shanghai'
+        echo '    EST = UTC-5 = (when not in daylight time) US/Eastern = America/New_York'
+        echo '    UCT = UTC-0 = (when not in daylight time) WET = Europe/London'
+        echo
+        echo 'convert time bwtween timezone'
+        echo '    `tz <source-timezone> yyyy-mm-dd hh:mm:ss [<target-timezone>=Asia/Shanghai]`'
         return
     fi
 
@@ -1273,12 +1286,14 @@ tz()
         local tzpath="/var/db/timezone/zoneinfo/$tzname"
         if [ -d  "$tzpath" ]; then
             ls $tzpath
-        elif [ -f "$tzpath" ]; then
-            echo -n "$tzname : "
-            TZ="$tzname" date +'%Z UTC%z'
+            return
         else
-            echo "no such time zone $tzname"
+            local tzname="$(__tz_check__ $tzname)"
+            [ "$tzname" = '' ] && return
         fi
+
+        echo "$tzname : $(TZ="$tzname" date +'%Z UTC%z' | sed 's/\n//g')  | "\
+        "now : $(TZ="$tzname" date '+%F %T 周%w' | sed 's/周0/周日/g')"
         return
     fi
 
@@ -1293,8 +1308,8 @@ tz()
     else
         local target_TZ='Asia/Shanghai'
     fi
-    local target_time="$(TZ="$target_TZ" date -d @$(TZ="$source_TZ" date -d  "$source_time" +%s) '+%F %T 周%w')"
 
+    local target_time="$(TZ="$target_TZ" date -d @$(TZ="$source_TZ" date -d  "$source_time" +%s) '+%F %T 周%w')"
     target_time="$(echo $target_time | sed 's/周0/周日/g')"
     echo $target_TZ $target_time
 }
