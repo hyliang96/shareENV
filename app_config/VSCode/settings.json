@@ -27,7 +27,7 @@
         //   },
 
         // 终端配色
-        "terminal.background": "#28282a",
+        "terminal.background": "#32302f", // 28282a
         "terminal.foreground": "#c7c7c7",
         "terminalCursor.background": "#3b3b3b",
         "terminalCursor.foreground": "#A5A2A2",
@@ -96,7 +96,7 @@
     // 数字显示原精度
     "csv-preview.formatValues": "never",
     "csv-preview.theme": "light",
-    "workbench.colorTheme": "Gruvbox Dark (Medium)",
+    "workbench.colorTheme": "Gruvbox Dark (Soft)",
     "git.autofetch": true,
     // darkly
 
