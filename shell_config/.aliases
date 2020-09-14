@@ -1092,6 +1092,8 @@ tb()
 # -----------------  alias to tmux ------------------
 # list all session of tmux session
 alias tl='tmux ls'
+# rename a tmux session: tmv <current-session-name> <new-session-name>
+alias tmv='tmux rename-session -t'
 # kill a tmux session
 alias tk='tmux kill-session -t'
 # kill all tmux sessions i.e. kill the tmux server
