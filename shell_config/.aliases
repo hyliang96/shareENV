@@ -5,6 +5,42 @@
 
 [ $DotFileDebug -ne 0 ] && echo share .bash_aliases >&2
 
+# ---------------------- users ----------------------
+# `gid` 列出所有group及其信息
+# `gid 组名` 若返回非空则此组存在
+gid () {
+    if [ $# -eq 0 ]
+    then
+        getent group | awk -F '[:]' '{print $3, $1":"$2":"$4}' | sort -n
+    else
+        getent group $@
+    fi
+}
+
+grp () {
+    if [  "$1" = "add" ]; then
+        local group="$1"
+        sudo groupadd "$group"
+    elif [ "$1" = "del" ]; then
+        local group="$1"
+        sudo groupdel "$group"
+    elif [ "$1" = "addto" ]; then
+        local user="$1"
+        local group="$2"
+        sudo usermod --append --groups "$group" "$user"
+    elif [ "$1" = "delfrom" ]; then
+        local user="$1"
+        local group="$2"
+        sudo gpasswd -d "$user" "$group"
+    else
+        echo 'grp: group management tool'
+        echo '`grp add <group>` : add a new group'
+        echo '`grp del <group>` : delete a group; this only works when the group contains no users'
+        echo '`grp addto <user> <group>` : add a user to a group'
+        echo '`grp delfrom <user> <group>` : remove a user from a group'
+    fi
+}
+
 
 # ---------------- alias to resource ----------------
 alias nvd='watch -n 10 nvidia-smi'  # 查GPU使用
@@ -141,6 +177,17 @@ ww()
     local wwip=`curl ifconfig.me` >/dev/null 2>&1
     echo $wwip
 }
+
+# 查看进程对应的端口号
+jch2dk() {
+    sudo lsof -i -P | awk NR==1
+    for i in "$@"; do
+        sudo lsof -i -P | awk '{ if ($2 == '"$i"') { print } }'
+    done
+    # netstat -natp | grep "$@"
+}
+
+
 # 查看端口
 # _dk [<port1> [<port2> ... ]]
 # 其中不写端口是查看所有端口的占用情况
@@ -305,9 +352,9 @@ _code-remote() {
 }
 co(){
     if [[ "$1" =~ ':' ]]; then
-        _code-remote $@
+        _code-remote "$@"
     else
-        code $@
+        code "$@"
     fi
 }
 
@@ -723,7 +770,7 @@ l() {
     if [ $line_num -gt $list_less_line_num ]; then
         {
             echo "#line = $line_num"
-            lc "$@" 
+            lc "$@"
         } | less -R
     else
         lc "$@"
@@ -1195,20 +1242,73 @@ usshfs()
 # 列出目前mount的所有磁盘
 alias sshfs_jch='jch sshfs'
 
+
 # 实用小工具
-timezone()
+
+__tz_check__()
 {
-    if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = help ]; then
-        echo 'timezone source-timezone yyyy-mm-dd hh:mm:ss [target-timezone=Asia/Shanghai]'
+    local timezone="$1"
+    if [[ "$timezone" =~ ^UTC[+]{1}[0-9]+$ ]]; then
+        local timezone=${timezone/+/-}
+    elif [[ "$timezone" =~ ^UTC\-[0-9]+$ ]]; then
+        local timezone=${timezone/-/+}
+    elif [ -f "/var/db/timezone/zoneinfo/$timezone" ]; then
+        :
+    else
+        echo "no such time zone $timezone" >&2
         return
     fi
-    local source_TZ="$1"
+    echo $timezone
+}
+
+tz()
+{
+    if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = help ]; then
+        echo 'list valid timezones'
+        echo '    `tz`               list timezones/countries/continents'
+        echo '    `tz <continent>`   list cities in a continent / areas in a country'
+        echo
+        echo 'show time zone info'
+        echo '    `tz <timezone>`'
+        echo
+        echo '<timezone> e.g. '
+        echo '    CST = UTC+8 = PRC = Asia/Shanghai'
+        echo '    EST = UTC-5 = (when not in daylight time) US/Eastern = America/New_York'
+        echo '    UCT = UTC-0 = (when not in daylight time) WET = Europe/London'
+        echo
+        echo 'convert time bwtween timezone'
+        echo '    `tz <source-timezone> yyyy-mm-dd hh:mm:ss [<target-timezone>=Asia/Shanghai]`'
+        return
+    fi
+
+    if [ $# -le 1 ]; then
+        local tzname="$1"
+        local tzpath="/var/db/timezone/zoneinfo/$tzname"
+        if [ -d  "$tzpath" ]; then
+            ls $tzpath
+            return
+        else
+            local tzname="$(__tz_check__ $tzname)"
+            [ "$tzname" = '' ] && return
+        fi
+
+        echo "$tzname : $(TZ="$tzname" date +'%Z UTC%z' | sed 's/\n//g')  | "\
+        "now : $(TZ="$tzname" date '+%F %T 周%w' | sed 's/周0/周日/g')"
+        return
+    fi
+
+
+    local source_TZ="$(__tz_check__ $1)"
+    [ "$source_TZ" = '' ] && return
+
     local source_time="$2 $3"
     if [ $# -eq 4 ]; then
-        local target_TZ="$4"
+        local target_TZ="$(__tz_check__ $4)"
+        [ "$target_TZ" = '' ] && return
     else
         local target_TZ='Asia/Shanghai'
     fi
+
     local target_time="$(TZ="$target_TZ" date -d @$(TZ="$source_TZ" date -d  "$source_time" +%s) '+%F %T 周%w')"
     target_time="$(echo $target_time | sed 's/周0/周日/g')"
     echo $target_TZ $target_time
