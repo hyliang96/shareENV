@@ -651,6 +651,26 @@ alias sendkey='ssh-copy-id -i'     # 发送公钥
 alias cp="cp -r"
 alias scp="scp -r"
 
+
+rdiff()
+{
+    if [ $# -ne 2 ]; then
+        echo 'diff dir or file with dry-run rsync:'
+        echo '    `rdiff <file1> <file2>`'
+        echo '    `rdiff <dir1> <dir2>`'
+        return
+    fi
+
+    local source_path="$1"
+    local dest_path="$2"
+    [ ! -e ${source_path} ] && echo "no file or dir: ${source_path}" && return
+    [ ! -e ${dest_path} ] && echo "no file or dir: ${dest_path}" && return
+    [ -d ${source_path} ] && local source_path="${source_path}/"
+
+    echo rsync -rvnc --delete "$source_path" "$dest_path"
+    rsync -rvnc --delete "$source_path" "$dest_path"
+}
+
 # 自动端点续传，传送失败后隔180秒自动重新连接
 # autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
 # [ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync autots
@@ -847,6 +867,13 @@ rm_under()
 alias md='mkdir'
 alias g='grep'
 alias lk='ln -s'
+alias lkf='ln -sfT'
+# `lkf 被链接的路径 链接文件的路径` : 链接覆盖已有文件
+#  `链接文件的路径` 是链接文件本身的路径, 不可是其所在dir的路径
+#  若`链接文件的路径` 已有文件或链接, 则覆盖之
+#  若`链接文件的路径` 已有文件夹, 则无法覆盖之
+
+
 # lk <原身路径：可是文件、文件夹> [ <链接路径与名称> 默认是 . ]
 # 创建软连接
 alias ..='cd ../'
@@ -1007,6 +1034,7 @@ cerm() # erm 环境的名字
 
 venew()
 {
+    echo 'going to create a new virtualenv and activate it'
     if ! [ -x "$(command -v virtualenv)" ]; then
         echo 'You have no command "virtualenv"'
         local answer=$(bash -c "read  -n 1 -p 'Run \"pip install virtualenv\" to install it? [Y|N] ' c; echo \$c"); echo
@@ -1025,7 +1053,8 @@ venew()
     if [ "$envdir" = '' ]; then
         local envdir='venv'
     fi
-    virtualenv --no-site-packages -p python$version $envdir
+    virtualenv --no-site-packages -p python$version $envdir && \
+    source venv/bin/activate $envdir
 }
 
 alias veact='source venv/bin/activate'
