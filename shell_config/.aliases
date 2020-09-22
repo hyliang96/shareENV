@@ -988,6 +988,24 @@ macdotrm()
 
 # ----------------- alias to pip ---------------
 alias pip='pip --default-timeout=100'  # 避免报错 Read timed out.
+pipreq()
+{
+    if [ $# -eq 1 ]; then
+        local requirements_file="requirements.txt"
+    elif [ $# -eq 2 ]; then
+        local requirements_file="$2"
+    fi
+
+    if [ "$1" = 'install' ]; then
+        pip install -r "$requirements_file"
+    elif [ "$1" = 'save' ]; then
+        pip freeze > "$requirements_file"
+    else
+        echo 'Usage:'
+        echo '`pipreq install`   pip install requirements'
+        echo '`pipreq save`      pip save to requirements'
+    fi
+}
 
 # ---------------- alias to conda --------------
 # 清华tuna源，官网https://mirrors.tuna.tsinghua.edu.cn/news/#oh-my-tuna
