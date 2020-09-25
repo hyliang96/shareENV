@@ -112,6 +112,8 @@ sys()
 {
     echo -n "系统: "
     lsb_release -a  # 查看操作系统版本
+    echo -n '系统架构：'
+    uname -m
     echo -n "位数: "
     getconf LONG_BIT   # 查看系统位数
     echo -n  "内核: "
