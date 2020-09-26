@@ -171,10 +171,17 @@ findname() # 按名字查找
 }
 
 # -------------------- 网络-------------------------
-nal()
+# ping <ip-or-domain> | na
+# traceroute <ip-or-domain> | na
+# 显示输出中ip的地理位置
+na()
 {
     if [ "$1" = 'update' ]; then
-
+        if [ "$(uname)" = "Darwin" ]; then
+            $macENV/local/bin
+        else
+            $serverENV/local/bin
+        fi
     elif (( $# == 0 )) ; then
         (nali | perl -pe 's/( \[.+?\]){2,}/\1/g; s/(((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3} \[.+?\]) *\(\1\)/\1/g') < /dev/stdin
         echo
@@ -1382,4 +1389,9 @@ tz()
 
 # git 的 alias
 [ $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
+
+
+# --------------------- 文件格式工具 --------------------
+alias indent='python $share_script/indent_json.py' # rewrite .josn file(s) with indent
+
 
