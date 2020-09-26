@@ -180,7 +180,7 @@ na()
         (
         local tempdir="$(mktemp -d)"
         cd ${tempdir}
-        echo "created temporary dir to save downloaded .gz file: ${tempdir}"
+        echo "created temporary dir to save downloaded .gz file: ${tempdir}\n"
 
         if [ "$(uname)" = "Darwin" ]; then
             local system='darwin'
@@ -188,9 +188,11 @@ na()
             local system='linux'
         fi
         local version=$(curl -s https://github.com/zu1k/nali/releases/latest | sed -E 's/.*tag\/(.+)".*/\1/g')
+
+        echo "Downloading nali-${system}-amd64-${version}.gz:"
         wget --no-check-certificate https://github.com/zu1k/nali/releases/download/${version}/nali-${system}-amd64-${version}.gz
 
-        echo -n "Downloaded: " && ls
+        echo -n "\nDownloaded: " && command ls
 
         gzip -d nali-${system}-amd64-${version}.gz
         mv nali-${system}-amd64-${version} nali
@@ -198,16 +200,16 @@ na()
 
         if [ "$(uname)" = "Darwin" ]; then
             mv nali $macENV/local/bin
-            echo "installed 'nali' to $macENV/local/bin"
+            echo "\ninstalled 'nali' to $macENV/local/bin"
         else
             mv nali $serverENV/local/bin
-            echo "installed 'nali' to $serverENV/local/bin"
+            echo "\ninstalled 'nali' to $serverENV/local/bin"
         fi
 
         rm -rf "${tempdir}"
-        echo "removed temporary dir ${tempdir}"
+        echo "\nremoved temporary dir ${tempdir}"
 
-        echo "Installed successfully: nali-${system}-amd64-${version}"
+        echo "\nInstalled successfully: nali-${system}-amd64-${version}"
         )
     elif (( $# == 0 )) ; then
         (nali | perl -pe 's/( \[.+?\]){2,}/\1/g; s/(((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3} \[.+?\]) *\(\1\)/\1/g') < /dev/stdin
