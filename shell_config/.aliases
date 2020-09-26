@@ -178,10 +178,8 @@ nali()
 {
     if [[ "$1" =~ '^help|-h|--help$' ]]; then
         command nali help | sed -E 's/(update.+)/\1\
-\
-Upgrade:\
-  na upgrade  upgrade nali to the newest version/g'
-    elif [ "$1" = 'update' ]; then
+  upgrade     upgrade nali to the newest version/g'
+    elif [ "$1" = 'upgrade' ]; then
         (
         local tempdir="$(mktemp -d)"
         cd ${tempdir}
