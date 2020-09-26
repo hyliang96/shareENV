@@ -352,77 +352,6 @@ kjob()
 }
 
 # --------------------- 软件 ----------------------
-# VScode
-# 当有 vscode-insiders 时，有 `code-insiders` 命令
-# 当有 vscode 时，有 `code` 命令
-# 当有 vscode-insiders 而无 vscode 时，将 `code-insiders` 命令 alias 为 `code`
-if ( ! [ -x "`which code`" ] ) && [ -x "`which code-insiders`" ]; then
-    alias code='code-insiders'
-fi
-
-_code-remote() {
-    local hostname=$(echo $1 | awk -F : '{print $1}')
-    local abspath=$(echo $1 | awk -F : '{print $2}')
-    local has_file=$(ssh $hostname "[ -f '$abspath' ] && echo true")
-    local has_dir=$(ssh $hostname "[ -d '$abspath' ] && echo true")
-    if [ "$has_file" = true ]; then
-        code --file-uri vscode-remote://ssh-remote+${hostname}${abspath}
-    elif [ "$has_dir" = true ]; then
-        code --folder-uri vscode-remote://ssh-remote+${hostname}${abspath}
-    else
-        echo "$hostname:$abspath not exists"
-    fi
-}
-co(){
-    if [[ "$1" =~ ':' ]]; then
-        _code-remote "$@"
-    else
-        code "$@"
-    fi
-}
-
-if ! [ "$(uname)" = "Darwin" ]; then
-    # 当vscode远程连接无法正常使用时，则运行之，以杀死所有vscode(-insiders)进程
-    alias code-kill='pgrep -f "vscode" | xargs kill'
-fi
-
-# 设置vim
-if [ -x /usr/bin/vim.gnome ]; then
-    # 更换vim-gnome, 以支持clipboard
-    alias vim='/usr/bin/vim.gnome'
-fi
-
-# 设置nvim
-if ! [ "$(uname)" = "Darwin" ]; then
-    if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
-    # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
-        export PATH=$serverENV/app/nvim/usr/bin/:$PATH
-        # alias nvim=$serverENV/nvim/usr/bin/nvim
-    fi
-fi
-
-# mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
-# 安装完成后自带nvim命令
-alias nvi=nvim
-alias nv=nvim
-alias v=nvim
-alias vi=vim
-
-# 让sudo vim 能用nvim
-
-
-# 设置默认编辑器
-# if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
-   # ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
-    # alias default_editor='code'
-if [ -x $(which nvim) ]; then
-    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
-    alias default_editor=nvim
-elif [ -x $(which vim) ]; then
-    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
-    alias default_editor=vim
-fi
-
 
 # sub(){
 #     if [ -d /Applications/Sublime\ Text.app ]; then
@@ -574,6 +503,80 @@ ropen(){
         (echo "open; $USER; `hostname`; $dirs" | nc localhost $server_port & )   > /dev/null
     fi
 }
+
+# ----------------------------- 文本编辑器 ---------------------------
+# VScode
+# 当有 vscode-insiders 时，有 `code-insiders` 命令
+# 当有 vscode 时，有 `code` 命令
+# 当有 vscode-insiders 而无 vscode 时，将 `code-insiders` 命令 alias 为 `code`
+if ( ! [ -x "`which code`" ] ) && [ -x "`which code-insiders`" ]; then
+    alias code='code-insiders'
+fi
+
+_code-remote() {
+    local hostname=$(echo $1 | awk -F : '{print $1}')
+    local abspath=$(echo $1 | awk -F : '{print $2}')
+    local has_file=$(ssh $hostname "[ -f '$abspath' ] && echo true")
+    local has_dir=$(ssh $hostname "[ -d '$abspath' ] && echo true")
+    if [ "$has_file" = true ]; then
+        code --file-uri vscode-remote://ssh-remote+${hostname}${abspath}
+    elif [ "$has_dir" = true ]; then
+        code --folder-uri vscode-remote://ssh-remote+${hostname}${abspath}
+    else
+        echo "$hostname:$abspath not exists"
+    fi
+}
+co(){
+    if [[ "$1" =~ ':' ]]; then
+        _code-remote "$@"
+    else
+        code "$@"
+    fi
+}
+
+if ! [ "$(uname)" = "Darwin" ]; then
+    # 当vscode远程连接无法正常使用时，则运行之，以杀死所有vscode(-insiders)进程
+    alias code-kill='pgrep -f "vscode" | xargs kill'
+fi
+
+# 设置vim
+if [ -x /usr/bin/vim.gnome ]; then
+    # 更换vim-gnome, 以支持clipboard
+    alias vim='/usr/bin/vim.gnome'
+fi
+
+# 设置nvim
+if ! [ "$(uname)" = "Darwin" ]; then
+    if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
+    # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
+        export PATH=$serverENV/app/nvim/usr/bin/:$PATH
+        # alias nvim=$serverENV/nvim/usr/bin/nvim
+    fi
+fi
+
+# mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
+# 安装完成后自带nvim命令
+alias nvi=nvim
+alias nv=nvim
+alias v=nvim
+alias vi=vim
+
+# 让sudo vim 能用nvim
+
+
+# 设置默认编辑器
+# if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
+   # ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
+    # alias default_editor='code'
+if [ -x $(which nvim) ]; then
+    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
+    alias default_editor=nvim
+elif [ -x $(which vim) ]; then
+    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
+    alias default_editor=vim
+fi
+
+
 
 # --------------- alias dotfile ----------------------
 se=~/.shell_config/.env;      sse=$share_shell_config/.env
