@@ -181,7 +181,7 @@ na()
         local tempdir="$(mktemp -d)"
         cd ${tempdir}
         echo ${tempdir}
-        local version=$(curl -s https://github.com/zu1k/nali/releases/latest | sed -E 's/.*tag\/(.+)".*/\1/g')
+
         if [ "$(uname)" = "Darwin" ]; then
             local system='darwin'
         else
