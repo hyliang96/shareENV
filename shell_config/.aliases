@@ -174,9 +174,14 @@ findname() # 按名字查找
 # ping <ip-or-domain> | na
 # traceroute <ip-or-domain> | na
 # 显示输出中ip的地理位置
-na()
+nali()
 {
-    if [ "$1" = 'update' ]; then
+    if [[ "$1" =~ '^help|-h|--help$' ]]; then
+        nali help | sed -E 's/(update.+)/\1\
+\
+Upgrade:\
+  na upgrade  upgrade nali to the newest version/g'
+    elif [ "$1" = 'update' ]; then
         (
         local tempdir="$(mktemp -d)"
         cd ${tempdir}
@@ -212,10 +217,10 @@ na()
         echo "\nInstalled successfully: nali-${system}-amd64-${version}"
         )
     elif (( $# == 0 )) ; then
-        (nali | perl -pe 's/( \[.+?\]){2,}/\1/g; s/(((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3} \[.+?\]) *\(\1\)/\1/g') < /dev/stdin
+        (nali "$@" | perl -pe 's/( \[.+?\]){2,}/\1/g; s/(((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3} \[.+?\]) *\(\1\)/\1/g') < /dev/stdin
         echo
     else
-        (nali | perl -pe 's/( \[.+?\]){2,}/\1/g; s/(((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3} \[.+?\]) *\(\1\)/\1/g')  <<< "$1"
+        nali "$@" | perl -pe 's/( \[.+?\]){2,}/\1/g; s/(((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3} \[.+?\]) *\(\1\)/\1/g'
         echo
     fi
 }
