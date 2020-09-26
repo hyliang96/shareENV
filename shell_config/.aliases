@@ -177,6 +177,7 @@ findname() # 按名字查找
 na()
 {
     if [ "$1" = 'update' ]; then
+        (
         local tempdir="$(mktemp -d)"
         cd ${tempdir}
         echo ${tempdir}
@@ -187,6 +188,7 @@ na()
             local system='linux'
         fi
         local version=$(curl -s https://github.com/zu1k/nali/releases/latest | sed -E 's/.*tag\/(.+)".*/\1/g')
+        wget --no-check-certificate https://github.com/zu1k/nali/releases/download/${version}/nali-${system}-amd64-${version}.gz
         gzip -d nali-${system}-amd64-v0.2.2.gz
         mv nali-${system}-amd64-${version} nali
         chmod +x ./nali
@@ -197,6 +199,7 @@ na()
             mv nali $serverENV/local/bin
         fi
         rm -rf "${tempdir}"
+        )
     elif (( $# == 0 )) ; then
         (nali | perl -pe 's/( \[.+?\]){2,}/\1/g; s/(((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3} \[.+?\]) *\(\1\)/\1/g') < /dev/stdin
         echo
