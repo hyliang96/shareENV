@@ -66,7 +66,7 @@
     "editor.tabSize": 4,
     // 按tab输入editor.tabSize个空格
     "editor.insertSpaces": true,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": -1,
 
 
     // "terminal.integrated.cwd": "${cwd}",
@@ -147,6 +147,14 @@
     "sync.autoDownload": true,
     "sync.quietSync": true,
     "sync.forceDownload": false,
+
+    // // 参见：https://blog.csdn.net/tangyang8941/article/details/107169763
+    // // 多行标签页栏
+    // // 按cmd+shift+p呼出命令框，输入命令Reload Custom CSS and JS
+    // "vscode_custom_css.imports": [
+    //     "file:///Users/mac/.vscode/tabs-wrapper.css"
+    // ],
+    // "vscode_custom_css.policy": true,
 
 
     // // https://github.com/pytorch/pytorch/issues/701#issuecomment-438215838
