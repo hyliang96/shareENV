@@ -702,7 +702,17 @@ alias vssh='default_editor ~/.ssh/config';
 alias vhost='default_editor /etc/hosts' # 系统文件，个人账号用sub看不了
 alias sendkey='ssh-copy-id -i'     # 发送公钥
 
-
+if [ "$(command -v autossh)" != '' ]; then
+    ssh() {
+        local autossh_port=9090
+        while true; do
+            [ "$(lsof -i:${autossh_port})" = '' ] && break
+            autossh_port=$((${autossh_port} + 1))
+        done
+        echo "autossh_port: ${autossh_port}"
+        autossh -M ${autossh_port} "$@"
+    }
+fi
 # ---------------- alias cp、scp ----------------
 
 # 拷贝、传输一个文件或文件夹（及其下各级所有文件），包括隐藏文件
