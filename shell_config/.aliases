@@ -1203,6 +1203,7 @@ tb()
         dir_arg="${dir_arg:0:-1}"
     fi
 
+    echo "tensorboard $dir_arg $@"
     tensorboard $dir_arg $@
 }
 # -----------------  alias to tmux ------------------
