@@ -22,16 +22,25 @@
 if [ "$(uname)" = "Linux" ]; then
     rg_install()
     {
-        if [ "$(command -v apt)" != '' ] && [ "$(command -v rg)" = '' ]; then
+        if [ "$(command -v apt)" = '' ]; then
+            echo 'found no `apt`, please install `apt` first' >&2
+        elif [ "$(command -v rg)" != '' ]; then
+            echo 'rg already installed' >&2
+        else
             local tmpfile=$(mktemp /tmp/install_ripgrep.XXXXXX)
 
+            echo "\n> sudo apt install ripgrep"
             sudo apt install ripgrep 2>&1 | tee ${tmpfile}
+
             if [ "$(cat ${tmpfile} | grep 'E: Unable to locate package ripgrep')" != '' ]; then
                 if [ "$(apt-cache policy | grep ripgrep)" = '' ]; then
+                    echo "\n> sudo add-apt-repository -y ppa:x4121/ripgrep"
                     sudo add-apt-repository -y ppa:x4121/ripgrep
                 fi
-                sudo apt-get update
-                sudo install install ripgrep
+                echo "\n> sudo apt update"
+                sudo apt update
+                echo "\n> sudo apt install ripgrep"
+                sudo apt install ripgrep
             fi
             rm ${tmpfile}
         fi
