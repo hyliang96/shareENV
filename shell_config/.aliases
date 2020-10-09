@@ -5,6 +5,39 @@
 
 [ $DotFileDebug -ne 0 ] && echo share .bash_aliases >&2
 
+# 解决ubuntu18.0 无法用apt安装ripgrap (即rg)
+# 参考: https://gist.github.com/kostaz/6e0cf1eee35a34cd6589ec15b58e682c
+# 症状:
+    # `sudo apt install ripgrep` 会如下报错
+    # WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+    # Reading package lists...
+    # Building dependency tree...
+    # Reading state information...
+
+    # No apt package "ripgrep", but there is a snap with that name.
+    # Try "snap install ripgrep"
+
+    # E: Unable to locate package ripgrep
+if [ "$(uname)" = "Linux" ]; then
+    rg_install()
+    {
+        if [ "$(command -v apt)" != '' ] && [ "$(command -v rg)" = '' ]; then
+            local tmpfile=$(mktemp /tmp/install_ripgrep.XXXXXX)
+
+            sudo apt install ripgrep 2>&1 | tee ${tmpfile}
+            if [ "$(cat ${tmpfile} | grep 'E: Unable to locate package ripgrep')" != '' ]; then
+                if [ "$(apt-cache policy | grep ripgrep)" = '' ]; then
+                    sudo add-apt-repository -y ppa:x4121/ripgrep
+                    sudo apt-get update
+                    sudo add install ripgrep
+                fi
+            fi
+            rm ${tmpfile}
+        fi
+    }
+fi
+
 # ---------------------- users ----------------------
 # `gid` 列出所有group及其信息
 # `gid 组名` 若返回非空则此组存在
