@@ -990,11 +990,14 @@ alias lkf='ln -sfT'
 alias ..='cd ../'
 c()
 {
-    if [ $# = 0 ]
-    then
-        cd $my
+    if [ $# = 0 ]; then
+        if [ "$(uname)" = "Darwin" ]; then
+            cd "$HOME/Desktop"
+        else
+            cd $my
+        fi
     else
-        cd $*
+        cd "$@"
     fi
 }
 # 授权bash文件可执行
