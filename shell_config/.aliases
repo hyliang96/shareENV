@@ -29,9 +29,9 @@ if [ "$(uname)" = "Linux" ]; then
             if [ "$(cat ${tmpfile} | grep 'E: Unable to locate package ripgrep')" != '' ]; then
                 if [ "$(apt-cache policy | grep ripgrep)" = '' ]; then
                     sudo add-apt-repository -y ppa:x4121/ripgrep
-                    sudo apt-get update
-                    sudo add install ripgrep
                 fi
+                sudo apt-get update
+                sudo install install ripgrep
             fi
             rm ${tmpfile}
         fi
