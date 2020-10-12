@@ -183,7 +183,6 @@ agnoster_time=1
 agnoster_env=1
 # agnoster_newline=1
 
-SOLARIZED_THEME=light
 [ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
 antigen apply
 
