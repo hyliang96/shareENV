@@ -179,7 +179,7 @@ antigen bundle willghatch/zsh-cdr
 # source /Users/mac/.antigen/bundles/apjanke/agnosterj-zsh-theme/agnosterj.zsh-theme
 
 antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
-agnoster_time=0
+agnoster_time=''
 agnoster_env=1
 # agnoster_newline=1
 
