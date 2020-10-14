@@ -196,7 +196,7 @@ antigen apply
 # -------------------------------------------------------------------------
 # 快速跳转的alias
 
-unalias z     # 解绑antigen bundle z.lua当中的alias z, 换为zz
+[ "$(alias z)" != '' ] && unalias z     # 解绑antigen bundle z.lua当中的alias z, 换为zz
 alias zz=_zlua
 
 z()
