@@ -265,8 +265,15 @@ nali()
     fi
 }
 
+# 查看内网ip
+nw() {
+    if [ "$(uname)" = "Darwin" ]; then
+        ipconfig getifaddr en0
+    else
+        'hostname -I'
+    fi
+}
 
-alias nw='hostname -I' # 查看内网ip
 # alias ww='curl ifconfig.me'
 # 查看外网ip
 ww()
