@@ -201,13 +201,13 @@ sl() {
 alias count='python $share_script/countfile.py'
 # 列出 指定目录下子目录 含有某字符串的 文件/文件夹 的个数
 # alias cl='python $share_script/countfile.py -lar'
+
+
 cl() {
-
     find . -maxdepth 1 -mindepth 1 -type d | while read dir; do
-        printf "%-25.25s \t " "$dir"
+        printf "%s\t" "$dir"
         find "$dir" -type f | wc -l
-    done | sort -t$'\t' -k 2 -n -r
-
+    done | sort -t$'\t' -k 2 -n -r | column -t
 }
 
 
