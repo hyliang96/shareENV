@@ -179,10 +179,10 @@ antigen bundle willghatch/zsh-cdr
 # source /Users/mac/.antigen/bundles/apjanke/agnosterj-zsh-theme/agnosterj.zsh-theme
 
 antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
+# set option to '' to disable it
 agnoster_time=1
 agnoster_env=1
 # agnoster_newline=1
-
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
 antigen apply
@@ -196,7 +196,7 @@ antigen apply
 # -------------------------------------------------------------------------
 # 快速跳转的alias
 
-unalias z     # 解绑antigen bundle z.lua当中的alias z, 换为zz
+[ "$(alias z)" != '' ] && unalias z     # 解绑antigen bundle z.lua当中的alias z, 换为zz
 alias zz=_zlua
 
 z()

@@ -379,4 +379,5 @@
     ],
     "editor.renderControlCharacters": true,
     "go.formatTool": "goimports",
+    "python.dataScience.interactiveWindowMode": "perFile",
 }
