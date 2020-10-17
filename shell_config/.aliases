@@ -200,7 +200,17 @@ sl() {
 # sl为size ls之意, <dir_path>缺省则为当前目录
 alias count='python $share_script/countfile.py'
 # 列出 指定目录下子目录 含有某字符串的 文件/文件夹 的个数
-alias cl='python $share_script/countfile.py -lar'
+# alias cl='python $share_script/countfile.py -lar'
+cl() {
+
+    find . -maxdepth 1 -mindepth 1 -type d | while read dir; do
+        printf "%-25.25s \t " "$dir"
+        find "$dir" -type f | wc -l
+    done | sort -t$'\t' -k 2 -n -r
+
+}
+
+
 findname() # 按名字查找
 {
     if [ $# -lt 2 ]
