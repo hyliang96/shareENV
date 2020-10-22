@@ -204,10 +204,99 @@ alias count='python $share_script/countfile.py'
 
 
 cl() {
-    find . -maxdepth 1 -mindepth 1 -type d | while read dir; do
-        printf "%s\t" "$dir"
-        find "$dir" -type f | wc -l
-    done | sort -t$'\t' -k 2 -n -r | column -t
+    if [[ $1 =~ ^(-h|--help)$ ]]; then
+        cat <<EOF
+Usage:
+    cl -h|--help                      show help
+    cl [options] [dir=. [dir ...]]    list the file count under dir
+
+可以是隐藏路径
+
+Options:
+    -f <文件类型>
+        F=默认 文件 软连接
+        a      文件 软连接 文件夹
+        f      文件
+        d      文件夹
+        l      软链接
+EOF
+    fi
+
+    # argparse
+    local expand_depth=1
+    local no_recursive=0
+    local find_type='F'
+
+    while [ "${1:0:1}" = '-' ]; do
+        if [ "$1" = '-e' ]; then
+            shift
+            [ "${1:0:1}" = '-' ] && cl -h && return
+            expand_depth="$1"
+            shift
+        elif [ "$1" = '-R' ]; then
+            no_recursive=1
+            shift
+        elif [ "$1" = '-f' ]; then
+            shift
+            [ "${1:0:1}" = '-' ] && cl -h && return
+            find_type="$1"
+            shift
+        fi
+    done
+
+    declare expand_depth
+    declare no_recursive
+    declare find_type
+
+    if [ $# -eq 0 ]; then
+        local targets='.'
+    else
+        local targets=("$@")
+    fi
+
+
+    if [ "$find_type" = 'F' ]; then
+        local args_type=(-type f -o -type l)
+    elif [ "$find_type" = 'a' ]; then
+        local args_type=(-type f -o -type l -o -type d)
+    else
+        local args_type=(-type ${find_type:0:1})
+        for ((i=1; i<${#find_type}; i++)); do
+            args_type+=(-o -type  ${find_type:$i:1})
+        done
+    fi
+
+    declare -p args_type
+
+    __count_path()
+    {
+        local dir="$1"
+        if [ $no_recursive -eq 1 ]; then
+            find "${dir}" -maxdepth 1 -mindepth 1 "${args_type[@]}" | wc -l
+        else
+            find "${dir}" "${args_type[@]}"  | wc -l
+        fi
+    }
+
+    local i=
+    for i in "${targets[@]}"; do
+        [ ${#targets[@]} -gt 1 ] && [ $expand_depth -ge 1 ] && echo " \tfile num"
+        (
+            echo -n "$i:\t"
+            __count_path "$i"
+            # find "$i" "${args_type[@]}"  | wc -l
+
+            if [ $expand_depth -ge 1 ]; then
+                local dir=
+                find ${i} -maxdepth ${expand_depth} -mindepth 1 -type d | sort | while read dir; do
+                    echo -n "    ${dir}\t"
+                    __count_path "${dir}"
+                done | sort -t $'\t' -k 2 -n -r
+            fi
+        ) #  | column -t -s $'\t'
+    done | column -t -s $'\t'
+
+    # 未计算软连接
 }
 
 
