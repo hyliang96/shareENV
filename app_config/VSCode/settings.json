@@ -352,6 +352,7 @@
 
     "latex-workshop.latex.autoBuild.run": "onFileChange",
     "latex-workshop.view.pdf.viewer": "tab",
+
     // latex 自动删除辅助文件
 // /*reverse*//*latextmp*/ "latex-workshop.latex.autoClean.run": "onBuilt",
     "latex-workshop.latex.clean.subfolder.enabled": false,

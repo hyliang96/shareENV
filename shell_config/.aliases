@@ -1030,15 +1030,49 @@ ys()
 {
     if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = 'help' ]; then
         echo 'Usage:'
-        echo '    ys 一个文件夹或文件  :    得到 <同名>.7z'
-        echo '    ys 一到若干个文件或文件夹 xxx.7z(".7z"可省略)'
-    else
+        echo '    ys 文件(夹) [- <压缩文件名>[.7z]]                            : <压缩文件名> 默认为 被压缩的文件(夹)名'
+        echo '    ys 文件(夹)  文件(夹) [文件(夹)  ...] [- <压缩文件名>[.7z]]  : <压缩文件名> 默认为"archive"'
+        echo '    压缩文件重名时, 自动给文件名追加序号'
+        return
+    elif [ $# -ge 3 ] && [ '-' = "${@:`expr $# - 1`:1}" ]; then
         local file7z=${@:$#}
         local filehead=`echo $file7z | sed -E 's/.7z$//g'`
-        local to_be_compressed="${@:1:`expr $# - 1`}"
-        ! [ $to_be_compressed ] && to_be_compressed=$filehead
-        eval "7z a ${filehead}.7z ${to_be_compressed}"
+        local to_be_compressed=("${@:1:`expr $# - 2`}")
+    elif [ $# -eq 1 ]; then
+        local file7z=$1
+        local filehead=`echo $file7z | sed -E 's/.7z$//g'`
+        local to_be_compressed=("$1")
+    else
+        local filehead='archive'
+        local to_be_compressed=("$@")
     fi
+
+    if [ ${#to_be_compressed[@]} -eq 0 ]; then
+        echo 'no file/diir to be compress' >&2
+        return
+    fi
+    declare -p to_be_compressed
+
+    local filehead_final="${filehead}"
+    local file_id=0
+    while [ -e "${filehead_final}.7z" ]; do
+        local file_id=$(($file_id + 1))
+        local filehead_final="${filehead}-${file_id}"
+    done
+
+    local not_found=0
+    for i in "${to_be_compressed[@]}"; do
+        if [ ! -e $i ]; then
+            echo "not exist: $i" >&2
+            local not_found=1
+        fi
+    done
+
+    if [ $not_found -eq 1 ]; then
+        return
+    fi
+
+    7z a ${filehead_final}.7z "${to_be_compressed[@]}"
 }
 
 # 7z解压
