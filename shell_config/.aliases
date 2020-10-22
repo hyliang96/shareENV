@@ -1029,18 +1029,40 @@ alias own='chown -R' # -R表示递归，即文件夹下诸物皆然
 ys()
 {
     if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = 'help' ]; then
-        echo 'Usage:'
-        echo '    ys 文件(夹) [- <压缩文件名>[.7z]]                            : <压缩文件名> 默认为 被压缩的文件(夹)名'
-        echo '    ys 文件(夹)  文件(夹) [文件(夹)  ...] [- <压缩文件名>[.7z]]  : <压缩文件名> 默认为"archive"'
-        echo '    压缩文件重名时, 自动给文件名追加序号'
+        cat <<EOF
+Usage:
+    ys [<options>] 文件(夹) [- <压缩文件名>[.7z]]                            : <压缩文件名> 默认为 被压缩的文件(夹)名
+    ys [<options>] 文件(夹)  文件(夹) [文件(夹)  ...] [- <压缩文件名>[.7z]]  : <压缩文件名> 默认为"archive"
+
+Options:
+    -p     : 加此参数后,
+                若待压缩的文件(夹)若是当前向下的相对路径, 则将其中间的文件夹也压缩 (但不压缩那些文件夹下的所有文件)
+                若待压缩的文件(夹)若是当前向上的相对路径, 或是绝对路径, 则仅压缩\$(bassnmae 待压缩的文件(夹))
+             若不加此参数, 则任何时候仅压缩\$(bassnmae 待压缩的文件(夹))
+
+说明:
+    压缩文件重名时, 自动给文件名追加序号
+EOF
         return
-    elif [ $# -ge 3 ] && [ '-' = "${@:`expr $# - 1`:1}" ]; then
-        local file7z=${@:$#}
-        local filehead=`echo $file7z | sed -E 's/.7z$//g'`
+    fi
+
+    local opt_with_path=0
+    while true; do
+        if [ "${1:0:1}" != '-' ]; then
+            break
+        fi
+        if [ "$1" = '-p' ]; then
+            opt_with_path=1
+            shift
+        fi
+    done
+
+
+    if [ $# -ge 3 ] && [ '-' = "${@:`expr $# - 1`:1}" ]; then
+        local filehead=`echo ${@:$#} | sed -E 's/.7z$//g'`
         local to_be_compressed=("${@:1:`expr $# - 2`}")
     elif [ $# -eq 1 ]; then
-        local file7z=$1
-        local filehead=`echo $file7z | sed -E 's/.7z$//g'`
+        local filehead=`basename $1 | sed -E 's/.7z$//g'`
         local to_be_compressed=("$1")
     else
         local filehead='archive'
@@ -1051,7 +1073,6 @@ ys()
         echo 'no file/diir to be compress' >&2
         return
     fi
-    declare -p to_be_compressed
 
     local filehead_final="${filehead}"
     local file_id=0
@@ -1063,17 +1084,34 @@ ys()
     local not_found=0
     local i
     for i in "${to_be_compressed[@]}"; do
-        if [ ! -e $i ]; then
+        if [ ! -e "$i" ]; then
             echo "not exist: $i" >&2
             local not_found=1
         fi
     done
+    [ $not_found -eq 1 ] && return
 
-    if [ $not_found -eq 1 ]; then
-        return
+    local to_be_compressed_abs_path=()
+    local i
+    for i in "${to_be_compressed[@]}"; do
+        to_be_compressed_abs_path+=("$(abspath $i)")
+    done
+
+    local not_found=0
+    local i
+    for i in "${to_be_compressed_abs_path[@]}"; do
+        if [ ! -e "$i" ]; then
+            echo "not exist: $i" >&2
+            local not_found=1
+        fi
+    done
+    [ $not_found -eq 1 ] && return
+
+    if [ "$opt_with_path" = 1 ]; then
+        7z a ${filehead_final}.7z "${to_be_compressed[@]}"
+    else
+        7z a ${filehead_final}.7z "${to_be_compressed_abs_path[@]}"
     fi
-
-    7z a ${filehead_final}.7z "${to_be_compressed[@]}"
 }
 
 # 7z解压
