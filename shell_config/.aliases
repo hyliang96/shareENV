@@ -1082,7 +1082,7 @@ EOF
     done
 
     local not_found=0
-    local i
+    local i=
     for i in "${to_be_compressed[@]}"; do
         if [ ! -e "$i" ]; then
             echo "file/dir not exist: $i" >&2
@@ -1092,13 +1092,13 @@ EOF
     [ $not_found -eq 1 ] && return
 
     local to_be_compressed_abs_path=()
-    local i
+    local i=
     for i in "${to_be_compressed[@]}"; do
         to_be_compressed_abs_path+=("$(abspath $i)")
     done
 
     local not_found=0
-    local i
+    local i=
     for i in "${to_be_compressed_abs_path[@]}"; do
         if [ ! -e "$i" ]; then
             echo "file/dir not exist: $i" >&2
