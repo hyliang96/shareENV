@@ -1061,6 +1061,7 @@ ys()
     done
 
     local not_found=0
+    local i
     for i in "${to_be_compressed[@]}"; do
         if [ ! -e $i ]; then
             echo "not exist: $i" >&2
