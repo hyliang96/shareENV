@@ -214,21 +214,22 @@ Usage:
 
 Options:
     -f <文件类型>
-        F=默认 文件 软连接
-        a      文件 软连接 文件夹
-        f      文件
-        d      文件夹
-        l      软链接
+        F 默认    文件 软连接
+        a         文件 软连接 文件夹
+        f         文件
+        d         文件夹
+        l         软链接
+    -L <深度>     展开目录树的深度, 0,1(默认),2...
 EOF
     fi
 
     # argparse
-    local expand_depth=1
-    local no_recursive=0
-    local find_type='F'
+    # local expand_depth=1
+    # local no_recursive=0
+    # local find_type='F'
 
     while [ "${1:0:1}" = '-' ]; do
-        if [ "$1" = '-e' ]; then
+        if [ "$1" = '-L' ]; then
             shift
             [ "${1:0:1}" = '-' ] && cl -h && return
             expand_depth="$1"
@@ -266,8 +267,6 @@ EOF
         done
     fi
 
-    declare -p args_type
-
     __count_path()
     {
         local dir="$1"
@@ -280,11 +279,10 @@ EOF
 
     local i=
     for i in "${targets[@]}"; do
-        [ ${#targets[@]} -gt 1 ] && [ $expand_depth -ge 1 ] && echo " \tfile num"
+        [ ${#targets[@]} -gt 1 ] && [ $expand_depth -ge 1 ] && echo " \tnum"
         (
             echo -n "$i:\t"
             __count_path "$i"
-            # find "$i" "${args_type[@]}"  | wc -l
 
             if [ $expand_depth -ge 1 ]; then
                 local dir=
@@ -293,10 +291,8 @@ EOF
                     __count_path "${dir}"
                 done | sort -t $'\t' -k 2 -n -r
             fi
-        ) #  | column -t -s $'\t'
+        )
     done | column -t -s $'\t'
-
-    # 未计算软连接
 }
 
 
