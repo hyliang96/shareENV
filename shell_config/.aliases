@@ -188,13 +188,21 @@ cpu_n()
 }
 
 
-alias size='du -hd 0' # sl <dir_path>， 查看某个文件、文件夹的大小，<dir_path>缺省则为当前目录
+alias size='du -ahxd0' # sl <dir_path>， 查看某个文件、文件夹的大小，<dir_path>缺省则为当前目录
 # 数文件/文件夹个数
 sl() {
-    du -ahxd1 "$@" | sort -hk1 | while IFS=$'\t' read -r size line;
-        do printf "%s\t" $size
-        ls -d --color=auto $line
-    done
+    local targets=("$@")
+    [ ${#targets[@]} -eq 0 ] && targets=(.)
+    for i in "${targets[@]}"; do
+        du -ahxd0 $i | read -r size line
+        printf "%s\t" $size
+        ls -d --color=always $line
+
+        du -ahxd1 "$i" | sort -hk1 | while IFS=$'\t' read -r size line; do
+            printf "%s\t    " $size
+            ls -d --color=always $line
+        done
+    done | column -t -s $'\t'
 }
 # alias sl='python $share_script/sizelist.py' # sl <dir_path> ,查看某个目录及其下一级所有文件、文件夹的大小，<dir_path>缺省则为当前目录
 # sl为size ls之意, <dir_path>缺省则为当前目录
@@ -218,7 +226,7 @@ Options:
         f            文件
         d            文件夹
         l            软链接
-    -L <深度n>       展开目录树的深度, 0,1(默认),2,...
+    -L <深度n>       展开目录的深度, 0,1(默认),2,...
     -R               统计某个展开目录中文件个数时, [不]递归到其下所有文件
 EOF
         return
@@ -284,26 +292,28 @@ EOF
     {
         local dir="$1"
         if [ $no_recursive -eq 1 ]; then
-            find "${dir}" -maxdepth 1 -mindepth 1 "${args_type[@]}" | wc -l
+            echo -n $(find "${dir}" -maxdepth 1 -mindepth 1 "${args_type[@]}" | wc -l)
         else
-            find "${dir}" "${args_type[@]}"  | wc -l
+            echo -n $(find "${dir}" "${args_type[@]}"  | wc -l)
         fi
     }
 
     local i=
     for i in "${targets[@]}"; do
-        [ ${#targets[@]} -gt 1 ] && [ $expand_depth -ge 1 ] && echo " \tnum"
+        # [ ${#targets[@]} -gt 1 ] && [ $expand_depth -ge 1 ] && echo " \tnum"
         (
-            echo -n "$i:\t"
             __count_path "$i"
+            echo -n "\t"
+            ls -d --color=always $i
 
-            if [ $expand_depth -ge 1 ]; then
+            # if [ $expand_depth -ge 1 ]; then
                 local dir=
                 find ${i} -maxdepth ${expand_depth} -mindepth 1 -type d | sort | while read dir; do
-                    echo -n "    ${dir}\t"
                     __count_path "${dir}"
-                done | sort -t $'\t' -k 2 -n -r
-            fi
+                    echo -n "\t    "
+                    ls -d --color=always $dir
+                done | sort -t $'\t' -k 1 -n -r
+            # fi
         )
     done | column -t -s $'\t'
 }
