@@ -1028,16 +1028,18 @@ alias own='chown -R' # -R表示递归，即文件夹下诸物皆然
 # 7z压缩
 ys()
 {
-    if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = 'help' ]; then
+    # help
+    if [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
         cat <<EOF
 Usage:
     ys [<options>] 文件(夹) [- <压缩文件名>[.7z]]                            : <压缩文件名> 默认为 被压缩的文件(夹)名
     ys [<options>] 文件(夹)  文件(夹) [文件(夹)  ...] [- <压缩文件名>[.7z]]  : <压缩文件名> 默认为"archive"
+    ys -h|--help                                                             : 显示帮助
 
 Options:
     -p     : 加此参数后,
-                若待压缩的文件(夹)若是当前向下的相对路径, 则将其中间的文件夹也压缩 (但不压缩那些文件夹下的所有文件)
-                若待压缩的文件(夹)若是当前向上的相对路径, 或是绝对路径, 则仅压缩\$(bassnmae 待压缩的文件(夹))
+                若一个待压缩的文件(夹)若是当前向下的相对路径, 则将其中间的文件夹也压缩 (但不压缩那些文件夹下的所有文件)
+                若一个待压缩的文件(夹)若是当前向上的相对路径, 或是绝对路径, 则仅压缩\$(bassnmae 待压缩的文件(夹))
              若不加此参数, 则任何时候仅压缩\$(bassnmae 待压缩的文件(夹))
 
 说明:
@@ -1046,18 +1048,21 @@ EOF
         return
     fi
 
+    # argpars
     local opt_with_path=0
     while true; do
         if [ "${1:0:1}" != '-' ]; then
             break
-        fi
-        if [ "$1" = '-p' ]; then
+        elif [ "$1" = '-p' ]; then
             opt_with_path=1
             shift
+        else
+            ys -h
+            return
         fi
     done
 
-
+    # file parse
     if [ $# -ge 3 ] && [ '-' = "${@:`expr $# - 1`:1}" ]; then
         local filehead=`echo ${@:$#} | sed -E 's/.7z$//g'`
         local to_be_compressed=("${@:1:`expr $# - 2`}")
@@ -1070,10 +1075,11 @@ EOF
     fi
 
     if [ ${#to_be_compressed[@]} -eq 0 ]; then
-        echo 'no file/diir to be compress' >&2
+        echo 'no file or diir to be compress' >&2
         return
     fi
 
+    # append id after filehead for compressed file, when it has same name with other files/dirs
     local filehead_final="${filehead}"
     local file_id=0
     while [ -e "${filehead_final}.7z" ]; do
@@ -1081,32 +1087,36 @@ EOF
         local filehead_final="${filehead}-${file_id}"
     done
 
+    # check files to compress exist
     local not_found=0
     local i=
     for i in "${to_be_compressed[@]}"; do
         if [ ! -e "$i" ]; then
-            echo "file/dir not exist: $i" >&2
+            echo "file or dir not exist: $i" >&2
             local not_found=1
         fi
     done
     [ $not_found -eq 1 ] && return
 
+    # get abspath of files to compress
     local to_be_compressed_abs_path=()
     local i=
     for i in "${to_be_compressed[@]}"; do
         to_be_compressed_abs_path+=("$(abspath $i)")
     done
 
+    # check abspaths of files to compress exist
     local not_found=0
     local i=
     for i in "${to_be_compressed_abs_path[@]}"; do
         if [ ! -e "$i" ]; then
-            echo "file/dir not exist: $i" >&2
+            echo "file or dir not exist: $i" >&2
             local not_found=1
         fi
     done
     [ $not_found -eq 1 ] && return
 
+    # 7z compress
     if [ "$opt_with_path" = 1 ]; then
         7z a ${filehead_final}.7z "${to_be_compressed[@]}"
     else
@@ -1119,8 +1129,8 @@ jy()
 {
     if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = 'help' ]; then
         echo 'Usage:'
-        echo 'jy7z xxx.扩展名 [xxx.扩展名 ...] [- 目标目录(缺省为.)]'
-        echo '解压到`目标目录/xxx_extract`'
+        echo '    jy7z xxx.扩展名 [xxx.扩展名 ...] [- 目标目录(缺省为.)]'
+        echo '    解压到`目标目录/xxx_extract`'
     else
         local file7z_list=()
         # local target_jieya_path_list=()
