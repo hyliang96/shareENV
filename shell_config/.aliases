@@ -423,11 +423,17 @@ _dk()
         sudo lsof -Pn
     else
         local ports=
+        local port_pattern=
         local i=
         for port in "$@"; do
             ports="$ports$port,"
+            port_pattern="${port_pattern}${port}|"
         done
-        eval "sudo lsof -Pn -i:$ports"
+        ports=${ports:0:${#ports}-1}
+        port_pattern="(${port_pattern:0:${#port_pattern}-1})"
+        # eval sudo lsof -Pn -i:$ports
+        eval "sudo lsof -Pn -i:$ports" | head -n 1
+        eval "sudo lsof -Pn -i:$ports" | grep -E --color=always "${port_pattern}"
     fi
 }
 
@@ -448,35 +454,60 @@ dk()
     fi
 
     local dk_return="$(_dk $@)"
+    echo dk_return
+    echo "${dk_return}"
     local title="$(echo $dk_return|head -n 1)"
+    echo title
+    echo "${title}"
     local content="$(echo $dk_return|sed '1d')"
-    local title_short="$(echo $title|sed -E 's/^([^[:space:]]+[[:space:]]+){3}//g')"
-    local content_short="$(echo $content|sed -E 's/^([^[:space:]]+[[:space:]]+){3}//g')"
+    echo content
+    echo "${content}"
+    local title_short="$(echo $title|sed -E 's/^([^[:space:]]+[[:space:]]+){2}[^[:space:]]+//g')"
+    local content_short="$(echo $content|sed -E 's/^([^[:space:]]+[[:space:]]+){2}[^[:space:]]+//g')"
+    echo content_short
+    echo "${content_short}" # | column -t -s $'\n'
     local dk_short="$title_short\n$content_short"
+    echo dk_short
+    echo "${dk_short}"
 
     local pids=($(echo $content|awk '{print $2}'))
     if [ ${#pids} -eq 0 ]; then
         return
     fi
 
-    local jch_return=
-    declare -a jch_return
+    local jch_return=()
+    # declare -a jch_return
     local pid=
     for pid in "${pids[@]}"; do
-        jch_return=("${jch_return[@]}" "$(jchpid $pid | sed -n '2p')")
+        jch_return+=("$(jchpid $pid | sed -n '2p')")
     done
-    local jch_return=("$(jchpid $pid|head -n1)" "${jch_return[@]}")
+    local jch_return=("$(jchpid $pid|head -n 1)" "${jch_return[@]}")
+    echo jch_return
+    local i=
+    for i in "${jch_return[@]}"; do echo $i; done
 
     local length=0
-    echo $dk_short | while read line ; do
+    echo $dk_short | while  IFS=  read line ; do
         if (( ${#line} > $length )); then length=${#line}; fi;
     done
 
+    echo 'result'
     local i=0
-    echo $dk_short | while read line ; do
+    local output=''
+    # IFS=  : keep leading space
+    echo $dk_short | while  IFS=  read -r line ; do
+        # -: left align
+        # printf "%-${length}s %s\n" "$line" "${jch_return[@]:$i:1}"
+        # printf "%-${length}s|\n" "$line"
+        # echo "${line}|"
+        # echo "${line}\t|"
+        # echo "${line}\t${jch_return[@]:$i:1}"
+        output+="${line}"$'\t'"${jch_return[@]:$i:1}"$'\n'
+        # printf "|%s\t%s\n" "$line" "${jch_return[i]}"
         i=$(($i + 1))
-        printf "%-${length}s %s\n" "$line" "${jch_return[i]}"
+        # break
     done
+    echo -E "$output" | column -t -s $'\t'
 }
 
 # 杀掉监听某个端口的进程
