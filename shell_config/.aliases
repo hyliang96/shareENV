@@ -480,7 +480,6 @@ dk()
     done | sort -n | tail -1)
 
     local i=0
-    # IFS=  : keep leading space
     echo "$dk_short" | while  IFS=  read -r line ; do
         echo -n -E "$line"
         local line_without_red=$(cat -v <<< "$line" | sed -E "s/(\^\[\[01;31m\^\[\[K|\^\[\[m\^\[\[K)//g")
