@@ -887,7 +887,7 @@ rmpa()
 # ssh
 alias vssh='default_editor ~/.ssh/config';
 alias vhost='default_editor /etc/hosts' # 系统文件，个人账号用sub看不了
-alias sendkey='ssh-copy-id -i'     # 发送公钥
+alias sendkey='ssh-copy-id -o PreferredAuthentications=password -i'     # 发送公钥
 
 # ssh自动重连
 if [ "$(command -v autossh)" != '' ]; then
