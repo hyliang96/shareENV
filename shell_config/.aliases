@@ -809,13 +809,13 @@ alias vi=vim
 # if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
    # ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
     # alias default_editor='code'
-# if [ -x $(which nvim) ]; then
-    # alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
-    # alias default_editor=nvim
-# elif [ -x $(which vim) ]; then
-    # alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
-    # alias default_editor=vim
-# fi
+if [ -x "$(which nvim)" ]; then
+    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
+    alias default_editor=nvim
+elif [ -x "$(which vim)" ]; then
+    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
+    alias default_editor=vim
+fi
 
 
 # --------------- alias dotfile ----------------------
