@@ -47,6 +47,26 @@ if [ "$(uname)" = "Linux" ]; then
     }
 fi
 
+# ---------------------- hostname -------------------
+# change hostname
+hostname_change() {
+    local new_hostname="$1"
+    local old_hostname="$(hostname)"
+    sudo hostnamectl set-hostname "${new_hostname}"
+    echo "current hostname: "
+    hostnamectl | head -n 1
+    echo
+    sudo sed -E -i "s/(\s)${old_hostname}(\s|$)/\1${new_hostname}\2/g" /etc/hosts
+    if [ "$(cat /etc/hosts | grep -E "\s${new_hostname}(\s|$)")" = '' ]; then
+        {
+            echo "127.0.0.1 ${new_hostname}"
+            cat /etc/hosts
+        } | sudo tee /etc/hosts >/dev/null
+    fi 
+    echo "current /etc/hosts:"
+    cat /etc/hosts  | grep 127.0.0.1
+}
+
 # ---------------------- users ----------------------
 # `gid` 列出所有group及其信息
 # `gid 组名` 若返回非空则此组存在
