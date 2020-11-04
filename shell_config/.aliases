@@ -62,7 +62,7 @@ hostname_change() {
             echo "127.0.0.1 ${new_hostname}"
             cat /etc/hosts
         } | sudo tee /etc/hosts >/dev/null
-    fi 
+    fi
     echo "current /etc/hosts:"
     cat /etc/hosts  | grep 127.0.0.1
 }
@@ -786,12 +786,13 @@ if [ -x /usr/bin/vim.gnome ]; then
 fi
 
 # 设置nvim
-if [ "$(uname)" != "Darwin" && "$(command -v nvim)" = '' ]; then
-    if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
-    # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
-        export PATH=$serverENV/app/nvim/usr/bin/:$PATH
-        # alias nvim=$serverENV/nvim/usr/bin/nvim
-    fi
+if [ "$(uname)" != "Darwin" ] && [ "$(command -v nvim)" = '' ]; then
+    alias nvim="$serverENV/app/nvim.appimage"
+    # if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
+    # # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
+        # export PATH=$serverENV/app/nvim/usr/bin/:$PATH
+        # # alias nvim=$serverENV/nvim/usr/bin/nvim
+    # fi
 fi
 
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
