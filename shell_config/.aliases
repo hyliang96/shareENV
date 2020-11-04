@@ -1421,7 +1421,11 @@ venew()
         echo 'You have no command "virtualenv"'
         local answer=$(bash -c "read  -n 1 -p 'Run \"pip install virtualenv\" to install it? [Y|N] ' c; echo \$c"); echo
         if [ "$answer" = 'Y' ] || [ "$answer" = 'y' ]; then
-            pip install virtualenv
+            if [[ "$(whereis pip)" =~ (^| )/usr/bin/pip$ ]]; then
+                sudo pip install virtualenv
+            else
+                pip install virtualenv
+            fi
         else
             echo "Install virtualenv before re-running me."
             return
@@ -1435,7 +1439,12 @@ venew()
     if [ "$envdir" = '' ]; then
         local envdir='venv'
     fi
-    virtualenv --no-site-packages -p python$version $envdir && \
+    local ve_version=$(virtualenv --version | sed -E 's/(^|^.*\s)(([0-9]+\.)+([0-9]+))(\s.*$|$)/\2/g' | sed -E 's/^([0-9]+)\..*/\1/g') # 大版本
+    if [ $ve_version -ge 20 ]; then
+        virtualenv -p python$version $envdir
+    else
+        virtualenv --no-site-packages -p python$version $envdir
+    fi   && \
     source venv/bin/activate $envdir
 }
 
