@@ -478,8 +478,6 @@ dk()
     local content="$(echo "$dk_return"|sed '1d')"
     local title_short="$(echo "$title"    |perl -pe 's/^(\S+\s+){4}(\S+)(\s+\S+\s+\S+)/\2/g')"
     local content_short="$(echo "$content"|perl -pe 's/^(\S+\s+){4}(\S+)(\s+\S+\s+\S+)/\2/g')"
-    # local title_short="$(echo "$title"|sed -E 's/^([^[:space:]]+[[:space:]]+){4}//g')"
-    # local content_short="$(echo "$content"|sed -E 's/^([^[:space:]]+[[:space:]]+){4}[^[:space:]]+//g')"
     local dk_short="$title_short"$'\n'"$content_short"
 
     local pids=($(echo "$content"|awk '{print $2}'))
@@ -491,11 +489,10 @@ dk()
     local pid=
     for pid in "${pids[@]}"; do
         jch_return+=("$(jchpid "$pid" | sed -n '2p'|
-        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s)/\1\5/g')")
+            perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2mDim\7\e[22m/g')" )
     done
     local jch_return=("$(jchpid "$pid"|head -n 1|
-        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s)/\1\5/g')"
-        # perl -pe 's/^((\S+\s+){3}\S+)(\s+\S+){3}/\1/g')"
+        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2mDim\7\e[22m/g')"
             "${jch_return[@]}")
     local i=
 
@@ -518,7 +515,7 @@ dk()
         echo -n -E "${jch_return[@]:$i:1}"
         echo
         i=$(($i + 1))
-    done
+    done | uniq
 }
 
 # 杀掉监听某个端口的进程
