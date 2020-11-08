@@ -340,7 +340,7 @@ to-clipboard-clear() { echo -n "$BUFFER" | nc localhost 8377; BUFFER= ; }
 zle -N to-clipboard-clear
 to-history() { print -S $BUFFER; }
 zle -N to-history
-to-history-clear() { print -S $BUFFER ; BUFFER= ; }
+to-history-clear() { print -S $BUFFER ; print -S '' ; BUFFER=  }
 zle -N to-history-clear
 bindkey 'ç'  to-clipboard-clear     # alt+c  当前目录复制到剪切板 (服务器剪切板可以与笔记本的同步); 然后清空当前命令
 bindkey '^s' to-history-clear       # ctrl+s 保存到命令历史; 然后清空当前命令
