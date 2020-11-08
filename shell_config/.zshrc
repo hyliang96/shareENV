@@ -141,7 +141,7 @@ antigen use oh-my-zsh
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
 antigen bundle fzf   # 模糊历史搜索
-antigen zsh-hist
+antigen bundle zsh-hist
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
