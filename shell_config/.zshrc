@@ -356,22 +356,26 @@ bindkey -r '^s'
 
 bindkey 'ç'  to-clipboard
 # 若无多行提示: alt+c, 把当前目录复制到剪切板 (服务器剪切板可以与笔记本的同步)
-# 若有多行提示: 先按ctrl+q, 新起一个 转换为无'> xx'提示的多行命令, 再按alt+c
+# 若有多行提示: 先按alt+q, 新起一个 转换为无'> xx'提示的多行命令, 再按alt+c
 
-bindkey '^q' push-line-or-edit  # 暂存当前 到命令栈(zsh-hist插件的栈) 和 命令到历史(~/.zsh_history)
+bindkey œ push-line-or-edit  # 暂存当前 到命令栈(zsh-hist插件的栈) 和 命令到历史(~/.zsh_history)
 # 触发:
-# * 若无多行提示: 按一次ctrl+q
-# * 若有多行提示, 先按ctrl+q, 新起一个 转换为无'> xx'提示的多行命令, 再按ctrl+q
+# * 若无多行提示: 按一次alt+q
+# * 若有多行提示, 先按alt+q, 新起一个 转换为无'> xx'提示的多行命令, 再按alt+q
 # 作用:
 # * 触发后, 将当前命令保存到命令栈, 并清空当前行,
-# * 在空行, 直接回车/输其他命令再回车/输其他命令再ctrl+q , 则前一命令保存到历史(~/.zsh_history)
+# * 在空行, 直接回车/输其他命令再回车/输其他命令再alt+q , 则前一命令保存到历史(~/.zsh_history)
 
-bindkey '^g' get-line           # ctrl+g, 命令栈出一个命令
+bindkey © get-line           # alt+g, 命令栈出一个命令
 
 # `hist l`                      罗列命令栈
-bindkey ᜫ accept-line   # ctrl+enter 接受修改
-# 推荐用法:
-bindkey Ω undo   # alt+z 撤销
+# `hist g {-n|id|command}`      获取命令, 但不出栈
+# `hist f {-n|id|command}`      获取命令, 但出栈
+# `hist e {-n|id|command}`      编辑命令, 出栈, 编辑后保存到~/.zsh_history 和栈
+# `hist d {-n|id|command}`      从栈与中~/.zsh_history 删除命令
+
+
+bindkey Ω undo   # alt+z 撤销命令行下的文本操作
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
 
