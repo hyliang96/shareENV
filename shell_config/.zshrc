@@ -141,6 +141,7 @@ antigen use oh-my-zsh
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
 antigen bundle fzf   # 模糊历史搜索
+antigen zsh-hist
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -338,16 +339,17 @@ to-clipboard() { echo -n "$BUFFER" | nc localhost 8377; }
 zle -N to-clipboard
 to-clipboard-clear() { echo -n "$BUFFER" | nc localhost 8377; BUFFER= ; }
 zle -N to-clipboard-clear
-to-history() { print -S $BUFFER; }
+to-history() { print -S "$BUFFER"; }
 zle -N to-history
-to-history-clear() { print -S $BUFFER ; BUFFER=  }
+to-history-clear() { print -S "$BUFFER" ; BUFFER= ; }
 zle -N to-history-clear
 bindkey 'ç'  to-clipboard     # alt+c  当前目录复制到剪切板 (服务器剪切板可以与笔记本的同步); 然后清空当前命令
 bindkey '^s' to-history       # ctrl+s 保存到命令历史; 然后清空当前命令
 bindkey '^q' push-line-or-edit  # 暂存当前命令(不是存到命令历史), 并清空当前命令, 在下个prompt自动弹出此命令
-# 但多行命令若显示形如"> if", "> function"的代码块提示则无法清空, 需要徒手ctrl+c
+# 但多行命令若显示形如"> if", "> function"的提示的代码块, 按完一次ctrl+q
 # 会自动在下一个prompt弹出无代码块提示的多行命令, 再按ctrl+q, 则可清空
 
+# 推荐用法:
 
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
