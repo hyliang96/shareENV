@@ -1742,7 +1742,7 @@ tz()
 
 
 # git 的 alias
-[ $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
+[ -f $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
 
 
 # --------------------- 文件格式工具 --------------------
