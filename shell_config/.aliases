@@ -917,12 +917,12 @@ alias sendkey='ssh-copy-id -o PreferredAuthentications=password -i'     # 发送
 # ssh自动重连
 if [ "$(command -v autossh)" != '' ]; then
     ssh() {
-        local autossh_port=9091
+        local autossh_port=9090
         while true; do
             [ "$(lsof -i:${autossh_port})" = '' ] && break
             autossh_port=$((${autossh_port} + 1))
         done
-        echo "autossh_port: ${autossh_port}"
+        echo "autossh -M ${autossh_port} \"$@\""
         autossh -M ${autossh_port} "$@"
     }
 fi
