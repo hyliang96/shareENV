@@ -922,7 +922,7 @@ if [ "$(command -v autossh)" != '' ]; then
             [ "$(lsof -i:${autossh_port})" = '' ] && break
             autossh_port=$((${autossh_port} + 1))
         done
-        # echo "autossh_port: ${autossh_port}"
+        echo "autossh_port: ${autossh_port}"
         autossh -M ${autossh_port} "$@"
     }
 fi
