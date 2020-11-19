@@ -789,14 +789,14 @@ if [ -x /usr/bin/vim.gnome ]; then
 fi
 
 # 设置nvim
-if [ "$(uname)" != "Darwin" ] && [ "$(command -v nvim)" = '' ]; then
-    alias nvim="$serverENV/app/nvim.appimage"
-    # if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
-    # # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
-        # export PATH=$serverENV/app/nvim/usr/bin/:$PATH
-        # # alias nvim=$serverENV/nvim/usr/bin/nvim
-    # fi
-fi
+# if [ "$(uname)" != "Darwin" ] && [ "$(command -v nvim)" = '' ]; then
+    # alias nvim="$serverENV/app/nvim.appimage"
+    # # if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
+    # # # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
+        # # export PATH=$serverENV/app/nvim/usr/bin/:$PATH
+        # # # alias nvim=$serverENV/nvim/usr/bin/nvim
+    # # fi
+# fi
 
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
@@ -916,7 +916,7 @@ alias sendkey='ssh-copy-id -o PreferredAuthentications=password -i'     # 发送
 
 # ssh自动重连
 if [ "$(command -v autossh)" != '' ]; then
-    ssh() {
+    assh() {
         # local autossh_port=9090
         # while true; do
             # [ "$(lsof -i:${autossh_port})" = '' ] && break
