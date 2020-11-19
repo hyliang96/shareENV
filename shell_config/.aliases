@@ -412,7 +412,7 @@ nw() {
     if [ "$(uname)" = "Darwin" ]; then
         ipconfig getifaddr en0
     else
-        'hostname -I'
+        hostname -I
     fi
 }
 
