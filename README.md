@@ -1,9 +1,9 @@
 # shareENV
 
 
- share configs among all linux/max/wls computers
+share configs among all linux/max/wls computers
 
- containing:
+containing:
 
  * a user-friendly sublime-style vim configuration: under `app_config/vim/`.
 

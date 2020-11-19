@@ -412,7 +412,7 @@ nw() {
     if [ "$(uname)" = "Darwin" ]; then
         ipconfig getifaddr en0
     else
-        'hostname -I'
+        hostname -I
     fi
 }
 
@@ -789,14 +789,14 @@ if [ -x /usr/bin/vim.gnome ]; then
 fi
 
 # 设置nvim
-if [ "$(uname)" != "Darwin" ] && [ "$(command -v nvim)" = '' ]; then
-    alias nvim="$serverENV/app/nvim.appimage"
-    # if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
-    # # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
-        # export PATH=$serverENV/app/nvim/usr/bin/:$PATH
-        # # alias nvim=$serverENV/nvim/usr/bin/nvim
-    # fi
-fi
+# if [ "$(uname)" != "Darwin" ] && [ "$(command -v nvim)" = '' ]; then
+    # alias nvim="$serverENV/app/nvim.appimage"
+    # # if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
+    # # # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
+        # # export PATH=$serverENV/app/nvim/usr/bin/:$PATH
+        # # # alias nvim=$serverENV/nvim/usr/bin/nvim
+    # # fi
+# fi
 
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
@@ -916,13 +916,17 @@ alias sendkey='ssh-copy-id -o PreferredAuthentications=password -i'     # 发送
 
 # ssh自动重连
 if [ "$(command -v autossh)" != '' ]; then
-    ssh() {
-        local autossh_port=9090
+    assh() {
+        # local autossh_port=9090
+        # while true; do
+            # [ "$(lsof -i:${autossh_port})" = '' ] && break
+            # autossh_port=$((${autossh_port} + 1))
+        # done
         while true; do
+            local autossh_port="$(shuf -i 2000-65000 -n 1)" # generate random port in [2000,65000]
             [ "$(lsof -i:${autossh_port})" = '' ] && break
-            autossh_port=$((${autossh_port} + 1))
         done
-        # echo "autossh_port: ${autossh_port}"
+        # echo "autossh -M ${autossh_port} \"$@\""
         autossh -M ${autossh_port} "$@"
     }
 fi
@@ -959,7 +963,8 @@ autots() {
     local retry_time=180 # second
     while [ 1 ]
     do
-        rsync -aHhvzP $*
+        #  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
+        rsync -aHhvzP -e 'ssh -o ClearAllForwardings=yes' $*
         # command 调用系统的 rsync 命令，避免递归调用rsync
         if [ "$?" = "0" ] ; then
             echo "rsync completed normally"
@@ -973,7 +978,8 @@ autots() {
 
 
 # rsync 封装多种参数，但不支持断点续传; ts能够和rsync一样自动补全远程目录
-alias ts='rsync -aHhvz --progress'
+#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
+alias ts='rsync -aHhvz -e '\''ssh -o ClearAllForwardings=yes'\'' --progress'
 
 # 下载到Downloads
 # [ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync download
@@ -1742,7 +1748,7 @@ tz()
 
 
 # git 的 alias
-[ $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
+[ -f $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
 
 
 # --------------------- 文件格式工具 --------------------
