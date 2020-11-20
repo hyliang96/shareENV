@@ -141,6 +141,7 @@ antigen use oh-my-zsh
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
 antigen bundle fzf   # 模糊历史搜索
+antigen bundle marlonrichert/zsh-hist
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -325,29 +326,56 @@ bindkey '\ev' deer
 bindkey \^U backward-kill-line
 # iterm2 maps sfhit+backspace to  ᜤ , 删除一行
 
-# 解绑 ctrl+s ctrl+q
-stty start undef
-stty stop undef
-setopt noflowcontrol
-# stty -ixon
-# stty -ixoff
+
+
 
 # bindkey '^f' fzf-history-widget
 
-to-clipboard() { echo -n "$BUFFER" | nc localhost 8377; }
+to-clipboard() { echo -n "$BUFFER" | timeout 0.1 nc localhost 8377; }
 zle -N to-clipboard
-to-history() { print -S $BUFFER; }
-zle -N to-history
-to-history-clear() { print -S $BUFFER ; BUFFER= }
-zle -N to-history-clear
-bindkey 'ç'  to-clipboard     # alt+c  当前目录复制到剪切板
-bindkey '^s' to-history       # ctrl+s 保存到命令历史
-bindkey '^q' push-line-or-edit  # 暂存当前命令(不是存到命令历史), 并清空当前命令, 在下个prompt自动弹出此命令
-# 但多行命令若显示形如"> if", "> function"的代码块提示则无法清空, 需要徒手ctrl+c
-# 会自动在下一个prompt弹出无代码块提示的多行命令, 再按ctrl+q, 则可清空
+# to-clipboard-clear() { echo -n "$BUFFER" | timeout 0.1 nc localhost 8377; BUFFER= ; }
+# zle -N to-clipboard-clear
+# to-history() { print -S "$BUFFER"; }
+# zle -N to-history
+# to-history-clear() { print -S "$BUFFER" ; BUFFER= ; }
+# zle -N to-history-clear
+# # bindkey '^s' to-history       # ctrl+s 保存到命令历史; 然后清空当前命令
 
-# bindkey '^q' to-history-clear # ctrl+q  保存到命令历史, 并清空当前命令
 
+# 解绑 ctrl+s ctrl+q
+bindkey -r '^q'
+bindkey -r '^s'
+# stty start undef
+# stty stop undef
+# setopt noflowcontrol
+# stty -ixon
+# stty -ixoff
+#
+# 多行提示: 若显示形如"> ", "if>", "function> "的提示的代码块,
+# 去掉多行提示: 按ctrl+q, 中断当前命令, 新起一个 转换为无'>'提示的多行命令
+
+bindkey 'ç'  to-clipboard
+# 若无多行提示: alt+c, 把当前目录复制到剪切板 (服务器剪切板可以与笔记本的同步)
+# 若有多行提示: 先按alt+q, 新起一个 转换为无'> xx'提示的多行命令, 再按alt+c
+
+bindkey œ push-line-or-edit  # 暂存当前 到命令栈(zsh-hist插件的栈) 和 命令到历史(~/.zsh_history)
+# 触发:
+# * 若无多行提示: 按一次alt+q
+# * 若有多行提示, 先按alt+q, 新起一个 转换为无'> xx'提示的多行命令, 再按alt+q
+# 作用:
+# * 触发后, 将当前命令保存到命令栈, 并清空当前行,
+# * 在空行, 直接回车/输其他命令再回车/输其他命令再alt+q , 则前一命令保存到历史(~/.zsh_history)
+
+bindkey © get-line           # alt+g, 命令栈出一个命令
+
+# `hist l`                      罗列命令栈
+# `hist g {-n|id|command}`      获取命令, 但不出栈
+# `hist f {-n|id|command}`      获取命令, 但出栈
+# `hist e {-n|id|command}`      编辑命令, 出栈, 编辑后保存到~/.zsh_history 和栈
+# `hist d {-n|id|command}`      从栈与中~/.zsh_history 删除命令
+
+
+bindkey Ω undo   # alt+z 撤销命令行下的文本操作
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
 

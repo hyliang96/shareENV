@@ -47,6 +47,26 @@ if [ "$(uname)" = "Linux" ]; then
     }
 fi
 
+# ---------------------- hostname -------------------
+# change hostname
+hostname_change() {
+    local new_hostname="$1"
+    local old_hostname="$(hostname)"
+    sudo hostnamectl set-hostname "${new_hostname}"
+    echo "current hostname: "
+    hostnamectl | head -n 1
+    echo
+    sudo sed -E -i "s/(\s)${old_hostname}(\s|$)/\1${new_hostname}\2/g" /etc/hosts
+    if [ "$(cat /etc/hosts | grep -E "\s${new_hostname}(\s|$)")" = '' ]; then
+        {
+            echo "127.0.0.1 ${new_hostname}"
+            cat /etc/hosts
+        } | sudo tee /etc/hosts >/dev/null
+    fi
+    echo "current /etc/hosts:"
+    cat /etc/hosts  | grep 127.0.0.1
+}
+
 # ---------------------- users ----------------------
 # `gid` 列出所有group及其信息
 # `gid 组名` 若返回非空则此组存在
@@ -392,7 +412,7 @@ nw() {
     if [ "$(uname)" = "Darwin" ]; then
         ipconfig getifaddr en0
     else
-        'hostname -I'
+        hostname -I
     fi
 }
 
@@ -456,8 +476,8 @@ dk()
     local dk_return="$(_dk $@)"
     local title="$(echo "$dk_return"|head -n 1)"
     local content="$(echo "$dk_return"|sed '1d')"
-    local title_short="$(echo "$title"|sed -E 's/^([^[:space:]]+[[:space:]]+){2}[^[:space:]]+//g')"
-    local content_short="$(echo "$content"|sed -E 's/^([^[:space:]]+[[:space:]]+){2}[^[:space:]]+//g')"
+    local title_short="$(echo "$title"    |perl -pe 's/^(\S+\s+){4}(\S+)(\s+\S+\s+\S+)/\2/g')"
+    local content_short="$(echo "$content"|perl -pe 's/^(\S+\s+){4}(\S+)(\s+\S+\s+\S+)/\2/g')"
     local dk_short="$title_short"$'\n'"$content_short"
 
     local pids=($(echo "$content"|awk '{print $2}'))
@@ -468,9 +488,12 @@ dk()
     local jch_return=()
     local pid=
     for pid in "${pids[@]}"; do
-        jch_return+=("$(jchpid "$pid" | sed -n '2p')")
+        jch_return+=("$(jchpid "$pid" | sed -n '2p'|
+            perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2mDim\7\e[22m/g')" )
     done
-    local jch_return=("$(jchpid "$pid"|head -n 1)" "${jch_return[@]}")
+    local jch_return=("$(jchpid "$pid"|head -n 1|
+        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2mDim\7\e[22m/g')"
+            "${jch_return[@]}")
     local i=
 
     local first_length=$(echo "$dk_short" | while  IFS=  read -r line ; do
@@ -492,7 +515,7 @@ dk()
         echo -n -E "${jch_return[@]:$i:1}"
         echo
         i=$(($i + 1))
-    done
+    done | uniq
 }
 
 # 杀掉监听某个端口的进程
@@ -766,13 +789,14 @@ if [ -x /usr/bin/vim.gnome ]; then
 fi
 
 # 设置nvim
-if ! [ "$(uname)" = "Darwin" ]; then
-    if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
-    # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
-        export PATH=$serverENV/app/nvim/usr/bin/:$PATH
-        # alias nvim=$serverENV/nvim/usr/bin/nvim
-    fi
-fi
+# if [ "$(uname)" != "Darwin" ] && [ "$(command -v nvim)" = '' ]; then
+    # alias nvim="$serverENV/app/nvim.appimage"
+    # # if [ -x $serverENV/app/nvim/usr/bin/nvim ]; then
+    # # # 有的linux系统，没有fuse，故无法执行此镜像（但mac可以执行） `# alias nvim=$serverENV/local/bin/nvim.appimage`
+        # # export PATH=$serverENV/app/nvim/usr/bin/:$PATH
+        # # # alias nvim=$serverENV/nvim/usr/bin/nvim
+    # # fi
+# fi
 
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
@@ -788,10 +812,10 @@ alias vi=vim
 # if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
    # ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
     # alias default_editor='code'
-if [ -x $(which nvim) ]; then
+if [ -x "$(which nvim)" ]; then
     alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
     alias default_editor=nvim
-elif [ -x $(which vim) ]; then
+elif [ -x "$(which vim)" ]; then
     alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
     alias default_editor=vim
 fi
@@ -818,8 +842,8 @@ alias vtmux='default_editor ~/.tmux.conf'
 alias stmux='tmux source-file ~/.tmux.conf'
 alias vv='default_editor ~/.vimrc'           # vim 免source，重新开vim即生效
 alias vvp='default_editor ~/.vimrc.bundles'      # vim 的插件
-alias ivp="v  +'PlugInstall --sync' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件
-alias uvp="v  +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件
+alias ivp="v -u ~/.vimrc.bundles +'PlugInstall --sync' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件
+alias uvp="v -u ~/.vimrc.bundles +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件
 alias make_ycm='$HOME/.vim/plugged/YouCompleteMe/install.sh' # 编译YouCompleteMe
 fix_ycm() {
     # 参考：https://www.lizenghai.com/archives/22681.html
@@ -892,13 +916,17 @@ alias sendkey='ssh-copy-id -o PreferredAuthentications=password -i'     # 发送
 
 # ssh自动重连
 if [ "$(command -v autossh)" != '' ]; then
-    ssh() {
-        local autossh_port=9090
+    assh() {
+        # local autossh_port=9090
+        # while true; do
+            # [ "$(lsof -i:${autossh_port})" = '' ] && break
+            # autossh_port=$((${autossh_port} + 1))
+        # done
         while true; do
+            local autossh_port="$(shuf -i 2000-65000 -n 1)" # generate random port in [2000,65000]
             [ "$(lsof -i:${autossh_port})" = '' ] && break
-            autossh_port=$((${autossh_port} + 1))
         done
-        # echo "autossh_port: ${autossh_port}"
+        # echo "autossh -M ${autossh_port} \"$@\""
         autossh -M ${autossh_port} "$@"
     }
 fi
@@ -935,7 +963,8 @@ autots() {
     local retry_time=180 # second
     while [ 1 ]
     do
-        rsync -aHhvzP $*
+        #  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
+        rsync -aHhvzP -e 'ssh -o ClearAllForwardings=yes' $*
         # command 调用系统的 rsync 命令，避免递归调用rsync
         if [ "$?" = "0" ] ; then
             echo "rsync completed normally"
@@ -949,7 +978,8 @@ autots() {
 
 
 # rsync 封装多种参数，但不支持断点续传; ts能够和rsync一样自动补全远程目录
-alias ts='rsync -aHhvz --progress'
+#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
+alias ts='rsync -aHhvz -e '\''ssh -o ClearAllForwardings=yes'\'' --progress'
 
 # 下载到Downloads
 # [ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync download
@@ -1400,7 +1430,11 @@ venew()
         echo 'You have no command "virtualenv"'
         local answer=$(bash -c "read  -n 1 -p 'Run \"pip install virtualenv\" to install it? [Y|N] ' c; echo \$c"); echo
         if [ "$answer" = 'Y' ] || [ "$answer" = 'y' ]; then
-            pip install virtualenv
+            if [[ "$(whereis pip)" =~ (^| )/usr/bin/pip$ ]]; then
+                sudo pip install virtualenv
+            else
+                pip install virtualenv
+            fi
         else
             echo "Install virtualenv before re-running me."
             return
@@ -1414,7 +1448,12 @@ venew()
     if [ "$envdir" = '' ]; then
         local envdir='venv'
     fi
-    virtualenv --no-site-packages -p python$version $envdir && \
+    local ve_version=$(virtualenv --version | sed -E 's/(^|^.*\s)(([0-9]+\.)+([0-9]+))(\s.*$|$)/\2/g' | sed -E 's/^([0-9]+)\..*/\1/g') # 大版本
+    if [ $ve_version -ge 20 ]; then
+        virtualenv -p python$version $envdir
+    else
+        virtualenv --no-site-packages -p python$version $envdir
+    fi   && \
     source venv/bin/activate $envdir
 }
 
@@ -1709,7 +1748,7 @@ tz()
 
 
 # git 的 alias
-[ $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
+[ -f $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
 
 
 # --------------------- 文件格式工具 --------------------
