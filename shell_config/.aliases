@@ -355,6 +355,9 @@ findname() # 按名字查找
 }
 
 # -------------------- 网络-------------------------
+
+
+
 # ping <ip-or-domain> | na
 # traceroute <ip-or-domain> | na
 # 显示输出中ip的地理位置
