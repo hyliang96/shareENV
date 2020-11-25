@@ -359,7 +359,7 @@ findname() # 按名字查找
 http-share() {
     if [[ "$1" =~ ^(-h|--help)$ ]]; then
         echo 'Usage:'
-        echo '    http-share file-or-dir [file-or-dir ...]'
+        echo '    http-share       : file-or-dir [file-or-dir ...]'
         return
     fi
     local share_port=8000
@@ -379,7 +379,7 @@ http-share() {
 }
 
 # open ftp server to share the files under current dir
-ftp-here() {
+ftp-share() {
     if [[ "$1" =~ ^(-h|--help)$ ]]; then
         echo 'Usage:'
         echo '    ftp-share       : share the current dir, enable write and read by anonymous user'
