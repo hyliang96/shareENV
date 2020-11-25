@@ -359,7 +359,6 @@ findname() # 按名字查找
 share() {
     local share_port=8000
     local tempdir="$(mktemp -d)"
-    echo $tempdir
     [ ! -d "${tempdir}" ] && echo failed to creat tempdir ${tempdir} >2 && return
     # cp -r "$@" "${tempdir}"
     # ys "$@" - "${tempdir}/archive.7z"
@@ -367,7 +366,7 @@ share() {
     (
         cd "${tempdir}"
         echo
-        echo "file website: \033[34mhttp://$(nw):${share_port}\033[0m"
+        echo -e "file website: \033[36mhttp://$(nw):${share_port}\033[0m"
         echo
         python3 -m http.server ${share_port}
     )
