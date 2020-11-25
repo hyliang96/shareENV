@@ -366,7 +366,7 @@ share() {
     (
         cd "${tempdir}"
         echo
-        echo -e "file website: \033[36mhttp://$(nw):${share_port}\033[0m"
+        echo -e "file website: \033[34mhttp://$(nw):${share_port}\033[0m"
         echo
         python3 -m http.server ${share_port}
     )
