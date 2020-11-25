@@ -359,7 +359,10 @@ findname() # 按名字查找
 share() {
     local tempdir="$(mktemp -d)"
     cp -r "$@" "${tempdir}"
-    python3 -m "${tempdir}"
+    (
+        cd "${tempdir}"
+        python3 -m "${tempdir}"
+    )
     rm -rf "${tempdir}"
 }
 
