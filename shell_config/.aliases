@@ -356,7 +356,12 @@ findname() # 按名字查找
 
 # -------------------- 网络-------------------------
 
-
+share() {
+    local tempdir="$(mktemp -d)"
+    cp -r "$@" "${tempdir}"
+    python3 -m "${tempdir}"
+    rm -rf "${tempdir}"
+}
 
 # ping <ip-or-domain> | na
 # traceroute <ip-or-domain> | na
