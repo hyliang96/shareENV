@@ -357,7 +357,7 @@ findname() # 按名字查找
 # -------------------- 网络-------------------------
 # open http server to share files
 share() {
-    if [[ "$1" =~ ^-h|--help$ ]]; then
+    if [[ "$1" =~ ^(-h|--help)$ ]]; then
         echo 'Usage: http file-or-dir [file-or-dir ...]'
         return
     fi
