@@ -362,10 +362,11 @@ share() {
     [ ! -d "${tempdir}" ] && echo failed to creat tempdir ${tempdir} >2 && return
     # cp -r "$@" "${tempdir}"
     # ys "$@" - "${tempdir}/archive.7z"
-    zip -r  "${tempdir}/archive.7z" "$@"
+    zip -r  "${tempdir}/archive.zip" "$@"
     (
         cd "${tempdir}"
-        echo http://$(nw):${share_port}
+        echo
+        echo file website: http://$(nw):${share_port}
         python3 -m http.server ${share_port}
     )
     rm -rf "${tempdir}"
