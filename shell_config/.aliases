@@ -357,11 +357,13 @@ findname() # 按名字查找
 # -------------------- 网络-------------------------
 
 share() {
+    local share_port=8000
     local tempdir="$(mktemp -d)"
     cp -r "$@" "${tempdir}"
     (
         cd "${tempdir}"
-        python3 -m http.server
+        echo $(nw):${share_port}
+        python3 -m http.server ${share_port}
     )
     rm -rf "${tempdir}"
 }
