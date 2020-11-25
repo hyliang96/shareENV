@@ -360,8 +360,8 @@ share() {
     local share_port=8000
     local tempdir="$(mktemp -d)"
     # cp -r "$@" "${tempdir}"
-    zip -r "${mktemp}/archive.zip" "$@"
     # ys "$@" - "${mktemp}/archive.7z"
+    zip -r  "${mktemp}/archive.7z" "$@"
     (
         cd "${tempdir}"
         echo http://$(nw):${share_port}
