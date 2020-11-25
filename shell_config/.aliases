@@ -378,7 +378,13 @@ http-share() {
 }
 
 # open ftp server to share the files under current dir
-alias ftp-here='python3 -m pyftpdlib -w'
+ftp-here() {
+    local share_port=2121
+    echo -e "ftp: \033[34mftp://$(nw):${share_port}\033[0m"
+    echo 'enabled anonymous login'
+    echo
+    python3 -m pyftpdlib -w -p ${share_port}
+}
 
 # ping <ip-or-domain> | na
 # traceroute <ip-or-domain> | na
