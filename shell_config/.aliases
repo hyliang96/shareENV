@@ -361,7 +361,7 @@ share() {
     cp -r "$@" "${tempdir}"
     (
         cd "${tempdir}"
-        python3 -m "${tempdir}"
+        python3 -m http.server
     )
     rm -rf "${tempdir}"
 }
