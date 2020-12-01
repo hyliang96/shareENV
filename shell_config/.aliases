@@ -364,7 +364,7 @@ http-share() {
     fi
     local share_port=8000
     local tempdir="$(mktemp -d)"
-    [ ! -d "${tempdir}" ] && echo failed to creat tempdir ${tempdir} >2 && return
+    [ ! -d "${tempdir}" ] && echo failed to creat tempdir ${tempdir} >&2 && return
     # cp -r "$@" "${tempdir}"
     # ys "$@" - "${tempdir}/archive.7z"
     zip -r  "${tempdir}/archive.zip" "$@"
@@ -385,6 +385,14 @@ ftp-share() {
         echo '    ftp-share [<args>] : share the current dir, enable write and read by anonymous user'
         echo '<args>:'
         echo '    run `python3 -m pyftpdlib -h` for details'
+        return
+    fi
+    if [[ "$(pip3 show pyftpdlib 2>&1)" =~ 'WARNING: Package\(s\) not found: pyftpdlib' ]]; then
+        echo '> pip3 install pyftpdlib'
+        pip3 install pyftpdlib
+    fi
+    if [[ "$(pip3 show pyftpdlib 2>&1)" =~ 'WARNING: Package\(s\) not found: pyftpdlib' ]]; then
+        echo 'failed to `pip3 install pyftpdlib`' >&2
         return
     fi
     local share_port=2121
