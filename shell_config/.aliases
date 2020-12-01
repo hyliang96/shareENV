@@ -955,7 +955,7 @@ alias sendkey='ssh-copy-id -o PreferredAuthentications=password -i'     # 发送
 
 # ssh自动重连
 if [ "$(command -v autossh)" != '' ]; then
-    assh() {
+    ssh() {
         # local autossh_port=9090
         # while true; do
             # [ "$(lsof -i:${autossh_port})" = '' ] && break
