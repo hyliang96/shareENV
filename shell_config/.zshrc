@@ -247,9 +247,7 @@ bindkey '^h' zh
 # 历史命令输出
 h()
 {
-    local cmd_num=10
-    [[ $1 =~ ^[0-9]+$ ]] && cmd_num=$1
-    history -${cmd_num} | sed 's/^ *[0-9]* *//'
+    history | sed 's/^ *[0-9]* *//' | fzf -m
 }
 
 
