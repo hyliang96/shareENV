@@ -254,7 +254,7 @@ bindkey '^h' zh
 # 再历史命令中模糊搜索, 多选 (tab选中,shift-tab取消选中), 回车输出终端
 h()
 {
-    history | sed 's/^ *[0-9]* *//' | fzf
+    history | sed 's/^ *[0-9]* *//' | fzf --reverse
 }
 
 
