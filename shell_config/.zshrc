@@ -271,7 +271,7 @@ EOF
     return
     fi
 
-    while [ $# -ne 0 ]; then
+    while [ $# -ne 0 ]; do
         if [[ "$1" =~ ^(-n|--number)$ ]]; then
             local if_number=true
             shift
@@ -280,7 +280,7 @@ EOF
             local line_number="$1"
             shift
         fi
-    fi
+    done
 
     if [ "${if_no_fzf}" = true  ];then
         if [ "${if_number}" = true  ]; then
