@@ -252,7 +252,7 @@ bindkey '^h' zh
 
 
 # 再历史命令中模糊搜索, 多选 (tab选中,shift-tab取消选中), 回车输出终端
-h()
+hs()
 {
     local if_number=false
     local if_no_fzf=false
