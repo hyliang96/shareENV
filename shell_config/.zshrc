@@ -256,7 +256,9 @@ h()
 {
     if [[ "$1" =~ ^(-h|--help|help)$ ]]; then
         cat <<-EOF
-\`h\`: fuzzy search history command and multi select with \`tab\`/\`shift-tab\`, \`enter\` to print according to your selecting order
+\`h\`: 
+    fuzzy search history command and multi select with \`tab\`/\`shift-tab\`
+    \`enter\` to print according to your selecting order
 Usage:
         h -n|--number : with the line number of a command
 EOF
