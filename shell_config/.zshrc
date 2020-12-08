@@ -254,13 +254,13 @@ bindkey '^h' zh
 # 再历史命令中模糊搜索, 多选 (tab选中,shift-tab取消选中), 回车输出终端
 h()
 {
-    if [[ "$1" =~ ^\-h|\-\-help|help$ ]]; then
+    if [[ "$1" =~ ^(-h|--help|help)$ ]]; then
         cat <-EOF
 \`h\`: fuzzy search history command and multi select with \`tab\`/\`shift-tab\`, \`enter\` to print
 Usage:
         h -n|--number : with the line number of a command
 EOF
-    elif [[ "$1" =~ ^\-n|\-\-number$ ]]; then
+    elif [[ "$1" =~ ^(-n|--number)$ ]]; then
         history | tac | fzf
     else
         history | tac | sed 's/^ *[0-9]* *//' | fzf
