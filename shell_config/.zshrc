@@ -195,6 +195,12 @@ antigen apply
 # ctrl+t: 当前路径往下, 模糊搜索文件或目录, 选中结果paste到终端
 # esc+c: 当前路径往下, 模糊搜索命令, cd到选择目录
 # -------------------------------------------------------------------------
+# 我的alias
+# z : fzf搜索目录跳转
+# z.. foo : fzf搜索, 跳转到父目录中 名称含foo的那一级
+# zh / ctrl+h : fzf搜索历史路径并跳转
+# h : fzf搜索历史命令 多选 输出到终端
+
 # 快速跳转的alias
 
 [ "$(alias z)" != '' ] && unalias z     # 解绑antigen bundle z.lua当中的alias z, 换为zz
@@ -232,7 +238,7 @@ EOF
     fi
 }
 
-alias z..='_zlua -b' # 跳转到父目录中 名称含foo的那一级
+alias z..='_zlua -b' # z.. foo : 跳转到父目录中 名称含foo的那一级
 
 zh(){        # z匹配历史路径, 按之间排序 -> fzf模糊匹配
     if [ $# -eq 0 ]; then
