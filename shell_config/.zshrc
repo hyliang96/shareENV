@@ -268,12 +268,18 @@ Usage:
 Options:
     -n|--number          : with the line number of a command
 EOF
-    elif [[ "$1" =~ ^(-n|--number)$ ]]; then
-        local if_number=true
-        history | tac | fzf -m
-    elif [[ ${@:$#} =~ ^[0-9]+$ ]]; then
-        local if_no_fzf=true
-        local line_number=${@:$#}
+    return
+    fi
+
+    while [ $# -ne 0]; then
+        if [[ "$1" =~ ^(-n|--number)$ ]]; then
+            local if_number=true
+            shift
+        elif [[ ${1} =~ ^[0-9]+$ ]]; then
+            local if_no_fzf=true
+            local line_number=${1}
+            shift
+        fi
     fi
 
     if [ "${if_no_fzf}" = true  ];then
