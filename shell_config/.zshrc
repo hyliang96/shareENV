@@ -140,7 +140,7 @@ antigen use oh-my-zsh
 # 历史命令搜索
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
-antigen bundle fzf   # 模糊历史搜索
+antigen bundle fzf   # 模糊搜索, 可以搜文件夹下路径,历史命令,历史路径
 antigen bundle marlonrichert/zsh-hist
 
 # default bundles
@@ -190,8 +190,8 @@ antigen apply
 
 
 # -------------------------------------------------------------------------
-# fzf的快捷键
-# ctrl+r: 历史命令, 时间排序, 模糊搜索
+# fzf的原生快捷键
+# ctrl+r: 历史命令命令, 时间排序, 模糊搜索, 选中结果paste到终端
 # ctrl+t: 当前路径往下, 模糊搜索文件或目录, 选中结果paste到终端
 # esc+c: 当前路径往下, 模糊搜索命令, cd到选择目录
 # -------------------------------------------------------------------------
@@ -243,6 +243,15 @@ zh(){        # z匹配历史路径, 按之间排序 -> fzf模糊匹配
 }
 zle -N zh
 bindkey '^h' zh
+# -------------------------------------------------------------------------
+# 历史命令输出
+h()
+{
+    local cmd_num=10
+    [[ $1 =~ ^[0-9]+$ ]] && cmd_num=$1
+    hisotry -${cmd_num} | sed 's/^ *[0-9]* *//'
+}
+
 
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
