@@ -256,17 +256,28 @@ h()
 {
     if [[ "$1" =~ ^(-h|--help|help)$ ]]; then
         cat <<-EOF
-\`h\`: 
+\`h\`:
     fuzzy search history command and multi select with \`tab\`/\`shift-tab\`
     \`enter\` to print according to your selecting order
 Usage:
-        h -n|--number : with the line number of a command
+    h [option]           : fuzzy search history command
+    h [option] <num>     : directly print the last <num> commands
+Options:
+    -n|--number          : with the line number of a command
 EOF
     elif [[ "$1" =~ ^(-n|--number)$ ]]; then
+        local if_number=ture
         history | tac | fzf -m
-    else
-        history | tac | sed 's/^ *[0-9]* *//' | fzf -m
+    elif [[ ${@:$#} =~ ^[0-9]+$ ]]; then
+        local if_no_fzf=true
+        local line_number=${@:$#}
     fi
+
+    [ ${if_number} = true  ] && [ ${if_no_fzf} = true  ] && history -${line_number}
+    [ ${if_number} != true ] && [ ${if_no_fzf} = true  ] && history  -${line_number} | sed 's/^ *[0-9]* *//'
+    [ ${if_number} = true  ] && [ ${if_no_fzf} != true ] && history | tac | fzf -m
+    [ ${if_number} != true ] && [ ${if_no_fzf} != true ] && history | tac | sed 's/^ *[0-9]* *//' | fzf -m
+
 }
 
 
