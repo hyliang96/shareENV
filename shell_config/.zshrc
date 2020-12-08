@@ -275,9 +275,9 @@ EOF
         if [[ "$1" =~ ^(-n|--number)$ ]]; then
             local if_number=true
             shift
-        elif [[ ${1} =~ ^[0-9]+$ ]]; then
+        elif [[ "$1" =~ ^[0-9]+$ ]]; then
             local if_no_fzf=true
-            local line_number=${1}
+            local line_number="$1"
             shift
         fi
     fi
