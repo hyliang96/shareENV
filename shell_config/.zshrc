@@ -276,11 +276,19 @@ EOF
         local line_number=${@:$#}
     fi
 
-    [ "${if_number}" = true  ] && [ "${if_no_fzf}" = true  ] && history -${line_number}
-    [ "${if_number}" != true ] && [ "${if_no_fzf}" = true  ] && history  -${line_number} | sed 's/^ *[0-9]* *//'
-    [ "${if_number}" = true  ] && [ "${if_no_fzf}" != true ] && history | tac | fzf -m
-    [ "${if_number}" != true ] && [ "${if_no_fzf}" != true ] && history | tac | sed 's/^ *[0-9]* *//' | fzf -m
-
+    if [ "${if_no_fzf}" = true  ];then
+        if [ "${if_number}" = true  ]; then
+            history -${line_number}
+        else
+            history  -${line_number} | sed 's/^ *[0-9]* *//'
+        fi
+    else
+        if [ "${if_number}" = true  ]; then
+            history | tac | fzf -m
+        else
+            history | tac | sed 's/^ *[0-9]* *//' | fzf -m
+        fi
+    fi
 }
 
 
