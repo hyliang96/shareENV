@@ -261,9 +261,9 @@ Usage:
         h -n|--number : with the line number of a command
 EOF
     elif [[ "$1" =~ ^(-n|--number)$ ]]; then
-        history | tac | fzf -m
+        history | tac | fzf --reverse -m
     else
-        history | tac | sed 's/^ *[0-9]* *//' | fzf -m
+        history | tac | sed 's/^ *[0-9]* *//' | fzf --reverse -m
     fi
 }
 
