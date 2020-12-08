@@ -254,6 +254,9 @@ bindkey '^h' zh
 # 再历史命令中模糊搜索, 多选 (tab选中,shift-tab取消选中), 回车输出终端
 h()
 {
+    local if_number=false
+    local if_no_fzf=false
+
     if [[ "$1" =~ ^(-h|--help|help)$ ]]; then
         cat <<-EOF
 \`h\`:
@@ -266,17 +269,17 @@ Options:
     -n|--number          : with the line number of a command
 EOF
     elif [[ "$1" =~ ^(-n|--number)$ ]]; then
-        local if_number=ture
+        local if_number=true
         history | tac | fzf -m
     elif [[ ${@:$#} =~ ^[0-9]+$ ]]; then
         local if_no_fzf=true
         local line_number=${@:$#}
     fi
 
-    [ ${if_number} = true  ] && [ ${if_no_fzf} = true  ] && history -${line_number}
-    [ ${if_number} != true ] && [ ${if_no_fzf} = true  ] && history  -${line_number} | sed 's/^ *[0-9]* *//'
-    [ ${if_number} = true  ] && [ ${if_no_fzf} != true ] && history | tac | fzf -m
-    [ ${if_number} != true ] && [ ${if_no_fzf} != true ] && history | tac | sed 's/^ *[0-9]* *//' | fzf -m
+    [ "${if_number}" = true  ] && [ "${if_no_fzf}" = true  ] && history -${line_number}
+    [ "${if_number}" != true ] && [ "${if_no_fzf}" = true  ] && history  -${line_number} | sed 's/^ *[0-9]* *//'
+    [ "${if_number}" = true  ] && [ "${if_no_fzf}" != true ] && history | tac | fzf -m
+    [ "${if_number}" != true ] && [ "${if_no_fzf}" != true ] && history | tac | sed 's/^ *[0-9]* *//' | fzf -m
 
 }
 
