@@ -271,7 +271,7 @@ EOF
     return
     fi
 
-    while [ $# -ne 0]; then
+    while [ $# -ne 0 ]; then
         if [[ "$1" =~ ^(-n|--number)$ ]]; then
             local if_number=true
             shift
