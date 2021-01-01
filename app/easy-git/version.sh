@@ -79,7 +79,7 @@ gcme() {
 gucm() # 直接回到历史版本
 {
     if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-        echo 'gumc: 封装了 `git reset --hard`'
+        echo 'gucm: 封装了 `git reset --hard`'
         echo 'Usage: 恢复到历史上某个时间点, glg会复原, ghs会增加一个版本操作'
         echo
         echo ' glg                  : git log, 查看版本关系图, 选择要恢复到哪'

@@ -219,10 +219,12 @@
 /*latextmp*/ // 输出到 `当前项目/latextmp/`
 
     "latex-workshop.latex.recipe.default": "lastUsed", // "first"
+    "latex-workshop.latex.build.forceRecipeUsage": true,  // 按cmd+alt+B时, 也使用recipe编译
     "latex-workshop.latex.recipes": [
         {
             "name": "latexmk",
             "tools": [
+                "latexmkrc",
                 "latexmk",
 /*latextmp*/     "move_aux",
 /*latextmp*/     "copy_pdf"
@@ -267,7 +269,15 @@
 
 
 /*latextmp*/  "latex-workshop.latex.outDir": "%DIR%/latextmp",  // %TMPDIR%
-    "latex-workshop.latex.tools": [ {
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmkrc",
+            "command": "touch",
+            "args": [
+                "%DIR%/latexmkrc"
+            ]
+        },
+        {
             "name": "latexmk",
             "command": "latexmk",
             "args": [
@@ -347,7 +357,7 @@
         }
     ],
 
-    "latex-workshop.latex.autoBuild.run": "onFileChange",
+    "latex-workshop.latex.autoBuild.run": "never", // "never" "onFileChange" "onSave"
     "latex-workshop.view.pdf.viewer": "tab",
 
     // latex 自动删除辅助文件
