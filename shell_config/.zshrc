@@ -535,7 +535,15 @@ LS_COLORS=`echo $LS_COLORS | sed -E 's/ow=[0-9;]+://g'`:'ow=1;34;7:' ; export LS
 
 
 # grep 上色
-alias grep='grep --color'
+echo 1
+if [ "$(uname)" = "Darwin" ]; then
+    alias grep='/usr/local/bin/ggrep --color'
+    echo 2
+else
+    alias grep='grep --color'
+    echo 3
+fi
+echo 4
 alias egrep='egrep --color'
 alias fgrep='fgrep --color'
 
