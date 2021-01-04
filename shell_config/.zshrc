@@ -576,6 +576,10 @@ tmux_tm() {   :;    }
 compdef _tmux tmux_tm
 alias tm='tmux_tm attach -t'
 
+git_gch() {   :;    }
+compdef _git git_gch
+alias gch='git_gch checkout'
+
 ll_list() {   :;   }
 la_list() {   :;   }
 l_list() {   :;   }
