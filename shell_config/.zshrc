@@ -535,12 +535,13 @@ LS_COLORS=`echo $LS_COLORS | sed -E 's/ow=[0-9;]+://g'`:'ow=1;34;7:' ; export LS
 
 
 # grep 上色
-if [ "$(uname)" = "Darwin" ]; then
-    [ ! -x "$(command -v ggrep)" ] && echo 'Running linux (BSD) grep: `brew install grep`' && brew install grep
-    alias grep='/usr/local/bin/ggrep --color'
-else
-    alias grep='grep --color'
-fi
+# if [ "$(uname)" = "Darwin" ]; then
+    # [ ! -x "$(command -v ggrep)" ] && echo 'Running linux (BSD) grep: `brew install grep`' && brew install grep
+    # alias grep='/usr/local/bin/ggrep --color'
+# else
+    # alias grep='grep --color'
+# fi
+alias grep='grep --color'
 alias egrep='egrep --color'
 alias fgrep='fgrep --color'
 
