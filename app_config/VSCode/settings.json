@@ -30,7 +30,7 @@
         "terminal.foreground": "#c7c7c7",
         "terminalCursor.background": "#3b3b3b",
         "terminalCursor.foreground": "#A5A2A2",
-        "terminal.ansiBlack": "#28282a",
+        "terminal.ansiBlack": "#32302f",
         "terminal.ansiBrightBlack": "#a2a2a2",
         "terminal.ansiWhite": "#c7c7c7",
         "terminal.ansiBrightWhite": "#feffff",
