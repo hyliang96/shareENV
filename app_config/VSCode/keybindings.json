@@ -61,12 +61,25 @@
     // 编辑窗口
     // ----------------------------------------------------------------------------------------------
 
-    // alt+z 光标回上一处
-    { "key": "alt+z", "command": "cursorUndo", "when": "textInputFocus" },
+    // 非注释的 左右 大中小括号 之间跳转： ctrl + \
+    { "key": "ctrl+\\", "command": "editor.action.jumpToBracket", "when": "editorTextFocus" },
+
+    // alt+z  光标退回  可以是选区, 当前文件内 两步编辑之间
+    // { "key": "alt+z", "command": "cursorUndo", "when": "textInputFocus" },
+    // { "key": "cmd+u", "command": "-cursorUndo", "when": "textInputFocus" },
+    // // shift+alt+z 光标前进  可以是选区, 当前文件内 两步编辑之间
+    // { "key": "shift+alt+z", "command": "cursorRedo" },
+
+
+    // // ⌃Z : 光标退回 可以是选区, 跨文件 跨若干步编辑
     { "key": "alt+z", "command": "-editor.action.toggleWordWrap" },
-    { "key": "cmd+u", "command": "-cursorUndo", "when": "textInputFocus" },
-    // shift+alt+z 光标来下一处
-    { "key": "shift+alt+z", "command": "cursorRedo" },
+    { "key": "alt+z", "command": "workbench.action.navigateBack" },
+    { "key": "ctrl+-", "command": "-workbench.action.navigateBack" },
+    { "key": "alt+z", "command": "workbench.action.quickInputBack", "when": "inQuickOpen" },
+    { "key": "ctrl+-", "command": "-workbench.action.quickInputBack", "when": "inQuickOpen" },
+    // ⇧⌃Z : 跨文件 光标前进 可以是选区, 跨文件 跨若干步编辑
+    { "key": "alt+shift+z", "command": "workbench.action.navigateForward" },
+    { "key": "ctrl+shift+-",  "command": "-workbench.action.navigateForward" },
 
     // 代码左右: cmd+\
     // 上下分窗
@@ -116,12 +129,7 @@
         // shift+alt+左/右: 开启列选择, 上下添加光标
         // 左/右: 列选择变成多光标, 光标就在各行选区的尾巴
 
-
-    // cmd+shift+]: 按一下到最内的右括号(非注释的括号), 再按一下,到对应的左括号
-    { "key": "shift+cmd+]", "command": "editor.action.jumpToBracket", "when": "editorTextFocus" },
-    { "key": "shift+cmd+]", "command": "-workbench.action.nextEditor" },
-    { "key": "shift+cmd+[", "command": "-workbench.action.previousEditor" },
-
+    // shift+cmd+[ / ] : 左/右一个标签页
     // shift+ctrl+右: 智能缩小选区
     // shift+ctrl+左: 智能扩大选区
 
@@ -155,4 +163,5 @@
         "key": "alt+cmd+q",
         "command": "latex-workshop.kill"
     },
+
 ]
