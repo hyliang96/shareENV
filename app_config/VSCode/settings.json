@@ -1,14 +1,15 @@
 {
+    "search.useGlobalIgnoreFiles": true,
+
+
     "editor.fontFamily": "Meslo LG S DZ for Powerline",
     "terminal.external.osxExec": "iTerm.app",
     "terminal.explorerKind": "external",
     "terminal.integrated.copyOnSelection": true,
     "python.pythonPath": "/Users/mac/miniconda3/bin/python",
-
     "terminal.integrated.shell.linux": "/usr/bin/zsh",
     "terminal.integrated.shell.osx": "/bin/zsh",
 
-    "search.useGlobalIgnoreFiles": true,
 
     "workbench.colorCustomizations": {
         // 编辑器配色
@@ -25,7 +26,7 @@
         //   },
 
         // 终端配色
-        "terminal.background": "#32302f", // 28282a
+        "terminal.background": "#32302f", // 28282a #272822 #32302f
         "terminal.foreground": "#c7c7c7",
         "terminalCursor.background": "#3b3b3b",
         "terminalCursor.foreground": "#A5A2A2",

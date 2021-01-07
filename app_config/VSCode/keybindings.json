@@ -61,6 +61,12 @@
     // 编辑窗口
     // ----------------------------------------------------------------------------------------------
 
+    // 代码折叠
+    // Command + option + [  // 折叠一层 光标所在代码块
+    // Command + option + ]  // 展开一层 光标所在代码块
+    // command + k + 0，折叠所有代码块  0是代码折叠级别，同理可以换用1，2，3 等
+    // command + k + j，展开所有代码块。
+
     // 非注释的 左右 大中小括号 之间跳转： ctrl + \
     { "key": "ctrl+\\", "command": "editor.action.jumpToBracket", "when": "editorTextFocus" },
 
@@ -104,11 +110,16 @@
         // 选中一个区域再cmd+d：非整词匹配
         // 光标在一个词中未选中一片区域，直接cmd+d：整词匹配
         // 选中下一个和当前一样的：cmd+d
+
+        // 各功能同上, 但选中[前]一个和当前一样的：cmd+K cmd+d
+        { "key": "cmd+k cmd+d", "command": "editor.action.addSelectionToPreviousFindMatch" },
+
         // ctrl+d 取消当前选区, 去往下一选区
         { "key": "ctrl+d", "command": "editor.action.moveSelectionToNextFindMatch", "when": "editorFocus" },
         { "key": "cmd+k cmd+d", "command": "-editor.action.moveSelectionToNextFindMatch", "when": "editorFocus" },
         // shift+ctrl+d 取消当前选区, 回到上一选区
         { "key": "shift+ctrl+d", "command": "cursorUndo", "when": "textInputFocus" },
+
         // shift+cmd+d: 选中所有和当前一样的
         { "key": "shift+cmd+d",    "command": "editor.action.selectHighlights"},
 
@@ -155,13 +166,7 @@
     // alt+cmd+B : Build with the last used recipe
     // alt+cmd+C : clean auxiliary files
     // alt+cmd+Q : stop building
-    {
-        "key": "cmd+alt+shift+b",
-        "command": "latex-workshop.recipes"
-    },
-    {
-        "key": "alt+cmd+q",
-        "command": "latex-workshop.kill"
-    },
+    {  "key": "cmd+alt+shift+b", "command": "latex-workshop.recipes" },
+    { "key": "alt+cmd+q", "command": "latex-workshop.kill" },
 
 ]
