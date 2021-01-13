@@ -85,7 +85,7 @@ grgh()  # 关联github上的远程repo
 # 先在github上建立一个repo
 # 然后用此，用法见下
 {
-    if [ $# = 1 ]; then
+    if [ $# = 1 ] && [[ ! $1 =~ '^(-h|--help|help)$' ]]; then
         local user=`git config user.name`
         local name=origin
         local repo=$1
@@ -98,7 +98,7 @@ grgh()  # 关联github上的远程repo
         local user=$2
         local repo=$3
     else
-        echo 'Usage: gh [remote [github_username]] remote_repo_name'
+        echo 'Usage: gh add [remote [github_username]] remote_repo_name'
         echo '    default remote: origin'
         echo '    default github_username: local git username, see in `git config user.name`'
         return

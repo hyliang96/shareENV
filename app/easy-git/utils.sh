@@ -11,7 +11,8 @@ git_path_to_root() {
 }
 git_current_branch()
 {
-    git branch | grep \* | cut -d ' ' -f2
+    # git branch | grep \* | cut -d ' ' -f2
+    git rev-parse --abbrev-ref HEAD
 }
 get_hash()
 {

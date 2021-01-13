@@ -1,14 +1,15 @@
 {
+    "search.useGlobalIgnoreFiles": true,
+
+
     "editor.fontFamily": "Meslo LG S DZ for Powerline",
     "terminal.external.osxExec": "iTerm.app",
     "terminal.explorerKind": "external",
     "terminal.integrated.copyOnSelection": true,
     "python.pythonPath": "/Users/mac/miniconda3/bin/python",
-
     "terminal.integrated.shell.linux": "/usr/bin/zsh",
     "terminal.integrated.shell.osx": "/bin/zsh",
 
-    "search.useGlobalIgnoreFiles": true,
 
     "workbench.colorCustomizations": {
         // 编辑器配色
@@ -25,11 +26,11 @@
         //   },
 
         // 终端配色
-        "terminal.background": "#32302f", // 28282a
+        "terminal.background": "#32302f", // (#28282a for  gruvbox middle) (#32302f for gruvbox soft)
         "terminal.foreground": "#c7c7c7",
         "terminalCursor.background": "#3b3b3b",
         "terminalCursor.foreground": "#A5A2A2",
-        "terminal.ansiBlack": "#28282a",
+        "terminal.ansiBlack": "#32302f",
         "terminal.ansiBrightBlack": "#a2a2a2",
         "terminal.ansiWhite": "#c7c7c7",
         "terminal.ansiBrightWhite": "#feffff",
@@ -94,7 +95,7 @@
     // 数字显示原精度
     "csv-preview.formatValues": "never",
     "csv-preview.theme": "light",
-    "workbench.colorTheme": "Gruvbox Dark (Medium)",
+    "workbench.colorTheme": "Gruvbox Dark (Soft)",
     "git.autofetch": true,
     // darkly
 
@@ -219,10 +220,12 @@
 /*latextmp*/ // 输出到 `当前项目/latextmp/`
 
     "latex-workshop.latex.recipe.default": "lastUsed", // "first"
+    "latex-workshop.latex.build.forceRecipeUsage": true,  // 按cmd+alt+B时, 也使用recipe编译
     "latex-workshop.latex.recipes": [
         {
             "name": "latexmk",
             "tools": [
+                "latexmkrc",
                 "latexmk",
 /*latextmp*/     "move_aux",
 /*latextmp*/     "copy_pdf"
@@ -267,7 +270,15 @@
 
 
 /*latextmp*/  "latex-workshop.latex.outDir": "%DIR%/latextmp",  // %TMPDIR%
-    "latex-workshop.latex.tools": [ {
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmkrc",
+            "command": "touch",
+            "args": [
+                "%DIR%/latexmkrc"
+            ]
+        },
+        {
             "name": "latexmk",
             "command": "latexmk",
             "args": [
@@ -347,7 +358,7 @@
         }
     ],
 
-    "latex-workshop.latex.autoBuild.run": "onFileChange",
+    "latex-workshop.latex.autoBuild.run": "never", // "never" "onFileChange" "onSave"
     "latex-workshop.view.pdf.viewer": "tab",
 
     // latex 自动删除辅助文件
