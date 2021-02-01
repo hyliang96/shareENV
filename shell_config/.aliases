@@ -47,6 +47,11 @@ if [ "$(uname)" = "Linux" ]; then
     }
 fi
 
+
+imgcurl() {
+    curl "${@}" | imgcat
+}
+
 # ---------------------- hostname -------------------
 # change hostname
 hostname_change() {
