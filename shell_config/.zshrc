@@ -560,6 +560,9 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # install_shell_integration_and_utilities
 if [ ! -x ${HOME}/.iterm2/imgcat ]; then
+    mkdir -p ${shareENV}/shell_config/iterm_bin
+    rm ${HOME}/.iterm2 -rf
+    ln -s ${shareENV}/shell_config/iterm_bin ${HOME}/.iterm2
     curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 fi
 # -------------------------------------------------------------------------
