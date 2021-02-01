@@ -559,7 +559,7 @@ setopt no_nomatch
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # install_shell_integration_and_utilities
-if [ ! -f ${HOME}/.iterm2/imgcat ]; then
+if [ ! -x ${HOME}/.iterm2/imgcat ]; then
     curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 fi
 # -------------------------------------------------------------------------
