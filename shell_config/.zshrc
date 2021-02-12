@@ -548,6 +548,41 @@ alias fgrep='fgrep --color'
 # 使得zsh的补全配色与ls一致
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+
+# --------------------- 系统设置 -----------------------
+# 系统自带的 python2
+# alias python2='/usr/bin/python'
+
+# 开启sudo执行指纹命令
+sudo-fingerprint() {
+    echo '开启指纹授权sudo'
+    __check-sudo-fingerprint() {
+        cat /etc/pam.d/sudo | grep -vE '^\s*#' | head -n 1| grep -E '^[ ]*auth[ ]+sufficient[ ]+pam_tid.so[ ]*$'
+    }
+    if [ "$(__check-sudo-fingerprint)" = '' ]; then
+        sudo cp /etc/pam.d/sudo /etc/pam.d/sudo.bak
+        (
+            echo '# "auth sufficient pam_tid.so" 表示允许指纹验证sudo命令\nauth       sufficient     pam_tid.so'
+            cat /etc/pam.d/sudo
+        ) | sudo tee /etc/pam.d/sudo > /dev/null
+        if [ "$(__check-sudo-fingerprint)" != '' ]; then
+            echo 'sudo执行指纹命令 开启成功'
+        else
+            echo 'sudo执行指纹命令 开启识别'
+        fi
+    else
+        echo 'sudo执行指纹命令 已经开启'
+    fi
+}
+[[ ! "$(cat /etc/pam.d/sudo)" =~ 'pam_tid.so' ]] && sudo-fingerprint
+
+
+fix-etc-zprofile() {
+    echo '设置/etc/zprofile, 使得其中的PATH不在~/.zshenv后再次加载'
+    [ -f $shareENV/shell_config/etc_zprofile ] && sudo cp $shareENV/shell_config/etc_zprofile /etc/zprofile
+}
+[[ ! "$(cat /etc/zprofile)" =~ 'export PATH_SAVE=\$PATH' ]] && fix-etc-zprofile
+
 # -------------------------------------------------------------------------
 # 其他
 
