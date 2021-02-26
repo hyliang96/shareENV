@@ -130,7 +130,6 @@
     "workbench.statusBar.visible": true,
     "editor.minimap.enabled": false,
     "markdown-preview-enhanced.enableExtendedTableSyntax": true,
-    "markdown-preview-enhanced.previewTheme": "monokai.css",
 
 
     // 文件尾缀对应的文件格式

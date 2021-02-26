@@ -151,10 +151,15 @@
     // 调试 （[t]iaoshi）
     { "key": "shift+cmd+t",    "command": "workbench.view.debug"},
     // 打开最近关闭的文件（[l]ast）
-    {
-        "key": "shift+cmd+l",
-        "command": "workbench.action.reopenClosedEditor"
-    },
+    { "key": "shift+cmd+l",  "command": "workbench.action.reopenClosedEditor" },
+
+
+    // ----------------------------------------------------------------------------------------------
+    // remote developement
+    // ----------------------------------------------------------------------------------------------
+    // 当远程服务器断开连接时, 按cmd+r来重新连接当前window到远程服务器
+    { "key": "cmd+r", "command": "workbench.action.reloadWindow" },
+    { "key": "cmd+r", "command": "-workbench.action.reloadWindow", "when": "isDevelopment" },
 
 
 
@@ -167,6 +172,8 @@
     // alt+cmd+C : clean auxiliary files
     // alt+cmd+Q : stop building
     {  "key": "cmd+alt+shift+b", "command": "latex-workshop.recipes" },
-    { "key": "alt+cmd+q", "command": "latex-workshop.kill" },
+    { "key": "alt+cmd+q",   "command": "latex-workshop.kill" },
+
+
 
 ]
