@@ -290,9 +290,9 @@ EOF
         fi
     else
         if [ "${if_number}" = true  ]; then
-            BUFFER="$(history | tac | fzf -m)"
+            echo $(history | tac | fzf -m) | tee /dev/fd/3
         else
-            echo $(history | tac | sed 's/^ *[0-9]* *//' | fzf -m)
+            echo $(history | tac | sed 's/^ *[0-9]* *//' | fzf -m)  | tee /dev/fd/3
         fi
     fi
 }
