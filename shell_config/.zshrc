@@ -290,7 +290,7 @@ EOF
         fi
     else
         if [ "${if_number}" = true  ]; then
-            echo $(history | tac | fzf -m) 1>&0
+            BUFFER="$(history | tac | fzf -m)"
         else
             echo $(history | tac | sed 's/^ *[0-9]* *//' | fzf -m)
         fi
