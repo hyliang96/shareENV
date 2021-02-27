@@ -293,11 +293,9 @@ EOF
             print "$(history | fzf --tac -m )"
         else
             print -z "$(history | sed 's/^ *[0-9]* *//' | fzf --tac -m )"
-            # print -z "$(history | sed 's/^ *[0-9]* *//' | fzf --tac -m | sed -E 's/$/\\n/')"
         fi
     fi
 }
-
 
 # -------------------------------------------------------------------------
 [ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
