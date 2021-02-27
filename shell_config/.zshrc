@@ -290,7 +290,7 @@ EOF
         fi
     else
         if [ "${if_number}" = true  ]; then
-            echo $(history | tac | fzf -m)
+            echo $(history | tac | fzf -m) 1>&3
         else
             echo $(history | tac | sed 's/^ *[0-9]* *//' | fzf -m)
         fi
