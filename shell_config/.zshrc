@@ -290,9 +290,10 @@ EOF
         fi
     else
         if [ "${if_number}" = true  ]; then
-            print "$(history | fzf --tac -m | sed -E 's/$/\\n/')"
+            print "$(history | sed 's/^ *[0-9]* *//' | fzf --tac -m )"
         else
-            print -z "$(history | sed 's/^ *[0-9]* *//' | fzf --tac -m | sed -E 's/$/\\n/')"
+            print -z "$(history | sed 's/^ *[0-9]* *//' | fzf --tac -m )"
+            # print -z "$(history | sed 's/^ *[0-9]* *//' | fzf --tac -m | sed -E 's/$/\\n/')"
         fi
     fi
 }
