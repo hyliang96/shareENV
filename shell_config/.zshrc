@@ -290,9 +290,9 @@ EOF
         fi
     else
         if [ "${if_number}" = true  ]; then
-            history | tac | fzf -m
+            history | tac | fzf -m | echo
         else
-            history | tac | sed 's/^ *[0-9]* *//' | fzf -m
+            history | tac | sed 's/^ *[0-9]* *//' | fzf -m | echo
         fi
     fi
 }
