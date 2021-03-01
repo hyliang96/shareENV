@@ -1540,19 +1540,20 @@ tb()
             if [[ "$1" =~ ':$' ]]; then
                 local dir_path="$1$2"
                 shift
+            elif [[ "$1" =~ ':' ]]; then
+                local dir_path="$1"
             else
-                local tag="${1//\//∕}"
-                echo $tag
-                local tag="${tag//:/∶}"
-                echo $tag
-                local dir_path="${tag}:$1"
-                echo $dir_path
+                # local tag="${1//\//∕}"
+                # local tag="${tag//:/∶}"
+                local dir_path="${1}:$1"
                 i=$(($i + 1))
             fi
             dir_paths=("${dir_paths[@]}" "$dir_path")
             shift
         fi
     done
+    
+    declare -p dir_paths
 
     if [ ${#dir_paths} -eq 0 ]; then
         local dir_arg='--logdir=.'
@@ -1560,7 +1561,7 @@ tb()
         # local dir_arg="--logdir=${dir_paths[1]}"
     else
         # dir_arg='--logdir_spec='
-        dir_arg='--logdir='
+        dir_arg='--logdir_spec='
         local i
         for i in "${dir_paths[@]}"; do
             dir_arg="${dir_arg}${i},"
