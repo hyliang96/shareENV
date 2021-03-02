@@ -1553,7 +1553,7 @@ tb()
         fi
     done
     
-    declare -p dir_paths
+ # declare -p dir_paths
 
     if [ ${#dir_paths} -eq 0 ]; then
         local dir_arg='--logdir=.'
