@@ -8,6 +8,7 @@
 # alias gaacm='git commit -am' # 即先gaa, 然后gcm
 # alias gcm='git commit -m'  # 提交：gcm "xxx" [options]
 
+# 
 gcm()
 {
     if [ $# -eq 0 ] || [[ "$1" =~ ^- ]]; then
@@ -18,7 +19,7 @@ gcm()
 }
 
 # 即先gaa, 然后gcm
-gcm()  
+gaacm()  
 {
     if [ $# -eq 0 ] || [[ "$1" =~ ^- ]]; then
         git commit -a "$@"
