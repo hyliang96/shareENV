@@ -6,7 +6,15 @@
 
 # 提交
 alias gacm='git commit -am' # 即先gaa, 然后gcm
-alias gcm='git commit -m'  # 提交：gcm "xxx" [options]
+# alias gcm='git commit -m'  # 提交：gcm "xxx" [options]
+gcm() 
+{
+    if [ $# -eq 0 ] || [[ "$1" =~ ^- ]]; then
+        git commit "$@"
+    else
+        git commit -m "$@"
+    fi
+}
 alias gcma='git commit --amend' # 先add，再覆盖上一次提交：gcma，然后弹出文本编辑器，编辑上次提交的说明
 
 __git_rebase_i()
