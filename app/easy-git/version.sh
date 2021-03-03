@@ -5,10 +5,7 @@
 # 单分支版本操作
 
 # 提交
-# alias gaacm='git commit -am' # 即先gaa, 然后gcm
-# alias gcm='git commit -m'  # 提交：gcm "xxx" [options]
-
-# 
+# gcm [ '<message>' ]  [<options>]  若有message, 则直接提交; 若无message, 则打开editor编辑message
 gcm()
 {
     if [ $# -eq 0 ] || [[ "$1" =~ ^- ]]; then
@@ -19,7 +16,7 @@ gcm()
 }
 
 # 即先gaa, 然后gcm
-gaacm()  
+gaacm()
 {
     if [ $# -eq 0 ] || [[ "$1" =~ ^- ]]; then
         git commit -a "$@"
