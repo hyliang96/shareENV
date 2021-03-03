@@ -5,9 +5,10 @@
 # 单分支版本操作
 
 # 提交
-alias gacm='git commit -am' # 即先gaa, 然后gcm
+# alias gaacm='git commit -am' # 即先gaa, 然后gcm
 # alias gcm='git commit -m'  # 提交：gcm "xxx" [options]
-gcm() 
+
+gcm()
 {
     if [ $# -eq 0 ] || [[ "$1" =~ ^- ]]; then
         git commit "$@"
@@ -15,6 +16,18 @@ gcm()
         git commit -m "$@"
     fi
 }
+
+# 即先gaa, 然后gcm
+gcm()  
+{
+    if [ $# -eq 0 ] || [[ "$1" =~ ^- ]]; then
+        git commit -a "$@"
+    else
+        git commit -am "$@"
+    fi
+}
+
+
 alias gcma='git commit --amend' # 先add，再覆盖上一次提交：gcma，然后弹出文本编辑器，编辑上次提交的说明
 
 __git_rebase_i()
