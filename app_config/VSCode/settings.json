@@ -389,4 +389,10 @@
     "jupyter.sendSelectionToInteractiveWindow": true,
     "jupyter.askForKernelRestart": false,
     "jupyter.interactiveWindowMode": "perFile",
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter-notebook",
+            "filenamePattern": "*.ipynb"
+        }
+    ],
 }

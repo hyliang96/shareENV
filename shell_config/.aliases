@@ -1552,7 +1552,7 @@ tb()
             shift
         fi
     done
-    
+
  # declare -p dir_paths
 
     if [ ${#dir_paths} -eq 0 ]; then
@@ -1807,4 +1807,5 @@ tz()
 # --------------------- 文件格式工具 --------------------
 alias indent='python $share_script/indent_json.py' # rewrite .josn file(s) with indent
 
-
+# perl 替代 sed, 支持正则正则表达式非贪婪匹配; sed不支持
+alias perlsed='perl -pe'
