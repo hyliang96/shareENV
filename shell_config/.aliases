@@ -1509,7 +1509,14 @@ venew()
     source venv/bin/activate $envdir
 }
 
-alias veact='source venv/bin/activate'
+veact() {
+    local venvpath='venv'
+    if [ $# = 1 ]; then
+        local venvpath="$1"
+    fi
+    source "${venvpath}/bin/activate"
+}
+# alias veact='source venv/bin/activate'
 alias vedea='deactivate'
 
 # ---------------- alias to python ------------------
