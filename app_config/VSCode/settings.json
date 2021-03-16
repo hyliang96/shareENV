@@ -166,6 +166,13 @@
             "cursorHome",
             // "cursorHome", // 还复制缩进
             "cursorEndSelect",
+            "editor.action.clipboardCopyAction",
+            "cancelSelection"
+        ],
+        "selectWithoutNewLine": [
+            "cursorHome",
+            // "cursorHome", // 还复制缩进
+            "cursorEndSelect",
             // "editor.action.clipboardCopyAction",
             // "cancelSelection"
         ],

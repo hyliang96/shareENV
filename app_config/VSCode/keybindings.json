@@ -96,8 +96,10 @@
 
 
     // 选择一行, 不带行尾换行符, 依赖于'macros'插件terminalFocus
-    { "key": "cmd+l", "command": "macros.copyWithoutNewLine", "when": "editorTextFocus && !editorHasSelection" },
+    { "key": "cmd+c", "command": "-editor.action.clipboardCopyAction", "when": "editorTextFocus && !editorHasSelection" },
+    { "key": "cmd+c", "command": "macros.copyWithoutNewLine", "when": "editorTextFocus && !editorHasSelection" },
     { "key": "cmd+l", "command": "-expandLineSelection", "when": "textInputFocus" },
+    { "key": "cmd+l", "command": "macros.selectWithoutNewLine", "when": "editorTextFocus && !editorHasSelection" },
 
     // 删除整行： shift+backspace
     { "key":  "shift+backspace",  "command": "editor.action.deleteLines",  "when": "textInputFocus && !editorReadonly" },
@@ -172,8 +174,5 @@
     // alt+cmd+C : clean auxiliary files
     // alt+cmd+Q : stop building
     {  "key": "cmd+alt+shift+b", "command": "latex-workshop.recipes" },
-    { "key": "alt+cmd+q",   "command": "latex-workshop.kill" },
-
-
-
+    {  "key": "alt+cmd+q", "command": "latex-workshop.kill" },
 ]
