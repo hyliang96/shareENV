@@ -94,12 +94,14 @@
     // 最大化当前窗口
     { "key": "shift+cmd+enter", "command": "workbench.action.toggleEditorWidths", "when": "editorTextFocus" },
 
-
-    // 选择一行, 不带行尾换行符, 依赖于'macros'插件terminalFocus
-    { "key": "cmd+c", "command": "-editor.action.clipboardCopyAction", "when": "editorTextFocus && !editorHasSelection" },
+    // cmd+c 复制一行, 不带行尾换行符, 依赖于'macros'插件terminalFocus; 之后 cmd+v 则粘贴插入到光标所在处
     { "key": "cmd+c", "command": "macros.copyWithoutNewLine", "when": "editorTextFocus && !editorHasSelection" },
-    { "key": "cmd+l", "command": "-expandLineSelection", "when": "textInputFocus" },
+    // cmd+alt+c 复制一行, 带行尾换行符; 之后 cmd+v 则粘贴到光标上一行
+    { "key": "cmd+alt+c", "command": "editor.action.clipboardCopyAction", "when": "editorTextFocus && !editorHasSelection" },
+    { "key": "cmd+c", "command": "-editor.action.clipboardCopyAction", "when": "editorTextFocus && !editorHasSelection" },
+    // 选择一行, 不带行尾换行符, 依赖于'macros'插件terminalFocus
     { "key": "cmd+l", "command": "macros.selectWithoutNewLine", "when": "editorTextFocus && !editorHasSelection" },
+    { "key": "cmd+l", "command": "-expandLineSelection", "when": "textInputFocus" },
 
     // 删除整行： shift+backspace
     { "key":  "shift+backspace",  "command": "editor.action.deleteLines",  "when": "textInputFocus && !editorReadonly" },
