@@ -175,6 +175,8 @@
     // alt+cmd+B : Build with the last used recipe
     // alt+cmd+C : clean auxiliary files
     // alt+cmd+Q : stop building
+    // alt+cmd+J : code jump to pdf
+    // cmd+single fingre click: pdf jump to code
     {  "key": "cmd+alt+shift+b", "command": "latex-workshop.recipes" },
     {  "key": "alt+cmd+q", "command": "latex-workshop.kill" },
 ]
