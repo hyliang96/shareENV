@@ -224,7 +224,7 @@
 
     // ---------------------- latex-workshop -------------------------
     // 全选 "/ * latextmp * /", 然后 "cmd+/" 开关所在行注释, 以切换临时文件输出的目录:
-// /*reverse*//*latextmp*/ // 输出到 `当前项目/`
+// /*no*//*latextmp*/ // 输出到 `当前项目/`
 /*latextmp*/ // 输出到 `当前项目/latextmp/`
 
     "latex-workshop.latex.recipe.default": "lastUsed", // "first"
@@ -277,7 +277,7 @@
     ],
 
 
-// /*reverse*//*latextmp*/  "latex-workshop.latex.outDir": "%DIR%",  // %TMPDIR%
+// /*no*//*latextmp*/  "latex-workshop.latex.outDir": "%DIR%",  // %TMPDIR%
 /*latextmp*/  "latex-workshop.latex.outDir": "%DIR%/latextmp",  // %TMPDIR%
     "latex-workshop.latex.tools": [
         {
@@ -291,7 +291,7 @@
             "name": "latexmk",
             "command": "latexmk",
             "args": [
-/*latextmp*/     "-output-directory=%DIR%/latextmp", "-f",
+/*latextmp*/     "-output-directory=%OUTDIR%", "-f",
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
@@ -302,7 +302,7 @@
             "name": "xelatex",
             "command": "xelatex",
             "args": [
-/*latextmp*/     "-output-directory=%DIR%/latextmp",
+/*latextmp*/     "-output-directory=%OUTDIR%",
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
@@ -312,7 +312,7 @@
             "name": "pdflatex",
             "command": "pdflatex",
             "args": [
-/*latextmp*/     "-output-directory=%DIR%/latextmp",
+/*latextmp*/     "-output-directory=%OUTDIR%",
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
@@ -322,21 +322,21 @@
             "name": "bibtex",
             "command": "bibtex",
             "args": [
-// /*reverse*//*latextmp*/     "%DOCFILE%"
-/*latextmp*/     "%DIR%/latextmp/%DOCFILE%"
+// /*no*//*latextmp*/     "%DOCFILE%"
+/*latextmp*/     "%OUTDIR%/%DOCFILE%"
             ],
-/*latextmp*/    "env": { "TEXMFOUTPUT": "%DIR%/latextmp" }
+/*latextmp*/    "env": { "TEXMFOUTPUT": "%OUTDIR%" }
         }, {
-            // copy pdf files from %DIR%/latextmp/ to %DIR%/
+            // copy pdf files from %OUTDIR%/ to %DIR%/
             "name": "copy_pdf",
             "command": "find",
             "args": [
-                "%DIR%/latextmp",
+                "%OUTDIR%",
                 "-iname", "*.pdf",
                 "-exec", "cp", "{}", "%DIR%", ";"
             ]
         },  {
-            // move auxiliary files to %DIR%/latextmp/
+            // move auxiliary files to %OUTDIR%/
             "name": "move_aux",
             "command": "find",
             "args": [
@@ -362,7 +362,7 @@
                 "-o", "-iname", "*.log",
                 "-o", "-iname", "*.fdb_latexmk",
                 "-o", "-iname", "*.synctex.gz",
-                ")", "-exec", "mv", "{}", "%DIR%/latextmp", ";"
+                ")", "-exec", "mv", "{}", "%OUTDIR%", ";"
             ]
         }
     ],
@@ -371,7 +371,7 @@
     "latex-workshop.view.pdf.viewer": "tab",
 
     // latex 自动删除辅助文件
-// /*reverse*//*latextmp*/ "latex-workshop.latex.autoClean.run": "onBuilt",
+// /*no*//*latextmp*/ "latex-workshop.latex.autoClean.run": "onBuilt",
     "latex-workshop.latex.clean.subfolder.enabled": false,
     "latex-workshop.latex.clean.fileTypes": [
         "*.aux",
