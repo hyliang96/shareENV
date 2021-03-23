@@ -595,7 +595,7 @@ setopt no_nomatch
 # install_shell_integration_and_utilities, 如 imgcat
 # `imgcat 图像文件` : 能在iterm2中显示图像
 # 首次使用imgcat时iterm会弹出对话框, 大概问是否允许下载文件, 勾选"记住", 点"yes"
-if [ ! -x "$(command -v imgcat)" ]; then
+if [ "$(command -v imgcat)" ] = '' ]; then
 # if [ ! -x ${HOME}/.iterm2/imgcat ]; then
     mkdir -p ${shareENV}/shell_config/iterm_bin
     rm ${HOME}/.iterm2 -rf
