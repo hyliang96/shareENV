@@ -592,9 +592,6 @@ fi
 # 如 rm -rf 一个文件夹/{*,.*}, 即使没有 .* 文件，也会把 * 文件删了
 setopt no_nomatch
 
-# iterm2_shell_integration
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 # install_shell_integration_and_utilities, 如 imgcat
 # `imgcat 图像文件` : 能在iterm2中显示图像
 # 首次使用imgcat时iterm会弹出对话框, 大概问是否允许下载文件, 勾选"记住", 点"yes"
@@ -605,6 +602,10 @@ if [ ! -x "$(command -v imgcat)" ]; then
     ln -s ${shareENV}/shell_config/iterm_bin ${HOME}/.iterm2
     curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 fi
+
+# iterm2_shell_integration
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
 # -------------------------------------------------------------------------
 # 自动补全的复用
 [ $DotFileDebug -ne 0 ] && echo share .zshrc - reuse completions >&2
