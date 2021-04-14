@@ -411,4 +411,6 @@
             "filenamePattern": "*.ipynb"
         }
     ],
+    "editor.wordWrap": "on",
+    "window.zoomLevel": 1,
 }
