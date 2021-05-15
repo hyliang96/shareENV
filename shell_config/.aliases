@@ -337,7 +337,7 @@ EOF
                     __count_path "${dir}"
                     echo -n "\t    "
                     ls -d --color=always $dir
-                done | sort -t $'\t' -k 1 -n -r
+                done | sort -t $'\t' -k 1 -n 
             # fi
         )
     done | column -t -s $'\t'
