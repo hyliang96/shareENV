@@ -337,7 +337,7 @@ EOF
                     __count_path "${dir}"
                     echo -n "\t    "
                     ls -d --color=always $dir
-                done | sort -t $'\t' -k 1 -n 
+                done | sort -t $'\t' -k 1 -n
             # fi
         )
     done | column -t -s $'\t'
@@ -508,7 +508,6 @@ _dk()
         eval "sudo lsof -Pn -i:$ports" | grep -E --color=always "${port_pattern}"
     fi
 }
-
 # strU8DiffLen () {
     # local bytlen oLang=$LANG oLcAll=$LC_ALL
     # LANG=C LC_ALL=C
@@ -757,7 +756,6 @@ else
 fi
 
 
-
 server_port=8304 # 【远程nc端口】
 
 rsubl(){
@@ -810,15 +808,15 @@ fi
 
 _code-remote() {
     local hostname=$(echo $1 | awk -F : '{print $1}')
-    local abspath=$(echo $1 | awk -F : '{print $2}')
-    local has_file=$(ssh $hostname "[ -f '$abspath' ] && echo true")
-    local has_dir=$(ssh $hostname "[ -d '$abspath' ] && echo true")
+    local abspath_=$(echo $1 | awk -F : '{print $2}')
+    local has_file=$(ssh $hostname "[ -f '$abspath_' ] && echo true")
+    local has_dir=$(ssh $hostname "[ -d '$abspath_' ] && echo true")
     if [ "$has_file" = true ]; then
-        code --file-uri vscode-remote://ssh-remote+${hostname}${abspath}
+        code --file-uri vscode-remote://ssh-remote+${hostname}${abspath_}
     elif [ "$has_dir" = true ]; then
-        code --folder-uri vscode-remote://ssh-remote+${hostname}${abspath}
+        code --folder-uri vscode-remote://ssh-remote+${hostname}${abspath_}
     else
-        echo "$hostname:$abspath not exists"
+        echo "$hostname:$abspath_ not exists"
     fi
 }
 co(){
@@ -849,7 +847,6 @@ fi
         # # # alias nvim=$serverENV/nvim/usr/bin/nvim
     # # fi
 # fi
-
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
 alias nvi=nvim
@@ -859,19 +856,25 @@ alias vi=vim
 
 # 让sudo vim 能用nvim
 
-
 # 设置默认编辑器
 # if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
    # ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
     # alias default_editor='code'
 if [ -x "$(which nvim)" ]; then
-    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
+    if [ -x "$(which python)" ]; then
+        alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
+    else
+        alias sv="sudo $(which nvim)"
+    fi
     alias default_editor=nvim
 elif [ -x "$(which vim)" ]; then
-    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
+    if [ -x "$(which python)" ]; then
+        alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
+    else
+        alias sv="sudo $(which vim)"
+    fi
     alias default_editor=vim
 fi
-
 
 # --------------- alias dotfile ----------------------
 se=~/.shell_config/.env;      sse=$share_shell_config/.env
@@ -989,6 +992,7 @@ alias cp="cp -r"
 alias scp="scp -r"
 
 
+
 rdiff()
 {
     if [ $# -ne 2 ]; then
@@ -997,7 +1001,6 @@ rdiff()
         echo '    `rdiff <dir1> <dir2>`'
         return
     fi
-
     local source_path="$1"
     local dest_path="$2"
     [ ! -e ${source_path} ] && echo "no file or dir: ${source_path}" && return
