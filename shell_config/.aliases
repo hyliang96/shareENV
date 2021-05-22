@@ -849,9 +849,10 @@ fi
 # fi
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
-alias nvi=nvim
-alias nv=nvim
-alias v=nvim
+alias nv="PATH=$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//'):$PATH nvim"
+alias nvi=nv
+alias v=nv
+alias vim="PATH=$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//'):$PATH vim"
 alias vi=vim
 
 # 让sudo vim 能用nvim
@@ -873,9 +874,20 @@ elif [ -x "$(which vim)" ]; then
     else
         alias sv="sudo $(which vim)"
     fi
+    if [ -d "$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ]; then
+        alias nvim="$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//') $(which nvim)"
+    fi
     alias default_editor=vim
 fi
 
+    if [ -d "$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ]; then
+        alias nvim="$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//') $(which nvim)"
+    fi
+
+alias nvi=nvim
+alias nv=nvim
+alias v=nvim
+alias vi=vim
 # --------------- alias dotfile ----------------------
 se=~/.shell_config/.env;      sse=$share_shell_config/.env
 si=~/.shell_config/.login;
