@@ -850,20 +850,7 @@ fi
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
 
-if [ -d "$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ] && [ -x "$(which nvim)" ]; then
-    alias nvim="$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//') $(which nvim)"
-fi
-
-if [ -d "$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ] && [ -x "$(which vim)" ]; then
-    alias vim="$(where python | grep conda | head -n 1 | sed -E 's/\/python.*//') $(which vim)"
-fi
-
-alias nvi=nvim
-alias nv=nvim
-alias v=nvim
-alias vi=vim
 # 让sudo vim 能用nvim
-
 # 设置默认编辑器
 # if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
    # ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
@@ -883,6 +870,20 @@ elif [ -x "$(which vim)" ]; then
     fi
     alias default_editor=vim
 fi
+
+# 给nvim, vim设置conda python环境
+if [ -d "$(which -a python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ] && [ -x "$(which nvim)" ]; then
+    alias nvim='PATH=$(which -a python | grep conda | head -n 1 | xargs dirname):$PATH nvim'
+fi
+
+if [ -d "$(which -a python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ] && [ -x "$(which vim)" ]; then
+    alias vim='PATH=$(which -a python | grep conda | head -n 1 | xargs dirname):$PATH vim'
+fi
+
+alias nvi=nvim
+alias nv=nvim
+alias v=nvim
+alias vi=vim
 
 # --------------- alias dotfile ----------------------
 se=~/.shell_config/.env;      sse=$share_shell_config/.env
