@@ -8,7 +8,7 @@
 	"highlight_line": true,
 	"ignored_packages":
 	[
-		"Vintage"
+		"Vintage",
 	],
 	"remember_open_files": true,
 	"save_on_focus_lost": true,
@@ -19,5 +19,5 @@
 	"trim_automatic_white_space": true,
 	"trim_trailing_white_space_on_save": true,
 	"update_check": false,
-	"word_wrap": "auto"
+	"word_wrap": "auto",
 }

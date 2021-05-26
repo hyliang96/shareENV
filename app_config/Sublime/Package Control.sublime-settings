@@ -20,7 +20,7 @@
 		"windows":
 		[
 			"wininet"
-		]
+		],
 	},
 	"in_process_packages":
 	[
@@ -47,5 +47,5 @@
 		"SSH Config",
 		"SublimeREPL",
 		"Theme - SoDaReloaded"
-	]
+	],
 }
