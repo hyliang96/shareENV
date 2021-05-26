@@ -540,10 +540,10 @@ dk()
     local pid=
     for pid in "${pids[@]}"; do
         jch_return+=("$(jchpid "$pid" | sed -n '2p'|
-            perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2mDim\7\e[22m/g')" )
+            perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2m\7\e[22m/g')" )
     done
     local jch_return=("$(jchpid "$pid"|head -n 1|
-        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2mDim\7\e[22m/g')"
+        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2m\7\e[22m/g')"
             "${jch_return[@]}")
     local i=
 
