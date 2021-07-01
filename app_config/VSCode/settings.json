@@ -374,8 +374,9 @@
 /*no*//*latextmp*/ "latex-workshop.latex.autoClean.run": "onBuilt",
     "latex-workshop.latex.clean.subfolder.enabled": false,
     "latex-workshop.latex.clean.fileTypes": [
+        // "*.bbl",        // bibtex xxx.tex, 读取xxx.tex引用的yyy.bib文件, 编译得到xxx.bbl. 保留此文件以供 arxiv 提交, 为其编译提供reference
+        // "*.synctex.gz",  // 保留则可以pdf与源码间相互跳转
         "*.aux",
-        // "*.bbl",  // for arxiv submision
         "*.dvi",
         "*.blg",
         "*.idx",
@@ -394,7 +395,6 @@
         "*.fls",
         "*.log",
         "*.fdb_latexmk",
-        // "*.synctex.gz"
     ],
 
 
@@ -405,12 +405,9 @@
     "jupyter.sendSelectionToInteractiveWindow": true,
     "jupyter.askForKernelRestart": false,
     "jupyter.interactiveWindowMode": "perFile",
-    "workbench.editorAssociations": [
-        {
-            "viewType": "jupyter-notebook",
-            "filenamePattern": "*.ipynb"
-        }
-    ],
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
     "editor.wordWrap": "on",
 
     // LTex : latex/markdown 拼写检查
