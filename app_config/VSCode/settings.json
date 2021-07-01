@@ -1,6 +1,6 @@
 {
     "search.useGlobalIgnoreFiles": true,
-
+    "security.workspace.trust.enabled": false,
 
     "editor.fontFamily": "Meslo LG S DZ for Powerline",
     "terminal.external.osxExec": "iTerm.app",
