@@ -650,7 +650,7 @@ function _tz0 {
         "-h[Show help information]" \
         "--h[Show help information]" \
         "1: :->tz_ls" \
-        "2: :->date" \
+        "2:yyyy-MM-dd:->date" \
         "3: :->time" \
         "4: :->tz_ls" \
         "*::arg:->args"
