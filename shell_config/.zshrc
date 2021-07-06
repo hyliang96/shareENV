@@ -660,8 +660,8 @@ function _tz0 {
             _tz_ls
         ;;
         date)
-            _tz_date
-            # compadd -X  yyyy-MM-dd "$@"
+            # _tz_date
+            compadd "$@" yyyy-MM-dd
         ;;
         time)
             _tz_time
@@ -669,7 +669,7 @@ function _tz0 {
     esac
 }
 function _tz_date {
-    _describe \
+    _arguments \
         "yyyy-mm-dd"
 }
 compdef _tz0 tz0
