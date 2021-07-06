@@ -650,7 +650,7 @@ function _tz0 {
         "-h[Show help information]" \
         "--h[Show help information]" \
         "1: :->tz_ls" \
-        "2:yyyy-MM-dd:->date" \
+        "2: :->date" \
         "3: :->time" \
         "4: :->tz_ls" \
         "*::arg:->args"
@@ -660,8 +660,8 @@ function _tz0 {
             _tz_ls
         ;;
         date)
-            _tz_date
-            # compadd "$@" like yyyy-MM-dd
+            # _tz_date
+            compadd -X  yyyy-MM-dd
         ;;
         time)
             _tz_time
