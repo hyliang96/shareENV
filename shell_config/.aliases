@@ -1813,6 +1813,8 @@ tz()
         shift
     fi
 
+    echo ${source_time}
+
     if [ "$1" != '' ]; then
         local target_TZ="$(__tz_check__ $4)"
         [ "$target_TZ" = '' ] && return
