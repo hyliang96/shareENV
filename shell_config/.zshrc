@@ -655,8 +655,7 @@ function _tz0 {
 
     case $state in
         tz_ls)
-            cd /var/db/timezone/zoneinfo/
-            _ls "$@"
+            { cd /var/db/timezone/zoneinfo/; _ls "$@"; }
         ;;
         date)
         :;
