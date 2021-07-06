@@ -622,7 +622,7 @@ alias itm='tmux_itm -CC attach -t'
 tmux_tm() {   :;    }
 # compdef _tmux tmux_tm
 # alias tm='tmux_tm attach -t'
-alias tm='tmux'
+alias tm='tmux_tm'
 compdef '_tmux attach -t' tm
 
 # git_gch() {   :;    }
