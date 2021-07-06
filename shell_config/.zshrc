@@ -656,7 +656,7 @@ function _tz0 {
     case $state in
         tz_ls)
             _tz_ls
-        ;;
+        :;
         tz_date)
             echo time
         :;
