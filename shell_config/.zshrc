@@ -660,8 +660,8 @@ function _tz0 {
             _tz_ls
         ;;
         date)
-            _tz_date
-            # compadd "$@" hh:mm:ss
+            # _tz_date
+            compadd "$@" like yyyy-MM-dd
         ;;
         time)
             _tz_time
