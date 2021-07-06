@@ -659,13 +659,13 @@ function _tz0 {
         tz_ls)
             _tz_ls
         ;;
-        date)
-            _tz_date
-            # compadd -X  yyyy-MM-dd "$@"
-        ;;
-        time)
-            _tz_time
-        ;;
+        # date)
+            # _tz_date
+            # # compadd -X  yyyy-MM-dd "$@"
+        # ;;
+        # time)
+            # _tz_time
+        # ;;
     esac
 }
 function _tz_date {
