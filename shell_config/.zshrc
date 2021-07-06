@@ -654,11 +654,14 @@ function _tz0 {
 
     case $state in
         tz_ls)
-            _tz_ls ;;
+            _tz_ls 
+            ;;
         tz_date)
-            compadd "$@" yours ;;
+            compadd "$@" yours
+            ;;
         tz_time)
-            _tz_ls ;;
+            _tz_ls 
+            ;;
     esac
 }
 compdef _tz0 tz0
