@@ -660,7 +660,7 @@ function _tz0 {
         ;;
         date)
             # _tz_date
-            compadd "$@" 'yyyy-(M)M-(d)d ((H)H(:(m)m(:(s)s)))' ''
+            compadd "$@" 'yyyy-<M>M-(d)d ((H)H(:(m)m(:(s)s)))' ''
         ;;
         time)
             _tz_time
