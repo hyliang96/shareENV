@@ -648,10 +648,13 @@ function _tz0 {
     _arguments -C \
         "-h[Show help information]" \
         "--h[Show help information]" \
-        "1: :($(_tz_ls "$@"))" \
+        "1: :->tz_ls" \
         "*::arg:->args"
 
     case $line[1] in
+        tz_ls)
+            _tz_ls
+        ;;
         loudly)
             _hello_loudly
         ;;
