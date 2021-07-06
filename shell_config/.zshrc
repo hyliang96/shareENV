@@ -649,7 +649,7 @@ function _tz0 {
     _arguments -C \
         "1: :->tz_ls" \
         "2: :->date" \
-        "3: :->tz_ls" \
+        "3: :->time" \
         "4: :->tz_ls" \
         "*::arg:->args"
 
@@ -658,6 +658,9 @@ function _tz0 {
             _tz_ls
         ;;
         date)
+        :;
+        time)
+            _tz_ls
         :;
     esac
 }
