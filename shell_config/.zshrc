@@ -619,9 +619,10 @@ tmux_itm() {   :;    }
 compdef _tmux tmux_itm
 alias itm='tmux_itm -CC attach -t'
 
-tmux_tm() {   :;    }
-compdef _tmux tmux_tm
-alias tm='tmux_tm attach -t'
+# tmux_tm() {   :;    }
+# compdef _tmux tmux_tm
+# alias tm='tmux_tm attach -t'
+compdef '_tmux attach -t' tm
 
 # git_gch() {   :;    }
 # compdef _git git_gch
