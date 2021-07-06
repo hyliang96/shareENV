@@ -642,8 +642,27 @@ _tz_ls() {
     cd /var/db/timezone/zoneinfo/
     _ls "$@"
 }
-compdef _tz_ls tz_ls
-alias tz='tz_ls'
+function _tz {
+    local line
+
+    _arguments -C \
+        "-h[Show help information]" \
+        "--h[Show help information]" \
+        "1: :(quietly loudly)" \
+        "*::arg:->args"
+
+    case $line[1] in
+        loudly)
+            _hello_loudly
+        ;;
+        quietly)
+            _hello_quietly
+        ;;
+    esac
+}
+compdef _tz tz
+# alias tz='tz_ls'
+
 
 
 # 允许在有`alias foo=...`时，再定义函数`foo() {  .... }`
