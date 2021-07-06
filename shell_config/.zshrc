@@ -643,7 +643,7 @@ _tz_ls() {
     _ls "$@"
 }
 function _tz0 {
-    local line
+    local state
 
     _arguments -C \
         "-h[Show help information]" \
@@ -651,7 +651,7 @@ function _tz0 {
         "1: :->tz_ls" \
         "*::arg:->args"
 
-    case $line[1] in
+    case $state in
         tz_ls)
             _tz_ls
         ;;
