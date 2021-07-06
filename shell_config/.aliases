@@ -1804,12 +1804,13 @@ tz()
 
     local source_TZ="$(__tz_check__ $1)"
     [ "$source_TZ" = '' ] && return
+    shift
 
-    if [[ "$3" =~ ^[0-9]{1,2}(:[0-9]{1,2}){0,2}$ ]]; then
-        local source_time="$2 $3"
+    if [[ "$2" =~ ^[0-9]{1,2}(:[0-9]{1,2}){0,2}$ ]]; then
+        local source_time="$1 $2"
         shift shift
     else
-        local source_time="$2"
+        local source_time="$1"
         shift
     fi
 
