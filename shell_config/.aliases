@@ -1827,6 +1827,51 @@ tz()
 }
 
 
+# tz0() { :; }
+_tz_ls() {
+    # local cwd="$PWD"
+    cd /var/db/timezone/zoneinfo/
+    _ls "$@"
+    # cd "$cwd"
+
+}
+function _tz0 {
+
+    # local cwd="$PWD"
+    local state
+
+    _arguments -C \
+        "1: :->tz_ls" \
+        "2: :->tz_date" \
+        "3: :->tz_time" \
+        "4: :->tz_ls" \
+        "*::arg:->args"
+
+    case $state in
+        (tz_ls)
+            _tz_ls
+        ;;
+        (tz_date)
+            :
+            # _tz_date
+            compadd "$@" 'yyyy-MM-dd' ''
+        ;;
+        (tz_time)
+            # _tz_ls
+            compadd "$@" 'HH:mm:ss' ''
+        ;;
+    esac
+
+    # cd "$cwd"
+}
+function _tz_date {
+    _arguments \
+        'aadas'
+        # "yyyy-mm-dd\ HH:mm:ss"
+}
+compdef _tz0 tz
+# alias tz='tz0'
+
 # git 的 alias
 [ -f $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
 
