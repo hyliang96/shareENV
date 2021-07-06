@@ -669,7 +669,7 @@ function _tz0 {
 }
 function _tz_date {
     _arguments \
-        "yyyy-mm-dd HH:mm:ss"
+        "yyyy-mm-dd\ HH:mm:ss"
 }
 compdef _tz0 tz0
 alias tz='tz0'
