@@ -642,7 +642,7 @@ _tz_ls() {
     cd /var/db/timezone/zoneinfo/
     _ls "$@"
 }
-function _tz {
+function _tz0 {
     local line
 
     _arguments -C \
@@ -660,7 +660,7 @@ function _tz {
         ;;
     esac
 }
-compdef _tz tz0
+compdef _tz0 tz0
 alias tz='tz0'
 
 
