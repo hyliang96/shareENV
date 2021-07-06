@@ -1781,7 +1781,7 @@ tz()
         echo '    UCT = UTC-0 = (when not in daylight time) WET = Europe/London'
         echo
         echo 'convert time bwtween timezone'
-        echo '    `tz <source-timezone> yyyy-mm-dd [hh=00[:mm=00[:ss=00]]] [<target-timezone>=Asia/Shanghai]`'
+        echo '    `tz <source-timezone> yyyy-[m]m-[d]d [[H]H=00[:[m]m=00[:[s]s=00]]] [<target-timezone>=Asia/Shanghai]`'
         return
     fi
 
@@ -1813,9 +1813,6 @@ tz()
         local source_time="$1"
         shift
     fi
-
-    echo ${source_time}
-    echo $1
 
     if [ "$1" != '' ]; then
         local target_TZ="$(__tz_check__ $1)"
