@@ -646,7 +646,7 @@ _tz_ls() {
 
 }
 function _tz0 {
-    (
+    
     # local cwd="$PWD"
     local state
 
@@ -671,7 +671,7 @@ function _tz0 {
             compadd "$@" 'HH:mm:ss' ''
         ;;
     esac
-    )
+    
     # cd "$cwd"
 }
 function _tz_date {
