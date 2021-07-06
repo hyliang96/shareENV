@@ -638,10 +638,10 @@ alias la='la_list'
 alias l='l_list'
 
 tz0() { :; }
-# _tz_ls() {
-    # cd /var/db/timezone/zoneinfo/
-    # _ls "$@"
-# }
+_tz_ls() {
+    cd /var/db/timezone/zoneinfo/
+    _ls "$@"
+}
 function _tz0 {
     local state
     local line
@@ -655,7 +655,7 @@ function _tz0 {
 
     case $state in
         tz_ls)
-            { cd /var/db/timezone/zoneinfo/; _ls "$@"; }
+            _tz_ls
         ;;
         date)
         :;
