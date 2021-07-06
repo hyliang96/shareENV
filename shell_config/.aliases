@@ -1808,7 +1808,7 @@ tz()
 
     if [[ "$2" =~ ^[0-9]{1,2}(:[0-9]{1,2}){0,2}$ ]]; then
         local source_time="$1 $2"
-        shift shift
+        shift; shift
     else
         local source_time="$1"
         shift
