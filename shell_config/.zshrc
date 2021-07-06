@@ -637,6 +637,10 @@ alias ll='ll_list'
 alias la='la_list'
 alias l='l_list'
 
+tz_ls() { :; }
+compdef _ls tz_ls
+alias tz='ls /var/db/timezone/zoneinfo/'
+
 # timezone_ls() { :; }
 # compdef _ls timezone_ls
 # alias timezone='timezone_ls /usr/share/zoneinfo.default/'
