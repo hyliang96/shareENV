@@ -644,7 +644,6 @@ _tz_ls() {
 }
 function _tz0 {
     local state
-    local line
 
     _arguments -C \
         "-h[Show help information]" \
@@ -661,7 +660,7 @@ function _tz0 {
         ;;
         date)
             # _tz_date
-            compadd "$@" yyyy-MM-dd
+            compadd "$@" 'yyyy-[M]M-[d]d [HH[:mm[:ss]]]' ''
         ;;
         time)
             _tz_time
