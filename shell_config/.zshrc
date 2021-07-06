@@ -637,7 +637,7 @@ alias ll='ll_list'
 alias la='la_list'
 alias l='l_list'
 
-tz_ls() { :; }
+tz0() { :; }
 _tz_ls() {
     cd /var/db/timezone/zoneinfo/
     _ls "$@"
@@ -660,8 +660,8 @@ function _tz {
         ;;
     esac
 }
-compdef _tz tz
-# alias tz='tz_ls'
+compdef _tz tz0
+alias tz='tz0'
 
 
 
