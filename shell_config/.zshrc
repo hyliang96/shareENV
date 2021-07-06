@@ -646,8 +646,6 @@ function _tz0 {
     local state
 
     _arguments -C \
-        "-h[Show help information]" \
-        "--h[Show help information]" \
         "1: :->tz_ls" \
         "2: :->tz_date" \
         "3: :->tz_time" \
