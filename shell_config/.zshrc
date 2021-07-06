@@ -643,10 +643,10 @@ _tz_ls() {
     cd /var/db/timezone/zoneinfo/
     _ls
     cd "$cwd"
-    echo /var/db/timezone/zoneinfo/"${@:$#}" >&2
-    if [ -d /var/db/timezone/zoneinfo/"${@:$#}" ]; then
-        compadd "$@"/
-    fi
+    # echo /var/db/timezone/zoneinfo/"${@:$#}" >&2
+    # if [ -d /var/db/timezone/zoneinfo/"${@:$#}" ]; then
+        # compadd "$@"/
+    # fi
 }
 function _tz0 {
 
