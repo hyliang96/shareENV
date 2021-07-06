@@ -649,8 +649,8 @@ function _tz0 {
         "-h[Show help information]" \
         "--h[Show help information]" \
         "1: :->tz_ls" \
-        "2: :->date" \
-        "3: :->time" \
+        "2: :->tz_date" \
+        "3: :->tz_time" \
         "4: :->tz_ls" \
         "*::arg:->args"
 
@@ -658,12 +658,12 @@ function _tz0 {
         tz_ls)
             _tz_ls
         ;;
-        date)
+        tz_date)
             # _tz_date
             compadd "$@" 'yyyy-MM-dd HH:mm:ss' ''
         ;;
-        time)
-            _tz_time
+        tz_time)
+            _tz_ls
         ;;
     esac
 }
