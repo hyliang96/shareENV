@@ -658,11 +658,12 @@ function _tz0 {
         tz_ls)
             _tz_ls
         ;;
+        date)
+            _date
+            # compadd "$@" hh:mm:ss
+        ;;
         time)
             _tz_time
-        ;;
-        date)
-            compadd "$@" hh:mm:ss
         ;;
     esac
 }
