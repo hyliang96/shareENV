@@ -646,7 +646,8 @@ _tz_ls() {
 
 }
 function _tz0 {
-    local cwd="$PWD"
+    (
+    # local cwd="$PWD"
     local state
 
     _arguments -C \
@@ -657,21 +658,21 @@ function _tz0 {
         "*::arg:->args"
 
     case $state in
-        tz_ls)
+        (tz_ls)
             _tz_ls
         ;;
-        tz_date)
+        (tz_date)
             :
             # _tz_date
             compadd "$@" 'yyyy-MM-dd' ''
         ;;
-        tz_time)
+        (tz_time)
             # _tz_ls
             compadd "$@" 'HH:mm:ss' ''
         ;;
     esac
-
-    cd "$cwd"
+    )
+    # cd "$cwd"
 }
 function _tz_date {
     _arguments \
