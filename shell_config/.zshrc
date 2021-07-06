@@ -658,6 +658,7 @@ function _tz0 {
             _tz_ls
         ;;
         tz_date)
+            echo time
         :;
         tz_time)
             _tz_ls
