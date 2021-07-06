@@ -659,10 +659,10 @@ function _tz0 {
             _tz_ls
         ;;
         time)
-            _hello_loudly
+            compadd "$@" yyyy-mm-dd
         ;;
         date)
-            _hello_quietly
+            compadd "$@" hh:mm:ss
         ;;
     esac
 }
