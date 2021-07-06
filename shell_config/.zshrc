@@ -660,6 +660,9 @@ function _tz0 {
     case $state in
         (tz_ls)
             _tz_ls
+            if [ -d /var/db/timezone/zoneinfo/"${@:$#}" ];
+                compadd "$@"/
+            fi
         ;;
         (tz_date)
             compadd "$@" 'yyyy-MM-dd' ''
