@@ -659,8 +659,8 @@ function _tz0 {
             _tz_ls
         ;;
         tz_date)
-            # _tz_date
-            compadd "$@" 'yyyy-MM-dd HH:mm:ss' ''
+            _tz_date
+            # compadd "$@" 'yyyy-MM-dd HH:mm:ss' ''
         ;;
         tz_time)
             _tz_ls
@@ -669,7 +669,7 @@ function _tz0 {
 }
 function _tz_date {
     _arguments \
-        "yyyy-mm-dd"
+        "yyyy-mm-dd HH:mm:ss"
 }
 compdef _tz0 tz0
 alias tz='tz0'
