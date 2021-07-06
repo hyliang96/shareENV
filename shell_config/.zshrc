@@ -657,7 +657,7 @@ function _tz0 {
         tz_ls)
             _tz_ls;;
         tz_date)
-            echo time;;
+            addcomp "@";;
         tz_time)
             _tz_ls;;
     esac
