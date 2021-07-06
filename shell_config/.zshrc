@@ -660,7 +660,7 @@ function _tz0 {
     case $state in
         (tz_ls)
             _tz_ls
-            if [ -d /var/db/timezone/zoneinfo/"${@:$#}" ];
+            if [ -d /var/db/timezone/zoneinfo/"${@:$#}" ]; then
                 compadd "$@"/
             fi
         ;;
