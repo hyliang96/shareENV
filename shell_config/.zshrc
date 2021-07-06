@@ -649,16 +649,19 @@ function _tz0 {
         "-h[Show help information]" \
         "--h[Show help information]" \
         "1: :->tz_ls" \
+        "2: :->date" \
+        "3: :->time" \
+        "4: :->tz_ls" \
         "*::arg:->args"
 
     case $state in
         tz_ls)
             _tz_ls
         ;;
-        loudly)
+        time)
             _hello_loudly
         ;;
-        quietly)
+        date)
             _hello_quietly
         ;;
     esac
