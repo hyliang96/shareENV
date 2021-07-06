@@ -640,7 +640,7 @@ alias l='l_list'
 tz0() { :; }
 _tz_ls() {
     cd /var/db/timezone/zoneinfo/
-    _ls "$@"
+    _ls
 }
 function _tz0 {
     local state
