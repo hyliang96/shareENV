@@ -658,7 +658,7 @@ function _tz0 {
         ;;
         tz_date)
             # _tz_date
-            compadd "$@" 'yyyy-MM-dd HH:mm:ss' ''
+            # compadd "$@" 'yyyy-MM-dd HH:mm:ss' ''
         ;;
         tz_time)
             _tz_ls
