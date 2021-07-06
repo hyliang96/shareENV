@@ -1817,7 +1817,7 @@ tz()
     echo ${source_time}
 
     if [ "$1" != '' ]; then
-        local target_TZ="$(__tz_check__ $4)"
+        local target_TZ="$(__tz_check__ $1)"
         [ "$target_TZ" = '' ] && return
     else
         local target_TZ='Asia/Shanghai'
