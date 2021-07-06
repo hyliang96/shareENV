@@ -644,7 +644,6 @@ _tz_ls() {
 }
 function _tz0 {
     local state
-    local line
 
     _arguments -C \
         "1: :->tz_ls" \
