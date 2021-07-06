@@ -638,7 +638,7 @@ alias la='la_list'
 alias l='l_list'
 
 tz_ls() { :; }
-_ts_ls() {
+_tz_ls() {
     cd /var/db/timezone/zoneinfo/
     _ls "$@"
 }
