@@ -639,13 +639,13 @@ alias l='l_list'
 
 tz0() { :; }
 _tz_ls() {
-    local cwd="$PWD"
+    # local cwd="$PWD"
     cd /var/db/timezone/zoneinfo/
     _ls
-    cd "$cwd"
+    # cd "$cwd"
     # echo /var/db/timezone/zoneinfo/"${@:$#}" >&2
     # if [ -d /var/db/timezone/zoneinfo/"${@:$#}" ]; then
-        compadd "$@"'/'
+        # compadd "$@"'/'
     # fi
 }
 function _tz0 {
