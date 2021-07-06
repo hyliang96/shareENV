@@ -640,8 +640,10 @@ alias l='l_list'
 tz0() { :; }
 _tz_ls() {
     # local cwd="$PWD"
+    (
     cd /var/db/timezone/zoneinfo/
     _ls
+    )
     # cd "$cwd"
 
 }
@@ -662,22 +664,14 @@ function _tz0 {
             _tz_ls
         ;;
         (tz_date)
-            :
-            # _tz_date
             compadd "$@" 'yyyy-MM-dd' ''
         ;;
         (tz_time)
-            # _tz_ls
             compadd "$@" 'HH:mm:ss' ''
         ;;
     esac
 
     # cd "$cwd"
-}
-function _tz_date {
-    _arguments \
-        'aadas'
-        # "yyyy-mm-dd\ HH:mm:ss"
 }
 compdef _tz0 tz0
 alias tz='tz0'
