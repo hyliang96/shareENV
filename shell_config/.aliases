@@ -1781,7 +1781,7 @@ tz()
         echo '    UCT = UTC-0 = (when not in daylight time) WET = Europe/London'
         echo
         echo 'convert time bwtween timezone'
-        echo '    `tz <source-timezone> yyyy-mm-dd hh:mm:ss [<target-timezone>=Asia/Shanghai]`'
+        echo '    `tz <source-timezone> yyyy-mm-dd [hh=00[:mm=00[:ss=00]]] [<target-timezone>=Asia/Shanghai]`'
         return
     fi
 

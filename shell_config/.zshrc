@@ -638,39 +638,26 @@ alias la='la_list'
 alias l='l_list'
 
 tz0() { :; }
-_tz_ls() {
-    cd /var/db/timezone/zoneinfo/
-    _ls "$@"
-}
+# _tz_ls() {
+    # cd /var/db/timezone/zoneinfo/
+    # _ls "$@"
+# }
 function _tz0 {
     local state
     local line
 
     _arguments -C \
-        "-h[Show help information]" \
-        "--h[Show help information]" \
         "1: :->tz_ls" \
-        "2: :->date" \
-        "3: :->time" \
+        "3: :->tz_ls" \
         "4: :->tz_ls" \
         "*::arg:->args"
 
     case $state in
         tz_ls)
-            _tz_ls
+            cd /var/db/timezone/zoneinfo/
+            _ls "$@"
         ;;
-        # date)
-            # _tz_date
-            # # compadd -X  yyyy-MM-dd "$@"
-        # ;;
-        # time)
-            # _tz_time
-        # ;;
     esac
-}
-function _tz_date {
-    _describe \
-        "yyyy-mm-dd"
 }
 compdef _tz0 tz0
 alias tz='tz0'
