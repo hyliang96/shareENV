@@ -640,8 +640,8 @@ alias l='l_list'
 tz0() { :; }
 _tz_ls() {
     # local cwd="$PWD"
-    # cd /var/db/timezone/zoneinfo/
-    _ls "$@"
+    cd /var/db/timezone/zoneinfo/
+    _ls
     # cd "$cwd"
 
 }
@@ -659,7 +659,7 @@ function _tz0 {
 
     case $state in
         (tz_ls)
-            _ls "/var/db/timezone/zoneinfo/$@"
+            _tz_ls
         ;;
         (tz_date)
             :
