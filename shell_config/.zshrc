@@ -644,6 +644,7 @@ _tz_ls() {
 }
 function _tz0 {
     local state
+    local line
 
     _arguments -C \
         "-h[Show help information]" \
