@@ -658,6 +658,7 @@ function _tz0 {
             _tz_ls
         ;;
         date)
+            :
         :;
         time)
             _tz_ls
