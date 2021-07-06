@@ -644,25 +644,33 @@ _tz_ls() {
 }
 function _tz0 {
     local state
+    local line
 
     _arguments -C \
+        "-h[Show help information]" \
+        "--h[Show help information]" \
         "1: :->tz_ls" \
-        "2: :->tz_date" \
-        "3: :->tz_time" \
+        "2: :->date" \
+        "3: :->time" \
         "4: :->tz_ls" \
         "*::arg:->args"
 
     case $state in
         tz_ls)
-            _tz_ls 
-            ;;
-        tz_date)
-            compadd "$@" yours
-            ;;
-        tz_time)
-            _tz_ls 
-            ;;
+            _tz_ls
+        ;;
+        date)
+            _tz_date
+            # compadd -X  yyyy-MM-dd "$@"
+        ;;
+        time)
+            _tz_time
+        ;;
     esac
+}
+function _tz_date {
+    _describe \
+        "yyyy-mm-dd"
 }
 compdef _tz0 tz0
 alias tz='tz0'
