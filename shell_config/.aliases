@@ -1767,7 +1767,7 @@ __tz_check__()
 
 tz()
 {
-    local cwd="$PWD"
+    # local cwd="$PWD"
 
     if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = help ]; then
         echo 'list valid timezones'
@@ -1826,8 +1826,8 @@ tz()
     local target_time="$(TZ="$target_TZ" date -d @$(TZ="$source_TZ" date -d  "$source_time" +%s) '+%F %T 周%w')"
     target_time="$(echo $target_time | sed 's/周0/周日/g')"
     echo $target_TZ $target_time
-    
-    cd $cwd
+
+    # cd $cwd
 }
 
 
