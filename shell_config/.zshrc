@@ -661,7 +661,7 @@ function _tz0 {
         ;;
         date)
             # _tz_date
-            compadd -X "@" yyyy-MM-dd
+            compadd -X  yyyy-MM-dd "@"
         ;;
         time)
             _tz_time
