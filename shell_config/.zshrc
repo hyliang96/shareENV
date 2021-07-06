@@ -648,6 +648,7 @@ function _tz0 {
 
     _arguments -C \
         "1: :->tz_ls" \
+        "2: :"
         "3: :->tz_ls" \
         "4: :->tz_ls" \
         "*::arg:->args"
