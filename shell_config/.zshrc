@@ -648,7 +648,7 @@ function _tz0 {
     _arguments -C \
         "-h[Show help information]" \
         "--h[Show help information]" \
-        "1: :($(_tz_ls))" \
+        "1: :(loudly quietly)" \
         "*::arg:->args"
 
     case $line[1] in
