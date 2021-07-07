@@ -644,7 +644,7 @@ _tz_ls() {
     # cd /var/db/timezone/zoneinfo/
     # _ls
 
-    reply=(`$LS --ignore-backups /var/db/timezone/zoneinfo/`)
+    reply=(`ls --ignore-backups /var/db/timezone/zoneinfo/`)
 
     # cd "$cwd"
     # echo /var/db/timezone/zoneinfo/"${@:$#}" >&2
