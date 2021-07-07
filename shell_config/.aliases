@@ -1827,7 +1827,8 @@ tz()
     target_time="$(echo $target_time | sed 's/周0/周日/g')"
     echo $target_TZ $target_time
 
-    cd $OLDPWD
+    _zlua -t .
+    # cd $OLDPWD
 }
 
 
