@@ -639,7 +639,7 @@ alias l='l_list'
 
 tz0() { :; }
 _tz_ls() {
-    [ $tz_cwd = '' ]  && tz_cwd="$PWD"
+    [ $tz_cwd = '' ]  && export tz_cwd="$PWD"
     cd /var/db/timezone/zoneinfo/
     _ls
     # cd "$cwd"
