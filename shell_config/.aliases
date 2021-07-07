@@ -1828,7 +1828,7 @@ tz()
     echo $target_TZ $target_time
 
     echo $tz_cwd
-    [ ${tz_cwd} != '' ]  && cd $tz_cwd
+    [ ! ${tz_cwd} = '' ]  && cd $tz_cwd
     tz_cwd=
 }
 
