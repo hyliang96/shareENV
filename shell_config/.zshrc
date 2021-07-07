@@ -644,7 +644,7 @@ _tz_ls() {
     # cd /var/db/timezone/zoneinfo/
     # _ls
 
-    compadd "$@" `ls --color=auto /var/db/timezone/zoneinfo/`
+    compadd "$@" `ls --color=always /var/db/timezone/zoneinfo/`
 
     # cd "$cwd"
     # echo /var/db/timezone/zoneinfo/"${@:$#}" >&2
