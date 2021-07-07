@@ -648,7 +648,7 @@ _tz_ls() {
     # fi
 }
 function _tz0 {
-    tz_cwd="$PWD"
+    [ $tz_cwd = '' ]  && tz_cwd="$PWD"
 
     # local cwd="$PWD"
     local state
