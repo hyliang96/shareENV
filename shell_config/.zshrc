@@ -639,9 +639,13 @@ alias l='l_list'
 
 tz0() { :; }
 _tz_ls() {
-    [ $tz_cwd = '' ]  && export tz_cwd="$PWD"
-    cd /var/db/timezone/zoneinfo/
-    _ls
+    # [ $tz_cwd = '' ]  && export tz_cwd="$PWD"
+    #
+    # cd /var/db/timezone/zoneinfo/
+    # _ls
+
+    reply=(`$LS --ignore-backups /var/db/timezone/zoneinfo/`)
+
     # cd "$cwd"
     # echo /var/db/timezone/zoneinfo/"${@:$#}" >&2
     # if [ -d /var/db/timezone/zoneinfo/"${@:$#}" ]; then
