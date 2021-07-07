@@ -451,7 +451,7 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 # source function.sh if it exists
 [ -f "$HOME/.local/etc/function.sh" ] && . "$HOME/.local/etc/function.sh"
 
-# ignore complition
+# ignore completion
 zstyle ':completion:*:complete:-command-:*:*' ignored-patterns '*.pdf|*.exe|*.dll'
 zstyle ':completion:*:*sh:*:' tag-order files
 
@@ -639,21 +639,10 @@ alias l='l_list'
 
 tz0() { :; }
 _tz_ls() {
-    # [ $tz_cwd = '' ]  && export tz_cwd="$PWD"
-    #
-    # cd /var/db/timezone/zoneinfo/
-    # _ls
-
-    compadd --color=auto "$@" `ls --color=always /var/db/timezone/zoneinfo/`
-
-    # cd "$cwd"
-    # echo /var/db/timezone/zoneinfo/"${@:$#}" >&2
-    # if [ -d /var/db/timezone/zoneinfo/"${@:$#}" ]; then
-        # compadd "$@"'/'
-    # fi
+    cd /var/db/timezone/zoneinfo/
+    _ls
 }
 _tz0() {
-    # local cwd="$PWD"
     local state
 
     _arguments -C \
@@ -674,8 +663,6 @@ _tz0() {
             compadd "$@" 'HH:mm:ss' ''
         ;;
     esac
-
-    # cd "$cwd"
 }
 compdef _tz0 tz0
 alias tz='tz0'
