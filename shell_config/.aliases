@@ -1828,7 +1828,7 @@ tz()
     echo $target_TZ $target_time
 
     _zlua -I -t
-    _zlua -t
+    _zlua -t .
     # cd $OLDPWD
 }
 
