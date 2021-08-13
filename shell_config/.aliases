@@ -1742,10 +1742,10 @@ usshfs()
         fusermount -u $@
         if [ $? -ne 0 ]; then
             echo 'Error when running `fusermount -u '$@'`.'
-            echo 'check with `ls -la |grep '$@'`'
-            echo 'if the ownership of this dir is like "???????"'
-            echo 'please run:'
-            echo "    usshfs -f <mounted_path>: forced unmount"
+            echo 'Check with `ls -la |grep '$@'`'
+            echo 'If the ownership of this dir is like "???????",'
+            echo 'please run this for forced unmount'
+            echo "    usshfs -f <mounted_path>"
         fi
     fi
 }
