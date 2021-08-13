@@ -1740,6 +1740,13 @@ usshfs()
         sudo umount -l $@
     else
         fusermount -u $@
+        if [ $? -ne 0 ]; then
+            echo 'Error when running `fusermount -u '$@'`.'
+            echo 'check with `ls -la |grep '$@'`'
+            echo 'if the ownership of this dir is like "???????"'
+            echo 'please run:'
+            echo "    usshfs -f <mounted_path>: forced unmount"
+        fi
     fi
 }
 
