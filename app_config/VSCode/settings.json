@@ -428,4 +428,8 @@
     // LTex : latex/markdown 拼写检查
     "ltex.enabled": true, // 启用插件
     "ltex.language": "en-US",
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
 }
