@@ -421,7 +421,8 @@
     "jupyter.askForKernelRestart": false,
     "jupyter.interactiveWindowMode": "perFile",
     "workbench.editorAssociations": {
-        "*.ipynb": "jupyter-notebook"
+        "*.ipynb": "jupyter-notebook",
+        // "*.md": "default", //  Office Viewer 插件
     },
     "editor.wordWrap": "on",
 
