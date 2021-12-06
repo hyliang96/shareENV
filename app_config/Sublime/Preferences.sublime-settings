@@ -4,7 +4,7 @@
 	"default_encoding": "UTF-8",
 	"draw_white_space": "all",
 	"ensure_newline_at_eof_on_save": true,
-	"font_size": 13,
+	"font_size": 11,
 	"highlight_line": true,
 	"ignored_packages":
 	[
@@ -20,4 +20,6 @@
 	"trim_trailing_white_space_on_save": true,
 	"update_check": false,
 	"word_wrap": "auto",
+	"auto_complete_include_snippets": true,
+	"auto_complete_include_snippets_when_typing": true,
 }
