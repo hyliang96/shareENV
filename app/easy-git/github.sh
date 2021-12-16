@@ -25,7 +25,11 @@ EOF
 gh()
 {
     if [ "$1" = 'test' ]; then
-        ssh -T git@github.com # 测试github的ssh连接
+        if [ $# -eq 1 ]; then
+            ssh -T git@github.com # 测试github的ssh连接
+        else
+            ssh -T "$2" # 测试github的ssh连接, $2 为服务器alias, 见~/.ssh/config 里的配置
+        fi
     elif [ "$1" = 'ls' ]; then
     # list all remote repo
         echo $(curl -H "Authorization: token $(cat ~/.ssh/github/github.token)" \
@@ -90,21 +94,27 @@ grgh()  # 关联github上的远程repo
         local name=origin
         local repo=$1
     elif [ $# = 2 ]; then
-        local user=`git config user.name`
-        local name=$1
+        local user=$1
+        local name=origin
         local repo=$2
     elif [ $# = 3 ]; then
         local name=$1
         local user=$2
         local repo=$3
     else
-        echo 'Usage: gh add [remote [github_username]] remote_repo_name'
-        echo '    default remote: origin'
-        echo '    default github_username: local git username, see in `git config user.name`'
+        echo 'Usage: gh add [[<remote>] <github_username>]] <remote_repo_name>'
+        echo '    default <remote>: origin'
+        echo '    default <github_username>: local git username, see in `git config user.name`'
         return
     fi
+    local ssh_config_match="$(cat ~/.ssh/config | grep -E '\s*Host\s(.+\s)?'${name}'(\s|$)')"
+    if [ "${ssh_config_match}" != '' ] && [ "${user}" != "`git config user.name`" ]; then
+        local server="${name}"
+    else
+        local server="git@github.com"
+    fi
     echo $user $name $repo
-    git remote add $name git@github.com:$user/$repo.git
+    git remote add $name $server:$user/$repo.git
 }
 
 
