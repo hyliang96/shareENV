@@ -107,12 +107,19 @@ grgh()  # 关联github上的远程repo
         echo '    default <github_username>: local git username, see in `git config user.name`'
         return
     fi
-    local ssh_config_match="$(cat ~/.ssh/config | grep -E '\s*Host\s(.+\s)?'${name}'(\s|$)')"
+    # 处理github及其他远程git仓库的多账号配置
+    local ssh_config_match="$(cat ~/.ssh/config | grep -E '^\s*Host\s(.+\s)?'${user}'(\s|$)')"
     if [ "${ssh_config_match}" != '' ] && [ "${user}" != "`git config user.name`" ]; then
-        local server="${name}"
+        local server="${user}"
+        # 对于非github默认账号, 需要先配置gh add, 来配置本地git的用户和邮箱, 再git commit和git push
+        local user_email="$(cat ~/.ssh/config | grep -E '^\s*Host\s(.+\s)?'${user}'(\s|$)' -A 20 | grep -E '^\s*(#\s*)?Email\s+(.+)$' | sed -E 's/^[[:space:]]*(#[[:space:]]*)?Email[[:space:]]+(.+)$/\2/g')"
+        [ -z "${user_email}" ] && local user_email="${user}@github.com" # 设置假邮箱
+        git config user.name "${user}"
+        git config user.email "${user_email}"
     else
         local server="git@github.com"
     fi
+
     echo "add [$name] $server:$user/$repo.git"
     git remote add $name $server:$user/$repo.git
 }
