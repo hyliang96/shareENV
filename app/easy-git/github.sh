@@ -90,12 +90,12 @@ grgh()  # 关联github上的远程repo
 # 然后用此，用法见下
 {
     if [ $# = 1 ] && [[ ! $1 =~ '^(-h|--help|help)$' ]]; then
-        local user=`git config user.name`
         local name=origin
+        local user=`git config user.name`
         local repo=$1
     elif [ $# = 2 ]; then
-        local user=$1
         local name=origin
+        local user=$1
         local repo=$2
     elif [ $# = 3 ]; then
         local name=$1
@@ -113,7 +113,7 @@ grgh()  # 关联github上的远程repo
     else
         local server="git@github.com"
     fi
-    echo $user $name $repo
+    echo "add [$name] $server:$user/$repo.git"
     git remote add $name $server:$user/$repo.git
 }
 
