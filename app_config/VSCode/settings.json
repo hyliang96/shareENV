@@ -433,4 +433,5 @@
         "default": "right",
         "jupyter-notebook": "left"
     },
+    "python.defaultInterpreterPath": "/Users/mac/miniconda3/bin/python",
 }
