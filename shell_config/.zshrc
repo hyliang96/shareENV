@@ -184,7 +184,7 @@ antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.g
 # set option to '' to disable it
 agnoster_time=1
 agnoster_env=1
-# agnoster_newline=1
+agnoster_newline=1
 
 [ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
 antigen apply
