@@ -176,10 +176,10 @@ antigen bundle willghatch/zsh-cdr
 # 换主题
 # 更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
 # bureau, ys, agnoster, apjanke/agnosterj-zsh-theme
-# antigen theme apjanke/agnosterj-zsh-theme
+antigen theme apjanke/agnosterj-zsh-theme
 # source /Users/mac/.antigen/bundles/apjanke/agnosterj-zsh-theme/agnosterj.zsh-theme
 
-antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
+# antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
 # set option to '' to disable it
 agnoster_time=1
 agnoster_env=1
