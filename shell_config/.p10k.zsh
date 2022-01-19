@@ -231,7 +231,7 @@
   typeset -g POWERLEVEL9K_DIR_FOREGROUND=12
     unset POWERLEVEL9K_DIR_ANCHOR_FOREGROUND
     unset POWERLEVEL9K_DIR_SHORTENED_FOREGROUND
-    POWERLEVEL9K_DIR_CONTENT_EXPANSION='%B$P9K_CONTENT%b'
+    POWERLEVEL9K_DIR_CONTENT_EXPANSION='%B$P9K_CONTENT \uE0B1%b'
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   # typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
