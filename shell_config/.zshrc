@@ -179,11 +179,11 @@ antigen bundle willghatch/zsh-cdr
 # antigen theme agnoster
 # antigen theme apjanke/agnosterj-zsh-theme
 # source /Users/mac/.antigen/bundles/apjanke/agnosterj-zsh-theme/agnosterj.zsh-theme
-antigen theme romkatv/powerlevel10k
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f $shareENV/shell_config/.p10k.zsh ]] || source $shareENV/shell_config/.p10k.zsh
+# antigen theme romkatv/powerlevel10k
+## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f $shareENV/shell_config/.p10k.zsh ]] || source $shareENV/shell_config/.p10k.zsh
 
-# antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
+antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
 # set option to '' to disable it
 agnoster_time=1
 agnoster_env=1
