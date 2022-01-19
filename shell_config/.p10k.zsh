@@ -231,7 +231,7 @@
   typeset -g POWERLEVEL9K_DIR_FOREGROUND=12
     unset POWERLEVEL9K_DIR_ANCHOR_FOREGROUND
     unset POWERLEVEL9K_DIR_SHORTENED_FOREGROUND
-    POWERLEVEL9K_DIR_CONTENT_EXPANSION='%B$P9K_CONTENT \uE0B1%b'
+    POWERLEVEL9K_DIR_CONTENT_EXPANSION='%B$P9K_CONTENT %b'
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   # typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
@@ -875,11 +875,11 @@
   typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=10
 
   # Context format when running with privileges: bold user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%B\uE0B1 %n@%m \uE0B1'
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%B %n@%m '
   # Context format when in SSH without privileges: user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='\uE0B1 %n@%m \uE0B1'
+  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE=' %n@%m '
   # Default context format (no privileges, no SSH): user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='\uE0B1 %n@%m \uE0B1'
+  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE=' %n@%m '
 
   # Don't show context unless running with privileges or in SSH.
   # Tip: Remove the next line to always show context.
