@@ -828,7 +828,7 @@
 
   ###########[ timewarrior: timewarrior tracking status (https://timewarrior.net/) ]############
   # Timewarrior color.
-  typeset -g POWERLEVEL9K_TIMEWARRIOR_FOREGROUND=110
+  typeset -g POWERLEVEL9K_TIMEWARRIOR_FOREGROUND=3
   # If the tracked task is longer than 24 characters, truncate and append "…".
   # Tip: To always display tasks without truncation, delete the following parameter.
   # Tip: To hide task names and display just the icon when time tracking is enabled, set the
@@ -840,7 +840,7 @@
 
   ##############[ taskwarrior: taskwarrior task count (https://taskwarrior.org/) ]##############
   # Taskwarrior color.
-  typeset -g POWERLEVEL9K_TASKWARRIOR_FOREGROUND=74
+  typeset -g POWERLEVEL9K_TASKWARRIOR_FOREGROUND=2
 
   # Taskwarrior segment format. The following parameters are available within the expansion.
   #
