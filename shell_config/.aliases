@@ -1108,7 +1108,7 @@ list_less_line_num=50
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias llc='ls -AlFh --sort=version --color=always'
 ll() {
-    local line_num=$(llc "$@" | wc -l)
+    local line_num=$(llc "$@" | grep -v -E '^total ' | wc -l)
     if [ $line_num -gt $list_less_line_num ]; then
         # 当超过 $list_less_line_num 行时, 则输出到less
         {
