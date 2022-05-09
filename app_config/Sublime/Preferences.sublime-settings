@@ -9,6 +9,7 @@
 	"ignored_packages":
 	[
 		"Vintage",
+		"Sublimerge Pro",
 	],
 	"remember_open_files": true,
 	"save_on_focus_lost": true,
