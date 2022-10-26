@@ -2,37 +2,45 @@
 # config
 #--------------------------------------
 # user_id='lao-liang-83-95'
-save_dir = '../zhihu_backup'
+save_dir = '../zhihu_backup/html'
 chrome_log = 'chrome_log'
 driver_path = './chromedriver'
 #--------------------------------------
-
+import sys
 import os
-# from http import server
-# from lib2to3.pgen2 import driver
-# from optparse import Option
-# from unicodedata import category
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-
 from selenium.webdriver.chrome.options import Options
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-
 from lxml import etree
-
-
-here = os.path.dirname(os.path.realpath(__file__)) # get absoltae path to the dir this file is in
-save_dir = os.path.join(here, save_dir)
-chrome_log = os.path.join(here, chrome_log)
-
 import signal
 import subprocess
 
+from contextlib import contextmanager
+@contextmanager
+def suppress_output():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        sys.stdout = devnull
+        sys.stderr = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
 
+with suppress_output():
+    from webdriver_manager.chrome import ChromeDriverManager
+#--------------------------------------
+here = os.path.dirname(os.path.realpath(__file__)) # get absoltae path to the dir this file is in
+save_dir = os.path.join(here, save_dir)
+chrome_log = os.path.join(here, chrome_log)
+driver_path = os.path.join(here, driver_path)
+#--------------------------------------
 class NormalChrome(object):
     def __init__(self,chrome_log):
         self.log = open(chrome_log, 'w')
@@ -58,7 +66,6 @@ def start_driver(driver_path):
     options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
     # options.add_argument('--log-level=3')
 
-    from webdriver_manager.chrome import ChromeDriverManager
     service=Service(ChromeDriverManager().install())
 
     # service=Service(driver_path)
@@ -66,9 +73,29 @@ def start_driver(driver_path):
     return driver
 
 def login_zhihu(driver):
-    print('若无之前登录知乎的缓存，请手动登录知乎')
-    driver.get('https://www.zhihu.com/signin')
-    print('登录知乎完成，后续将自动执行')
+    not_logged = False
+    for i in range(60):
+        driver.get('https://www.zhihu.com/signin')
+        button_xpath = '(//button[@id="Popover15-toggle"])'
+        if not wait_until(driver, button_xpath, timeout=5):
+            if i == 0:
+                print(
+'''若无之前登录知乎的缓存, 请手动登录知乎:
+在当前打开的浏览器内新建一个标签页
+访问https://zhuanlan.zhihu.com/signin
+手动填写账号, 密码, 验证码
+
+...等待登陆''')
+                not_logged = True
+            continue
+        else:
+            print('已登录知乎')
+            if not_logged:
+                print('可关闭手动登录用的标签页')
+            print('请保留爬虫用的标签页, 后续爬虫将自动执行')
+            return True
+    print('登陆等待超时，自动结束')
+    return False
 
 def get_user_id(driver):
     driver.get('https://www.zhihu.com')
@@ -168,10 +195,10 @@ def save_pages(driver, save_dir, category, titles, urls):
         if category in ['answers', 'posts', 'asks']:
             article_content = f'<h1>{title}</h1><a href="{url}">原文链接</a>' + article_content
         if category in ['answers', 'posts']:
-            article_time =  article_time.get_attribute('innerHTML')
+            article_time =  '<div>'+article_time.get_attribute('innerHTML')+'</div>'
             article_content += article_time
         html = etree.HTML(article_content)
-        article_content = etree.tostring(html, pretty_print=True).decode('utf-8')
+        article_content = etree.tostring(html, encoding='unicode', pretty_print=True)
 
         title = title.replace('/','\\')
         if category == 'pins':
@@ -181,28 +208,28 @@ def save_pages(driver, save_dir, category, titles, urls):
         with open(f"{category_dir}/{filename}.html", "w", encoding="utf-8") as f:
             f.write(article_content)
 
-def main(save_dir):
+def main(save_dir, driver_path):
     driver = start_driver(driver_path)
-    login_zhihu(driver)
-    user_id = get_user_id(driver)
-    print('user_id =', user_id)
-    print('\n################### Started ###################')
+    if login_zhihu(driver):
+        user_id = get_user_id(driver)
+        print('user_id =', user_id)
+        print('\n################### Started ###################')
 
-    categories = ['posts', 'answers', 'pins', 'asks']  #  'collections', 'columns'
-    for category in categories:
-        print(f'\n=================== {category} ===================')
-        print(f'---------------- Collecting Pages ----------------')
-        titles, urls = get_list(driver, user_id, category)
-        print(f'------------------ Saving Pages ------------------')
-        save_pages(driver, save_dir, category, titles, urls)
+        categories = ['posts'] # ['posts', 'answers', 'pins', 'asks']  #  'collections', 'columns'
+        for category in categories:
+            print(f'\n=================== {category} ===================')
+            print(f'---------------- Collecting Pages ----------------')
+            titles, urls = get_list(driver, user_id, category)
+            print(f'------------------ Saving Pages ------------------')
+            save_pages(driver, save_dir, category, titles, urls)
 
-    driver.close()
-    driver.quit()
-    print('\n################### Finished ###################')
+        driver.close()
+        driver.quit()
+        print('\n################### Finished ###################')
 
 if __name__ == "__main__":
     normal_chrome = NormalChrome(chrome_log)
-    main(save_dir)
+    main(save_dir, driver_path)
     normal_chrome.close()
 
 # https://3yya.com/lesson/66
