@@ -12,7 +12,6 @@ here=$(cd "$(dirname "${BASH_SOURCE[0]-$0}")"; pwd)
 zhihu_backup_dir="$here/../zhihu_backup"
 zhihu_html_dir="${zhihu_backup_dir}/html"
 markdown_dir="${zhihu_backup_dir}/markdown"
-ls $zhihu_backup_dir
 
 # # rm "${zhihu_html_dir}/record"
 
@@ -21,7 +20,8 @@ ls $zhihu_backup_dir
 # mkdir "${zhihu_html_dir}"
 # cd "${zhihu_html_dir}"; https_proxy='' http_proxy='' python -c "from zhihubackup import backup_zhihu; backup_zhihu('${user_id}')"
 
-
+TMPFILE=$(mktemp -p . --suffix .html)
+echo ${TMPFILE}
 
 add_to_head()
 {
@@ -59,13 +59,23 @@ for file in "${zhihu_html_dir}"/pins/*.html; do
 
 
     mkdir -p "${file_out_dir}"
-    pandoc -s "${file}" -o "${file_out}"
+
+
+    cp "${file}" "${TMPFILE}"
+
+    perl -pe 'BEGIN{undef $/;} s|(\<div class="RichText ztext PinItem-remainContentRichText"\>[\n ]*?\<div class="RichText ztext css-2ncmcq" options="\[object Object\]"\>[\n ]*?\<a data-first-child="" target="_blank" )(href=".+?").+?data-text="(.+?)"(.+?\>)|<a \2>\3</a>\n\1\4|smg' "${file}" > "${TMPFILE}"
+
+
+    pandoc -s "${TMPFILE}" -o "${file_out}"
 
     [[ "${type}" =~ ^(article|answer)$ ]] && add_to_head '# ' "${file_out}"
 
     add_to_head "来源：${url}"$'\n'$'\n' "${file_out}"
 
     sed -i '' 's|\\$|'$'\\\n''|g' "${file_out}"
+
+
+
 
     [ ${type} == pin ] && sed -i '' -E  's/(https\:\/\/[a-zA-Z0-9]+\.zhimg\.com\/[a-zA-Z0-9\.\/\_\-]+)/'$'\\\n''\!\[\]\(\1\)/g' "${file_out}"
     perl -i -pe 'BEGIN{undef $/;} s|\{\.(origin_image\|content_image).+?\}||smg' "${file_out}"   # 跨行匹配，非贪婪
@@ -82,7 +92,6 @@ for file in "${zhihu_html_dir}"/pins/*.html; do
     perl -i -pe 'BEGIN{undef $/;} s|::: RichText-LinkCardContainer.+?\.LinkCard-image--default\}\]\(||smg' "${file_out}"   # 跨行匹配，非贪婪
     perl -i -pe 'BEGIN{undef $/;} s|\)\{\.LinkCard.+?\}(\n:::)+||smg' "${file_out}"   # 跨行匹配，非贪婪
 
-
     # pins
     # 结尾
     perl -i -pe 'BEGIN{undef $/;} s|\<\/div\>\n+?::: \{\.ContentItem-actions \.RichContent-actions\}.+:::||smg' "${file_out}"   # 跨行匹配，非贪婪
@@ -92,43 +101,28 @@ for file in "${zhihu_html_dir}"/pins/*.html; do
     perl -i -pe 'BEGIN{undef $/;} s|::: ContentItem-time\n\[\[|\n|smg' "${file_out}"   # 跨行匹配，非贪婪
     perl -i -pe 'BEGIN{undef $/;} s|\]\{tooltip="发布于.+?\}\]\(//www.zhihu.com/pin/[0-9]+\)\n:::||smg' "${file_out}"   # 跨行匹配，非贪婪
 
-    # # # 图片
-    # perl -i -pe  's|::: Image-Wrapper-Preview||g' "${file_out}"
-    # perl -i -pe 'BEGIN{undef $/;} s|::: \{\.Thumbnail-Wrapper.+?\[||smg' "${file_out}"   # 跨行匹配，非贪婪
-    # perl -i -pe 'BEGIN{undef $/;} s|\{\.Image-Preview.+?\{\.Image-PreviewVague\}.*?([\n ]?:::)+||smg' "${file_out}"   # 跨行匹配，非贪婪
+    # # 图片
+    perl -i -pe  's|::: Image-Wrapper-Preview||g' "${file_out}"
+    perl -i -pe 'BEGIN{undef $/;} s|::: \{\.Thumbnail-Wrapper.+?\[||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|\{\.Image-Preview.+?\{\.Image-PreviewVague\}.*?([\n ]?:::)+||smg' "${file_out}"   # 跨行匹配，非贪婪
 
-    # # 开头
-    # perl -i -pe 'BEGIN{undef $/;} s|::: RichContent-inner\n\[||smg' "${file_out}"   # 跨行匹配，非贪婪
-    # perl -i -pe 'BEGIN{undef $/;} s|::: RichContent-inner\n+?:::\n+||smg' "${file_out}"   # 跨行匹配，非贪婪
-    # perl -i -pe 'BEGIN{undef $/;} s|::: \{\.RichText.+?\}([ \n]?:::)?||smg' "${file_out}"   # 跨行匹配，非贪婪
-    # perl -i -pe 'BEGIN{undef $/;} s|\]\{\.RichText.+?itemprop="text"\}([ \n]?:::)?||smg' "${file_out}"   # 跨行匹配，非贪婪
+    # 开头
+    perl -i -pe 'BEGIN{undef $/;} s|::: RichContent-inner\n\[||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|::: RichContent-inner\n+?:::\n+||smg' "${file_out}"   # 跨行匹配，非贪婪
 
-    # perl -i -pe 's|\<div\>||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|::: \{\.RichText.+?\}\n::: \{\.RichText.+?\}.+?:::\n:::||smg' "${file_out}"  # 知乎视频引用
+    perl -i -pe 'BEGIN{undef $/;} s|::: \{\.RichText.+?\}([ \n]?:::)?||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|\]\{\.RichText.+?itemprop="text"\}([ \n]?:::)?||smg' "${file_out}"   # 跨行匹配，非贪婪
 
-    # perl -i -pe 'BEGIN{undef $/;} s|:::\n:::\n||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|\[\]\{\.UserLink\}[ \n]*?::: css-.+?[ \n]*?(\[.+?\]\(.+?\))\{\.UserLink-link\}[ \n]?:::|\1|smg' "${file_out}"   # 艾特知乎用户
+    perl -i -pe 'BEGIN{undef $/;} s|::: \{\.PinItem-RichText \.PinItem-content-originpin\}|转载想法：|smg' "${file_out}"   # 转载想法
+    perl -i -pe 'BEGIN{undef $/;} s|::: RichContent||smg' "${file_out}"
 
-# ::: Image-Wrapper-Preview
+    perl -i -pe 's|\<div\>||smg' "${file_out}"
+    perl -i -pe 's|\<\/div\>||smg' "${file_out}"
 
-# ::: {.Thumbnail-Wrapper style="width: 173px; height: 173px;"}
-# [
+    perl -i -pe 'BEGIN{undef $/;} s|:::\n|\n|smg' "${file_out}"   # 跨行匹配，非贪婪
 
-# {.Image-Preview
-# ...
-# {.Image-PreviewVague}( *+5*)
-# :::
-
-# ::: ContentItem-time
-# [[
-
-# ]{tooltip="发布于
-# ...}](//www.zhihu.com/pin/1157834240648450048)
-# :::
-
-# </div>
-
-# ::: {.ContentItem-actions .RichContent-actions}
-# 删除
-# :::
 
     sed -i '' -E  's|https?\:\/\/link\.zhihu\.com\/\?target\=([a-z]+)%3A\/\/|\1://|g' "${file_out}"
     perl -i -pe 's/\[(\[[-A-Za-z0-9+&@#\/%?=~_|!:,.;]*\]\{\.(visible|invisible|ellipsis)\})+\]\(((https?|ftp|file):\/\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|])\)(\{\.external\})?/\n\3/g' "${file_out}"
@@ -149,3 +143,5 @@ for file_out_dir in "${markdown_dir}"/pins/*.textbundle; do
     done
     perl -i -pe 's|\!\[\]\(https\:\/\/.+?\.zhimg\.com\/.+?/(.+?)\)|![](assets/\1)|g' "${file_out}"
 done
+
+rm "${TMPFILE}"
