@@ -10,8 +10,8 @@
 
 here=$(cd "$(dirname "${BASH_SOURCE[0]-$0}")"; pwd)
 zhihu_backup_dir="$here/../zhihu_backup"
-zhihu_html_dir="${zhihu_backup_dir}/html"
-markdown_dir="${zhihu_backup_dir}/markdown"
+zhihu_html_dir="${zhihu_backup_dir}/test"
+markdown_dir="${zhihu_backup_dir}/test_markdown"
 
 # # rm "${zhihu_html_dir}/record"
 
@@ -25,6 +25,7 @@ TMPFILE=$(mktemp -p . --suffix .html)
 trap 'onCtrlC' INT
 function onCtrlC () {
     [ -f "${TMPFILE}"  ] && rm "${TMPFILE}"
+    exit 0
 }
 
 
@@ -34,13 +35,14 @@ add_to_head()
     echo -n "${1}" | cat - "${2}" > "${temp}" && mv "${temp}" "${2}"
 }
 
-testfile='如何评价华北浪革的歌《焰火青年》?-2420593244'
+testtype='**'
+testfile='*'
 
-n_total=$(ls -1 "${zhihu_html_dir}"/answers/${testfile}.html | wc -l)
+n_total=$(ls -1 "${zhihu_html_dir}"/${testtype}/${testfile}.html | wc -l)
 
 n=0
 
-for file in "${zhihu_html_dir}"/answers/${testfile}.html; do
+for file in "${zhihu_html_dir}"/${testtype}/${testfile}.html; do
 
     n=$(( 1 + $n ))
 
@@ -82,9 +84,6 @@ for file in "${zhihu_html_dir}"/answers/${testfile}.html; do
 
     sed -i '' 's|\\$|'$'\\\n''|g' "${file_out}"
 
-
-
-
     [ ${type} == pin ] && sed -i '' -E  's/(https\:\/\/[a-zA-Z0-9]+\.zhimg\.com\/[a-zA-Z0-9\.\/\_\-]+)/'$'\\\n''\!\[\]\(\1\)/g' "${file_out}"
     perl -i -pe 'BEGIN{undef $/;} s|\{\.(origin_image\|content_image).+?\}||smg' "${file_out}"   # 跨行匹配，非贪婪
 
@@ -92,21 +91,21 @@ for file in "${zhihu_html_dir}"/answers/${testfile}.html; do
     perl -i -pe  's|\[(.+?)\!\[\]\(data:.+?\)\{\..+?\}\]\((.+?)\)(\{.+?\})?|[\1](\2)|g' "${file_out}" # 名词解释的超链接
 
     # answers
-    perl -i -pe 'BEGIN{undef $/;} s|\[\n*\]\{\.RichText .+?\}||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|\[\n*\]\{\.RichText[\n ].+?\}||smg' "${file_out}"   # 跨行匹配，非贪婪
 
     # posts
-    perl -i -pe 'BEGIN{undef $/;} s|::: css-[0-9a-zA-Z]+\n::: \{\.RichText .+?\}\n||smg' "${file_out}"  # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|::: css-[0-9a-zA-Z]+\n::: \{\.RichText[\n ].+?\}\n||smg' "${file_out}"  # 跨行匹配，非贪婪
 
-    perl -i -pe 'BEGIN{undef $/;} s|::: RichText-LinkCardContainer .+?\.LinkCard-image--default\}\]\(||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|::: RichText-LinkCardContainer[ \n].+?\.LinkCard-image--default\}\]||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|::: RichText-ZVideoLinkCardContainer[ \n].+?\.LinkCard-image--default\}\]||smg' "${file_out}"   # 跨行匹配，非贪婪
     perl -i -pe 'BEGIN{undef $/;} s|\{\.LinkCard[ \n].+?\}(\n:::)+||smg' "${file_out}"   # 跨行匹配，非贪婪
 
     perl -i -pe 'BEGIN{undef $/;} s|::: RichText-LinkCardContainer\n\[\[ ||smg' "${file_out}"
-    perl -i -pe 'BEGIN{undef $/;} s|::: \{\.LinkCard-title[ \n].+?\}[ \n]+?\[\[\.+?{\.LinkCard-contents\}\]||smg' "${file_out}"
-
+    perl -i -pe 'BEGIN{undef $/;} s|\{\.LinkCard-title[ \n].+?\}[ \n]+?\[\[.+?{\.LinkCard-contents\}\]||smg' "${file_out}"
 
     # pins
     # 结尾
-    perl -i -pe 'BEGIN{undef $/;} s|\<\/div\>\n+?::: \{\.ContentItem-actions \.RichContent-actions\}.+:::||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|\<\/div\>\n+?::: \{\.ContentItem-actions[\n ]\.RichContent-actions\}.+:::||smg' "${file_out}"   # 跨行匹配，非贪婪
     perl -i -pe 'BEGIN{undef $/;} s|\<\/div\>\n+?::: ContentItem-actions.+:::||smg' "${file_out}"   # 跨行匹配，非贪婪
 
     # # 时间
@@ -123,11 +122,11 @@ for file in "${zhihu_html_dir}"/answers/${testfile}.html; do
     perl -i -pe 'BEGIN{undef $/;} s|::: RichContent-inner\n+?:::\n+||smg' "${file_out}"   # 跨行匹配，非贪婪
 
     # 内容
-    perl -i -pe 'BEGIN{undef $/;} s|::: \{\.RichText .+?\}\n::: \{\.RichText.+?\}.+?:::\n:::||smg' "${file_out}"  # 知乎视频引用
-    perl -i -pe 'BEGIN{undef $/;} s|::: \{\.RichText .+?\}([ \n]?:::)?||smg' "${file_out}"   # 跨行匹配，非贪婪
-    perl -i -pe 'BEGIN{undef $/;} s|\]\{\.RichText .+?itemprop="text"\}([ \n]?:::)?||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|::: \{\.RichText[\n ].+?\}\n::: \{\.RichText.+?\}.+?:::\n:::||smg' "${file_out}"  # 知乎视频引用
+    perl -i -pe 'BEGIN{undef $/;} s|::: \{\.RichText[\n ].+?\}([ \n]?:::)?||smg' "${file_out}"   # 跨行匹配，非贪婪
+    perl -i -pe 'BEGIN{undef $/;} s|\]\{\.RichText[\n ].+?itemprop="text"\}([ \n]?:::)?||smg' "${file_out}"   # 跨行匹配，非贪婪
 
-    perl -i -pe 'BEGIN{undef $/;} s|\[\]\{\.UserLink\}[ \n]*?::: css-.+?[ \n]*?(\[.+?\]\(.+?\))\{\.UserLink-link\}[ \n]?:::|\1|smg' "${file_out}"   # 艾特知乎用户
+    perl -i -pe 'BEGIN{undef $/;} s|\[ *\]\{\.UserLink\}[ \n]*?::: css-.+?[ \n]*?(\[.+?\]\(.+?\))\{\.UserLink-link\}[ \n]?:::|\1|smg' "${file_out}"   # 艾特知乎用户
     perl -i -pe 'BEGIN{undef $/;} s|::: \{\.PinItem-RichText \.PinItem-content-originpin\}|转载想法：|smg' "${file_out}"   # 转载想法
     perl -i -pe 'BEGIN{undef $/;} s|::: RichContent||smg' "${file_out}"
     perl -i -pe 'BEGIN{undef $/;} s|::: VideoCard-mask||smg' "${file_out}"
@@ -136,8 +135,12 @@ for file in "${zhihu_html_dir}"/answers/${testfile}.html; do
     perl -i -pe 's|\<div\>||smg' "${file_out}"
     perl -i -pe 's|\<\/div\>||smg' "${file_out}"
 
+    sed -i '' -E 's|\\@|@|g' "${file_out}"
+    sed -i '' -E 's| | |g' "${file_out}"
+
     # perl -i -pe 'BEGIN{undef $/;} s|:::\n|\n|smg' "${file_out}"   # 跨行匹配，非贪婪
 
+    sed -i '' 's|------|\n------|g' "${file_out}"
 
     sed -i '' -E  's|https?\:\/\/link\.zhihu\.com\/\?target\=([a-z]+)%3A\/\/|\1://|g' "${file_out}"
     perl -i -pe 's/\[(\[[-A-Za-z0-9+&@#\/%?=~_|!:,.;]*\]\{\.(visible|invisible|ellipsis)\})+\]\(((https?|ftp|file):\/\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|])\)(\{\.external\})?/\n\3/g' "${file_out}"
@@ -147,7 +150,7 @@ for file in "${zhihu_html_dir}"/answers/${testfile}.html; do
 done
 
 
-for file_out_dir in "${markdown_dir}"/answers/${testfile}.textbundle; do
+for file_out_dir in "${markdown_dir}"/${testtype}/${testfile}.textbundle; do
     echo $file_out_dir
     file_out="${file_out_dir}/text.markdown"
     for i in $(cat "${file_out}" | grep -E '\!\[\]\(https\:\/\/.+?\.zhimg\.com\/(.+?)\)' | perl -pe 's|\!\[\]\((https\:\/\/.+?\.zhimg\.com\/.+?)\)|\1|g'); do

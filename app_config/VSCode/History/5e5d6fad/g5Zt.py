@@ -18,6 +18,9 @@ from selenium.common.exceptions import TimeoutException
 from lxml import etree
 import signal
 import subprocess
+import requests
+import re
+import json
 
 from contextlib import contextmanager
 @contextmanager
@@ -41,6 +44,10 @@ save_dir = os.path.join(here, save_dir)
 chrome_log = os.path.join(here, chrome_log)
 driver_path = os.path.join(here, driver_path)
 #--------------------------------------
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0'
+}
+
 class NormalChrome(object):
     def __init__(self,chrome_log):
         self.log = open(chrome_log, 'w')
@@ -166,27 +173,6 @@ def save_pages(driver, save_dir, category, titles, urls):
             print(title, url, '你似乎来到了没有知识存在的荒原')
             continue
 
-        driver.find_elements(By.XPATH, '//div[@class="RichText-video"]')
-        # print('VideoCard-video', driver.find_element(By.XPATH, '(//div[@class="VideoCard-video"])'), '\n')
-        # print('VideoCard-video-content', driver.find_element(By.XPATH, '(//div[@class="VideoCard-video-content"])'), '\n')
-        # print('VideoCard-player', elem := driver.find_element(By.XPATH, '(//div[@class="VideoCard-player"])'), '\n')
-        # elem.click()
-        # print('iframe video', elem := driver.find_element(By.XPATH, '(//iframe[@title="video"])'), '\n')
-        # elem.click()
-
-        # driver.switch_to.frame(elem)
-        # print('inside')
-        # video_xpath = '(//video[@playsinline])'
-        # if wait_until(driver, video_xpath, timeout=5):
-        #     print('playsinline get')
-        # else:
-        #     print('waiting get nothing')
-        # print()
-        # print(driver.page_source)
-        # driver.switch_to.default_content()
-
-
-
         if category == 'posts':
             article_content = driver.find_element(By.XPATH,'(//div[@class="Post-RichTextContainer"])')
             article_time = driver.find_element(By.XPATH,'(//div[@class="ContentItem-time"])')
@@ -223,6 +209,81 @@ def save_pages(driver, save_dir, category, titles, urls):
             article_time =  '<p>'+article_time+'</p>'
             article_content += article_time
         html = etree.HTML(article_content)
+
+
+        video_elems = html.xpath('//div[@class="RichText-video"]')
+        if video_elems != []:
+            res = requests.get(url, headers=headers)
+            # 获取答案url上的id
+            answer_id = re.findall(r'answer/(\d+)', url)[0]
+
+            # 获取json文本
+            text = res.text
+            json_text = re.findall(r'<script id="js-initialData" type="text/json">(.*?)</script>', text)[0]
+
+            # 提取答案的content文件。
+            data = json.loads(json_text)
+            # print(data['initialState']['entities']['answers'][answer_id]['content'])
+            content = data['initialState']['entities']['answers'][answer_id]['content']
+            # print(content)
+            # 提取url
+            video_urls = re.findall(r'(https://www.zhihu.com/video/\d+)', content)
+
+            video_codes = []
+            for url in video_urls:
+                video_id = re.findall(r'/video/(\d+)', url)[0]
+                video_url = f'https://lens.zhihu.com/api/v4/videos/{video_id}'
+                res = requests.get(video_url, headers=headers)
+                data = json.loads(res.text)
+                print(data)
+
+                if "HD" in data["playlist"].keys():
+                    video_url = data["playlist"]["HD"]["play_url"]
+                elif "SD" in data["playlist"].keys():
+                    video_url = data["playlist"]["SD"]["play_url"]
+                elif "LD" in data["playlist"].keys():
+                    video_url = data["playlist"]["LD"]["play_url"]
+                # LD（标清）, SD（高清）, HD（超清）
+                video_name = data["title"]
+                if video_name == None:
+                    video_name = '视频'
+                else:
+                    video_name += '.mp4'
+                video_url = video_url.replace('&', '&amp;')
+
+                f'''<video width="320" height="240" controls autoplay>
+<source src="{video_url}" type="video/mp4">
+</video>'''
+                # video_codes.append(f'<a href="xxx">yyyy</a>')
+                video_codes.append(f'<a href="{video_url}">{video_name}</a>')
+
+            for elem, code in zip(video_elems, video_codes):
+                print(code)
+                new_elem = etree.fromstring(code)
+                elem.getparent().replace(elem, new_elem)
+
+        # print('VideoCard-video', driver.find_element(By.XPATH, '(//div[@class="VideoCard-video"])'), '\n')
+        # print('VideoCard-video-content', driver.find_element(By.XPATH, '(//div[@class="VideoCard-video-content"])'), '\n')
+        # print('VideoCard-player', elem := driver.find_element(By.XPATH, '(//div[@class="VideoCard-player"])'), '\n')
+        # elem.click()
+        # print('iframe video', elem := driver.find_element(By.XPATH, '(//iframe[@title="video"])'), '\n')
+        # elem.click()
+
+        # driver.switch_to.frame(elem)
+        # print('inside')
+        # video_xpath = '(//video[@playsinline])'
+        # if wait_until(driver, video_xpath, timeout=5):
+        #     print('playsinline get')
+        # else:
+        #     print('waiting get nothing')
+        # print()
+        # print(driver.page_source)
+        # driver.switch_to.default_content()
+
+
+
+
+
         article_content = etree.tostring(html, encoding='unicode', pretty_print=True)
 
         title = title.replace('/','\\')
