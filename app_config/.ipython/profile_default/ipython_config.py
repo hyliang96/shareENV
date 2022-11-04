@@ -306,7 +306,7 @@ c.TerminalInteractiveShell.highlight_matching_brackets = True
 #         highlighting:
 #  default, emacs, friendly, colorful, autumn, murphy, manni, monokai, perldoc, pastie, borland, trac, native, fruity, bw, vim, vs, tango, rrt, xcode, igor, paraiso-light, paraiso-dark, lovelace, algol, algol_nu, arduino, rainbow_dash, abap
 #c.TerminalInteractiveShell.highlighting_style = traitlets.Undefined
-c.TerminalInteractiveShell.highlighting_style = 'fruity'
+c.TerminalInteractiveShell.highlighting_style = 'monokai'
 # "monokai"
 # 好用的颜色:  native vim paraiso-dark trac fruity monokai
 
