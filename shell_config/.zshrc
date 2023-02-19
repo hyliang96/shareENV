@@ -121,6 +121,13 @@ DISABLE_MAGIC_FUNCTIONS=true
 
 # -------------------------------------------------------------------------
 # antigen
+# Installing xxx/yyy.. Error! Activate logging and try again.
+# 若报错`Error! Activate logging and try again.`
+# 则可能是要安装的插件主分支不是master而是main
+# 可把安装命令从
+# antigen bundle xxx/yyy # 默认分支是master
+# 改成：
+# antigen bundle xxx/yyy --branch=main
 
 # Antigen: https://github.com/zsh-users/antigen
 ANTIGEN="$HOME/.local/bin/antigen.zsh"
