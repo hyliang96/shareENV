@@ -141,7 +141,7 @@ antigen use oh-my-zsh
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
 antigen bundle fzf   # 模糊搜索, 可以搜文件夹下路径,历史命令,历史路径
-antigen bundle marlonrichert/zsh-hist
+antigen bundle marlonrichert/zsh-hist --branch=main
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -163,7 +163,7 @@ export _ZL_MATCH_MODE=1 # 启用增强匹配模式
 export _ZL_NO_ALIASES=0 # 不用预设alias, 用自己定义的alias
 
 
-antigen bundle zdharma/fast-syntax-highlighting    # zsh 命令的语法高亮
+antigen bundle zdharma-continuum/fast-syntax-highlighting    # zsh 命令的语法高亮
 # antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
 antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
 antigen bundle zsh-users/zsh-completions         # tab键自动补全
