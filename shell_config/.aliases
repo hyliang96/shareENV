@@ -1432,7 +1432,7 @@ macdotrm()
 
 # ----------------- alias to pip ---------------
 # alias pip='pip --default-timeout=100'  # 避免报错 Read timed out.
-pipreq()
+pip-req()
 {
     if [ $# -eq 1 ]; then
         local requirements_file="requirements.txt"
