@@ -871,7 +871,14 @@ elif [ -x "$(which vim)" ]; then
     alias default_editor=vim
 fi
 
-# 给nvim, vim设置conda python环境
+# # 给nvim, vim设置venv python环境
+# if [ -x "$HOME/.vim/vim_venv/bin/python" ] && [ -x "$(which nvim)" ]; then
+    # alias nvim='PATH=$HOME/.vim/vim_venv/bin:$PATH nvim'
+# fi
+# if [ -x "$HOME/.vim/vim_venv/bin/python" ] && [ -x "$(which vim)" ]; then
+    # alias vim='PATH=$HOME/.vim/vim_venv/bin:$PATH vim'
+# fi
+
 if [ -d "$(which -a python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ] && [ -x "$(which nvim)" ]; then
     alias nvim='PATH=$(which -a python | grep conda | head -n 1 | xargs dirname):$PATH nvim'
 fi
@@ -1108,7 +1115,7 @@ list_less_line_num=50
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias llc='ls -AlFh --sort=version --color=always'
 ll() {
-    local line_num=$(llc "$@" | wc -l)
+    local line_num=$(llc "$@" | grep -v -E '^total ' | wc -l)
     if [ $line_num -gt $list_less_line_num ]; then
         # 当超过 $list_less_line_num 行时, 则输出到less
         {
@@ -1424,7 +1431,10 @@ macdotrm()
 
 
 # ----------------- alias to pip ---------------
-alias pip='pip --default-timeout=100'  # 避免报错 Read timed out.
+# alias pip='pip --default-timeout=100'  # 避免报错 Read timed out.
+if alias pipreq >/dev/null 2>&1; then
+    unalias pipreq
+fi
 pipreq()
 {
     if [ $# -eq 1 ]; then

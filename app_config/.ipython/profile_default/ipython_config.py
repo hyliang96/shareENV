@@ -177,7 +177,7 @@
 ## Use colors for displaying information about objects. Because this information
 #  is passed through a pager (like 'less'), and some pagers get confused with
 #  color codes, this capability can be turned off.
-# c.InteractiveShell.color_info = True
+c.InteractiveShell.color_info = True
 
 ## Set the color scheme (NoColor, Neutral, Linux, or LightBG).
 c.InteractiveShell.colors = 'Linux'
@@ -300,13 +300,14 @@ c.InteractiveShell.colors = 'Linux'
 #c.TerminalInteractiveShell.extra_open_editor_shortcuts = False
 
 ## Highlight matching brackets.
-# c.TerminalInteractiveShell.highlight_matching_brackets = True
+c.TerminalInteractiveShell.highlight_matching_brackets = True
 
 ## The name or class of a Pygments style to use for syntax
 #         highlighting:
 #  default, emacs, friendly, colorful, autumn, murphy, manni, monokai, perldoc, pastie, borland, trac, native, fruity, bw, vim, vs, tango, rrt, xcode, igor, paraiso-light, paraiso-dark, lovelace, algol, algol_nu, arduino, rainbow_dash, abap
 #c.TerminalInteractiveShell.highlighting_style = traitlets.Undefined
-c.TerminalInteractiveShell.highlighting_style = "monokai"
+c.TerminalInteractiveShell.highlighting_style = 'monokai'
+# "monokai"
 # 好用的颜色:  native vim paraiso-dark trac fruity monokai
 
 from pygments.token import Token, Keyword, Name, Comment, String, Error, \
@@ -314,8 +315,8 @@ from pygments.token import Token, Keyword, Name, Comment, String, Error, \
 # Override highlighting format for specific tokens
 c.TerminalInteractiveShell.highlighting_style_overrides = {
     # see https://pygments.org/docs/tokens/ for the key in the dict
-    # see https://stackoverflow.com/a/48455387/10974371 for example of this dict 
-    
+    # see https://stackoverflow.com/a/48455387/10974371 for example of this dict
+
     ## Standard Pygments tokens (are all used by IPython ?)
 
     # Whitespace:                "#bbbbbb",
