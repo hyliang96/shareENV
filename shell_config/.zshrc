@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
 # DotFileDebug=1
-[ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc >&2
 # -------------------------------------------------------------------------
 # 定义安装函数
 
 # Install antigen.zsh if not exist
 check_antigen_install()
 {
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc - instal zsh >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - instal zsh >&2
 
     if [ ! -f "$ANTIGEN" ]; then
         echo "Installing antigen ..."
@@ -34,12 +34,12 @@ check_antigen_install()
         mv "$TMPFILE" "$ANTIGEN"
     fi
 
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc -  Initialize command prompt >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc -  Initialize command prompt >&2
 }
 
 check_jump_install()
 {
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - load autojump >&2
 
     # antigen bundle autojump # 自动跳转
     if [ "$(uname)" = "Darwin" ]; then
@@ -69,7 +69,7 @@ check_jump_install()
         [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
     fi
 
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - antigen bundle >&2
 }
 
 check_fzf_install()
@@ -134,12 +134,12 @@ ANTIGEN="$HOME/.local/bin/antigen.zsh"
 # install zsh
 check_antigen_install
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - Initialize antigen >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - Initialize antigen >&2
 # Initialize antigen
 source "$ANTIGEN"
 # -------------------------------------------------------------------------
 # zsh 插件
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen boundle >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - antigen boundle >&2
 
 # Initialize oh-my-zsh
 antigen use oh-my-zsh
@@ -196,7 +196,7 @@ agnoster_time=1
 agnoster_env=1
 # agnoster_newline=1
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc antigen apply >&2
 antigen apply
 
 
@@ -309,7 +309,7 @@ EOF
 }
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc set syntax highlighting >&2
 
 # ------------
 # zdharma/fast-syntax-highlighting 的主题
@@ -347,7 +347,7 @@ fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - set bindkey >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - set bindkey >&2
 
 # 10ms for key sequences
 KEYTIMEOUT=1
@@ -441,7 +441,7 @@ bindkey © get-line           # alt+g, 命令栈出一个命令
 
 bindkey Ω undo   # alt+z 撤销命令行下的文本操作
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - set option >&2
 
 # options
 unsetopt correct_all
@@ -468,7 +468,7 @@ zstyle ':completion:*:*sh:*:' tag-order files
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - Coreutils color scheme >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - Coreutils color scheme >&2
 
 # 终端使用 Coreutils 配色方案
 # 采用Coreutils的gdircolor配色，修改~/.dir_colors(自定义配色)
@@ -578,7 +578,7 @@ if [ "$(command -v imgcat)"  = '' ]; then
 fi
 # -------------------------------------------------------------------------
 # 自动补全的复用
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - reuse completions >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - reuse completions >&2
 # 初始化zsh的自动补全，从而conpdef函数有定义了
 autoload -U compinit && compinit
 
@@ -650,7 +650,7 @@ set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc load local zsh login/logout and local config >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc load local zsh login/logout and local config >&2
 
 # check login shell
 if [[ -o login ]]; then
@@ -663,4 +663,4 @@ fi
 [ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc end >&2
