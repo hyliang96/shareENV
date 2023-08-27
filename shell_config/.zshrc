@@ -483,7 +483,7 @@ zstyle ':completion:*:*sh:*:' tag-order files
 if [ "$(uname)" = "Darwin" ]; then
     check_coreutils_install()
     {
-        if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
+        if [ -d $shareENV/shell_config/gls-links/coreutils/libexec/gnubin ] && [ -x $shareENV/shell_config/gls-links/gls ]; then
             return
         fi
 
@@ -499,7 +499,7 @@ if [ "$(uname)" = "Darwin" ]; then
         if [ -d "${coreutils_path}" ]; then
             echo 'You have installed `coreutils` with `brew`'
             echo "ln -s ${coreutils_path} /usr/local/opt/coreutils"
-            ln -s ${coreutils_path} /usr/local/opt/coreutils
+            ln -s ${coreutils_path} $shareENV/shell_config/gls-links/coreutils
         else
             echo 'You have not installed `coreutils` with `brew`'
             echo 'without `coreutils`, `ls` will be colored vanillaly'
@@ -512,7 +512,7 @@ if [ "$(uname)" = "Darwin" ]; then
         if [  -x "${gls_path}"  ]; then
             echo 'You have command `gls`, which is a submodule of `coreutils`'
             echo "ln -s ${gls_path} /usr/local/bin/gls"
-            ln -s ${gls_path} /usr/local/bin/gls
+            ln -s ${gls_path} $shareENV/shell_config/gls-links/gls
         else
             echo 'You have no command `gls`, which is a submodule of `coreutils`'
             echo '`command -v gls` returns:'
@@ -537,9 +537,9 @@ if [ "$(uname)" = "Darwin" ]; then
     }
 
     check_coreutils_install
-    if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
-        PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
-        alias ls="/usr/local/bin/gls --show-control-chars  --color=auto" # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
+    if [ -d $shareENV/shell_config/gls-links/coreutils/libexec/gnubin ] && [ -x $shareENV/shell_config/gls-links/gls ]; then
+        PATH="$shareENV/shell_config/gls-links/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
+        alias ls="$shareENV/shell_config/gls-links/gls --show-control-chars  --color=auto" # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
         eval `gdircolors -b ${shareENV}/shell_config/.dir_colors`   # 启用配色方案
     fi
 fi
