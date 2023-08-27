@@ -483,30 +483,36 @@ zstyle ':completion:*:*sh:*:' tag-order files
 if [ "$(uname)" = "Darwin" ]; then
     check_coreutils_install()
     {
-        # if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
-            # return
-        # fi
+        if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
+            return
+        fi
 
         if [ -x "$(command -v brew)" ]; then
-            # echo 'You have installed `brew`'
+            echo 'You have installed `brew`'
         else
             echo 'You have not installed `brew`'
             return
         fi
 
-        if [ "$(brew list | grep coreutils)" != "" ]; then
-            # echo 'You have installed `coreutils` with `brew`'
+        local coreutils_path="$(brew --prefix coreutils)"
+        # if [ "$(brew list | grep coreutils)" != "" ]; then
+        if [ -d "${coreutils_path}" ]; then
+            echo 'You have installed `coreutils` with `brew`'
+            echo "ln -s ${coreutils_path} /usr/local/opt/coreutils"
+            ln -s ${coreutils_path} /usr/local/opt/coreutils
         else
             echo 'You have not installed `coreutils` with `brew`'
             echo 'without `coreutils`, `ls` will be colored vanillaly'
-            echo 'To install `coreutils`, run `brew install coreutils`'
+            echo 'To install `coreutils`, it is running `brew install coreutils`'
             brew install coreutils
             return
         fi
 
-        gls_path="$(command -v gls)"
+        local gls_path="$(command -v gls)"
         if [  -x "${gls_path}"  ]; then
-            # echo 'You have command `gls`, which is a submodule of `coreutils`'
+            echo 'You have command `gls`, which is a submodule of `coreutils`'
+            echo "ln -s ${gls_path} /usr/local/bin/gls"
+            ln -s ${gls_path} /usr/local/bin/gls
         else
             echo 'You have no command `gls`, which is a submodule of `coreutils`'
             echo '`command -v gls` returns:'
@@ -517,11 +523,10 @@ if [ "$(uname)" = "Darwin" ]; then
             return
         fi
 
-        coreutils_path="$(brew --prefix coreutils)/libexec/gnubin"
-        if [ -d "$coreutils_path" ]; then
-            # echo "the path of \`coreutils\` is $coreutils_path, it should be added into PATH"
-            # echo "everything is ok with the gls's color scheme on your mac"
-            # echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
+        if [ -d "$coreutils_path/libexec/gnubin" ]; then
+            echo "The path of \`coreutils\` is $coreutils_path, it should be added into PATH."
+            echo "Everything is ok with the gls's color scheme on your mac"
+            echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
         else
             echo 'The  path of `coreutils` is missing, it should be $(brew --prefix coreutils)/libexec/gnubin/'
             echo 'while `brew --prefix coreutils` returns wrongly:'
@@ -529,15 +534,14 @@ if [ "$(uname)" = "Darwin" ]; then
             # echo 'it might be "/usr/local/opt/coreutils"'
             return
         fi
-
-        if [ -d ${coreutils_path} ] && [ -x "${gls_path}" ]; then
-            PATH="${coreutils_path}/libexec/gnubin:$PATH" # 添加coreutils到PATH
-            alias ls="${gls_path} --show-control-chars  --color=auto" # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
-            eval `gdircolors -b ${shareENV}/shell_config/.dir_colors`   # 启用配色方案
-        fi
     }
 
     check_coreutils_install
+    if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
+        PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
+        alias ls="/usr/local/bin/gls --show-control-chars  --color=auto" # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
+        eval `gdircolors -b ${shareENV}/shell_config/.dir_colors`   # 启用配色方案
+    fi
 fi
 # linux 的 ls默认上色了，加载 coreutils 配色
 
