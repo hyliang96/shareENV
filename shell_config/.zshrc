@@ -533,7 +533,7 @@ if [ "$(uname)" = "Darwin" ]; then
         if [ -d ${coreutils_path} ] && [ -x "${gls_path}" ]; then
             PATH="${coreutils_path}/libexec/gnubin:$PATH" # 添加coreutils到PATH
             alias ls="${gls_path} --show-control-chars  --color=auto" # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
-            eval `gdircolors -b $HOME/.dir_colors`   # 启用配色方案
+            eval `gdircolors -b ${shareENV}/shell_config/.dir_colors`   # 启用配色方案
         fi
     }
 
