@@ -312,7 +312,7 @@ EOF
 [[ $DotFileDebug -ne 0 ]] && echo share .zshrc set syntax highlighting >&2
 
 # ------------
-# zdharma/fast-syntax-highlighting 的主题
+# zdharma-continuum/fast-syntax-highlighting 的主题
 fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
 # -----------------
