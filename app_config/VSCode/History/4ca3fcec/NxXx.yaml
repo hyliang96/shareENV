@@ -4,22 +4,184 @@ bind-address: '*'
 mode: rule
 log-level: info
 external-controller: '127.0.0.1:9090'
+
 dns:
-    enable: true
-    ipv6: false
-    default-nameserver: [223.5.5.5, 119.29.29.29]
-    enhanced-mode: fake-ip
-    fake-ip-range: 198.18.0.1/16
-    use-hosts: true
-    nameserver: ['https://doh.pub/dns-query', 'https://dns.alidns.com/dns-query']
-    fallback: ['https://doh.dns.sb/dns-query', 'https://dns.cloudflare.com/dns-query', 'https://dns.twnic.tw/dns-query', 'tls://8.8.4.4:853']
-    fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4, 0.0.0.0/32] }
+  enable: true
+  ipv6: false
+  use-hosts: true
+  # default-nameserver: [8.8.8.8, 8.8.4.4]
+  default-nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+    # 清华的TUNA dns
+    - 101.6.6.6
+    # - 119.29.29.29
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - 'mail.tsinghua.edu.cn'
+    - '*.lan'
+    - '*.linksys.com'
+    - '*.linksyssmartwifi.com'
+    - 'swscan.apple.com'
+    - 'mesu.apple.com'
+    - '*.msftconnecttest.com'
+    - '*.msftncsi.com'
+    - 'time.*.com'
+    - 'time.*.gov'
+    - 'time.*.edu.cn'
+    - 'time.*.apple.com'
+    - 'time1.*.com'
+    - 'time2.*.com'
+    - 'time3.*.com'
+    - 'time4.*.com'
+    - 'time5.*.com'
+    - 'time6.*.com'
+    - 'time7.*.com'
+    - 'ntp.*.com'
+    - 'ntp.*.com'
+    - 'ntp1.*.com'
+    - 'ntp2.*.com'
+    - 'ntp3.*.com'
+    - 'ntp4.*.com'
+    - 'ntp5.*.com'
+    - 'ntp6.*.com'
+    - 'ntp7.*.com'
+    - '*.time.edu.cn'
+    - '*.ntp.org.cn'
+    - '+.pool.ntp.org'
+    - 'time1.cloud.tencent.com'
+    ## NetEase
+    - '+.music.163.com'
+    - '*.126.net'
+    ## Baidu
+    - 'musicapi.taihe.com'
+    - 'music.taihe.com'
+    ## Kugou
+    - 'songsearch.kugou.com'
+    - 'trackercdn.kugou.com'
+    ## Kuwo
+    - '*.kuwo.cn'
+    ## JOOX
+    - 'api-jooxtt.sanook.com'
+    - 'api.joox.com'
+    - 'joox.com'
+    ## QQ
+    - '+.y.qq.com'
+    - '+.music.tc.qq.com'
+    - 'aqqmusic.tc.qq.com'
+    - '+.stream.qqmusic.qq.com'
+    ## Xiami
+    - '*.xiami.com'
+    ## Migu
+    - '+.music.migu.cn'
+    # === Game Service ===
+    ## Nintendo Switch
+    - '+.srv.nintendo.net'
+    ## Sony PlayStation
+    - '+.stun.playstation.net'
+    ## Microsoft Xbox
+    - 'xbox.*.microsoft.com'
+    - '+.xboxlive.com'
+    # === Other ===
+    ## QQ Quick Login
+    - 'localhost.ptlogin2.qq.com'
+    ## Golang
+    - 'proxy.golang.org'
+    ## STUN Server
+    - 'stun.*.*'
+    - 'stun.*.*.*'
+    - ntp.ubuntu.com
+    - ntp.aliyun.com
+    - ntp1.aliyun.com
+    - ntp2.aliyun.com
+    - ntp3.aliyun.com
+    - ntp4.aliyun.com
+    - ntp5.aliyun.com
+    - ntp6.aliyun.com
+    - ntp7.aliyun.com
+    - time1.aliyun.com
+    - time2.aliyun.com
+    - time3.aliyun.com
+    - time4.aliyun.com
+    - time5.aliyun.com
+    - time6.aliyun.com
+    - time7.aliyun.com
+    - "*.time.edu.cn"
+    - time1.apple.com
+    - time2.apple.com
+    - time3.apple.com
+    - time4.apple.com
+    - time5.apple.com
+    - time6.apple.com
+    - time7.apple.com
+    - time1.google.com
+    - time2.google.com
+    - time3.google.com
+    - time4.google.com
+    - music.163.com
+    - "*.music.163.com"
+    - "*.126.net"
+    - musicapi.taihe.com
+    - music.taihe.com
+    - songsearch.kugou.com
+    - trackercdn.kugou.com
+    - "*.kuwo.cn"
+    - api-jooxtt.sanook.com
+    - api.joox.com
+    - joox.com
+    - y.qq.com
+    - "*.y.qq.com"
+    - streamoc.music.tc.qq.com
+    - mobileoc.music.tc.qq.com
+    - isure.stream.qqmusic.qq.com
+    - dl.stream.qqmusic.qq.com
+    - aqqmusic.tc.qq.com
+    - amobile.music.tc.qq.com
+    - "*.xiami.com"
+    - "*.music.migu.cn"
+    - music.migu.cn
+    - "*.msftconnecttest.com"
+    - "*.msftncsi.com"
+    - localhost.ptlogin2.qq.com
+    - "*.*.*.srv.nintendo.net"
+    - "*.*.stun.playstation.net"
+    - xbox.*.*.microsoft.com
+    - "*.ipv6.microsoft.com"
+    - "*.*.xboxlive.com"
+    - speedtest.cros.wr.pvp.net
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - https://223.6.6.6/dns-query
+  fallback:
+    - https://1.0.0.1/dns-query
+    - https://1.1.1.1/dns-query
+    - https://public.dns.iij.jp/dns-query
+  # fallback: ['https://doh.dns.sb/dns-query', 'https://dns.cloudflare.com/dns-query', 'https://dns.twnic.tw/dns-query', 'tls://8.8.4.4:853']
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - 240.0.0.0/4
+      - 0.0.0.0/32
+      - 127.0.0.1/32
+      - 3.3.3.3/32
+    domain:
+      - +.google.com
+      - +.facebook.com
+      - +.twitter.com
+      - +.youtube.com
+      - +.xn--ngstr-lra8j.com
+      - +.google.cn
+      - +.googleapis.cn
+      - +.googleapis.com
+      - +.gvt1.com
 
 proxy-providers:
-  aws-seoul:
+  aws:
     type: http
-    path: ./iybzouenjn_provider.yaml
-    # url: https://aws.172767.xyz/s/clashMeta/e90411ce350549dbe83529926c44c775
+    path: ./yjtdgdppec_provider.yaml
+    # url: https://aws.172767.xyz/s/clashMeta/<uuid>
     interval: 86400
     health-check:
       enable: false
@@ -43,21 +205,20 @@ proxy-groups:
     proxies:
       - 自动选择
       - 故障转移
+      - AWS
     use:
       - WNET-Proxy
-      - aws-seoul
+      - aws
   -
     name: 自动选择
     type: url-test
     use:
       - WNET-Proxy
-      - aws-seoul
   -
     name: 故障转移
     type: fallback
     use:
       - WNET-Proxy
-      - aws-seoul
   -
     name: Streaming
     type: select
@@ -66,7 +227,6 @@ proxy-groups:
       - 故障转移
     use:
       - WNET-Proxy
-      - aws-seoul
   -
     name: Telegram
     type: select
@@ -75,7 +235,11 @@ proxy-groups:
       - 故障转移
     use:
       - WNET-Proxy
-      - aws-seoul
+  -
+    name: AWS
+    type: select
+    use:
+      - aws
 
 
 rule-providers:
@@ -210,6 +374,10 @@ rules:
   # WNET网页（新版）
   - DOMAIN,v2.wnet.one,DIRECT
   - DOMAIN,v2.wnet.space,DIRECT
-  - DOMAIN,aws.172767.xyz,DIRECT
+  # 清华校园网登陆界面
+  - DOMAIN,net.tsinghua.edu.cn,DIRECT
+
+  # - DOMAIN,sentry.io,DIRECT
+  # - DOMAIN,oregon.172767.xyz,DIRECT
   # - IP-CIDR,43.201.218.127/22,DIRECT
   # - DST-PORT,22,DIRECT

@@ -7,6 +7,7 @@ external-controller: '127.0.0.1:9090'
 dns:
     enable: true
     ipv6: false
+    # default-nameserver: [8.8.8.8, 8.8.4.4]
     default-nameserver: [223.5.5.5, 119.29.29.29]
     enhanced-mode: fake-ip
     fake-ip-range: 198.18.0.1/16
@@ -16,10 +17,10 @@ dns:
     fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4, 0.0.0.0/32] }
 
 proxy-providers:
-  aws-seoul:
+  aws:
     type: http
-    path: ./iybzouenjn_provider.yaml
-    # url: https://aws.172767.xyz/s/clashMeta/e90411ce350549dbe83529926c44c775
+    path: ./erytzylcct_provider.yaml
+    # url: https://aws.172767.xyz/s/clashMeta/a3c4d60d4d8363364eddb9a9ae9818cc
     interval: 86400
     health-check:
       enable: false
@@ -46,7 +47,7 @@ proxy-groups:
       - AWS
     use:
       - WNET-Proxy
-      - aws-seoul
+      - aws
   -
     name: 自动选择
     type: url-test
@@ -75,9 +76,9 @@ proxy-groups:
       - WNET-Proxy
   -
     name: AWS
-    type: url-test
+    type: select
     use:
-      - aws-seoul
+      - aws
 
 
 rule-providers:
@@ -212,6 +213,8 @@ rules:
   # WNET网页（新版）
   - DOMAIN,v2.wnet.one,DIRECT
   - DOMAIN,v2.wnet.space,DIRECT
+  # 清华校园网登陆界面
+  - DOMAIN,net.tsinghua.edu.cn,DIRECT
 
   # - DOMAIN,sentry.io,DIRECT
   # - DOMAIN,aws.172767.xyz,DIRECT

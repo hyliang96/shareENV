@@ -606,6 +606,13 @@ fi
 alias network-restart='sudo /etc/init.d/networking restart'
 
 # -------------------- 进程管理 --------------------
+# 查看哪些进程占用指定路径
+jchat()
+{
+    lsof "$@"
+}
+
+
 # 搜索进程
 # alias jc='ps aux | awk 'NR==1'; ps aux | grep -v grep | grep'
 jch()
@@ -621,7 +628,7 @@ jch()
         ps aux | awk NR!=1 | grep -v grep | grep -v 'ps aux' | grep -v 'awk NR!=1' | grep $*
     fi
 }
-# 查看对应教程的pid，jchpid <pid1> [<pid2> [ <pid3>...]]
+# 查看对应进程的pid，jchpid <pid1> [<pid2> [ <pid3>...]]
 alias jchpid='ps u -p'
 
 
@@ -1602,16 +1609,28 @@ tb()
     tensorboard $dir_arg $@
 }
 # -----------------  alias to tmux ------------------
+t-h() {
+        echo 'tmux easy mode:
+    t-o [<session-name>]                   : open a tmux session (default session-name is 'default')
+    t-ls                                   : list sessions
+    t-mv <session-name> <session-new-name> : rename a session
+    t-k <session-name>                     : kill a session
+    t-ka                                   : kill all sessions
+    t-h | t                                : help for this tmux easy mode'
+}
+
+alias t='t-h'
+
 # list all session of tmux session
-alias tl='tmux ls'
+alias t-ls='tmux ls'
 # rename a tmux session: tmv <current-session-name> <new-session-name>
-alias tmv='tmux rename-session -t'
+alias t-mv='tmux rename-session -t'
 # kill a tmux session
-alias tk='tmux kill-session -t'
+alias t-k='tmux kill-session -t'
 # kill all tmux sessions i.e. kill the tmux server
-tka()
+t-ka()
 {
-    local answer=$(bash -c "read  -n 1 -p 'Do you want to kill the tmux server? [Y|N]' c; echo \$c")
+    local answer=$(bash -c "read  -n 1 -p 'Do you want to kill the tmux server with all sessions? [Y|N]' c; echo \$c")
     echo
     if [ "$answer" = "y" ] || [  "$answer" = "Y"  ]; then
         tmux kill-server
@@ -1621,49 +1640,29 @@ tka()
     fi
 }
 
-
-
-
-#              命令   (i)tm                      (i)tm 已有session名    (i)tm 新session名
-# 无tmux session 时   创建名为的default的session    --                   创建session
-# 有tmux session 时   attach最近的session         attach该session       创建session
-# itm:与iterm2关联的tmux
-# tm：不关联iterm2的tmux
-
-# if [ -n "$ZSH_NAME" ] && [[ -o interactive ]]; then
-    # tmux_itm() {   :;    }
-    # compdef _tmux tmux_itm
-    # alias itm='tmux_itm -CC attach -t'
-# fi
-
-itm() {
-    if [ "$(alias itm 2> /dev/null)" != '' ]; then
-        for i in {1..3}; do shift; done
-    fi
-    if [ $# = 0 ]; then
-        tmux -CC attach || tmux -CC new -s default
-    else
-        local session="$1"
-        tmux -CC attach -t "${session}" || tmux -CC new -s "${session}"
-    fi
-}
-
-
 # if [ -n "$ZSH_NAME" ] && [[ -o interactive ]]; then
     # tmux_tm() {   :;    }
     # compdef _tmux tmux_tm
     # alias tm='tmux_tm attach -t'
 # fi
 
-tm() {
-    if [ "$(alias tm 2> /dev/null)" != '' ]; then
+t-o() {
+    if [ "$(alias t-o 2> /dev/null)" != '' ]; then
         for i in {1..2}; do shift; done
     fi
     if [ $# = 0 ]; then
-        tmux attach || tmux new -s default
+        if it2check; then # 若当前在使用iterm.app
+            tmux -CC attach || tmux -CC new -s default
+        else # 否则
+            tmux attach || tmux new -s default
+        fi
     else
-        local session=$1
-        tmux attach -t ${session} || tmux new -s ${session}
+        local session="$1"
+        if it2check; then # 若当前在使用iterm.app
+            tmux -CC attach -t "${session}" || tmux -CC new -s "${session}"
+        else # 否则
+            tmux attach -t ${session} || tmux new -s ${session}
+        fi
     fi
 }
 

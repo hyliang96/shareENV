@@ -593,13 +593,13 @@ autoload -U compinit && compinit
 compdef _rsync autots
 compdef _rsync download
 
-tmux_itm() {   :;    }
-compdef _tmux tmux_itm
-alias itm='tmux_itm -CC attach -t'
+# tmux_itm() {   :;    }
+# compdef _tmux tmux_itm
+# alias itm='tmux_itm -CC attach -t'
 
 tmux_tm() {   :;    }
 compdef _tmux tmux_tm
-alias tm='tmux_tm attach -t'
+alias t-o='tmux_tm attach -t'
 
 # git_gch() {   :;    }
 # compdef _git git_gch

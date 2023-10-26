@@ -7,7 +7,8 @@ external-controller: '127.0.0.1:9090'
 dns:
     enable: true
     ipv6: false
-    default-nameserver: [223.5.5.5, 119.29.29.29]
+    default-nameserver: [8.8.8.8, 8.8.4.4]
+    # default-nameserver: [223.5.5.5, 119.29.29.29]
     enhanced-mode: fake-ip
     fake-ip-range: 198.18.0.1/16
     use-hosts: true
@@ -18,7 +19,7 @@ dns:
 proxy-providers:
   aws-seoul:
     type: http
-    path: ./iybzouenjn_provider.yaml
+    path: ./qkoetadqik_provider.yaml
     # url: https://aws.172767.xyz/s/clashMeta/ae20349043f3a183548ea03ca352d0dd
     interval: 86400
     health-check:

@@ -7,6 +7,7 @@ external-controller: '127.0.0.1:9090'
 dns:
     enable: true
     ipv6: false
+    # default-nameserver: [8.8.8.8, 8.8.4.4]
     default-nameserver: [223.5.5.5, 119.29.29.29]
     enhanced-mode: fake-ip
     fake-ip-range: 198.18.0.1/16
@@ -18,8 +19,8 @@ dns:
 proxy-providers:
   aws-seoul:
     type: http
-    path: ./iybzouenjn_provider.yaml
-    # url: https://aws.172767.xyz/s/clashMeta/e90411ce350549dbe83529926c44c775
+    path: ./qkoetadqik_provider.yaml
+    # url: https://aws.172767.xyz/s/clashMeta/12c73e9216daf1f6440b0122982b3d85
     interval: 86400
     health-check:
       enable: false
@@ -43,6 +44,7 @@ proxy-groups:
     proxies:
       - 自动选择
       - 故障转移
+      - AWS
     use:
       - WNET-Proxy
       - aws-seoul
@@ -51,13 +53,11 @@ proxy-groups:
     type: url-test
     use:
       - WNET-Proxy
-      - aws-seoul
   -
     name: 故障转移
     type: fallback
     use:
       - WNET-Proxy
-      - aws-seoul
   -
     name: Streaming
     type: select
@@ -66,7 +66,6 @@ proxy-groups:
       - 故障转移
     use:
       - WNET-Proxy
-      - aws-seoul
   -
     name: Telegram
     type: select
@@ -75,6 +74,10 @@ proxy-groups:
       - 故障转移
     use:
       - WNET-Proxy
+  -
+    name: AWS
+    type: select
+    use:
       - aws-seoul
 
 
@@ -210,6 +213,8 @@ rules:
   # WNET网页（新版）
   - DOMAIN,v2.wnet.one,DIRECT
   - DOMAIN,v2.wnet.space,DIRECT
+
+  # - DOMAIN,sentry.io,DIRECT
   # - DOMAIN,aws.172767.xyz,DIRECT
   # - IP-CIDR,43.201.218.127/22,DIRECT
   # - DST-PORT,22,DIRECT
