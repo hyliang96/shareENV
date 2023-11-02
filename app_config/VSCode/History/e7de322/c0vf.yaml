@@ -1,0 +1,12 @@
+proxies:
+  -
+    name: custom_node
+    type: trojan
+    server: liulab.thbi.cc
+    port: 443
+    password: yinzi123
+  - name: aws-trojan
+    server: awsca1.lianghy.ml
+    port: 443
+    type: trojan
+    password: f32d2739-d012-4fc5-9d47-b0a800a1cfe8
