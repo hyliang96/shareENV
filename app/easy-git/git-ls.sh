@@ -170,7 +170,7 @@ git-ls() {
     # | grep -v -E '^.$'
 }
 
-gls()
+gl()
 {
     local ls_args=()
     local dir_paths=()
@@ -184,11 +184,11 @@ gls()
         shift
     done
 
-    # local gls_command="git-ls $file_type  | awk -F / '{print \$1}' | uniq | sed 's/\ /\\\ /g' | xargs ls -dh --color=auto $ls_args"
+    # local gl_command="git-ls $file_type  | awk -F / '{print \$1}' | uniq | sed 's/\ /\\\ /g' | xargs ls -dh --color=auto $ls_args"
 
     if [ ${#dir_paths} -eq 0 ]; then
         git-ls $ls_args
-        # eval "$gls_command"
+        # eval "$gl_command"
     else
         local here_path="$(pwd | sed 's/\ /\\\ /g')"
         for dir_path in "${dir_paths[@]}"; do
@@ -196,7 +196,7 @@ gls()
             echo -E "$dir_path:" | sed 's/\ /\\\ /g'
             cd $dir_path
             git-ls "${ls_args[@]}"
-            # eval "$gls_command"
+            # eval "$gl_command"
             cd $here_path
         done
     fi
@@ -205,13 +205,12 @@ gls()
 # --------------------
 
 # 几个文件一行，不显示文件详细信息
-alias gl='gls'
-alias gli='gls --ignore'
-alias glhi='gls --has-ignore'
+alias gli='gl --ignore'
+alias glhi='gl --has-ignore'
 # 一个文件一行，显示详细信息
-alias gll='gls -lh'
-alias glli='gls -lh --ignore'
-alias gllhi='gls -lh --has-ignore'
+alias gll='gl -lh'
+alias glli='gl -lh --ignore'
+alias gllhi='gl -lh --has-ignore'
 
 # alias gll='git ls-files | awk -F / '\''{print $1}'\'' | uniq | sed '\''s/\ /\\\ /g'\'' | xargs ls -dl --color=auto'
 

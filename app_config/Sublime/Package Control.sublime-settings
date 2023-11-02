@@ -20,7 +20,7 @@
 		"windows":
 		[
 			"wininet"
-		]
+		],
 	},
 	"in_process_packages":
 	[
@@ -46,6 +46,8 @@
 		"SideBarEnhancements",
 		"SSH Config",
 		"SublimeREPL",
-		"Theme - SoDaReloaded"
-	]
+		"Sublimerge 3",
+		"Sublimerge Pro",
+		"Theme - SoDaReloaded",
+	],
 }

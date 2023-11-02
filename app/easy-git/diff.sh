@@ -16,7 +16,8 @@ Usage:
   ${cmd}-s  <node>      [options] [[--] (诸)文件(夹)] : 索引 与 <node>提交版本 的区别
   ${cmd}  <node> <node> [options] [[--] (诸)文件(夹)] : 两个node的区别
 <node> = 分支名/glg中的版本哈希/HEAD/HEAD^/HEAD~n/HEAD@{n}
-以上gdf换成gdfl, 则只列出相异文件的路径, 不显示文件diff的内容
+
+以上\`gdf\`换成\`gdfl\`, 则只列出相异文件的路径, 不显示文件diff的内容
 EOF
 }
 
