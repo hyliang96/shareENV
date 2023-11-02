@@ -20,7 +20,7 @@
 		"windows":
 		[
 			"wininet"
-		]
+		],
 	},
 	"in_process_packages":
 	[
@@ -40,11 +40,14 @@
 		"Monokai Extended",
 		"OmniMarkupPreviewer",
 		"Package Control",
+		"PackageResourceViewer",
 		"rsub",
 		"SFTP",
 		"SideBarEnhancements",
 		"SSH Config",
 		"SublimeREPL",
-		"Theme - SoDaReloaded"
-	]
+		"Sublimerge 3",
+		"Sublimerge Pro",
+		"Theme - SoDaReloaded",
+	],
 }

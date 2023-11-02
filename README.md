@@ -1,9 +1,8 @@
 # shareENV
 
+share configs among all linux/max/wls computers
 
- share configs among all linux/max/wls computers
-
- containing:
+containing:
 
  * a user-friendly sublime-style vim configuration: under `app_config/vim/`.
 
@@ -18,3 +17,9 @@
  * show basic softwares as bin or scripts
 
  * scripts to automatically pull this repo when loging in and push when logging out; supports file lock
+
+# Download
+
+~~~bash
+git clone --recursive https://github.com/hyliang96/shareENV.git
+~~~

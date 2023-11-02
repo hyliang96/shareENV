@@ -124,4 +124,11 @@
         ],
         "description": "Buddha Bless"
     },
+    // "ifmain": {
+    //     "prefix": "ifmain",
+    //     "body": [
+    //         "if __name__ == '__main__':",
+    //     ],
+    //     "description": "ifmain"
+    // }
 }

@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
 # DotFileDebug=1
-[ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc >&2
 # -------------------------------------------------------------------------
 # 定义安装函数
 
 # Install antigen.zsh if not exist
 check_antigen_install()
 {
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc - instal zsh >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - instal zsh >&2
 
     if [ ! -f "$ANTIGEN" ]; then
         echo "Installing antigen ..."
@@ -34,12 +34,12 @@ check_antigen_install()
         mv "$TMPFILE" "$ANTIGEN"
     fi
 
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc -  Initialize command prompt >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc -  Initialize command prompt >&2
 }
 
 check_jump_install()
 {
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - load autojump >&2
 
     # antigen bundle autojump # 自动跳转
     if [ "$(uname)" = "Darwin" ]; then
@@ -69,7 +69,7 @@ check_jump_install()
         [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
     fi
 
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - antigen bundle >&2
 }
 
 check_fzf_install()
@@ -121,18 +121,25 @@ DISABLE_MAGIC_FUNCTIONS=true
 
 # -------------------------------------------------------------------------
 # antigen
+# Installing xxx/yyy.. Error! Activate logging and try again.
+# 若报错`Error! Activate logging and try again.`
+# 则可能是要安装的插件主分支不是master而是main
+# 可把安装命令从
+# antigen bundle xxx/yyy # 默认分支是master
+# 改成：
+# antigen bundle xxx/yyy --branch=main
 
 # Antigen: https://github.com/zsh-users/antigen
 ANTIGEN="$HOME/.local/bin/antigen.zsh"
 # install zsh
 check_antigen_install
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - Initialize antigen >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - Initialize antigen >&2
 # Initialize antigen
 source "$ANTIGEN"
 # -------------------------------------------------------------------------
 # zsh 插件
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen boundle >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - antigen boundle >&2
 
 # Initialize oh-my-zsh
 antigen use oh-my-zsh
@@ -140,7 +147,8 @@ antigen use oh-my-zsh
 # 历史命令搜索
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
-antigen bundle fzf   # 模糊历史搜索
+antigen bundle fzf   # 模糊搜索, 可以搜文件夹下路径,历史命令,历史路径
+antigen bundle marlonrichert/zsh-hist --branch=main
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -162,7 +170,7 @@ export _ZL_MATCH_MODE=1 # 启用增强匹配模式
 export _ZL_NO_ALIASES=0 # 不用预设alias, 用自己定义的alias
 
 
-antigen bundle zdharma/fast-syntax-highlighting    # zsh 命令的语法高亮
+antigen bundle zdharma-continuum/fast-syntax-highlighting    # zsh 命令的语法高亮
 # antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
 antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
 antigen bundle zsh-users/zsh-completions         # tab键自动补全
@@ -175,28 +183,45 @@ antigen bundle willghatch/zsh-cdr
 # 换主题
 # 更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
 # bureau, ys, agnoster, apjanke/agnosterj-zsh-theme
+# antigen theme agnoster
 # antigen theme apjanke/agnosterj-zsh-theme
 # source /Users/mac/.antigen/bundles/apjanke/agnosterj-zsh-theme/agnosterj.zsh-theme
 
-antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
+antigen theme romkatv/powerlevel10k
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f $shareENV/shell_config/.p10k.zsh ]] || source $shareENV/shell_config/.p10k.zsh
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
+# set option to '' to disable it
 agnoster_time=1
 agnoster_env=1
 # agnoster_newline=1
 
-
-[ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc antigen apply >&2
 antigen apply
 
 
 # -------------------------------------------------------------------------
-# fzf的快捷键
-# ctrl+r: 历史命令, 时间排序, 模糊搜索
+# fzf的原生快捷键
+# ctrl+r: 历史命令命令, 时间排序, 模糊搜索, 选中结果paste到终端
 # ctrl+t: 当前路径往下, 模糊搜索文件或目录, 选中结果paste到终端
 # esc+c: 当前路径往下, 模糊搜索命令, cd到选择目录
 # -------------------------------------------------------------------------
+# 我的alias
+# z : fzf搜索目录跳转
+# z.. foo : fzf搜索, 跳转到父目录中 名称含foo的那一级
+# zh / ctrl+h : fzf搜索历史路径并跳转
+# h : fzf搜索历史命令 多选 输出到终端
+
 # 快速跳转的alias
 
-unalias z     # 解绑antigen bundle z.lua当中的alias z, 换为zz
+[ "$(alias z)" != '' ] && unalias z     # 解绑antigen bundle z.lua当中的alias z, 换为zz
 alias zz=_zlua
 
 z()
@@ -231,7 +256,7 @@ EOF
     fi
 }
 
-alias z..='_zlua -b' # 跳转到父目录中 名称含foo的那一级
+alias z..='_zlua -b' # z.. foo : 跳转到父目录中 名称含foo的那一级
 
 zh(){        # z匹配历史路径, 按之间排序 -> fzf模糊匹配
     if [ $# -eq 0 ]; then
@@ -243,11 +268,58 @@ zh(){        # z匹配历史路径, 按之间排序 -> fzf模糊匹配
 zle -N zh
 bindkey '^h' zh
 
+
+# 再历史命令中模糊搜索, 多选 (tab选中,shift-tab取消选中), 回车输出终端
+h()
+{
+    local if_number=false
+    local if_no_fzf=false
+
+    if [[ "$1" =~ ^(-h|--help|help)$ ]]; then
+        cat <<-EOF
+\`h\`:
+    fuzzy search history command and multi select with \`tab\`/\`shift-tab\`
+    \`enter\` to print according to your selecting order
+Usage:
+    h [option]           : fuzzy search history command
+    h [option] <num>     : directly print the last <num> commands
+Options:
+    -n|--number          : with the line number of a command
+EOF
+    return
+    fi
+
+    while [ $# -ne 0 ]; do
+        if [[ "$1" =~ ^(-n|--number)$ ]]; then
+            local if_number=true
+            shift
+        elif [[ "$1" =~ ^[0-9]+$ ]]; then
+            local if_no_fzf=true
+            local line_number="$1"
+            shift
+        fi
+    done
+
+    if [ "${if_no_fzf}" = true  ];then
+        if [ "${if_number}" = true  ]; then
+            history -${line_number}
+        else
+            history  -${line_number} | sed 's/^ *[0-9]* *//'
+        fi
+    else
+        if [ "${if_number}" = true  ]; then
+            print "$(history | fzf --tac -m )"
+        else
+            print -z "$(history | sed 's/^ *[0-9]* *//' | fzf --tac -m )"
+        fi
+    fi
+}
+
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc set syntax highlighting >&2
 
 # ------------
-# zdharma/fast-syntax-highlighting 的主题
+# zdharma-continuum/fast-syntax-highlighting 的主题
 fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
 # -----------------
@@ -282,7 +354,7 @@ fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - set bindkey >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - set bindkey >&2
 
 # 10ms for key sequences
 KEYTIMEOUT=1
@@ -325,31 +397,58 @@ bindkey '\ev' deer
 bindkey \^U backward-kill-line
 # iterm2 maps sfhit+backspace to  ᜤ , 删除一行
 
-# 解绑 ctrl+s ctrl+q
-stty start undef
-stty stop undef
-setopt noflowcontrol
-# stty -ixon
-# stty -ixoff
+
+
 
 # bindkey '^f' fzf-history-widget
 
-to-clipboard() { echo -n "$BUFFER" | nc localhost 8377; }
+to-clipboard() { echo -n "$BUFFER" | timeout 0.1 nc localhost 8377; }
 zle -N to-clipboard
-to-history() { print -S $BUFFER; }
-zle -N to-history
-to-history-clear() { print -S $BUFFER ; BUFFER= }
-zle -N to-history-clear
-bindkey 'ç'  to-clipboard     # alt+c  当前目录复制到剪切板
-bindkey '^s' to-history       # ctrl+s 保存到命令历史
-bindkey '^q' push-line-or-edit  # 暂存当前命令(不是存到命令历史), 并清空当前命令, 在下个prompt自动弹出此命令
-# 但多行命令若显示形如"> if", "> function"的代码块提示则无法清空, 需要徒手ctrl+c
-# 会自动在下一个prompt弹出无代码块提示的多行命令, 再按ctrl+q, 则可清空
+# to-clipboard-clear() { echo -n "$BUFFER" | timeout 0.1 nc localhost 8377; BUFFER= ; }
+# zle -N to-clipboard-clear
+# to-history() { print -S "$BUFFER"; }
+# zle -N to-history
+# to-history-clear() { print -S "$BUFFER" ; BUFFER= ; }
+# zle -N to-history-clear
+# # bindkey '^s' to-history       # ctrl+s 保存到命令历史; 然后清空当前命令
 
-# bindkey '^q' to-history-clear # ctrl+q  保存到命令历史, 并清空当前命令
 
+# 解绑 ctrl+s ctrl+q
+bindkey -r '^q'
+bindkey -r '^s'
+# stty start undef
+# stty stop undef
+# setopt noflowcontrol
+# stty -ixon
+# stty -ixoff
+#
+# 多行提示: 若显示形如"> ", "if>", "function> "的提示的代码块,
+# 去掉多行提示: 按ctrl+q, 中断当前命令, 新起一个 转换为无'>'提示的多行命令
+
+bindkey 'ç'  to-clipboard
+# 若无多行提示: alt+c, 把当前目录复制到剪切板 (服务器剪切板可以与笔记本的同步)
+# 若有多行提示: 先按alt+q, 新起一个 转换为无'> xx'提示的多行命令, 再按alt+c
+
+bindkey œ push-line-or-edit  # 暂存当前 到命令栈(zsh-hist插件的栈) 和 命令到历史(~/.zsh_history)
+# 触发:
+# * 若无多行提示: 按一次alt+q
+# * 若有多行提示, 先按alt+q, 新起一个 转换为无'> xx'提示的多行命令, 再按alt+q
+# 作用:
+# * 触发后, 将当前命令保存到命令栈, 并清空当前行,
+# * 在空行, 直接回车/输其他命令再回车/输其他命令再alt+q , 则前一命令保存到历史(~/.zsh_history)
+
+bindkey © get-line           # alt+g, 命令栈出一个命令
+
+# `hist l`                      罗列命令栈
+# `hist g {-n|id|command}`      获取命令, 但不出栈
+# `hist f {-n|id|command}`      获取命令, 但出栈
+# `hist e {-n|id|command}`      编辑命令, 出栈, 编辑后保存到~/.zsh_history 和栈
+# `hist d {-n|id|command}`      从栈与中~/.zsh_history 删除命令
+
+
+bindkey Ω undo   # alt+z 撤销命令行下的文本操作
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - set option >&2
 
 # options
 unsetopt correct_all
@@ -370,13 +469,13 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 # source function.sh if it exists
 [ -f "$HOME/.local/etc/function.sh" ] && . "$HOME/.local/etc/function.sh"
 
-# ignore complition
+# ignore completion
 zstyle ':completion:*:complete:-command-:*:*' ignored-patterns '*.pdf|*.exe|*.dll'
 zstyle ':completion:*:*sh:*:' tag-order files
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - Coreutils color scheme >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - Coreutils color scheme >&2
 
 # 终端使用 Coreutils 配色方案
 # 采用Coreutils的gdircolor配色，修改~/.dir_colors(自定义配色)
@@ -391,7 +490,7 @@ zstyle ':completion:*:*sh:*:' tag-order files
 if [ "$(uname)" = "Darwin" ]; then
     check_coreutils_install()
     {
-        if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
+        if [ -d $shareENV/shell_config/gls-links/coreutils/libexec/gnubin ] && [ -x $shareENV/shell_config/gls-links/gls ]; then
             return
         fi
 
@@ -402,47 +501,53 @@ if [ "$(uname)" = "Darwin" ]; then
             return
         fi
 
-        if [ "$(brew list | grep coreutils)" != "" ]; then
+        local coreutils_path="$(brew --prefix coreutils)"
+        # if [ "$(brew list | grep coreutils)" != "" ]; then
+        if [ -d "${coreutils_path}" ]; then
             echo 'You have installed `coreutils` with `brew`'
+            echo "ln -s ${coreutils_path} /usr/local/opt/coreutils"
+            ln -s ${coreutils_path} $shareENV/shell_config/gls-links/coreutils
         else
             echo 'You have not installed `coreutils` with `brew`'
             echo 'without `coreutils`, `ls` will be colored vanillaly'
-            echo 'To install `coreutils`, run `brew install coreutils`'
+            echo 'To install `coreutils`, it is running `brew install coreutils`'
             brew install coreutils
             return
         fi
 
-        if [  -x "$(command -v gls)"  ]; then
+        local gls_path="$(command -v gls)"
+        if [  -x "${gls_path}"  ]; then
             echo 'You have command `gls`, which is a submodule of `coreutils`'
+            echo "ln -s ${gls_path} /usr/local/bin/gls"
+            ln -s ${gls_path} $shareENV/shell_config/gls-links/gls
         else
             echo 'You have no command `gls`, which is a submodule of `coreutils`'
-            echo '`command -v gls` returns'
-            command -v gls
-            echo 'To check gls link is alive, check if there is a link'
-            echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
-            ls -l /usr/local/bin/gls
+            echo '`command -v gls` returns:'
+            echo "${gls_path}"
+            # echo 'To check gls link is alive, check if there is a link'
+            # echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
+            # ls -l /usr/local/bin/gls
             return
         fi
 
-        local coreutils_path="$(brew --prefix coreutils)/libexec/gnubin"
-        if [ -d "$coreutils_path" ]; then
-            echo "the path of \`coreutils\` is $coreutils_path, it should be added into PATH"
-            echo "everything is ok with the gls's color scheme on your mac"
+        if [ -d "$coreutils_path/libexec/gnubin" ]; then
+            echo "The path of \`coreutils\` is $coreutils_path, it should be added into PATH."
+            echo "Everything is ok with the gls's color scheme on your mac"
             echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
         else
             echo 'The  path of `coreutils` is missing, it should be $(brew --prefix coreutils)/libexec/gnubin/'
             echo 'while `brew --prefix coreutils` returns wrongly:'
-            brew --prefix coreutils
-            echo 'it might be "/usr/local/opt/coreutils"'
+            echo "${coreutils_path}"
+            # echo 'it might be "/usr/local/opt/coreutils"'
             return
         fi
     }
 
     check_coreutils_install
-    if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
-        PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
-        alias ls='/usr/local/bin/gls --show-control-chars  --color=auto' # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
-        eval `gdircolors -b $HOME/.dir_colors`   # 启用配色方案
+    if [ -d $shareENV/shell_config/gls-links/coreutils/libexec/gnubin ] && [ -x $shareENV/shell_config/gls-links/gls ]; then
+        PATH="$shareENV/shell_config/gls-links/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
+        alias ls="$shareENV/shell_config/gls-links/gls --show-control-chars  --color=auto" # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
+        eval `gdircolors -b ${shareENV}/shell_config/.dir_colors`   # 启用配色方案
     fi
 fi
 # linux 的 ls默认上色了，加载 coreutils 配色
@@ -453,6 +558,12 @@ LS_COLORS=`echo $LS_COLORS | sed -E 's/ow=[0-9;]+://g'`:'ow=1;34;7:' ; export LS
 
 
 # grep 上色
+# if [ "$(uname)" = "Darwin" ]; then
+    # [ ! -x "$(command -v ggrep)" ] && echo 'Running linux (BSD) grep: `brew install grep`' && brew install grep
+    # alias grep='/usr/local/bin/ggrep --color'
+# else
+    # alias grep='grep --color'
+# fi
 alias grep='grep --color'
 alias egrep='egrep --color'
 alias fgrep='fgrep --color'
@@ -460,19 +571,28 @@ alias fgrep='fgrep --color'
 # 使得zsh的补全配色与ls一致
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-# -------------------------------------------------------------------------
-# 其他
-
 # 没有找到文件（夹），仍然继续执行
 # 如 rm -rf 一个文件夹/{*,.*}, 即使没有 .* 文件，也会把 * 文件删了
 setopt no_nomatch
 
+# -------------------------------------------------------------------------
 # iterm2_shell_integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# install_shell_integration_and_utilities, 如 imgcat
+# `imgcat 图像文件` : 能在iterm2中显示图像
+# 首次使用imgcat时iterm会弹出对话框, 大概问是否允许下载文件, 勾选"记住", 点"yes"
+if [ "$(command -v imgcat)" = '' ] ||
+    ( [ ! "$(alias imgcat)" = '' ] && [ ! -x "$(alias imgcat | sed -E 's/(.+=)(.+)/\2/')" ] ) ;then
+# if [ ! -x ${HOME}/.iterm2/imgcat ]; then
+    mkdir -p ${shareENV}/shell_config/iterm_bin
+    rm ${HOME}/.iterm2 -rf
+    ln -s ${shareENV}/shell_config/iterm_bin ${HOME}/.iterm2
+    curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
+fi
 # -------------------------------------------------------------------------
 # 自动补全的复用
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - reuse completions >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - reuse completions >&2
 # 初始化zsh的自动补全，从而conpdef函数有定义了
 autoload -U compinit && compinit
 
@@ -480,13 +600,17 @@ autoload -U compinit && compinit
 compdef _rsync autots
 compdef _rsync download
 
-tmux_itm() {   :;    }
-compdef _tmux tmux_itm
-alias itm='tmux_itm -CC attach -t'
+# tmux_itm() {   :;    }
+# compdef _tmux tmux_itm
+# alias itm='tmux_itm -CC attach -t'
 
 tmux_tm() {   :;    }
 compdef _tmux tmux_tm
-alias tm='tmux_tm attach -t'
+alias t-o='tmux_tm attach -t'
+
+# git_gch() {   :;    }
+# compdef _git git_gch
+# alias gch='git_gch checkout'
 
 ll_list() {   :;   }
 la_list() {   :;   }
@@ -498,16 +622,49 @@ alias ll='ll_list'
 alias la='la_list'
 alias l='l_list'
 
-# timezone_ls() { :; }
-# compdef _ls timezone_ls
-# alias timezone='timezone_ls /usr/share/zoneinfo.default/'
+tz0() { :; }
+_tz_ls() {
+    cd /var/db/timezone/zoneinfo/
+    _ls
+}
+_tz0() {
+    local pwd_here=$(pwd)
+
+    local state
+
+    _arguments -C \
+        "1: :->tz_ls" \
+        "2: :->tz_date" \
+        "3: :->tz_time" \
+        "4: :->tz_ls" \
+        "*::arg:->args"
+
+    case $state in
+        (tz_ls)
+            _tz_ls
+        ;;
+        (tz_date)
+            compadd "$@" 'yyyy-MM-dd' ''
+        ;;
+        (tz_time)
+            compadd "$@" 'HH:mm:ss' ''
+        ;;
+    esac
+
+    cd $pwd_here
+
+}
+compdef _tz0 tz0
+alias tz='tz0'
+
+
 
 # 允许在有`alias foo=...`时，再定义函数`foo() {  .... }`
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc load local zsh login/logout and local config >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc load local zsh login/logout and local config >&2
 
 # check login shell
 if [[ -o login ]]; then
@@ -520,4 +677,4 @@ fi
 [ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc end >&2
