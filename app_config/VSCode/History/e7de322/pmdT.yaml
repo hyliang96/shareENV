@@ -1,0 +1,48 @@
+proxies:
+  -
+    name: custom_node
+    type: trojan
+    server: liulab.thbi.cc
+    port: 443
+    password: yinzi123
+  - name: aws-trojan-tls
+    server: awsca1.lianghy.ml
+    port: 443
+    type: trojan
+    password: f32d2739-d012-4fc5-9d47-b0a800a1cfe8
+    udp: true
+    sni: awsca1.lianghy.ml
+    alpn:
+    #   - h2
+      - http/1.1
+    # skip-cert-verify: true
+  - name: aws-trojan-grpc-tls
+    server: awsca1.lianghy.ml
+    port: 443
+    type: trojan
+    password: f32d2739-d012-4fc5-9d47-b0a800a1cfe8
+    network: grpc
+    alpn:
+      - h2
+      # - http/1.1
+    sni: awsca1.lianghy.ml
+    # skip-cert-verify: true
+    udp: true
+    grpc-opts:
+      grpc-service-name: defaulttrojangrpc
+  - name: aws-vmess-ws-tls-cdn
+    type: vmess
+    server: awsca1.lianghy.ml
+    port: 443
+    uuid: f32d2739-d012-4fc5-9d47-b0a800a1cfe8
+    alterId: 0
+    cipher: none
+    udp: true
+    tls: true
+    skip-cert-verify: false
+    sni: awsca1.lianghy.ml
+    servername: awsca1.lianghy.ml
+    network: ws
+    ws-path: /defaultvws
+    ws-headers:
+      Host: domain08.qiu4.ml

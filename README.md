@@ -1,6 +1,5 @@
 # shareENV
 
-
 share configs among all linux/max/wls computers
 
 containing:
@@ -18,3 +17,9 @@ containing:
  * show basic softwares as bin or scripts
 
  * scripts to automatically pull this repo when loging in and push when logging out; supports file lock
+
+# Download
+
+~~~bash
+git clone --recursive https://github.com/hyliang96/shareENV.git
+~~~
