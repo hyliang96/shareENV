@@ -1,0 +1,395 @@
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+allow-lan: false
+mode: Rule
+log-level: info
+external-controller: '0.0.0.0:9090'
+secret: ''
+clash-for-android:
+  append-system-dns: false
+hosts:
+   'git.thbi.cc': 192.168.40.34
+   'jiacpu1.thbi.local': 192.168.40.30
+   'jiacpu2.thbi.local': 192.168.40.31
+   'jiacpu3.thbi.local': 192.168.40.32
+   'jiacpu4.thbi.local': 192.168.40.33
+   'jiacpu5.thbi.local': 192.168.40.34
+   'jiagpu1.thbi.local': 192.168.40.40
+   'jiagpu2.thbi.local': 192.168.40.41
+   'jiagpu3.thbi.local': 192.168.40.42
+   'jiagpu4.thbi.local': 192.168.40.43
+   'jiagpu5.thbi.local': 192.168.40.44
+   'jiagpu6.thbi.local': 192.168.40.45
+   'jiagpu7.thbi.local': 192.168.40.46
+   'jiagpu8.thbi.local': 192.168.40.47
+   'ss1.thbi.local': 192.168.10.35
+   'ss2.thbi.local': 192.168.10.36
+   'mds1.thbi.local': 192.168.10.37
+   'mds2.thbi.local': 192.168.10.38
+   'manage.thbi.local': 192.168.10.39
+   'disk1.thbi.local': 192.168.10.190
+   'disk2.thbi.local': 192.168.10.191
+   'hebb.thbi.local': 192.168.10.230
+   'bnudisk.thbi.local': 192.168.10.95
+   'esxic4.thbi.local': 192.168.40.133
+   'esxig6.thbi.local': 192.168.40.145
+   'vsphere.thbi.local': 192.168.40.211
+   'ad.thbi.local': 192.168.40.212
+dns:
+  enable: true
+  listen: 127.0.0.1:8853
+  ipv6: false
+  default-nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - 'mail.tsinghua.edu.cn'
+    - '*.lan'
+    - '*.linksys.com'
+    - '*.linksyssmartwifi.com'
+    - 'swscan.apple.com'
+    - 'mesu.apple.com'
+    - '*.msftconnecttest.com'
+    - '*.msftncsi.com'
+    - 'time.*.com'
+    - 'time.*.gov'
+    - 'time.*.edu.cn'
+    - 'time.*.apple.com'
+    - 'time1.*.com'
+    - 'time2.*.com'
+    - 'time3.*.com'
+    - 'time4.*.com'
+    - 'time5.*.com'
+    - 'time6.*.com'
+    - 'time7.*.com'
+    - 'ntp.*.com'
+    - 'ntp.*.com'
+    - 'ntp1.*.com'
+    - 'ntp2.*.com'
+    - 'ntp3.*.com'
+    - 'ntp4.*.com'
+    - 'ntp5.*.com'
+    - 'ntp6.*.com'
+    - 'ntp7.*.com'
+    - '*.time.edu.cn'
+    - '*.ntp.org.cn'
+    - '+.pool.ntp.org'
+    - 'time1.cloud.tencent.com'
+    ## NetEase
+    - '+.music.163.com'
+    - '*.126.net'
+    ## Baidu
+    - 'musicapi.taihe.com'
+    - 'music.taihe.com'
+    ## Kugou
+    - 'songsearch.kugou.com'
+    - 'trackercdn.kugou.com'
+    ## Kuwo
+    - '*.kuwo.cn'
+    ## JOOX
+    - 'api-jooxtt.sanook.com'
+    - 'api.joox.com'
+    - 'joox.com'
+    ## QQ
+    - '+.y.qq.com'
+    - '+.music.tc.qq.com'
+    - 'aqqmusic.tc.qq.com'
+    - '+.stream.qqmusic.qq.com'
+    ## Xiami
+    - '*.xiami.com'
+    ## Migu
+    - '+.music.migu.cn'
+    # === Game Service ===
+    ## Nintendo Switch
+    - '+.srv.nintendo.net'
+    ## Sony PlayStation
+    - '+.stun.playstation.net'
+    ## Microsoft Xbox
+    - 'xbox.*.microsoft.com'
+    - '+.xboxlive.com'
+    # === Other ===
+    ## QQ Quick Login
+    - 'localhost.ptlogin2.qq.com'
+    ## Golang
+    - 'proxy.golang.org'
+    ## STUN Server
+    - 'stun.*.*'
+    - 'stun.*.*.*'
+    - ntp.ubuntu.com
+    - ntp.aliyun.com
+    - ntp1.aliyun.com
+    - ntp2.aliyun.com
+    - ntp3.aliyun.com
+    - ntp4.aliyun.com
+    - ntp5.aliyun.com
+    - ntp6.aliyun.com
+    - ntp7.aliyun.com
+    - time1.aliyun.com
+    - time2.aliyun.com
+    - time3.aliyun.com
+    - time4.aliyun.com
+    - time5.aliyun.com
+    - time6.aliyun.com
+    - time7.aliyun.com
+    - "*.time.edu.cn"
+    - time1.apple.com
+    - time2.apple.com
+    - time3.apple.com
+    - time4.apple.com
+    - time5.apple.com
+    - time6.apple.com
+    - time7.apple.com
+    - time1.google.com
+    - time2.google.com
+    - time3.google.com
+    - time4.google.com
+    - music.163.com
+    - "*.music.163.com"
+    - "*.126.net"
+    - musicapi.taihe.com
+    - music.taihe.com
+    - songsearch.kugou.com
+    - trackercdn.kugou.com
+    - "*.kuwo.cn"
+    - api-jooxtt.sanook.com
+    - api.joox.com
+    - joox.com
+    - y.qq.com
+    - "*.y.qq.com"
+    - streamoc.music.tc.qq.com
+    - mobileoc.music.tc.qq.com
+    - isure.stream.qqmusic.qq.com
+    - dl.stream.qqmusic.qq.com
+    - aqqmusic.tc.qq.com
+    - amobile.music.tc.qq.com
+    - "*.xiami.com"
+    - "*.music.migu.cn"
+    - music.migu.cn
+    - "*.msftconnecttest.com"
+    - "*.msftncsi.com"
+    - localhost.ptlogin2.qq.com
+    - "*.*.*.srv.nintendo.net"
+    - "*.*.stun.playstation.net"
+    - xbox.*.*.microsoft.com
+    - "*.ipv6.microsoft.com"
+    - "*.*.xboxlive.com"
+    - speedtest.cros.wr.pvp.net
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - https://223.6.6.6/dns-query
+  fallback:
+    - https://1.0.0.1/dns-query
+    - https://1.1.1.1/dns-query
+    - https://public.dns.iij.jp/dns-query
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - 240.0.0.0/4
+      - 0.0.0.0/32
+      - 127.0.0.1/32
+    domain:
+      - +.google.com
+      - +.facebook.com
+      - +.twitter.com
+      - +.youtube.com
+      - +.xn--ngstr-lra8j.com
+      - +.google.cn
+      - +.googleapis.cn
+      - +.googleapis.com
+      - +.gvt1.com
+proxy-providers:
+  Proxy:
+    type: http
+    url: "http://bj.blog1.top/Proxy.txt"
+    interval: 300
+    path: ./thbi_proxy.yaml
+    health-check:
+      enable: true
+      interval: 600
+      # lazy: true
+      url: http://www.gstatic.com/generate_204
+
+proxy-groups:
+  -
+    name: 🧪THBI网段
+    type: select
+    use:
+      - Proxy
+    proxies:
+      - 🚀直接连接
+  -
+    name: 🎓BNU网段
+    type: select
+    use:
+      - Proxy
+    proxies:
+      - 🚀直接连接
+  -
+    name: ⚓️其他流量
+    type: select
+    use:
+      - Proxy
+    proxies:
+      - 🚀直接连接
+  -
+    name: 🚀直接连接
+    type: select
+    use:
+      - Proxy
+    proxies:
+      - DIRECT
+
+rule-providers:
+  reject:
+    type: http
+    behavior: domain
+    url: "http://bj.blog1.top/cdn_txt/reject.txt"
+    path: ./ruleset/reject.yaml
+    interval: 86400
+
+  proxy:
+    type: http
+    behavior: domain
+    url: "http://bj.blog1.top/cdn_txt/proxy.txt"
+    path: ./ruleset/proxy.yaml
+    interval: 86400
+
+  direct:
+    type: http
+    behavior: domain
+    url: "http://bj.blog1.top/cdn_txt/direct.txt"
+    path: ./ruleset/direct.yaml
+    interval: 86400
+
+  private:
+    type: http
+    behavior: domain
+    url: "http://bj.blog1.top/cdn_txt/private.txt"
+    path: ./ruleset/private.yaml
+    interval: 86400
+
+  gfw:
+    type: http
+    behavior: domain
+    url: "http://bj.blog1.top/cdn_txt/gfw.txt"
+    path: ./ruleset/gfw.yaml
+    interval: 86400
+
+  greatfire:
+    type: http
+    behavior: domain
+    url: "http://bj.blog1.top/cdn_txt/greatfire.txt"
+    path: ./ruleset/greatfire.yaml
+    interval: 86400
+
+  tld-not-cn:
+    type: http
+    behavior: domain
+    url: "http://bj.blog1.top/cdn_txt/tld-not-cn.txt"
+    path: ./ruleset/tld-not-cn.yaml
+    interval: 86400
+
+  telegramcidr:
+    type: http
+    behavior: ipcidr
+    url: "http://bj.blog1.top/cdn_txt/telegramcidr.txt"
+    path: ./ruleset/telegramcidr.yaml
+    interval: 86400
+
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: "http://bj.blog1.top/cdn_txt/cncidr.txt"
+    path: ./ruleset/cncidr.yaml
+    interval: 86400
+
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "http://bj.blog1.top/cdn_txt/lancidr.txt"
+    path: ./ruleset/lancidr.yaml
+    interval: 86400
+
+  custom_proxy:
+    type: http
+    behavior: domain
+    url: "http://bj.blog1.top/custom_proxy.txt"
+    path: ./ruleset/custom_proxy.yaml
+    interval: 86400
+
+  custom_cn:
+    type: http
+    behavior: domain
+    url: "http://bj.blog1.top/custom_cn.txt"
+    path: ./ruleset/custom_cn.yaml
+    interval: 86400
+
+  thbi:
+    type: http
+    behavior: classical
+    url: "http://bj.blog1.top/thbi.txt"
+    path: ./ruleset/thbi.yaml
+    interval: 86400
+
+  bnu:
+    type: http
+    behavior: classical
+    url: "http://bj.blog1.top/bnu.txt"
+    path: ./ruleset/bnu.yaml
+    interval: 86400
+
+rules:
+  - PROCESS-NAME,v2ray,DIRECT
+  - PROCESS-NAME,xray,DIRECT
+  - PROCESS-NAME,naive,DIRECT
+  - PROCESS-NAME,trojan,DIRECT
+  - PROCESS-NAME,trojan-go,DIRECT
+  - PROCESS-NAME,ss-local,DIRECT
+  - PROCESS-NAME,privoxy,DIRECT
+  - PROCESS-NAME,leaf,DIRECT
+  - PROCESS-NAME,Surge,DIRECT
+  - PROCESS-NAME,Surge 2,DIRECT
+  - PROCESS-NAME,Surge 3,DIRECT
+  - PROCESS-NAME,Surge 4,DIRECT
+  - PROCESS-NAME,Surge%202,DIRECT
+  - PROCESS-NAME,Surge%203,DIRECT
+  - PROCESS-NAME,Surge%204,DIRECT
+  - PROCESS-NAME,Thunder,DIRECT
+  - PROCESS-NAME,DownloadService,DIRECT
+  - PROCESS-NAME,qBittorrent,DIRECT
+  - PROCESS-NAME,Transmission,DIRECT
+  - PROCESS-NAME,fdm,DIRECT
+  - PROCESS-NAME,aria2c,DIRECT
+  - PROCESS-NAME,Folx,DIRECT
+  - PROCESS-NAME,NetTransport,DIRECT
+  - PROCESS-NAME,uTorrent,DIRECT
+  - PROCESS-NAME,WebTorrent,DIRECT
+  - PROCESS-NAME,aria2c.exe,DIRECT
+  - PROCESS-NAME,BitComet.exe,DIRECT
+  - PROCESS-NAME,fdm.exe,DIRECT
+  - PROCESS-NAME,NetTransport.exe,DIRECT
+  - PROCESS-NAME,qbittorrent.exe,DIRECT
+  - PROCESS-NAME,Thunder.exe,DIRECT
+  - PROCESS-NAME,ThunderVIP.exe,DIRECT
+  - PROCESS-NAME,transmission-daemon.exe,DIRECT
+  - PROCESS-NAME,transmission-qt.exe,DIRECT
+  - PROCESS-NAME,uTorrent.exe,DIRECT
+  - PROCESS-NAME,WebTorrent.exe,DIRECT
+  - DOMAIN,clash.razord.top,DIRECT
+  - DOMAIN,yacd.haishan.me,DIRECT
+  - RULE-SET,private,DIRECT
+  - RULE-SET,reject,REJECT
+  - IP-CIDR,166.111.121.42/32,DIRECT
+  - IP-CIDR,81.70.202.83/32,DIRECT
+  - IP-CIDR,81.70.28.122/32,DIRECT
+  - IP-CIDR,43.129.74.13/32,DIRECT
+  - IP-CIDR,27.102.132.226/32,DIRECT
+  - RULE-SET,thbi,🧪THBI网段
+  - RULE-SET,bnu,🎓BNU网段
+  - MATCH,⚓️其他流量
+

@@ -3,7 +3,7 @@
 
 # 服务器、笔记本、WSL 共享的alias配置
 
-[ $DotFileDebug -ne 0 ] && echo share .bash_aliases >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .bash_aliases >&2
 
 # 解决ubuntu18.0 无法用apt安装ripgrap (即rg)
 # 参考: https://gist.github.com/kostaz/6e0cf1eee35a34cd6589ec15b58e682c
@@ -337,7 +337,7 @@ EOF
                     __count_path "${dir}"
                     echo -n "\t    "
                     ls -d --color=always $dir
-                done | sort -t $'\t' -k 1 -n -r
+                done | sort -t $'\t' -k 1 -n
             # fi
         )
     done | column -t -s $'\t'
@@ -508,7 +508,6 @@ _dk()
         eval "sudo lsof -Pn -i:$ports" | grep -E --color=always "${port_pattern}"
     fi
 }
-
 # strU8DiffLen () {
     # local bytlen oLang=$LANG oLcAll=$LC_ALL
     # LANG=C LC_ALL=C
@@ -541,10 +540,10 @@ dk()
     local pid=
     for pid in "${pids[@]}"; do
         jch_return+=("$(jchpid "$pid" | sed -n '2p'|
-            perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2mDim\7\e[22m/g')" )
+            perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2m\7\e[22m/g')" )
     done
     local jch_return=("$(jchpid "$pid"|head -n 1|
-        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2mDim\7\e[22m/g')"
+        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2m\7\e[22m/g')"
             "${jch_return[@]}")
     local i=
 
@@ -607,6 +606,13 @@ fi
 alias network-restart='sudo /etc/init.d/networking restart'
 
 # -------------------- 进程管理 --------------------
+# 查看哪些进程占用指定路径
+jchat()
+{
+    lsof "$@"
+}
+
+
 # 搜索进程
 # alias jc='ps aux | awk 'NR==1'; ps aux | grep -v grep | grep'
 jch()
@@ -622,7 +628,7 @@ jch()
         ps aux | awk NR!=1 | grep -v grep | grep -v 'ps aux' | grep -v 'awk NR!=1' | grep $*
     fi
 }
-# 查看对应教程的pid，jchpid <pid1> [<pid2> [ <pid3>...]]
+# 查看对应进程的pid，jchpid <pid1> [<pid2> [ <pid3>...]]
 alias jchpid='ps u -p'
 
 
@@ -757,7 +763,6 @@ else
 fi
 
 
-
 server_port=8304 # 【远程nc端口】
 
 rsubl(){
@@ -810,15 +815,15 @@ fi
 
 _code-remote() {
     local hostname=$(echo $1 | awk -F : '{print $1}')
-    local abspath=$(echo $1 | awk -F : '{print $2}')
-    local has_file=$(ssh $hostname "[ -f '$abspath' ] && echo true")
-    local has_dir=$(ssh $hostname "[ -d '$abspath' ] && echo true")
+    local abspath_=$(echo $1 | awk -F : '{print $2}')
+    local has_file=$(ssh $hostname "[ -f '$abspath_' ] && echo true")
+    local has_dir=$(ssh $hostname "[ -d '$abspath_' ] && echo true")
     if [ "$has_file" = true ]; then
-        code --file-uri vscode-remote://ssh-remote+${hostname}${abspath}
+        code --file-uri vscode-remote://ssh-remote+${hostname}${abspath_}
     elif [ "$has_dir" = true ]; then
-        code --folder-uri vscode-remote://ssh-remote+${hostname}${abspath}
+        code --folder-uri vscode-remote://ssh-remote+${hostname}${abspath_}
     else
-        echo "$hostname:$abspath not exists"
+        echo "$hostname:$abspath_ not exists"
     fi
 }
 co(){
@@ -849,29 +854,50 @@ fi
         # # # alias nvim=$serverENV/nvim/usr/bin/nvim
     # # fi
 # fi
-
 # mac上用`brew install newvim` （neovim内核）并 `pip install neovim`（python支持）
 # 安装完成后自带nvim命令
-alias nvi=nvim
-alias nv=nvim
-alias v=nvim
-alias vi=vim
 
 # 让sudo vim 能用nvim
-
-
 # 设置默认编辑器
 # if ( [ -x "`which code-insiders`" ] && [ "`which code-insiders`" != '/usr/bin/code' ] ) || \
    # ( [ -x "`which code`" ] && [ "`which code`" != '/usr/bin/code' ] ) ; then
     # alias default_editor='code'
 if [ -x "$(which nvim)" ]; then
-    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
+    if [ -x "$(which python)" ]; then
+        alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which nvim)"
+    else
+        alias sv="sudo $(which nvim)"
+    fi
     alias default_editor=nvim
 elif [ -x "$(which vim)" ]; then
-    alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
+    if [ -x "$(which python)" ]; then
+        alias sv="sudo PATH=$(dirname $(which python)):\$PATH $(which vim)"
+    else
+        alias sv="sudo $(which vim)"
+    fi
     alias default_editor=vim
 fi
 
+# # 给nvim, vim设置venv python环境
+# if [ -x "$HOME/.vim/vim_venv/bin/python" ] && [ -x "$(which nvim)" ]; then
+    # alias nvim='PATH=$HOME/.vim/vim_venv/bin:$PATH nvim'
+# fi
+# if [ -x "$HOME/.vim/vim_venv/bin/python" ] && [ -x "$(which vim)" ]; then
+    # alias vim='PATH=$HOME/.vim/vim_venv/bin:$PATH vim'
+# fi
+
+if [ -d "$(which -a python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ] && [ -x "$(which nvim)" ]; then
+    alias nvim='PATH=$(which -a python | grep conda | head -n 1 | xargs dirname):$PATH nvim'
+fi
+
+if [ -d "$(which -a python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ] && [ -x "$(which vim)" ]; then
+    alias vim='PATH=$(which -a python | grep conda | head -n 1 | xargs dirname):$PATH vim'
+fi
+
+alias nvi=nvim
+alias nv=nvim
+alias v=nvim
+alias vi=vim
 
 # --------------- alias dotfile ----------------------
 se=~/.shell_config/.env;      sse=$share_shell_config/.env
@@ -989,6 +1015,7 @@ alias cp="cp -r"
 alias scp="scp -r"
 
 
+
 rdiff()
 {
     if [ $# -ne 2 ]; then
@@ -997,7 +1024,6 @@ rdiff()
         echo '    `rdiff <dir1> <dir2>`'
         return
     fi
-
     local source_path="$1"
     local dest_path="$2"
     [ ! -e ${source_path} ] && echo "no file or dir: ${source_path}" && return
@@ -1096,7 +1122,7 @@ list_less_line_num=50
 # 显(xxx)隐(.xxx) 文件(xxx)文件夹(xxx/) 用户名 大小 创建日期 大小用GMk格式
 alias llc='ls -AlFh --sort=version --color=always'
 ll() {
-    local line_num=$(llc "$@" | wc -l)
+    local line_num=$(llc "$@" | grep -v -E '^total ' | wc -l)
     if [ $line_num -gt $list_less_line_num ]; then
         # 当超过 $list_less_line_num 行时, 则输出到less
         {
@@ -1412,7 +1438,10 @@ macdotrm()
 
 
 # ----------------- alias to pip ---------------
-alias pip='pip --default-timeout=100'  # 避免报错 Read timed out.
+# alias pip='pip --default-timeout=100'  # 避免报错 Read timed out.
+if alias pipreq >/dev/null 2>&1; then
+    unalias pipreq
+fi
 pipreq()
 {
     if [ $# -eq 1 ]; then
@@ -1580,16 +1609,28 @@ tb()
     tensorboard $dir_arg $@
 }
 # -----------------  alias to tmux ------------------
+t-h() {
+        echo 'tmux easy mode:
+    t-o [<session-name>]                   : open a tmux session (default session-name is 'default')
+    t-ls                                   : list sessions
+    t-mv <session-name> <session-new-name> : rename a session
+    t-k <session-name>                     : kill a session
+    t-ka                                   : kill all sessions
+    t-h | t                                : help for this tmux easy mode'
+}
+
+alias t='t-h'
+
 # list all session of tmux session
-alias tl='tmux ls'
+alias t-ls='tmux ls'
 # rename a tmux session: tmv <current-session-name> <new-session-name>
-alias tmv='tmux rename-session -t'
+alias t-mv='tmux rename-session -t'
 # kill a tmux session
-alias tk='tmux kill-session -t'
+alias t-k='tmux kill-session -t'
 # kill all tmux sessions i.e. kill the tmux server
-tka()
+t-ka()
 {
-    local answer=$(bash -c "read  -n 1 -p 'Do you want to kill the tmux server? [Y|N]' c; echo \$c")
+    local answer=$(bash -c "read  -n 1 -p 'Do you want to kill the tmux server with all sessions? [Y|N]' c; echo \$c")
     echo
     if [ "$answer" = "y" ] || [  "$answer" = "Y"  ]; then
         tmux kill-server
@@ -1599,49 +1640,29 @@ tka()
     fi
 }
 
-
-
-
-#              命令   (i)tm                      (i)tm 已有session名    (i)tm 新session名
-# 无tmux session 时   创建名为的default的session    --                   创建session
-# 有tmux session 时   attach最近的session         attach该session       创建session
-# itm:与iterm2关联的tmux
-# tm：不关联iterm2的tmux
-
-# if [ -n "$ZSH_NAME" ] && [[ -o interactive ]]; then
-    # tmux_itm() {   :;    }
-    # compdef _tmux tmux_itm
-    # alias itm='tmux_itm -CC attach -t'
-# fi
-
-itm() {
-    if [ "$(alias itm 2> /dev/null)" != '' ]; then
-        for i in {1..3}; do shift; done
-    fi
-    if [ $# = 0 ]; then
-        tmux -CC attach || tmux -CC new -s default
-    else
-        local session="$1"
-        tmux -CC attach -t "${session}" || tmux -CC new -s "${session}"
-    fi
-}
-
-
 # if [ -n "$ZSH_NAME" ] && [[ -o interactive ]]; then
     # tmux_tm() {   :;    }
     # compdef _tmux tmux_tm
     # alias tm='tmux_tm attach -t'
 # fi
 
-tm() {
-    if [ "$(alias tm 2> /dev/null)" != '' ]; then
+t-o() {
+    if [ "$(alias t-o 2> /dev/null)" != '' ]; then
         for i in {1..2}; do shift; done
     fi
     if [ $# = 0 ]; then
-        tmux attach || tmux new -s default
+        if it2check; then # 若当前在使用iterm.app
+            tmux -CC attach || tmux -CC new -s default
+        else # 否则
+            tmux attach || tmux new -s default
+        fi
     else
-        local session=$1
-        tmux attach -t ${session} || tmux new -s ${session}
+        local session="$1"
+        if it2check; then # 若当前在使用iterm.app
+            tmux -CC attach -t "${session}" || tmux -CC new -s "${session}"
+        else # 否则
+            tmux attach -t ${session} || tmux new -s ${session}
+        fi
     fi
 }
 
@@ -1673,7 +1694,7 @@ alias vncv='ssh -L 5901:127.0.0.1:5901 -C -N'
 # -C 压缩所有数据；  -N 只转发端口 不能在远程终端下执行命令
 
 # -------------------------------------------------------------------------
-alias wgetc='wget -c -t 0'
+alias wgetc='wget --no-check-certificate -c -t 0'
 # '-C'断点续传，' -t 0' 无限次断开次续传，'-T 900' 表示900秒(缺省即900)连不上就算超时
 
 
@@ -1728,6 +1749,13 @@ usshfs()
         sudo umount -l $@
     else
         fusermount -u $@
+        if [ $? -ne 0 ]; then
+            echo 'Error when running `fusermount -u '$@'`.'
+            echo 'Check with `ls -la |grep '$@'`'
+            echo 'If the ownership of this dir is like "???????",'
+            echo 'please run this for forced unmount'
+            echo "    usshfs -f <mounted_path>"
+        fi
     fi
 }
 
@@ -1769,7 +1797,7 @@ tz()
         echo '    UCT = UTC-0 = (when not in daylight time) WET = Europe/London'
         echo
         echo 'convert time bwtween timezone'
-        echo '    `tz <source-timezone> yyyy-mm-dd hh:mm:ss [<target-timezone>=Asia/Shanghai]`'
+        echo '    `tz <source-timezone> yyyy-[m]m-[d]d [[H]H=00[:[m]m=00[:[s]s=00]]] [<target-timezone>=Asia/Shanghai]`'
         return
     fi
 
@@ -1792,10 +1820,18 @@ tz()
 
     local source_TZ="$(__tz_check__ $1)"
     [ "$source_TZ" = '' ] && return
+    shift
 
-    local source_time="$2 $3"
-    if [ $# -eq 4 ]; then
-        local target_TZ="$(__tz_check__ $4)"
+    if [[ "$2" =~ ^[0-9]{1,2}(:[0-9]{1,2}){0,2}$ ]]; then
+        local source_time="$1 $2"
+        shift; shift
+    else
+        local source_time="$1"
+        shift
+    fi
+
+    if [ "$1" != '' ]; then
+        local target_TZ="$(__tz_check__ $1)"
         [ "$target_TZ" = '' ] && return
     else
         local target_TZ='Asia/Shanghai'

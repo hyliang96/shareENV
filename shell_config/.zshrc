@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
 # DotFileDebug=1
-[ $DotFileDebug -ne 0 ] && echo share .zshrc >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc >&2
 # -------------------------------------------------------------------------
 # 定义安装函数
 
 # Install antigen.zsh if not exist
 check_antigen_install()
 {
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc - instal zsh >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - instal zsh >&2
 
     if [ ! -f "$ANTIGEN" ]; then
         echo "Installing antigen ..."
@@ -34,12 +34,12 @@ check_antigen_install()
         mv "$TMPFILE" "$ANTIGEN"
     fi
 
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc -  Initialize command prompt >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc -  Initialize command prompt >&2
 }
 
 check_jump_install()
 {
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc - load autojump >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - load autojump >&2
 
     # antigen bundle autojump # 自动跳转
     if [ "$(uname)" = "Darwin" ]; then
@@ -69,7 +69,7 @@ check_jump_install()
         [ -f ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
     fi
 
-    [ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen bundle >&2
+    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - antigen bundle >&2
 }
 
 check_fzf_install()
@@ -121,18 +121,25 @@ DISABLE_MAGIC_FUNCTIONS=true
 
 # -------------------------------------------------------------------------
 # antigen
+# Installing xxx/yyy.. Error! Activate logging and try again.
+# 若报错`Error! Activate logging and try again.`
+# 则可能是要安装的插件主分支不是master而是main
+# 可把安装命令从
+# antigen bundle xxx/yyy # 默认分支是master
+# 改成：
+# antigen bundle xxx/yyy --branch=main
 
 # Antigen: https://github.com/zsh-users/antigen
 ANTIGEN="$HOME/.local/bin/antigen.zsh"
 # install zsh
 check_antigen_install
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - Initialize antigen >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - Initialize antigen >&2
 # Initialize antigen
 source "$ANTIGEN"
 # -------------------------------------------------------------------------
 # zsh 插件
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - antigen boundle >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - antigen boundle >&2
 
 # Initialize oh-my-zsh
 antigen use oh-my-zsh
@@ -141,7 +148,7 @@ antigen use oh-my-zsh
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
 antigen bundle fzf   # 模糊搜索, 可以搜文件夹下路径,历史命令,历史路径
-antigen bundle marlonrichert/zsh-hist
+antigen bundle marlonrichert/zsh-hist --branch=main
 
 # default bundles
 # visit https://github.com/unixorn/awesome-zsh-plugins
@@ -163,7 +170,7 @@ export _ZL_MATCH_MODE=1 # 启用增强匹配模式
 export _ZL_NO_ALIASES=0 # 不用预设alias, 用自己定义的alias
 
 
-antigen bundle zdharma/fast-syntax-highlighting    # zsh 命令的语法高亮
+antigen bundle zdharma-continuum/fast-syntax-highlighting    # zsh 命令的语法高亮
 # antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
 antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
 antigen bundle zsh-users/zsh-completions         # tab键自动补全
@@ -176,16 +183,27 @@ antigen bundle willghatch/zsh-cdr
 # 换主题
 # 更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
 # bureau, ys, agnoster, apjanke/agnosterj-zsh-theme
+# antigen theme agnoster
 # antigen theme apjanke/agnosterj-zsh-theme
 # source /Users/mac/.antigen/bundles/apjanke/agnosterj-zsh-theme/agnosterj.zsh-theme
 
-antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
+antigen theme romkatv/powerlevel10k
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f $shareENV/shell_config/.p10k.zsh ]] || source $shareENV/shell_config/.p10k.zsh
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
 # set option to '' to disable it
 agnoster_time=1
 agnoster_env=1
 # agnoster_newline=1
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc antigen apply >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc antigen apply >&2
 antigen apply
 
 
@@ -298,10 +316,10 @@ EOF
 }
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc set syntax highlighting >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc set syntax highlighting >&2
 
 # ------------
-# zdharma/fast-syntax-highlighting 的主题
+# zdharma-continuum/fast-syntax-highlighting 的主题
 fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
 # -----------------
@@ -336,7 +354,7 @@ fast-theme $shareENV/shell_config/my_theme.ini >/dev/null
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - set bindkey >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - set bindkey >&2
 
 # 10ms for key sequences
 KEYTIMEOUT=1
@@ -430,7 +448,7 @@ bindkey © get-line           # alt+g, 命令栈出一个命令
 
 bindkey Ω undo   # alt+z 撤销命令行下的文本操作
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - set option >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - set option >&2
 
 # options
 unsetopt correct_all
@@ -451,13 +469,13 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 # source function.sh if it exists
 [ -f "$HOME/.local/etc/function.sh" ] && . "$HOME/.local/etc/function.sh"
 
-# ignore complition
+# ignore completion
 zstyle ':completion:*:complete:-command-:*:*' ignored-patterns '*.pdf|*.exe|*.dll'
 zstyle ':completion:*:*sh:*:' tag-order files
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - Coreutils color scheme >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - Coreutils color scheme >&2
 
 # 终端使用 Coreutils 配色方案
 # 采用Coreutils的gdircolor配色，修改~/.dir_colors(自定义配色)
@@ -472,7 +490,7 @@ zstyle ':completion:*:*sh:*:' tag-order files
 if [ "$(uname)" = "Darwin" ]; then
     check_coreutils_install()
     {
-        if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
+        if [ -d $shareENV/shell_config/gls-links/coreutils/libexec/gnubin ] && [ -x $shareENV/shell_config/gls-links/gls ]; then
             return
         fi
 
@@ -483,47 +501,53 @@ if [ "$(uname)" = "Darwin" ]; then
             return
         fi
 
-        if [ "$(brew list | grep coreutils)" != "" ]; then
+        local coreutils_path="$(brew --prefix coreutils)"
+        # if [ "$(brew list | grep coreutils)" != "" ]; then
+        if [ -d "${coreutils_path}" ]; then
             echo 'You have installed `coreutils` with `brew`'
+            echo "ln -s ${coreutils_path} /usr/local/opt/coreutils"
+            ln -s ${coreutils_path} $shareENV/shell_config/gls-links/coreutils
         else
             echo 'You have not installed `coreutils` with `brew`'
             echo 'without `coreutils`, `ls` will be colored vanillaly'
-            echo 'To install `coreutils`, run `brew install coreutils`'
+            echo 'To install `coreutils`, it is running `brew install coreutils`'
             brew install coreutils
             return
         fi
 
-        if [  -x "$(command -v gls)"  ]; then
+        local gls_path="$(command -v gls)"
+        if [  -x "${gls_path}"  ]; then
             echo 'You have command `gls`, which is a submodule of `coreutils`'
+            echo "ln -s ${gls_path} /usr/local/bin/gls"
+            ln -s ${gls_path} $shareENV/shell_config/gls-links/gls
         else
             echo 'You have no command `gls`, which is a submodule of `coreutils`'
-            echo '`command -v gls` returns'
-            command -v gls
-            echo 'To check gls link is alive, check if there is a link'
-            echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
-            ls -l /usr/local/bin/gls
+            echo '`command -v gls` returns:'
+            echo "${gls_path}"
+            # echo 'To check gls link is alive, check if there is a link'
+            # echo '   /usr/local/bin/gls -> ../Cellar/coreutils/<version_number>/bin/gls'
+            # ls -l /usr/local/bin/gls
             return
         fi
 
-        local coreutils_path="$(brew --prefix coreutils)/libexec/gnubin"
-        if [ -d "$coreutils_path" ]; then
-            echo "the path of \`coreutils\` is $coreutils_path, it should be added into PATH"
-            echo "everything is ok with the gls's color scheme on your mac"
+        if [ -d "$coreutils_path/libexec/gnubin" ]; then
+            echo "The path of \`coreutils\` is $coreutils_path, it should be added into PATH."
+            echo "Everything is ok with the gls's color scheme on your mac"
             echo 'You can alias `ls` as `gls` to use `gls`'\''s color scheme'
         else
             echo 'The  path of `coreutils` is missing, it should be $(brew --prefix coreutils)/libexec/gnubin/'
             echo 'while `brew --prefix coreutils` returns wrongly:'
-            brew --prefix coreutils
-            echo 'it might be "/usr/local/opt/coreutils"'
+            echo "${coreutils_path}"
+            # echo 'it might be "/usr/local/opt/coreutils"'
             return
         fi
     }
 
     check_coreutils_install
-    if [ -d /usr/local/opt/coreutils/libexec/gnubin ] && [ -x /usr/local/bin/gls ]; then
-        PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
-        alias ls='/usr/local/bin/gls --show-control-chars  --color=auto' # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
-        eval `gdircolors -b $HOME/.dir_colors`   # 启用配色方案
+    if [ -d $shareENV/shell_config/gls-links/coreutils/libexec/gnubin ] && [ -x $shareENV/shell_config/gls-links/gls ]; then
+        PATH="$shareENV/shell_config/gls-links/coreutils/libexec/gnubin:$PATH" # 添加coreutils到PATH
+        alias ls="$shareENV/shell_config/gls-links/gls --show-control-chars  --color=auto" # gls 被 git ls-files 的alias占用了，使用上面写绝对路径
+        eval `gdircolors -b ${shareENV}/shell_config/.dir_colors`   # 启用配色方案
     fi
 fi
 # linux 的 ls默认上色了，加载 coreutils 配色
@@ -547,58 +571,19 @@ alias fgrep='fgrep --color'
 # 使得zsh的补全配色与ls一致
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-
-# --------------------- 系统设置 -----------------------
-# 系统自带的 python2
-# alias python2='/usr/bin/python'
-
-if [ "$(uname)" = "Darwin" ]; then
-    # 开启sudo执行指纹命令
-    sudo-fingerprint() {
-        echo '开启指纹授权sudo'
-        __check-sudo-fingerprint() {
-            cat /etc/pam.d/sudo | grep -vE '^\s*#' | head -n 1| grep -E '^[ ]*auth[ ]+sufficient[ ]+pam_tid.so[ ]*$'
-        }
-        if [ "$(__check-sudo-fingerprint)" = '' ]; then
-            sudo cp /etc/pam.d/sudo /etc/pam.d/sudo.bak
-            (
-                echo '# "auth sufficient pam_tid.so" 表示允许指纹验证sudo命令\nauth       sufficient     pam_tid.so'
-                cat /etc/pam.d/sudo
-            ) | sudo tee /etc/pam.d/sudo > /dev/null
-            if [ "$(__check-sudo-fingerprint)" != '' ]; then
-                echo 'sudo执行指纹命令 开启成功'
-            else
-                echo 'sudo执行指纹命令 开启识别'
-            fi
-        else
-            echo 'sudo执行指纹命令 已经开启'
-        fi
-    }
-    # 升级mac系统, 会重置/etc/pam.d/sudo, 初次开交互终端需要重新设置
-    [[ ! "$(cat /etc/pam.d/sudo)" =~ 'pam_tid.so' ]] && sudo-fingerprint
-
-
-    fix-etc-zprofile() {
-        echo '设置/etc/zprofile, 使得其中的PATH不在~/.zshenv后再次加载'
-        [ -f $shareENV/shell_config/etc_zprofile ] && sudo cp $shareENV/shell_config/etc_zprofile /etc/zprofile
-    }
-    # 升级mac系统, 会重置/etc/zprofile, 初次开交互终端需要重新设置
-    [[ ! "$(cat /etc/zprofile)" =~ 'export PATH_SAVE=\$PATH' ]] && fix-etc-zprofile
-fi
-# -------------------------------------------------------------------------
-# 其他
-
 # 没有找到文件（夹），仍然继续执行
 # 如 rm -rf 一个文件夹/{*,.*}, 即使没有 .* 文件，也会把 * 文件删了
 setopt no_nomatch
 
+# -------------------------------------------------------------------------
 # iterm2_shell_integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # install_shell_integration_and_utilities, 如 imgcat
 # `imgcat 图像文件` : 能在iterm2中显示图像
 # 首次使用imgcat时iterm会弹出对话框, 大概问是否允许下载文件, 勾选"记住", 点"yes"
-if [ "$(command -v imgcat)"  = '' ]; then
+if [ "$(command -v imgcat)" = '' ] ||
+    ( [ ! "$(alias imgcat)" = '' ] && [ ! -x "$(alias imgcat | sed -E 's/(.+=)(.+)/\2/')" ] ) ;then
 # if [ ! -x ${HOME}/.iterm2/imgcat ]; then
     mkdir -p ${shareENV}/shell_config/iterm_bin
     rm ${HOME}/.iterm2 -rf
@@ -607,7 +592,7 @@ if [ "$(command -v imgcat)"  = '' ]; then
 fi
 # -------------------------------------------------------------------------
 # 自动补全的复用
-[ $DotFileDebug -ne 0 ] && echo share .zshrc - reuse completions >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc - reuse completions >&2
 # 初始化zsh的自动补全，从而conpdef函数有定义了
 autoload -U compinit && compinit
 
@@ -615,13 +600,13 @@ autoload -U compinit && compinit
 compdef _rsync autots
 compdef _rsync download
 
-tmux_itm() {   :;    }
-compdef _tmux tmux_itm
-alias itm='tmux_itm -CC attach -t'
+# tmux_itm() {   :;    }
+# compdef _tmux tmux_itm
+# alias itm='tmux_itm -CC attach -t'
 
 tmux_tm() {   :;    }
 compdef _tmux tmux_tm
-alias tm='tmux_tm attach -t'
+alias t-o='tmux_tm attach -t'
 
 # git_gch() {   :;    }
 # compdef _git git_gch
@@ -637,16 +622,49 @@ alias ll='ll_list'
 alias la='la_list'
 alias l='l_list'
 
-# timezone_ls() { :; }
-# compdef _ls timezone_ls
-# alias timezone='timezone_ls /usr/share/zoneinfo.default/'
+tz0() { :; }
+_tz_ls() {
+    cd /var/db/timezone/zoneinfo/
+    _ls
+}
+_tz0() {
+    local pwd_here=$(pwd)
+
+    local state
+
+    _arguments -C \
+        "1: :->tz_ls" \
+        "2: :->tz_date" \
+        "3: :->tz_time" \
+        "4: :->tz_ls" \
+        "*::arg:->args"
+
+    case $state in
+        (tz_ls)
+            _tz_ls
+        ;;
+        (tz_date)
+            compadd "$@" 'yyyy-MM-dd' ''
+        ;;
+        (tz_time)
+            compadd "$@" 'HH:mm:ss' ''
+        ;;
+    esac
+
+    cd $pwd_here
+
+}
+compdef _tz0 tz0
+alias tz='tz0'
+
+
 
 # 允许在有`alias foo=...`时，再定义函数`foo() {  .... }`
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
 
 
 # -------------------------------------------------------------------------
-[ $DotFileDebug -ne 0 ] && echo share .zshrc load local zsh login/logout and local config >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc load local zsh login/logout and local config >&2
 
 # check login shell
 if [[ -o login ]]; then
@@ -659,4 +677,4 @@ fi
 [ -f "$HOME/.local/etc/local.zsh" ] && source "$HOME/.local/etc/local.zsh"
 
 
-[ $DotFileDebug -ne 0 ] && echo share .zshrc end >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .zshrc end >&2
