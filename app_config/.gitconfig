@@ -23,7 +23,7 @@
     required = true
 [difftool "sourcetree"]
     cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-    path = 
+    path =
 [mergetool "sourcetree"]
     cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
     trustExitCode = true
@@ -45,3 +45,14 @@
             timelength=$(echo \"16+${#time}-${#timelength}\" | bc);                                 \
             printf \"%${timelength}s    %s %s %s\n\" \"$time\" \"$hash\" \"$branch\" \"$message\";  \
         done < <(git logx && echo);"'
+
+[url "git@github.com:"]
+    insteadOf = https://github.com/
+[url "git@github.com:"]
+    insteadOf = http://github.com/
+[url "git@bitbucket.org:"]
+    insteadOf = https://bitbucket.org/
+[url "git@bitbucket.org:"]
+    insteadOf = http://bitbucket.org/
+; [http]
+    ; curloptResolve = "+bitbucket.org:443:104.192.141.2"
