@@ -1054,10 +1054,18 @@ autots() {
     done
 }
 
+# 下载指定本地目录下的icloud文件
+# download_icloud_file dir1 [dir2 [dir3 ...]]
+download_icloud_file()
+{
+    find "${@}" -name '.*icloud' | perl -pe 's|(.*)/.(.*).icloud|$1/$2|s' | while read file; do
+        brctl download "$file"
+    done
+}
 
 # rsync 封装多种参数，但不支持断点续传; ts能够和rsync一样自动补全远程目录
 #  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
-alias ts="rsync -aHhvz -e 'ssh -o ClearAllForwardings=yes' --progress  --exclude='.*.icloud'"
+alias ts="rsync -aHhvz -e 'ssh -o ClearAllForwardings=yes' --progress --exclude='.*.icloud'"
 
 # 下载到Downloads
 # [ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync download
