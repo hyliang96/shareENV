@@ -1057,7 +1057,7 @@ autots() {
 
 # rsync 封装多种参数，但不支持断点续传; ts能够和rsync一样自动补全远程目录
 #  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
-alias ts='rsync -aHhvz -e '\''ssh -o ClearAllForwardings=yes'\'' --progress'
+alias ts="rsync -aHhvz -e 'ssh -o ClearAllForwardings=yes' --progress  --exclude='.*.icloud'"
 
 # 下载到Downloads
 # [ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync download
