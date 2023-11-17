@@ -499,7 +499,7 @@ _dk()
         local i=
         for port in "$@"; do
             ports="$ports$port,"
-            port_pattern="${port_pattern}${port}|"
+            port_pattern="${port_pattern}:${port}|"
         done
         ports=${ports:0:${#ports}-1}
         port_pattern="(${port_pattern:0:${#port_pattern}-1})"
