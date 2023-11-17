@@ -1462,28 +1462,36 @@ pipreq()
 }
 
 # ---------------- alias to conda --------------
-# 清华tuna源，官网https://mirrors.tuna.tsinghua.edu.cn/news/#oh-my-tuna
+# 清华tuna源，官https://github.com/tuna/oh-my-tuna
 # # 国内默认使用tuna，装包会快很多
-tuna()
-{
-    if [ "$1" = '--global' ]; then
-        python $share_app_config/oh-my-tuna.py --global
-    elif [ "$1" = 'install' ] || [ "$1" = 'update' ] ; then
-        wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py -O $share_app_config/oh-my-tuna.py --no-check-certificate
-    elif [ "$1" = '-h' ] ||  [ "$1" = '--help' ] ||  [ "$1" = 'help' ] ; then
-        echo "-------------------------------------------------------------------------"
-        echo '                         help for the alias `tuna`'
-        echo "tuna [ install | update]  : download the newest oh-my-tuna from \n      https://tuna.moe/oh-my-tuna/oh-my-tuna.py"
-        echo "tuna [ help | -h | --help ] : for help"
-        echo "tuna : apply tuna for the one user yourself"
-        echo "sudo tuna --global : apply tuna for the all users"
-        echo "tuna [arguments] : [arguments] follows oh-my-tuna.py"
-        echo "-------------------------------------------------------------------------"
-        python $share_app_config/oh-my-tuna.py -h
-    else
-        python $share_app_config/oh-my-tuna.py $*
-    fi
-}
+# tuna()
+# {
+    # if [ "$1" = '--global' ]; then
+        # python $share_app_config/oh-my-tuna.py --global
+    # elif [ "$1" = 'install' ] || [ "$1" = 'update' ] ; then
+        # wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py -O $share_app_config/oh-my-tuna.py --no-check-certificate
+    # elif [ "$1" = '-h' ] ||  [ "$1" = '--help' ] ||  [ "$1" = 'help' ] ; then
+        # echo 'tuna是一个一键换源的脚本：目前支持更改下列软件的配置，将其直接指向 TUNA 镜像站: conda, Homebrew, PyPI(即pip源), TeX Live (by tlmgr), Arch Linux, CTAN, Debian, Ubuntu, CentOS, AOSC OS'
+        # echo
+        # echo "tuna [ install | update]  : 下载最新的 oh-my-tuna.py 脚本
+    # 来自      https://tuna.moe/oh-my-tuna/oh-my-tuna.py
+    # 保存到    $share_app_config"
+        # echo "tuna : 当前用户一键换源"
+        # echo "sudo tuna --global : 所有用户一键换源"
+        # echo "tuna [ help | -h | --help ] : 显示帮助"
+        # echo "tuna             : 使用在线下载的"
+        # echo "tuna [arguments] : oh-my-tuna.py 的参数，详见下面:"
+        # echo
+        # python $share_app_config/oh-my-tuna.py -h
+    # elif [ $# = 0 ]; then
+        # wget --no-check-certificate -O- https://tuna.moe/oh-my-tuna/oh-my-tuna.py | python
+    # else
+        # python $share_app_config/oh-my-tuna.py $*
+    # fi
+# }
+
+
+alias tuna='wget --no-check-certificate -O - https://tuna.moe/oh-my-tuna/oh-my-tuna.py | python -- -'
 
 #  ce: conda environment
 alias ceact='conda activate'

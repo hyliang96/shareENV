@@ -25,9 +25,9 @@ import platform
 from contextlib import contextmanager
 
 try:
-   input = raw_input
+    input = raw_input
 except NameError:
-   pass
+    pass
 
 try:
     import configparser
@@ -58,9 +58,9 @@ def sh(command):
     try:
         if verbose:
             print('$ %s' % command)
-        if isinstance(command, str):
-            command = command.split()
-        return subprocess.check_output(command, stderr=subprocess.STDOUT).decode('utf-8').rstrip()
+        if isinstance(command, list):
+            command = ' '.join(command)
+        return subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT).decode('utf-8').rstrip()
     except Exception as e:
         return None
 
@@ -234,7 +234,7 @@ class Pypi(Base):
         if system == 'Darwin':
             return ('$HOME/Library/Application Support/pip/pip.conf', '$HOME/.pip/pip.conf')
         elif system == 'Windows':
-            return ('%APPDATA%\pip\pip.ini', '~\pip\pip.ini')
+            return (r'%APPDATA%\pip\pip.ini', r'~\pip\pip.ini')
         elif system == 'Linux':
             return ('$HOME/.config/pip/pip.conf', '$HOME/.pip/pip.conf')
 
@@ -317,7 +317,7 @@ class ArchLinux(Base):
     @staticmethod
     def is_online():
         mirror_re = re.compile(
-            r" *Server *= *(http|https)://%s/archlinux/\$repo/os/\$path\n" %
+            r" *Server *= *(http|https)://%s/archlinux/\$repo/os/\$arch\n" %
             mirror_root, re.M)
         ml = open('/etc/pacman.d/mirrorlist', 'r')
         lines = ml.readlines()
@@ -330,10 +330,10 @@ class ArchLinux(Base):
     def up():
         # Match commented or not
         mirror_re = re.compile(
-            r" *(# *)?Server *= *(http|https)://%s/archlinux/\$repo/os/\$path\n"
+            r" *(# *)?Server *= *(http|https)://%s/archlinux/\$repo/os/\$arch\n"
             % mirror_root, re.M)
         banner = '# Generated and managed by the awesome oh-my-tuna\n'
-        target = "Server = https://%s/archlinux/$repo/os/$path\n\n" % mirror_root
+        target = "Server = https://%s/archlinux/$repo/os/$arch\n\n" % mirror_root
 
         print(
             'This operation will insert the following line into the beginning of your pacman mirrorlist:\n%s'
@@ -377,7 +377,7 @@ class ArchLinux(Base):
 
         # Simply remove all matched lines
         mirror_re = re.compile(
-            r" *Server *= *(http|https)://%s/archlinux/\$repo/os/\$path\n" %
+            r" *Server *= *(http|https)://%s/archlinux/\$repo/os/\$arch\n" %
             mirror_root, re.M)
 
         ml = open('/etc/pacman.d/mirrorlist', 'r')
@@ -592,7 +592,7 @@ class Debian(Base):
 
     @classmethod
     def up(cls):
-        print('This operation will move your current sources.list to sources.on-my-tuna.bak.list,\n' + \
+        print('This operation will move your current sources.list to sources.oh-my-tuna.bak.list,\n' + \
               'and use TUNA apt source instead.')
         if not user_prompt():
             return False
@@ -604,7 +604,7 @@ class Debian(Base):
 
     @classmethod
     def down(cls):
-        print('This operation will copy sources.on-my-tuna.bak.list to sources.list if there is one,\n' + \
+        print('This operation will copy sources.oh-my-tuna.bak.list to sources.list if there is one,\n' + \
               'otherwise build a new sources.list with archive.ubuntu.com as its mirror root.')
         if not user_prompt():
             return False
@@ -616,14 +616,23 @@ class Debian(Base):
         return True
 
 
+def _get_mirror_suffix():
+    uname = sh('uname -m')
+    no_suffix_list = ['i386', 'i586', 'i686', 'x86_64', 'amd64']
+    if any(map(lambda x: x in uname, no_suffix_list)):
+        return ''
+    else:
+        return '-ports'
+
+
 class Ubuntu(Debian):
-    default_sources = { 'http://archive.ubuntu.com/ubuntu': ['', '-updates', '-security', '-backports'] }
+    default_sources = { 'http://archive.ubuntu.com/ubuntu' + _get_mirror_suffix(): ['', '-updates', '-security', '-backports'] }
     pools = "main multiverse universe restricted"
 
     @staticmethod
     def build_mirrorspec():
         return {
-                'https://' + mirror_root + '/ubuntu': ['', '-updates', '-security', '-backports'],
+                'https://' + mirror_root + '/ubuntu' + _get_mirror_suffix(): ['', '-updates', '-security', '-backports'],
             }
 
     @staticmethod
@@ -639,7 +648,96 @@ class Ubuntu(Debian):
             '/etc/apt/sources.list') and get_linux_distro() == 'ubuntu'
 
 
-MODULES = [ArchLinux, Homebrew, CTAN, Pypi, Anaconda, Debian, Ubuntu]
+class CentOS(Base):
+    @staticmethod
+    def name():
+        return 'CentOS'
+
+    @staticmethod
+    def is_applicable():
+        global is_global
+        if not is_global:
+            return False
+        return os.path.isfile(
+            '/etc/yum.repos.d/CentOS-Base.repo') and get_linux_distro() == 'centos'
+
+    @staticmethod
+    def is_online():
+        mirror_re = re.compile(
+            r"baseurl=https://%s/centos/\$releasever/os/\$basearch/\n" %
+            mirror_root, re.M)
+        ml = open('/etc/yum.repos.d/CentOS-Base.repo', 'r')
+        lines = ml.readlines()
+        result = map(lambda l: re.match(mirror_re, l), lines)
+        result = any(result)
+        ml.close()
+        return result
+
+    @staticmethod
+    def up():
+        sh('cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak')
+        sh(r'sed -i -E s/^#?baseurl=https?:\/\/[^\/]+\/(.*)$/baseurl=https:\/\/%s\/\1/g /etc/yum.repos.d/CentOS-Base.repo' % mirror_root.replace('/', r'\/'))
+        sh(r'sed -i -E s/^(mirrorlist=.*)$/#\1/g /etc/yum.repos.d/CentOS-Base.repo')
+
+        return True
+
+    @staticmethod
+    def down():
+        if os.path.isfile('/etc/yum.repos.d/CentOS-Base.repo.bak'):
+            sh('cp /etc/yum.repos.d/CentOS-Base.repo.bak /etc/yum.repos.d/CentOS-Base.repo')
+            return True
+
+
+        sh(r'sed -i -E s/^#(mirrorlist=.*)$/\1/g /etc/yum.repos.d/CentOS-Base.repo')
+        sh(r'sed -i -E s/^(baseurl=.*)$/#\1/g /etc/yum.repos.d/CentOS-Base.repo')
+        return True
+
+
+class AOSCOS(Base):
+    @staticmethod
+    def name():
+        return 'AOSC OS'
+
+    @staticmethod
+    def is_applicable():
+        global is_global
+        if not is_global:
+            return False
+        return os.path.isfile(
+            '/var/lib/apt/gen/status.json') and get_linux_distro() == 'aosc'
+
+    @staticmethod
+    def is_online():
+        agl_result = sh('env LC_ALL=C apt-gen-list now')
+        if not agl_result:
+            return None
+        out_re = re.compile(r"mirrors:.* tuna.*", re.M)
+        match = re.findall(out_re, agl_result)
+        return len(match) > 0
+
+    @staticmethod
+    def up():
+        agl_result = sh('env LC_ALL=C apt-gen-list now')
+        if not agl_result:
+            return False
+        out_re = re.compile(r"mirrors: origin$", re.M)
+        match = re.findall(out_re, agl_result)
+        if len(match) > 0:
+            if not sh('env LC_ALL=C apt-gen-list m tuna'):
+                return False
+        else:
+            if not sh('env LC_ALL=C apt-gen-list m +tuna'):
+                return False
+        return True
+
+    @staticmethod
+    def down():
+        if not sh('env LC_ALL=C apt-gen-list m -tuna'):
+            return False
+        return True
+
+
+MODULES = [ArchLinux, Homebrew, CTAN, Pypi, Anaconda, Debian, Ubuntu, CentOS, AOSCOS]
 
 
 def main():
@@ -681,7 +779,7 @@ def main():
                     try:
                         result = m.up()
                         if not result:
-                            m.log('Operation cancled', 'w')
+                            m.log('Operation canceled', 'w')
                         else:
                             m.log('Mirror has been activated', 'o')
                     except NotImplementedError:
@@ -697,7 +795,7 @@ def main():
                     try:
                         result = m.down()
                         if not result:
-                            m.log('Operation cancled', 'w')
+                            m.log('Operation canceled', 'w')
                         else:
                             m.log('Mirror has been deactivated', 'o')
                     except NotImplementedError:

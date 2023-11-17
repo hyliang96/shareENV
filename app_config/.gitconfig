@@ -46,6 +46,7 @@
             printf \"%${timelength}s    %s %s %s\n\" \"$time\" \"$hash\" \"$branch\" \"$message\";  \
         done < <(git logx && echo);"'
 
+; 以下远程仓库使用ssh替代https/http，上传、下载都替换，以便墙内访问时不卡顿/超时
 [url "git@github.com:"]
     insteadOf = https://github.com/
 [url "git@github.com:"]
