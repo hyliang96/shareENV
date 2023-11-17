@@ -1462,8 +1462,29 @@ pipreq()
 }
 
 # ---------------- alias to conda --------------
-# 清华tuna源，官https://github.com/tuna/oh-my-tuna
-# # 国内默认使用tuna，装包会快很多
+# 清华tuna源，官网 https://github.com/tuna/oh-my-tuna
+# 国内建议使用tuna源，装包会快很多。
+# 目前支持更改下列软件的配置，将其直接指向 TUNA 镜像站: conda, Homebrew, PyPI(即pip源), TeX Live (by tlmgr), Arch Linux, CTAN, Debian, Ubuntu, CentOS, AOSC OS。
+
+# `tuna`是一键换源的alias，`tuna-help`是他的帮助命令。
+alias tuna='wget --no-check-certificate -O - https://tuna.moe/oh-my-tuna/oh-my-tuna.py | python -- -'
+
+tuna-help()
+{
+     echo 'tuna是一个一键换源的脚本：目前支持更改下列软件的配置，将其直接指向 TUNA 镜像站: conda, Homebrew, PyPI(即pip源), TeX Live (by tlmgr), Arch Linux, CTAN, Debian, Ubuntu, CentOS, AOSC OS'
+    echo
+    echo "tuna [ install | update]  : 下载最新的 oh-my-tuna.py 脚本
+    来自      https://tuna.moe/oh-my-tuna/oh-my-tuna.py
+    保存到    $share_app_config"
+    echo "tuna : 当前用户一键换源"
+    echo "sudo tuna --global : 所有用户一键换源"
+    echo "tuna [ help | -h | --help ] : 显示帮助"
+    echo "tuna             : 使用在线下载的"
+    echo "tuna [arguments] : oh-my-tuna.py 的参数，详见下面:"
+    echo
+    tuna -h
+}
+
 # tuna()
 # {
     # if [ "$1" = '--global' ]; then
@@ -1491,7 +1512,6 @@ pipreq()
 # }
 
 
-alias tuna='wget --no-check-certificate -O - https://tuna.moe/oh-my-tuna/oh-my-tuna.py | python -- -'
 
 #  ce: conda environment
 alias ceact='conda activate'

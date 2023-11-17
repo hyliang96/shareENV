@@ -55,5 +55,4 @@
     insteadOf = https://bitbucket.org/
 [url "git@bitbucket.org:"]
     insteadOf = http://bitbucket.org/
-; [http]
-    ; curloptResolve = "+bitbucket.org:443:104.192.141.2"
+
