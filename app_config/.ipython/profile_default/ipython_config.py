@@ -386,6 +386,11 @@ c.TerminalInteractiveShell.highlighting_style_overrides = {
     Token.OutPromptNum: '#ff5753 bold',
 }
 
+try:
+    from IPython.core import ultratb
+    ultratb.VerboseTB._tb_highlight = "bg:ansired"
+except Exception:
+    print("Error patching background color for tracebacks, they'll be the ugly default instead")
 
 ## Enable mouse support in the prompt
 # c.TerminalInteractiveShell.mouse_support = True
