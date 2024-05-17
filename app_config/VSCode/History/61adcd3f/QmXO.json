@@ -110,11 +110,11 @@
     },
     // 左侧目录树不显示
     "files.exclude": {
-        "**/*.jpg": true,
-        "**/*.jpeg": true,
-        "**/*.JPEG": true,
-        "**/*.png": true,
-        "**/*.PNG": true,
+        // "**/*.jpg": true,
+        // "**/*.jpeg": true,
+        // "**/*.JPEG": true,
+        // "**/*.png": true,
+        // "**/*.PNG": true,
         // "experimental_results": true
     },
     // 搜索不搜
@@ -419,10 +419,10 @@
     "jupyter.askForKernelRestart": false,
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook",
-        // "default" 即 用vscode默认编辑模式打开
-        // "cweijan.markdownViewer" 即 Office Viewer 的Markdown Editor插件，它是所见即所得的Markdown编辑器
         "*.md": "cweijan.markdownViewer",
-        "*.markdown": "cweijan.markdownViewer"
+        "*.markdown": "cweijan.markdownViewer",
+        "*.jpg": "cweijan.officeViewer",
+        "{git,gitlens}:/**/*.{md,csv}": "default"
     },
     "editor.wordWrap": "on",
 
@@ -451,7 +451,9 @@
         "trust": "(context) => ['\\htmlId', '\\href'].includes(context.command)"
     },
     "mdmath.macros": {
-        "\\RR": "\\mathbb{R}",
+        // "\\R": "\\mathbb{R}",
+        "\\dd": "\\mathrm{d}",
+        "\\tr": "\\mathrm{tr}",
         "\\vek": "{\\begin{pmatrix}#1\\\\#2\\end{pmatrix}}",
         "\\eqref": "\\href{###1}{(\\text{#1})}",
         "\\ref": "\\href{###1}{\\text{#1}}",
@@ -474,7 +476,8 @@
                 {
                     "fileName": "<Filename>.textbundle/text.markdown",
                 }
-            ]
+            ],
+            "openFilesWhenDone": ["<Filename>.textbundle/text.markdown"]
         },
         // 创建空文件夹
         {
@@ -491,12 +494,24 @@
         }
     ],
 
+    // 是否在资源管理器（即左边的文件目录栏）中显示一个文件夹下唯一的子文件夹
+    "explorer.compactFolders": false,
 
-    "material-icon-theme.folders.associations": {
-        "*.textbundle": "markdown"
-        // "customFolderName": "*.textbundle",
-        // "sample": "dist"
-    },
+    // 尝试给’*.textbundle‘文件夹一个自定义icon，以和其他文件夹区分开，但失败了
+    // 原因是 vscode 的API只支持文件夹以全名去匹配然后加icon （详见相关issue的答复： https://github.com/vscode-icons/vscode-icons/issues/2886 ）
+    // "vsicons.associations.folders": [
+    //     { "icon": "node", "extensions": ["textbundle"], "format": "svg"}
+    // ],
+
+    // "material-icon-theme.files.associations": {
+    //     "textbundle": "markdown"
+    // },
+
+    // "material-icon-theme.folders.associations": {
+    //     "**.textbundle": "markdown"
+    //     // "customFolderName": "*.textbundle",
+    //     // "sample": "dist"
+    // },
 
     // LTex : latex/markdown 拼写检查
     "ltex.enabled": true, // 启用插件
@@ -514,5 +529,6 @@
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "workbench.startupEditor": "none",
     "window.zoomLevel": -1,
-    "workbench.iconTheme": "material-icon-theme"
+    "fittencode.languagePreference.displayPreference": "zh-cn",
+    "fittencode.languagePreference.commentPreference": "zh-cn"
 }
