@@ -1,0 +1,559 @@
+{
+    "search.useGlobalIgnoreFiles": true,
+    "security.workspace.trust.enabled": false,
+
+    "editor.fontFamily": "Meslo LG S DZ for Powerline",
+    "terminal.external.osxExec": "iTerm.app",
+    "terminal.explorerKind": "external",
+    "terminal.integrated.copyOnSelection": true,
+    "python.pythonPath": "/Users/mac/miniconda3/bin/python",
+    "terminal.integrated.shell.linux": "/usr/bin/zsh",
+    "terminal.integrated.shell.osx": "/bin/zsh",
+
+    // 主题配色
+    "workbench.colorTheme": "Gruvbox Dark (Soft)",
+    "workbench.colorCustomizations": {
+        // 编辑器配色
+        // "[针对的配色方案名]": {
+            // 当前行
+            // "editor.lineHighlightBorder": "#4c4744",
+            "editor.lineHighlightBackground": "#4c4744",
+
+            "editor.wordHighlightBackground": "#ff640324",
+            // "editor.wordHighlightBorder": "",
+            // "editor.worldHighlightStrongBackground": "",
+            // "editor.wordHighlightStrongBorder": "",
+
+            // 当前选中文本
+            // "editor.selectionBorder": "#ffffff",
+            "editor.selectionBackground": "#4c4744",
+            // 和选中内容相同的文本
+            "editor.selectionHighlightBorder": "#F0E5C1",
+            // "editor.selectionHighlightBackground": "#4c4744",
+            // 搜索
+            // "editor.findMatchBorder": "#00cc44a8", //当前搜索匹配项
+            // "editor.findMatchBackground": "#00cc44a8", //当前搜索匹配项
+            // "editor.findMatchHighlightBorder": "#ff7b00a1", //其余搜索匹配项
+            // "editor.findMatchHighlightBackground": "#ff7b00a1", //其余搜索匹配项
+            // 非活动编辑器中选中的
+            // "editor.inactiveSelectionBorder": "#ffffff",
+            // "editor.inactiveSelectionBackground": "#ff020221",
+        //   },
+
+        // 终端配色
+        "terminal.background": "#32302f", // (#28282a for  gruvbox middle) (#32302f for gruvbox soft)
+        "terminal.foreground": "#c7c7c7",
+        "terminalCursor.background": "#3b3b3b",
+        "terminalCursor.foreground": "#A5A2A2",
+        "terminal.ansiBlack": "#32302f",
+        "terminal.ansiBrightBlack": "#a2a2a2",
+        "terminal.ansiWhite": "#c7c7c7",
+        "terminal.ansiBrightWhite": "#feffff",
+        "terminal.ansiRed": "#c91b00",
+        "terminal.ansiBrightRed": "#ff6d67",
+        "terminal.ansiYellow": "#cecc4d",
+        "terminal.ansiBrightYellow": "#fefb67",
+        "terminal.ansiGreen": "#89b560",
+        "terminal.ansiBrightGreen": "#74dd74",
+        "terminal.ansiCyan": "#61aaab",
+        "terminal.ansiBrightCyan": "#5ffdff",
+        "terminal.ansiBlue": "#5168d5",
+        "terminal.ansiBrightBlue": "#6871ff",
+        "terminal.ansiMagenta": "#c930c7",
+        "terminal.ansiBrightMagenta": "#ff76ff",
+    },
+
+    // 按tab弹出自动补全
+    "editor.tabCompletion": "on",
+    // 根据语法自动确定缩进
+    // "editor.autoIndent": "advanced",
+    // 遇到“else”"elif"之类的也会自动缩进
+    "editor.formatOnType": true,
+    // 显示tab和空格
+    "editor.renderWhitespace": "all",
+
+    // 打开文件时检测文件内容，以自动决定 `editor.tabSize`， `editor.insertSpaces`，即
+    // 若一个文件内容用 tab符 缩进，则 editor.insertSpaces 设为 false
+    // 若一个文件内容用n个空格缩进，则 editor.insertSpaces 设为 true，editor.tabSize=n
+    "editor.detectIndentation": true,
+    // 一个tab符的显示宽度
+    "editor.tabSize": 4,
+    // 按tab输入editor.tabSize个空格
+    "editor.insertSpaces": true,
+
+
+    // "terminal.integrated.cwd": "${cwd}",
+    // `code  文件夹`, 则融合终端开启新tab从项目文件夹目录开启
+    // 融合终端左右分屏，新窗口从左侧的窗口的当前目录开启
+    "terminal.integrated.inheritEnv": true,
+    // 创建新终端，初始目录在"/home/$USER"
+    "terminal.integrated.rendererType": "dom",
+    // 终端光标改为竖线
+    "terminal.integrated.cursorStyle": "line",
+    // 终端光标会闪烁
+    "terminal.integrated.cursorBlinking": true,
+    // 终端光标的宽度
+    "terminal.integrated.cursorWidth" : 4,
+
+    // 编辑器区光标闪烁方式
+    "editor.cursorBlinking": "smooth",
+    // 编辑区光标为竖线
+    "editor.cursorStyle" : "line",
+    // 编辑区光标的宽度
+    "editor.cursorWidth": 4 ,
+
+    // 保存文件后自动删除行尾空格
+    "files.trimTrailingWhitespace": true,
+    "python.insidersChannel": "off",
+
+    // 数字显示原精度
+    "csv-preview.formatValues": "never",
+    "csv-preview.theme": "light",
+
+    "git.autofetch": true,
+    // darkly
+
+    // "search.useIgnoreFiles": true,
+    // to solve "Visual Studio Code is unable to watch for file changes in this large workspace" (error ENOSPC)"
+    "files.watcherExclude": {
+        "**/__data__/**": true,
+        "**/__result__/**": true,
+        "**/result/**": true,
+        "**/venv/**": true,
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+    },
+    // 左侧目录树不显示
+    "files.exclude": {
+        // "**/*.jpg": true,
+        // "**/*.jpeg": true,
+        // "**/*.JPEG": true,
+        // "**/*.png": true,
+        // "**/*.PNG": true,
+        // "experimental_results": true
+    },
+    // 搜索不搜
+    "search.exclude": {
+        "**/*.jpg": true,
+        "**/*.jpeg": true,
+        "**/*.JPEG": true,
+        "**/*.png": true,
+        "**/*.PNG": true,
+        // "experimental_results": true
+    },
+    "workbench.statusBar.visible": true,
+    "editor.minimap.enabled": false,
+    "markdown-preview-enhanced.enableExtendedTableSyntax": true,
+
+
+    // 文件尾缀对应的文件格式
+    "files.associations": {
+        ".env": "shellscript"
+    },
+
+    // settings sync 插件的设置
+    "sync.gist": "",
+    "sync.autoUpload": true,
+    "sync.autoDownload": true,
+    "sync.quietSync": true,
+    "sync.forceDownload": false,
+
+    // // 参见：https://blog.csdn.net/tangyang8941/article/details/107169763
+    // // 多行标签页栏
+    // // 按cmd+shift+p呼出命令框，输入命令Reload Custom CSS and JS
+    // "vscode_custom_css.imports": [
+    //     "file:///Users/mac/.vscode/tabs-wrapper.css"
+    // ],
+    // "vscode_custom_css.policy": true,
+
+
+    // // https://github.com/pytorch/pytorch/issues/701#issuecomment-438215838
+    // "python.linting.pylintArgs": [
+    //     "--errors-only",
+    //     "--generated-members=numpy.* ,torch.* ,cv2.* , cv.*"
+    // ]
+
+    // -------- 'macros' 插件，支持自定义组合命令 --------------
+    // 选择一行, 不带行尾换行符
+    "macros": {
+        "copyWithoutNewLine": [
+            "cursorHome",
+            // "cursorHome", // 还复制缩进
+            "cursorEndSelect",
+            "editor.action.clipboardCopyAction",
+            "cancelSelection",
+            "cursorUndo",
+            "cursorUndo",
+            "cursorUndo",
+        ],
+        "selectWithoutNewLine": [
+            "cursorHome",
+            // "cursorHome", // 还复制缩进
+            "cursorEndSelect",
+            // "editor.action.clipboardCopyAction",
+            // "cancelSelection"
+        ],
+        // "otherSideOfSelection": [
+        //     "cursorHome",
+        //     // "cursorHome", // 还复制缩进
+        //     "cursorEndSelect",
+        //     // "editor.action.clipboardCopyAction",
+        //     // "cancelSelection"
+        //     "cursor"
+        // ]
+    },
+
+    // // 打开、隐藏内置终端，
+    // "macros": {
+    //     "toggleTerminal": [
+    //         "workbench.action.terminal.focus",
+    //         "workbench.action.terminal.toggleTerminal"
+    //     ]
+    // },
+
+    // // multiCommand 插件，支持自定义组合命令
+    // "multiCommand.commands": [
+    //     {
+    //         "command": "multiCommand.toggleTerminal",
+    //         "sequence": [
+    //             "workbench.action.terminal.focus",
+    //             "workbench.action.terminal.toggleTerminal"
+    //         ]
+    //     }
+
+    // "terminal.integrated.cwd": "${workspaceFolder}",
+    // ${workspaceFolder}
+    // "terminal.integrated.env.windows": {
+    //     "PATH": "${env:PATH};${setting:go.gopath}"
+    // },
+
+
+    // shell语言的格式化插件
+    // "[shellscript]": {
+    //     "editor.defaultFormatter": "foxundermoon.shell-format"
+    // },
+    // 保存时格式化代码
+    // "editor.formatOnSave": true,
+
+
+    // ---------------------- latex-workshop -------------------------
+    // 全选 "/ * latextmp * /", 然后 "cmd+/" 开关所在行注释, 以切换临时文件输出的目录:
+// /*no*//*latextmp*/ // 输出到 `当前项目/`
+/*latextmp*/ // 输出到 `当前项目/.vsclatextmp/`
+
+    "latex-workshop.latex.recipe.default": "lastUsed", // "first"
+    "latex-workshop.latex.build.forceRecipeUsage": true,  // 按cmd+alt+B时, 也使用recipe编译
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk",
+            "tools": [
+                "latexmkrc",
+                "latexmk",
+// /*no*//*latextmp*/"hide",
+/*latextmp*/     "move_aux",
+/*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "pdflatex -> bibtex -> pdflatex*2",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex",
+// /*no*//*latextmp*/"hide",
+/*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "xelatex -> bibtex -> xelatex*2",
+            "tools": [
+                "xelatex",
+                "bibtex",
+                "xelatex",
+                "xelatex",
+// /*no*//*latextmp*/"hide",
+/*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "pdflatex",
+            "tools": [
+                "pdflatex",
+// /*no*//*latextmp*/"hide",
+/*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "xelatex",
+            "tools": [
+                "xelatex",
+// /*no*//*latextmp*/"hide",
+/*latextmp*/     "copy_pdf"
+            ]
+        }, {
+            "name": "bibtex",
+            "tools": [
+                "bibtex"
+            ]
+        },
+    ],
+
+
+// /*no*//*latextmp*/  "latex-workshop.latex.outDir": "%DIR%",  // %TMPDIR%
+/*latextmp*/  "latex-workshop.latex.outDir": "%DIR%/.vsclatextmp",  // %TMPDIR%
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmkrc",
+            "command": "touch",
+            "args": [
+                "%DIR%/latexmkrc"
+            ]
+        },
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+/*latextmp*/     "-output-directory=%OUTDIR%", "-f",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "%DOCFILE%"
+            ]
+        }, {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+/*latextmp*/     "-output-directory=%OUTDIR%",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        }, {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+/*latextmp*/     "-output-directory=%OUTDIR%",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        }, {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+// /*no*//*latextmp*/     "%DOCFILE%"
+/*latextmp*/     "%OUTDIR%/%DOCFILE%"
+            ],
+/*latextmp*/    "env": { "TEXMFOUTPUT": "%OUTDIR%" }
+        }, {
+            "name": "hide",
+            "command": "find",
+            "args": [
+                "%DIR%",
+                "-maxdepth",  "1", "-type", "f",  "(",
+                      "-iname", "*.bbl",
+                "-o", "-iname", "*.synctex.gz",
+                ")", "-exec", "chflags", "hidden", "{}", ";"
+            ]
+        } , {
+            // copy pdf files from %OUTDIR%/ to %DIR%/
+            "name": "copy_pdf",
+            "command": "find",
+            "args": [
+                "%OUTDIR%",
+                "-iname", "*.pdf",
+                "-exec", "cp", "{}", "%DIR%", ";"
+            ]
+        },  {
+            // move auxiliary files to %OUTDIR%/
+            "name": "move_aux",
+            "command": "find",
+            "args": [
+                "%DIR%",
+                "-maxdepth",  "1", "-type", "f",  "(",
+                      "-iname", "*.aux",
+                "-o", "-iname", "*.bbl",
+                "-o", "-iname", "*.blg",
+                "-o", "-iname", "*.idx",
+                "-o", "-iname", "*.ind",
+                "-o", "-iname", "*.lof",
+                "-o", "-iname", "*.lot",
+                "-o", "-iname", "*.out",
+                "-o", "-iname", "*.toc",
+                "-o", "-iname", "*.acn",
+                "-o", "-iname", "*.acr",
+                "-o", "-iname", "*.alg",
+                "-o", "-iname", "*.glg",
+                "-o", "-iname", "*.glo",
+                "-o", "-iname", "*.gls",
+                "-o", "-iname", "*.ist",
+                "-o", "-iname", "*.fls",
+                "-o", "-iname", "*.log",
+                "-o", "-iname", "*.fdb_latexmk",
+                "-o", "-iname", "*.synctex.gz",
+                ")", "-exec", "mv", "{}", "%OUTDIR%", ";"
+            ]
+        }
+    ],
+
+    "latex-workshop.latex.autoBuild.run": "never", // "never" "onFileChange" "onSave"
+    "latex-workshop.view.pdf.viewer": "tab",
+
+    // latex 自动删除辅助文件
+// /*no*//*latextmp*/ "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.subfolder.enabled": false,
+    "latex-workshop.latex.clean.fileTypes": [
+        // "*.bbl",        // bibtex xxx.tex, 读取xxx.tex引用的yyy.bib文件, 编译得到xxx.bbl. 保留此文件以供 arxiv 提交, 为其编译提供reference
+        // "*.synctex.gz",  // 保留则可以pdf与源码间相互跳转
+        "*.aux",
+        "*.dvi",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+    ],
+
+
+    // ----------------------------------------------------------------
+
+    "editor.renderControlCharacters": true,
+    "go.formatTool": "goimports",
+    "jupyter.askForKernelRestart": false,
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook",
+        "*.md": "default",  // "cweijan.markdownViewer",
+        "*.markdown": "default", //"cweijan.markdownViewer",
+        "*.jpg": "cweijan.officeViewer",
+        "{git,gitlens}:/**/*.{md,csv}": "default"
+    },
+    "editor.wordWrap": "on",
+
+    "[markdown]": {
+        "editor.quickSuggestions": {
+            "other": "on",
+            "comments": "on",
+            "strings": "on"
+        }
+    },
+
+    // Office Viewer
+    // textbundle式的image存放
+    "vscode-office.pasterImgPath": "assets/${now}.png",  // 还可使用${workspaceDir}, ${fileName}变量
+    "vscode-office.workspacePathAsImageBasePath": false,
+
+    // 一个根文件夹下有很多markdown文件（可以套在许多层子文件夹内），根文件夹下有‘assets/markdown文件名/图片名.png’
+    // "vscode-office.pasterImgPath": "${workspaceDir}/assets/${fileName}/${now}.png",  // 还可使用${workspaceDir}, ${fileName}变量
+    // "vscode-office.workspacePathAsImageBasePath": true,
+
+
+    "markdown-preview-github-styles.colorTheme":"light",
+
+    // "markdown.styles": [
+    //     "https://cdn.jsdelivr.net/gh/dhdhagar/vscode-md-preview-light/style.min.css"
+    // ],
+
+    //  Markdown All In One
+    "markdown.extension.math.enabled": false, // 用 “Markdown+Math” 插件替换之，以获得更强的公式渲染
+    "markdown.extension.preview.autoShowPreviewToSide": true,
+
+    //  Markdown+Math
+    "mdmath.katexoptions": {
+        "trust": "(context) => ['\\htmlId', '\\href'].includes(context.command)"
+    },
+    "mdmath.macros": {
+        // "\\R": "\\mathbb{R}",
+        "\\dd": "\\mathrm{d}",
+        "\\tr": "\\mathrm{tr}",
+        "\\and": "\\land",
+        "\\vek": "{\\begin{pmatrix}#1\\\\#2\\end{pmatrix}}",
+        "\\eqref": "\\href{###1}{(\\text{#1})}",
+        "\\ref": "\\href{###1}{\\text{#1}}",
+        "\\label": "\\htmlId{#1}{\\quad\\textcolor{blue}{\\text{(#1)}}}"
+        // "\\label": "\\htmlId{#1}{}\\tag{#1}"
+    },
+
+    // 插件 Folder Templates
+    "folderTemplates.structures": [
+        // 创建具有textbundle结构的文件夹
+        {
+            "name": "New Textbundle",
+            "customVariables": ["Filename"],
+            "omitParentDirectory": true,
+            "omitFTName": true,
+            "structure": [
+                // {
+                //     "fileName": "<Filename>.textbundle",
+                //     "template": "EmptyDirectory"
+                // },
+                {
+                    "fileName": "<Filename>.textbundle/text.markdown",
+                }
+            ],
+            "openFilesWhenDone": ["<Filename>.textbundle/text.markdown"]
+        },
+        // 创建空文件夹
+        {
+            "name": "New Empty Dir",
+            "customVariables": ["Filename"],
+            "omitParentDirectory": true,
+            "omitFTName": true,
+            "structure": [
+                {
+                    "fileName": "<Filename>",
+                    "template": "EmptyDirectory"
+                }
+            ]
+        }
+    ],
+
+    // 是否在资源管理器（即左边的文件目录栏）中显示一个文件夹下唯一的子文件夹
+    "explorer.compactFolders": false,
+
+    // 尝试给’*.textbundle‘文件夹一个自定义icon，以和其他文件夹区分开，但失败了
+    // 原因是 vscode 的API只支持文件夹以全名去匹配然后加icon （详见相关issue的答复： https://github.com/vscode-icons/vscode-icons/issues/2886 ）
+    // "vsicons.associations.folders": [
+    //     { "icon": "node", "extensions": ["textbundle"], "format": "svg"}
+    // ],
+
+    // "material-icon-theme.files.associations": {
+    //     "textbundle": "markdown"
+    // },
+
+    // "material-icon-theme.folders.associations": {
+    //     "**.textbundle": "markdown"
+    //     // "customFolderName": "*.textbundle",
+    //     // "sample": "dist"
+    // },
+
+    // LTex : latex/markdown 拼写检查
+    "ltex.enabled": true, // 启用插件
+    "ltex.language": "en-US",
+
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "python.defaultInterpreterPath": "/Users/mac/miniconda3/bin/python",
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "jupyter.interactiveWindow.creationMode": "perFile",
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "workbench.startupEditor": "none",
+    "window.zoomLevel": -1,
+    "fittencode.languagePreference.displayPreference": "zh-cn",
+    "fittencode.languagePreference.commentPreference": "zh-cn"
+}

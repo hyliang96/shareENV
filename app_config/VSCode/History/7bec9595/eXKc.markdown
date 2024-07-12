@@ -1,0 +1,1084 @@
+# 参考文献
+
+[^SB-OT]: [扩散薛定谔桥和最优传输](https://zhuanlan.zhihu.com/p/690392523)
+[^liaisons]:  Chen, Y., Georgiou, T.T., Pavon, M., 2020. Stochastic control liaisons: Richard Sinkhorn meets Gaspard Monge on a Schroedinger bridge., https://doi.org/10.48550/arXiv.2005.10963 / Section4
+[^wasserstein]: Caluya, K.F., Halder, A., 2021. Wasserstein Proximal Algorithms for the Schrödinger Bridge Problem: Density Control with Nonlinear Drift.
+
+
+
+# Diffusion和薛定谔桥的对比
+
+## Diffusion的缺点
+
+摘自[^SB-OT]：
+
+> 基于Score的生成模型（Score-based Generative Model，SGM，在下文中也叫做Diffusion）已经是目前CV领域中最火的话题之一。其可以简单总结成两个过程：一个加噪（前向）过程，根据手工定义的规则在数据上反复加高斯噪声，最后得到一个近似高斯的分布；一个去噪（反向）过程，模拟我们定义好的加噪过程的反向，一般用一个神经网络来学习。但是Diffusion也有一些缺点，比如
+>
+> - 生成速度慢：Diffusion的训练过程需要分很多timestep（时间步），对连接两个分布的轨迹进行分段离散化，进而导致生成一张图片需要迭代成百上千次；
+>
+> - 加噪过程需要手工定义：在加噪过程中，每个timestep加多大的高斯噪声都是手工定义的（schedule），具体什么样的schedule效果好只能通过实验尝试；
+>
+> - 拟合能力有限：对于更高维度空间中的低维流形，如视频生成，diffusion模型的能力可能仍然不够强。
+>
+> - 只能单向生成：现有的Diffusion基本都只能从高斯分布生成复杂分布（比如图像），无法在两个复杂分布之间建立映射。
+>
+> 近来，基于薛定谔桥（Schrödinger Bridge，SB）问题的生成模型开始引起关注，而扩散薛定谔桥（Diffusion Schrödinger Bridge，DSB）是其中的一项重要工作，显示出了一定程度上缓解和解决这些问题的潜力。
+
+## SB的优点
+
+摘自[^SB-OT]：
+
+> 相比于Diffusion, DSB主要有以下两个优点：
+>
+> - DSB计算的是两个分布之间的最优传输（Optimal Transport，OT）；
+>
+> - DSB可以计算任意两个可采样分布之间的OT，而相比之下Diffusion只能从已知分布（如高斯噪声）开始生成数据。
+
+
+
+# 薛定谔桥的数学表示
+
+整理自[^liaisons]，我为其添加了证明过程。
+
+## 薛定谔桥的物理背景
+
+1931-1932年，薛定谔提出一个思想实验：有N个做布朗运动的粒子随时间演化；N很大，至少在阿伏伽德罗常数规模。$t=0$时观测到的经验分布密度为$\rho_0$，$t=1$时观察到$\rho_1$。然而，从$\rho_0$布朗运动演化到$t=1$理论上应得到的最终分布，却和$\rho_1$明显不一致：
+$$
+\int p^{\mathcal W}(0,x,1,y)\rho_0(x)\dd x\neq \rho_1(y)
+$$
+
+其中，$p^{\mathcal W}(s,x,t,y)$是布朗运动的传输密度（transition density），即heart kernel，
+$$
+p^{\mathcal W}(s, x, t, y):=p^{\mathcal W}(X_t=y|X_s=x)=[2 \pi(t-s)]^{-\frac{n}{2}} \exp \left[-\frac{\|x-y\|^2}{2(t-s)}\right], \quad s<t
+$$
+为此，需要找一个尽可能像布朗运动的轨迹分布，使得初始分布能演化成最终分布。
+
+为此，需要首先定义轨迹分布，和两个轨迹分布之间的相似度（KL散度）。
+
+## 数学设定
+
+### 记号约定
+
+**空间**
+
+坐标$x,y\in\R^n$，时间$t\in T=[0,1]$。
+
+随机种子空间/样本空间：$(\Omega,\Sigma,P/Q/\mathcal W)$.
+
+*   待优化测度：$P$
+*   参考测度：$Q$
+*   Wiener测度：$\mathcal W$
+
+轨迹空间：$(\mathcal C,\mathcal B)$
+
+*    $\mathcal C=C([0,1];\R^n)$，即$[0,1]$到$\R^n$的连续函数。
+*   $\mathcal B=\mathscr B(T;\R^n)$，定义见 [薛定谔桥数学背景知识.textbundle](../薛定谔桥数学背景知识.textbundle)
+
+**随机过程**
+
+*   随机过程 $X:\Omega\mapsto \mathcal C$。可以是多对一。
+*   轨迹 $X^\omega \in \mathcal W$
+*   随机变量 $X_t: \Omega\mapsto \R^n$
+*   轨迹在某时刻的取值 $X^\omega_t\in \R^n$
+
+**概率测度集合**
+
+在轨迹空间上所有概率测度所构成的集合，记作$\mathcal D$​。
+
+*   给定随机过程$X$，$(\Omega, \Sigma,P)$上的$P$，诱导出/决定了$(\mathcal C,\mathcal B )$上的概率测度$P^X$，它只和$P$、$X$有关。随机过程$X$决定的概率测度$P^X\in\mathcal D$。
+
+$\mathcal D(\rho_0,\rho_1)$表示轨迹概率测度所构成的集合，使得初始分布概率密度为$\rho_0(x)$，最终分布概率密度为$\rho_1(y)$​。
+
+### **边缘密度**
+
+*   在某时刻的分布密度/边缘密度：$\rho^P_t(x):=\dfrac{ P(\{\omega\in \Omega|X_t^\omega \in B(x,\dd x)\})}{V (\dd x)}$，这是个Radon-Nikodym导数，简记作$\dfrac{P_t(\dd x)}{\dd x}$。其中分子的$B(x,\dd x):=\{x'\big | |x_i'-x_i|< (\dd x)_i\}$是$x$的无穷小邻域， $V$是勒贝格测度，$V(\dd x)$在分母、积分下、微分方程中可以简记作$\dd x$。
+*   在某两个时刻的分布密度/联合密度：$\rho^P_{st}(x,y):=\dfrac{ P(\{\omega\in \Omega|X_s^\omega \in B(x,\dd x)\and X_t^\omega \in B(y,\dd y)\})}{V (\dd x)V(\dd y)}, s< t$
+
+### **布朗运动（即Wiener过程）**
+
+*   初始点为$x$，做方差为$\epsilon$的布朗运动，轨迹服从**单点初值的Wiener测度**$\mathcal W^\epsilon_x\in \mathcal D$，是轨迹空间上的概率测度：
+
+*   初始分布的概率密度为$\rho$，做方差为$\epsilon$的布朗运动，轨迹服从**确定初始分布的Wiener测度**$\mathcal W^\epsilon_\rho\in \mathcal D$，是轨迹空间上的概率测度：
+    $$
+    \mathcal W^\epsilon_\rho:=\int \mathcal W^\epsilon_x \rho(x)\dd x
+    $$
+
+*   初始点均匀分布，做方差为$\epsilon$的布朗运动，轨迹服从**静态Wiener测度**$\mathcal W^\epsilon\notin\mathcal D$，它描述了布朗运动无限时间后，粒子均匀分布在空间$\R^n$中，达到均衡，故名为 静态Wiener过程，或叫 可逆布朗运动。$\mathcal W^\epsilon$是轨迹空间上的无界非负测度、但不是概率测度，即$\mathcal W^\epsilon\notin \mathcal D$：
+    $$
+    \mathcal W^\epsilon :=\int \mathcal W_x^\epsilon \dd x
+    $$
+
+注：当$\epsilon=1$时，上述各种Wiener测度的$\mathcal W$记号右上角的$\epsilon$可以略去不写。
+
+### 轨迹空间的KL散度
+
+若$P,Q$都是轨迹空间$(C(0,1);\R^n)$上的测度，则$P,Q$之间的KL散度为，
+$$
+\mathbb{D}(P \| Q):=\left\{\begin{array}{ll}\mathbb{E}_P\left\{\log \frac{\mathrm{d} P}{\mathrm{~d} Q}\right\}, & \text { if } P \ll Q \\ +\infty & \text { otherwise }\end{array}\right.
+$$
+
+*   其中，$\frac{\dd P}{\dd Q}$为Radon-Nikodym导数，完整的记号是$\mathbb E_P\log \frac{\dd P}{\dd Q}=\int_\Omega \log \frac{\dd P}{\dd Q}(\omega)  P(\dd \omega)$。
+*   性质：初始分布密度为$\rho$的Winer测度$\mathcal W_\rho$，静态Winer测度$\mathcal W$。
+    *   $\mathbb D(\mathcal W_\rho\Vert \mathcal W)=\inf \rho(x) \log \rho(x)\dd x=-H(\rho)$，$H(\rho)$是初始分布的熵。
+    *   $\mathbb D(\mathcal W_\rho\Vert \mathcal W_{\rho'})=\inf \rho(x) \log \frac{\rho(x)}{\rho'(x)}\dd x=\mathbb D(\rho\Vert  \rho' )$​​，即初始分布的KL散度。
+
+
+
+## 薛定谔桥：$P$不受限制
+
+### [形式1]薛定谔桥的定义：最小化轨迹的KL
+
+**找连接给定始末位置$\rho_0,\rho_1$分布的测度$P$，使得它和参考测度$Q$尽可能接近，即两个测度尽可能接近**
+$$
+P^*=\operatorname*{arg\,max}_{P\in \mathcal D(\rho_0,\rho_1)} \mathbb D(P \Vert Q)
+$$
+这个优化问题的解，称$\rho_0$和$\rho_1$之间的薛定谔桥（Schrödinger Bridge，SB）。
+
+### 轨迹KL散度的分解
+
+**结论：轨迹的KL散度可以分解成，固定始末位置的轨迹的散度+联合边缘分布的散度**，即
+$$
+\mathbb D(P\Vert Q)=\mathbb E_{x,y\sim \rho_{01}^P} \mathbb D(P_x^y\Vert Q_x^y)+\mathbb D(\rho_{01}^P\Vert \rho_{01}^Q)\label{KL-decomp}
+$$
+当且仅当$P_x^y=Q_x^y$，$\mathbb D(P_x^y\Vert Q_x^y)=0$，因此[[形式1]](#[形式1]薛定谔桥的定义)等价于[[形式2]静态薛定谔桥](#[形式2]静态薛定谔桥)。
+
+
+
+**证明：**
+
+**一、连续时间的KL散度分解**
+
+比较复杂，需要考虑$\omega$和$x,y$是否兼容的问题，也即需要考察是否$X_0^\omega=x,X_1^\omega=y$。
+
+定义｜**固定始末位置的条件概率**：记$\Omega_x^y:=\{\omega\in \Omega|X_0^\omega=x\and X^\omega_1=y \}$，这是一个柱集的原像，即$X^{-1}(柱集)$，故$\Omega_x^y\in \Sigma$。故$\forall B\in \Sigma$，有$B\cap \Omega _x^y\in \Sigma$，故$P(B\cap \Omega _x^y)$有定义，故可定义给定初始位置$x$，最终位置$y$，的**条件概率测度**：
+$$
+P_x^y(B):=\frac{P(B\cap \Omega _x^y)}{P(\Omega_x^y)}
+$$
+性质：
+
+*   在紧收敛度量下定义开球$B(X^\omega,r)$，记$\dd \omega:=X^{-1}(B(X^\omega,\dd r))$。
+*   记$\dd \Omega_{x}^{y}:=\{\omega\in \Omega|X_0^\omega\in B(x,\dd x)\and X^\omega_1\in B(y,\dd y) \}$。
+*   则有$P(\dd \omega \cap \dd \Omega_x^y)\rightarrow P(\dd \omega \cap \Omega _x^y), P(\dd \Omega_x^y)\rightarrow P(\Omega_x^y)\ \  (\dd x\rightarrow 0,\dd y\rightarrow 0)$，故
+
+$$
+P^y_x(\dd w\cap \Omega_x^y)=\frac{P(\dd \omega \cap \Omega_x^y)}{P(\Omega_x^y)}=\frac{P(\dd \omega \cap \dd \Omega_x^y)}{P(\dd \Omega_x^y)}
+$$
+
+定义｜**在初始和最终时刻$P$的联合分布**：如下式，分母表示勒贝格测度，
+$$
+\rho_{01}^P(x,y):=\frac{P(\dd \Omega_x^y)}{\dd x \dd y}
+$$
+同理可以定义$Q_x^y,\rho^Q_{0,1}$​。
+
+性质：
+
+*   $P(\dd \omega)$的表示
+    $$
+    \begin{align}
+    P(\dd \omega)&=\int_{\R^n}\int_{\R^n} P(\dd \omega\cap \Omega_x^y)\\
+    &=\int_{\R^n}\int_{\R^n} P_x^y(\dd \omega\cap \Omega_x^y)P(\dd \Omega_x^y)\\
+    &=\int_{\R^n}\int_{\R^n} P_x^y(\dd \omega\cap \Omega_x^y)\rho^P_{01}(x,y)\dd x\dd y\\
+    &=\int_{X_0^{\dd \omega}}\int_{X_1^{\dd \omega}} P_x^y(\dd \omega)\rho^P_{01}(x,y)\dd x\dd y\\
+    &=P_{x_\omega}^{y_\omega}(\dd \omega)\rho^P_{01}(x_\omega,y_\omega)V(X_0^{\dd \omega})V(X_1^{\dd \omega})
+    \end{align}
+    $$
+    其中$X_0^{\dd \omega}:=\{X_0^{\omega’}|\omega'\in\dd \omega\},X_1^{\dd \omega}:=\{X_1^{\omega’}|\omega'\in\dd \omega\}$，$V$是勒贝格测度，$x_\omega:=X_0^\omega,y_\omega:=X_1^\omega$。
+
+    故
+    $$
+    \frac{\dd P}{\dd Q}:=\frac{P(\dd\omega)}{ Q(\dd\omega)}=\frac{P_{x_\omega}^{y_\omega}(\dd \omega)\rho_{01}^P(x_\omega,y_\omega)}{Q_{x_\omega}^{y_\omega}(\dd \omega)\rho_{01}^Q(x_\omega,y_\omega)}
+    $$
+
+*
+
+*   积分的表示，$A\in \Sigma $
+    $$
+    \begin{align}
+    \int_{A} F(x_\omega,y_\omega,\dd \omega) P(\omega)=\int_{A} F(x_\omega,y_\omega,\dd \omega) \int_{X_0^{\dd \omega}}\int_{X_1^{\dd \omega}} P_x^y(\dd \omega)\rho^P_{01}(x,y)\dd x\dd y\\
+    =\int_{A}\int_{X_0^{\dd \omega}}\int_{X_1^{\dd \omega}} F(x_\omega,y_\omega,\dd \omega) P_x^y(\dd \omega)\rho^P_{01}(x,y)\dd x\dd y\\
+    =\int_{A}\int_{X_0^{\dd \omega}}\int_{X_1^{\dd \omega}} F(x,y,\dd \omega) P_x^y(\dd \omega)\rho^P_{01}(x,y)\dd x\dd y\\
+    =\int_{\R^n}\int_{\R^n}\int_{A\cap \Omega_x^y} F(x,y,\dd \omega) P_x^y(\dd \omega)\rho^P_{01}(x,y)\dd x\dd y\\
+    \end{align}
+    $$
+    故
+    $$
+    \mathbb D(P\Vert Q)=\mathbb E_P\log\frac{\dd P}{\dd Q}=\int_\Omega \left(\log\frac{P_{x_\omega}^{y_\omega}(\dd \omega)}{Q_{x_\omega}^{y_\omega}(\dd \omega)}+\log \frac{\rho_{01}^P(x_\omega,y_\omega)}{\rho_{01}^Q(x_\omega,y_\omega)}\right)P(\dd \omega)\\
+    =\int_{\R^n}\int_{\R^n}\int_{\Omega_x^y} \left(\log\frac{P_{x}^{y}(\dd \omega)}{Q_{x}^{y}(\dd \omega)}+\log \frac{\rho_{01}^P(x,y)}{\rho_{01}^Q(x,y)}\right)P_x^y(\dd \omega)\rho^P_{01}(x,y)\dd x\dd y\\
+    =\int_{\R^n}\int_{\R^n}\int_{\Omega_x^y} \log\frac{P_{x}^{y}(\dd \omega)}{Q_{x}^{y}(\dd \omega)}P_x^y(\dd \omega)\rho^P_{01}(x,y)\dd x\dd y+\int_{\R^n}\int_{\R^n}\log \frac{\rho_{01}^P(x,y)}{\rho_{01}^Q(x,y)} \rho^P_{01}(x,y)\dd x\dd y\\
+    =\mathbb E_{x,y\sim \rho_{01}^P} \mathbb D(P_x^y\Vert Q_x^y)+\mathbb D(\rho_{01}^P\Vert \rho_{01}^Q)
+    $$
+
+证毕。
+
+**二、离散时间的KL散度分解**：简单，因为$n=1,2,\cdots,N-1$时，$X_n$可以取任何值，不受$X_0=x,X_N=y$的限制。
+
+设定：随机过程$X: \Omega\mapsto (\R^n)^T; T=\{0,1,\cdots,N\}$
+
+记$z=(x_1,\cdots,x_{N-1})$，故整个随机序列的在测度$P$下的概率为$P(x,x,y):=P(x,x_1,\cdots,x_{N-1},y)$.
+
+记测度$P$ 始末边缘分布为$\bar p(x,y):=p_{0,N}(x,y)$  ，固定始末位置的条件分布为$\mathring p(x,z,y)= p_{1:N-1|0,N}(x_1,\cdots,x_{N-1}|x,y)$。
+
+故整个序列的概率可以分解，
+$$
+P(x,z,y)=\bar p(x,y)\mathring p(x,z,y)
+$$
+$Q$同理可以做上述分解。
+
+故KL散度，
+$$
+\mathbb D(P\Vert Q)=\int\int\int P(x,z,y)\log \frac{P(x,z,y)}{Q(x,z,y)}\dd x\dd y\dd z\\
+=\int\int\int \bar p(x,y)\mathring p(x,z,y)\log \frac{\bar p(x,y)\mathring p(x,z,y)}{\bar q(x,y)\mathring q(x,z,y)}\dd x\dd y\dd z\\
+=\int\int\int \bar p(x,y)\mathring p(x,z,y)\log \frac{\bar p(x,y)}{\bar q(x,y)}\dd x\dd y\dd z+
+\int\int\int \bar p(x,y)\mathring p(x,z,y)\frac{\mathring p(x,z,y)}{\mathring q(x,z,y)}\dd x\dd y\dd z \\
+=\int\int \bar p(x,y)\log \frac{\bar p(x,y)}{\bar q(x,y)}\dd x\dd y+
+\int\int \bar p(x,y)\left[\int \mathring p(x,z,y)\log\frac{\mathring p(x,z,y)}{\mathring q(x,z,y)}\dd z\right]\dd x\dd y \\
+=\mathbb D(\bar p\Vert \bar q)+\operatorname*{\mathbb E}_{x,y\sim \bar p} \mathbb D(\mathring p(x,\cdot,y)\Vert \mathring q(x,\cdot,y))
+$$
+换成通用的记号就是
+$$
+\mathbb D(P\Vert Q)=\mathbb D( \rho_{0N}^P\Vert  \rho_{0N}^Q)+\operatorname*{\mathbb E}_{x,y\sim  \rho_{0,N}^P} \mathbb D( P_x^y\Vert   Q_x^y)
+$$
+证毕。
+
+### [形式2]静态薛定谔桥：最小化边缘分布的KL
+
+**寻找一个连接始/末分布$\rho_0,\rho_1$的始末联合分布$\rho_{01}$，使其最接近标准布朗运动的始末联合分布。**
+$$
+\rho_{01}^*=\operatorname*{arg\,max}_{\rho_{01}\in \Pi(\rho_0,\rho_1)} \mathbb D(\rho_{01}\Vert \rho_{01}^Q)\\
+\Pi(\rho_0,\rho_1):=\{概率密度函数\rho_{0,1}:\R^n\times\R^n \mapsto \R_{\geq0}|\int_{\R^n}\rho_{01}(x,y)\dd y=\rho_0(x) \and \int_{\R^n}\rho_{01}(x,y)\dd x=\rho_1(y) \}
+$$
+这个优化问题的解，称$\rho_0$和$\rho_1$之间的静态薛定谔桥（Static Schrödinger Bridge，SSB）。
+
+解出最优的始末联合分布$\rho_{01}^*$，就能立即求出最优轨迹测度$P^*,\forall A\in \Sigma$:
+$$
+P^*(A)=\int_{\R^n}\int_{\R^n}Q_x^y(A) \rho_{01}^*(x,y)\dd x\dd y\label{rho2p}
+$$
+该最优解$P^*$正好是[[形式1]薛定谔桥的定义](#[形式1]薛定谔桥的定义)的最优解。
+
+## 布朗桥：若$Q$是$\mathcal W$，则$P_x^y$​是布朗运动
+
+在[形式1]或[形式2]中，若$Q$为静态Wiener测度，则最优解$P^*$在给定始末位置时，轨迹分布和布朗运动一样。
+
+**证明：**
+
+在式$\eqref{KL-decomp}$的KL散度分解时，若$Q=\mathcal W$静态Wiener测度，则$\mathbb D(P_x^y\Vert Q_x^y)=0$的充要条件是 $P_x^y={\mathcal W}_x^y$，含义是在给定始末位置$x,y$时，最优的$P^*$通过布朗运动从$x$跑到$y$。
+
+### 给定始末点求中间点的分布
+
+动机：若$Q=\mathcal W$静态Wiener测度，需要求$Q_x^y(X_t\in B), B\in\mathscr B(\R^n)$，才能计算最优测度下在时间$t$的位置分布，即$P_x^y(X_t\in B)$。
+
+**设定**：
+
+对于变方差的布朗运动（$\sigma_t$与位置无关）：
+$$
+\dd X_t=\sigma_t \dd W_t
+$$
+由于布朗运动各时刻的噪声$\sigma_t\dd W_t$相互独立，可以叠加成为一个噪声$\sigma_{st}z_{st}$，其方差等于各时刻的方差之和。故则$p(x_t|x_s)$重参数化为，
+$$
+x_{t}=x_s+\sigma_{st}z_{st}, z_{st}\sim N(0,I)\\
+\sigma_{st}^2=\int_s^t \sigma_{\tau}^2\dd \tau, 0\leq s<t\leq 1
+$$
+**当初始位置（$t=0$）为$x_0$，最终位置$t=1$为$x_1$，以此为条件，则在时刻$t$的位置$X_t(0\leq t\leq 1)$服从正态分布，重参数化为：**
+$$
+x_t=x_0+\frac{\varsigma_t}{\varsigma_1}(x_1-x_0)+\sqrt{\varsigma_t(1-\frac{\varsigma_t}{\varsigma_1})}z, z\sim N(0,I)\\
+其中\varsigma_t :=\sigma_{0t}^2=\int_0^t\sigma_\tau^2\dd \tau
+$$
+**证明：**
+
+**法一，构造辅助变量**
+
+若$x_1$不固定，仅$x_0$固定，则有分段重参数化：
+$$
+\begin{align}
+x_t&=x_0+\sigma_{0t}z _{0t},z _{0t}\sim N(0,I)\\
+x_1&=x_0+\sigma_{t1}z _{t1},z _{t1}\sim N(0,I)\\
+x_1&=x_0+\sigma_{01}z _{01},z _{01}\sim N(0,I)
+\end{align}
+$$
+三式相加得到噪声的关系：
+$$
+\sigma_{01}z_{01}=\sigma_{0t}z_{0t}+\sigma_{t1}z_{t1}\label{zeq1}
+$$
+想要消掉$z_{t1}$，并用$z_{01}$和某个与$z_{0t}$独立的噪声$z$去表示$z_{0t}$，这样就能采样出$x_t$。
+
+为此，**构造辅助随机变量$z$，将上式右侧的两个系数交换，并给后者添加负号**，得到
+$$
+\sigma_{01}z=\sigma_{t1}z_{0t}-\sigma_{0t}z_{t1}\label{zeq2}
+$$
+由于$z_{0t},z_{t1} \sim N(0,I)\ \  \text{i.i.d.}$，$\sigma_{01}^2=\sigma_{t1}^2+\sigma_{0t}^2$，故可以证明$z\sim N(0,I)$。
+
+还可以证明$\mathbb E(z_{01}z)=0$，故$z$与$z_{01}$独立。
+
+$\sigma_{0t}\eqref{zeq1}+\sigma_{t1}\eqref{zeq2}$ ，就能消去$z_{t1}$，得到：
+$$
+\sigma_{0t}z_{01}+\sigma_{t1}z=\sigma_{01}z_{0t}
+$$
+即$z_{0t}$可以重参数化为：
+$$
+z_{0t}=\frac{\sigma_{0t}}{\sigma_{01}}z_{01}+\frac{\sigma_{t1}}{\sigma_{01}}z, z\sim N(0,I)
+$$
+故$x_t$可以重参数化为：
+$$
+\begin{align}
+x_t&=x_0+\sigma_{0t}z _{0t}\\
+&=x_0+\frac{\sigma_{0t}^2}{\sigma_{01}}z_{01}+\frac{\sigma_{0t}\sigma_{t1}}{\sigma_{01}}z,z\sim N(0,I)\\
+&=x_0+\frac{\sigma_{0t}^2}{\sigma_{01}^2}(x_1-x_0)+\frac{\sigma_{0t}\sigma_{t1}}{\sigma_{01}}z,z\sim N(0,I)\\
+&=x_0+\frac{\sigma_{0t}^2}{\sigma_{01}^2}(x_1-x_0)+\frac{\sigma_{0t}}{\sigma_{01}}\sqrt{\sigma_{01}^2-\sigma_{0t}^2}z,z\sim N(0,I)\\
+&=x_0+\frac{\sigma_{0t}^2}{\sigma_{01}^2}(x_1-x_0)+\sqrt{\sigma_{0t}^2(1-\frac{\sigma_{0t}^2}{\sigma_{01}^2})}z,z\sim N(0,I)\\
+&=x_0+\frac{\varsigma_t}{\varsigma_1}(x_1-x_0)+\sqrt{\varsigma_t(1-\frac{\varsigma_t}{\varsigma_1})}z, z\sim N(0,I)
+\end{align}
+$$
+其中$\varsigma_t:=\sigma_{0t}^2$。
+
+证毕。
+
+**法二，贝叶斯公式**
+
+三点传输密度，即给定起止点，求中间点的分布
+$$
+p(x_t|x_0,x_1)=\frac{p(x_0,x_t,x_1)}{p(x_0,x_1)}=\frac{p(x_1|x_t)p(x_t|x_0)p(x_0)}{p(x_1|x_0)p(x_0)}=\frac{p(x_1|x_t)p(x_t|x_0)}{p(x_1|x_0)}\\
+\propto \exp\left\{-\frac1 2\left[\frac{\Vert x_1-x_t\Vert^2}{\sigma_{t1}^2}+\frac{\Vert x_t-x_0\Vert^2 }{\sigma_{0t}^2}-\frac{\Vert x_1-x_0\Vert^2}{\sigma_{01}^2}\right]\right\}\\
+\propto \exp\left\{-\frac1 2\left[ (\frac 1 {\sigma_{t1}^2} + \frac 1 {\sigma_{0t}^2})x_t^2-2(\frac{x_1}{\sigma_{t1}^2}+\frac{x_0}{\sigma_{0t}^2})x_t  +\text{const.}\right]\right\}
+$$
+故$x_t|x_0,x_1\sim N(\mu,\sigma^2)$​，
+
+方差为
+$$
+\frac 1{\sigma^2}=\frac 1 {\sigma_{t1}^2} + \frac 1 {\sigma_{0t}^2}\\
+\sigma^2=\frac{\sigma_{0t}^2\sigma_{t1}^2}{\sigma_{0t}^2+\sigma_{t1}^2}=\frac{\sigma_{0t}^2\sigma_{t1}^2}{\sigma_{01}^2}=\frac{\sigma_{0t}^2}{\sigma_{01}^2}(\sigma_{01}^2-\sigma_{0t}^2)=\sigma_{0t}^2(1-\frac{\sigma_{0t}^2}{\sigma_{01}^2} )\\
+\sigma=\frac{\sigma_{0t}\sigma_{t1}}{\sigma_{01}}=\sqrt{\varsigma_t(1-\frac{\varsigma_t}{\varsigma_1})}
+$$
+均值为
+$$
+\mu=\sigma^2 (\frac{x_1}{\sigma_{t1}^2}+\frac{x_0}{\sigma_{0t}^2})=\frac{\sigma_{0t}^2\sigma_{t1}^2}{\sigma_{01}^2} (\frac{x_1}{\sigma_{t1}^2}+\frac{x_0}{\sigma_{0t}^2})=\frac{\sigma_{0t}^2x_1+\sigma_{t1}^2x_0}{\sigma_{01}^2}=x_0+\frac{\sigma_{0t}^2x_1-\sigma_{0t}^2x_0}{\sigma_{01}^2}==x_0+\frac{\sigma_{0t}^2}{\sigma_{01}^2}(x_1-x_0)\\
+\mu=x_0+\frac{\varsigma_t}{\varsigma_1}(x_1-x_0)
+$$
+证毕。
+
+### 传输密度
+
+对于轨迹概率测度$P$，可以定义相应的传输密度$p^P,\tilde p^P$（下面略去右上角标$P$）：
+
+*   （正向）传输密度（即后验概率）
+
+$$
+p(s,x,t,y):=\frac{P(X_t\in B(y,\dd y)|X_s=x)}{\dd y},s\leq t
+$$
+
+*   反向传输密度（即**似然函数**，而非时间反演）（使用Doob’s h-Transform）
+    $$
+    \tilde p(s,x,t,y):=\frac{P (X_s\in B(x,\dd x)|X_t=y)}{\dd x}=\frac{\rho_{s}^{P}(x)}{\rho_{t}^{P}(y)}p(s,x,t,y),s\leq t
+    $$
+
+传输密度有以下性质：
+
+*   归一性（条件概率的性质）
+
+$$
+\int_{\R^n} p(s,x,t,y)\dd y=1, \int_{\R^n} p(s,x,t,y)\dd x不一定=1 (如P是布朗运动时,=1)\\
+\int_{\R^n} \tilde p(s,x,t,y)\dd x=1, \int_{\R^n}\tilde p(s,x,t,y)\dd y不一定=1(如P是布朗运动时,=1)
+$$
+
+*   联合密度（由贝叶斯定理可得）
+    $$
+    \rho_{st}^P(x,y)=\rho_{s}^{P}(x)p(s,x,t,y)=\rho_{t}^{P}(y)\tilde  p(s,x,t,y)\neq\rho_{t}^{P}(y)p(s,x,t,y)
+    $$
+
+*   边缘密度互求（从联合密度中积掉一个变量）
+    $$
+    \rho_{t}^{P}(y)=\int _{\R^n}\rho_{s}^{P}(x)p(s,x,t,y)\dd x=\int_{\R^n}\rho_{t}^{P}(y)\tilde p(s,x,t,y)\dd x\\
+    \rho_{s}^{P}(x)=\int _{\R^n}\rho_{s}^{P}(x)p(s,x,t,y)\dd y=\int_{\R^n}\rho_{t}^{P}(y)\tilde p(s,x,t,y)\dd y
+    $$
+
+
+特别地，在[[形式2]静态薛定谔桥](#[形式2]静态薛定谔桥)中，若参考测度$Q$为静态Wiener测度$\mathcal W^\epsilon$，其扩散方差为$\epsilon$，则$\rho^{\mathcal W^\epsilon}_{01}(x,y)$正好就正比于传输密度，
+$$
+\rho^{\mathcal W^\epsilon}_{01}(x,y)\propto p^{\mathcal W^\epsilon}(0, x, 1, y)=(2 \pi )^{-\frac{n}{2}} \exp \left[-\frac{\|x-y\|^2}{2\epsilon}\right],
+$$
+它满足$\rho^{\mathcal W^\epsilon}_0(x)=\int_{\R^n} \rho^{\mathcal W^\epsilon}_{01}(x,y)\dd y\propto \int_{\R^n} p(0,x,1,y)\dd y=  1$，同理$\rho_1^{\mathcal W}\propto 1$，即在时刻$t=0,1$位置分别都是均匀分布，这符合静态Wiener过程。
+
+于是，
+$$
+\mathbb D(\rho_{01}\Vert\rho^{\mathcal W^\epsilon}_{01})=\operatorname*{\mathbb E}_{x,y\sim \rho_{01}}\log \frac{\rho_{01}(x,y)}{\rho_{01}^{\mathcal W^\epsilon}(x,y)}= \operatorname*{\mathbb E}_{x,y\sim \rho_{01}}\frac{\Vert x-y\Vert^2}{2\epsilon }-H(\rho_{01})+\text{Const}.
+$$
+[[形式2]静态薛定谔桥](#[形式2]静态薛定谔桥)于是转化为形式3:
+
+### [形式3]最优传输
+
+找一个连接始末分布$\rho_0,\rho_1$的联合分布$\rho_{01}$，使得下面优化目标最小化。
+$$
+\rho^*_{01}=\operatorname*{\arg\min}_{\rho_{01}\in\Pi(\rho_0,\rho_1)}[ \operatorname*{\mathbb E}_{x,y\sim \rho_{01}}\Vert x-y\Vert^2-2\epsilon H(\rho_{01})]
+$$
+求得最优的联合分布后，法同[形式2]，能用式$\eqref{rho2p}$去计算最优的轨迹测度$P^*$。
+
+该问题等价于[[形式2]静态薛定谔桥](#[形式2]静态薛定谔桥)取参考测度为布朗运动，$Q=\mathcal W^\epsilon$，此时最优解$P^*$是布朗桥。
+
+**解释：**
+
+这是一个以熵为正则项的最优传输问题（entropy-regularized optimal transport，EOT）。
+
+*   最小化$\operatorname*{\mathbb E}_{x,y\sim \rho_{01}}\Vert x-y\Vert^2$：鼓励传输距离的平方总和尽可能小。
+
+    当扩散方差$\epsilon\rightarrow 0$，参考分布$\mathcal W^\epsilon$退化为各处粒子都保持原地不动的确定过程，而上述问题退化为标准的平方距离最优传输问题，一个初始点的所有粒子只能传输到一个确定的最终位置。
+
+*   最大化$H(\rho_{01})$：鼓励粒子到$t=1$时尽可能扩散开
+    $$
+    H[\rho_{01}]=-\int \int \rho_{01}(x,y)\log \rho_{01}(x,y)\dd x\dd y\\
+    =-\int \int \rho_0(x)p(0,x,1,y)[\log \rho_{0}(x)+\log p(0,x,1,y)]\dd x\dd y\\
+    =-\int\rho_0(x)\log \rho_{0}(x)\dd x- \int \rho_0(x) \left[\int p(0,x,1,y)\log p(0,x,1,y)\dd y\right]\dd x\\
+    =H(\rho_0)+\operatorname*{\mathbb E}_{x\sim \rho_0} H(p(0,x,1,\cdot))
+    $$
+    $H(p(0,x,1,\cdot)$越大，表示从$x_0=x$出发的粒子，在$t=1$时的分布越开。
+
+## [形式2-续]静态薛定谔桥-续：因式分解
+
+### 构造因式分解
+
+求解[[形式2]静态薛定谔桥](#[形式2]静态薛定谔桥)（$P,Q$不做限制）时，使用拉格朗日乘子法。为使约束条件$\int_{\R^n} \rho_{01}(x,y)\dd y =\rho_0 (x)$对任意$x\in\R^n$都成立，$\int_{\R^n} \rho_{01}(x,y)\dd x =\rho_1 (y)$对任意$y\in\R^n$都成立，故需要乘子是关于位置的函数$\lambda,\mu:\R^n\mapsto \R$，通过变分法求最优点，函数$\lambda,\mu$在任意$x,y$处取值的任意微扰，都不使$L$变化，这样就保证了边界条件在任意$x,y$都成立。
+$$
+L(\rho_{01},\lambda,\mu):=\int_{\R^n}\int_{\R^n} \rho_{01}(x,y)\log\frac{\rho_{01}(x,y)}{\rho_{01}^{Q}(x,y)}\dd x\dd y\\
++\int_{\R^n}\lambda(x)\left(\int_{\R^n} \rho_{01}(x,y)\dd y -\rho_0 (x)\right)\dd x\\
++\int_{\R^n}\mu(y)\left(\int_{\R^n} \rho_{01}(x,y)\dd x-\rho_1 (y)\right)\dd y
+$$
+变分法得，$\rho^*_{01}$表示最优解，
+$$
+\frac{\delta L}{\delta \rho^*_{01}}=\int_{\R^n}\int_{\R^n} (\log\rho_{01}(x,y)-\log\rho_{01}^{Q}(x,y)+1)\dd x\dd y+\int_{\R^n}\int_{\R^n}\lambda(x)\dd y \dd x +\int_{\R^n}\int_{\R^n}\mu(y)\dd x \dd y
+$$
+故$\forall x,y\in\R^n$，有
+$$
+\log \rho^*_{01}(x,y)-\log \rho_{01}^{Q}(x,y)+1+\lambda(x)+\mu(y)=0
+$$
+即
+$$
+\rho^*_{01}(x,y)=\rho_{01}^{Q}(x,y)\exp [-1-\lambda(x)-\mu(y)]
+$$
+又因为$\rho_{01}^{Q}(x,y)=\rho_0^{Q}(x)p^{Q}(0,x,1,y)$，$\rho_0^{Q}(x)$表示$Q$测度在初始时间的边缘分布密度。由于$Q$是静态Wiener测度，故$\rho_0^{Q}(x)=\text{const.}\ \forall x\in \R^n$，表示$\R^n$上得均匀测度（不是概率测度）。故
+$$
+\rho^*_{01}(x,y)=\rho_0^{Q}(x)e^{-1-\lambda(x)} p^{Q}(s,x,t,y)e^{-\mu(y)}
+$$
+由此可见，$\rho^*_{01}(x,y)$的因式中，只有布朗运动传输密度$p^{Q}(s,x,t,y)$同时包含了$x,y$。这表明，最优的概率测度$P^*$在给定始末点$x,y$时通过布朗运动从$x$运动到$y$，也就是${P^*}_{x}^y=Q_x^y$。这一结论和[形式2]静态薛定谔桥一致，[详见](#轨迹KL散度的分解).
+
+故可将$\rho^*_{01}(x,y)$**因式分解**为
+$$
+\rho_{01}^*(x, y)=\hat{\varphi}(x) p^{Q}(0, x, 1, y) \varphi(y)
+$$
+其中$\hat \varphi(x)=\rho_0^{Q}(x)e ^{-1-\lambda(x)},\varphi(y)=e^{-\mu(y)}$。$\rho^*_{01}(x,y)$可以分解出唯一的$\hat\varphi(x),\varphi(y)$（只差乘除一个常数）。
+
+而要满足$\rho_{01}^*$的边缘分布为$\rho_0,\rho_1$，故
+$$
+\hat{\varphi}(x) \int_{\R^n} p^{Q}(0, x, 1, y) \varphi(y)\dd y=\rho_0(x)\\
+\varphi(y) \int_{\R^n} p^{Q}(0, x, 1, y) \hat{\varphi}(x) \dd x=\rho_1(y)
+$$
+若构造$\varphi(t,y),\hat \varphi(t,x)$，并要求
+$$
+\varphi(1,y)=\varphi(y), \\
+\varphi(0,x)= \int_{\R^n} p^{Q}(0, x, 1, y) \varphi(1,y)\dd y \\
+\hat\varphi(0,x)=\hat\varphi(x),\\
+\hat\varphi(1,y)= \int_{\R^n} p^{Q}(0, x, 1, y)\hat \varphi(0,x)\dd x \\
+$$
+### 因式分解的性质
+
+这样，$\rho_{01}^*$的边缘分布为$\rho_0,\rho_1$的条件，就等价为
+$$
+\varphi(0,x)\hat\varphi(0,x)=\rho_0(x)\\
+\varphi(1,y)\hat\varphi(1,y)=\rho_1(y)
+$$
+移动始末时间到$s,t$，就能将这个条件进一步推广，得到：
+$$
+概率密度可以因式分解：\rho_{t}(x)=\varphi(t,x)\hat\varphi(t,x),\forall x,t\\
+\varphi(\cdot,\cdot)可以用p^{Q}反向传输：\varphi(s,x)= \int_{\R^n} p^{Q}(s, x, t, y) \varphi(t,y)\dd y, \forall x,s\leq t \\
+\hat\varphi(\cdot,\cdot)可以用p^{Q}正向传输：\hat\varphi(t,y)= \int_{\R^n} p^{Q}(s, x, t, y)\hat \varphi(s,x)\dd x , \forall x,s\leq t
+$$
+据此，可以从始末因子求任意时刻的因子：
+$$
+\varphi(s,x)=\int_{\R^n}p^{Q}(s,x,1,y)\varphi(y)\dd y, \forall s\in [0,1]\\
+\hat\varphi(t,y)=\int_{\R^n}p^{Q}(0,x,t,y)\hat\varphi(x)\dd x, \forall t\in [0,1]
+$$
+注意：
+
+*   $\rho_t(x)$可以分解出唯一的$\hat\varphi(t,x),\varphi(t,x)$（只差乘除一个常数）。
+
+*   概率密度的因式分解和量子力学中的相似，但$\hat\varphi$不表示$\varphi$的复共轭，而$\bar\psi$表示$\psi$的复共轭：
+
+$$
+\rho(t,x)=\psi(t,x)\bar\psi(t,x)
+$$
+
+## 扩散薛定谔桥：$Q=\mathcal W^\epsilon$，$P$为扩散过程
+
+在[形式1]中，取$Q=\mathcal W^\epsilon$（静态Wiener测度），限制$P$为扩散过程的概率测度，则称该问题为**扩散薛定谔桥（Diffusion Schrödinger Bridge，DSB）。**
+
+其中$P$是以下扩散过程的概率测度：
+$$
+\dd X_t= u(t,X_t)\dd t+\sqrt\epsilon \dd W_t,\\
+W_t在概率测度P下是标准布朗运动
+$$
+$Q=\mathcal W^\epsilon$是方程为$\epsilon$的静态Wiener过程（$X_t$）的概率测度：
+$$
+\dd X_t=\sqrt \epsilon\dd {\bar W}_t,\\
+\bar W_t在概率测度Q=\mathcal W^\epsilon 下是标准布朗运动
+$$
+则由Girsanov定理得，
+$$
+\dd{ \bar W_t}=\frac{u(t,X_t)}{\sqrt \epsilon }\dd t+\dd W_t
+$$
+R-N导数
+$$
+\frac{\dd P}{\dd Q}=\log\frac{\rho_0(X_0)}{\rho_0^\mathcal W(X_0)}+\int_0^1\frac{ u(t,X_t)}{\sqrt\epsilon}\dd {\bar W}_t-\int_0^1 \frac1 {2\epsilon }\Vert u(t,X_t)\Vert^2\dd t,\\
+=\log\frac{\rho_0(X_0)}{\rho_0^\mathcal W(X_0)}+\int_0^1\frac{ u(t,X_t)}{\sqrt\epsilon}\dd W_t+\int_0^1 \frac1 {2\epsilon}\Vert u(t,X_t)\Vert^2\dd t
+$$
+由于$W_t$是鞅，且$ u(t,X_t)$于$\dd W_t$无关，故
+$$
+\mathbb E\int_0^1 u(t,X_t)\dd W_t= \int_0^1 \mathbb E[ u(t,X_t)\mathbb E[\dd X_t|_{\mathcal F_t}]]= \int_0^1  \mathbb E[ u(t,X_t)0]=0
+$$
+故R-N导数进一步化简为
+$$
+\frac{\dd P}{\dd Q}=\log\frac{\rho_0(X_0)}{\rho_0^{{\mathcal W}^\epsilon} (X_0)}+\int_0^1 \frac1 {2\epsilon}\Vert u(t,X_t)\Vert^2\dd t
+$$
+故[形式1]中的优化目标化为
+$$
+\mathbb D(P\Vert Q)=\mathbb E_P\log \frac{\dd P}{\dd Q}=\mathbb D(\rho_0\Vert\rho_0^{\mathcal W^\epsilon})+\mathbb E_P \left[ \int_0^1 \frac 1 {2\epsilon} \Vert u (t,X_t)\Vert^2\dd t\right]
+$$
+由于$\rho_0$是给定的初始分布，$\rho^{\mathcal W^\epsilon}_0$是静态Wiener过程的初始分布（也即$\R^n$上的均匀分布），故$\mathbb D(\rho_0\Vert\rho_0^{\mathcal W^\epsilon})$是定值。
+
+故[形式1]转化为[形式4]：
+
+### [形式4]随机控制
+
+$$
+\operatorname*{\arg\min}_{u\in \mathcal U} J(u):=\mathbb E  \int_0^1 \frac 1 {2\epsilon} \Vert u(t,X_t)\Vert^2\dd t\\
+\dd X_t=u(t,X_t)\dd t+\epsilon \dd W_t, X_0\sim \rho_0(x),X_1\sim \rho_1(y)
+$$
+
+$\mathcal U$表示全体适应、有限能量的控制函数的集合，即满足：
+
+*   $u:[0,1]\times \R^n\mapsto \R^n$
+*   $X$适应于域流$F$
+*   $\int_0^1 \frac 1 {2\epsilon} \Vert u(t,X_t)\Vert^2\dd t<\infty$。
+
+
+
+该问题是一个随机控制问题，$J(u)$是一个能量项。
+
+**该问题的最优解是扩散薛定谔桥**。扩散薛定谔桥，是[形式1]薛定谔桥在下的特例：
+
+*   取$Q=\mathcal W^\epsilon$（静态Wiener测度）
+*   限制$P$为扩散过程的概率测度
+
+也即找连接始末分布$\rho_1,\rho_1$的扩散过程，使其最接近布朗运动$\mathcal W^\epsilon$。**这就要求$u$尽可能小**，这就是$J(u)$的意义。
+
+### [形式5]流体力学问题
+
+来自[^wasserstein]，我为其添加了证明过程。
+
+$$
+\begin{gather}
+\operatorname*{\arg\min}_{u\in \mathcal U,\rho\in \mathcal P} \int_0^1\int_{\R^n} \frac 1 {2\epsilon} \Vert u(t,x)\Vert^2\rho(t,x)\dd x\dd t \label{u-loss}\\
+FPK方程：\frac{\partial \rho}{\partial t}=-\nabla\cdot(\rho u)+\frac1 2\epsilon \Delta \rho\label{fpk}\\
+s.t.\ \rho(0,x)=\rho_0(x),\rho(1,y)=\rho_1(y)
+\end{gather}
+$$
+其中$\mathcal P$是所有在$\R^n$上的含时概率密度（时间$[0,1]$）的集合。$u: [0,1]\times \R^n \mapsto \R^n$，$\rho: [0,1]\times \R^n \mapsto \R_{\geq 0}$​​。
+
+[形式5]与[形式4]的优化目标相同，仅把SDE换成FPK方程。扩散过程的SDE的解，一定满足相应的FPK方程。
+
+[形式4]的最优解$u^*$和[形式5]的最优解$(u^+,\rho^+)$之间，一定满足关系：$u^*=u^+$，$u^*$代入[形式4]的SDE所得的随机过程的$\rho^*=\rho^+$。
+
+**求解该问题：**
+
+使用拉格朗日乘子法，$\psi(t,x)\in \R$是FPK方程成立的乘子，
+$$
+L(u,\rho,\psi):=\int_0^1\int_{\R^n} \frac 1 {2\epsilon} \Vert u(t,x)\Vert^2\rho(t,x)\dd x\dd t\\
++\int_0^1 \int _{\R^n}\psi(t,x)\left[ \frac{\partial \rho(t,x)}{\partial t}+\nabla\cdot(\rho(t,x) u(t,x))-\frac1 2\epsilon \Delta \rho(t,x)\right]\dd x\dd t
+$$
+
+* 由分部积分
+
+    $$
+\int_{\R^n} \psi\nabla\cdot (\rho \boldsymbol u)\dd x=\oint_{\partial \R^n}\psi \rho \boldsymbol u\cdot \dd {\boldsymbol s}-\int_{\R^n} \rho\boldsymbol u\cdot \nabla \psi \dd x=-\int_{\R^n} \rho\boldsymbol u\cdot \nabla \psi \dd x
+    $$
+    故变分法
+    $$
+\frac{\delta L}{\delta u}=\int\int (\frac1 \epsilon u -\nabla \psi )\rho \dd x\dd t=0
+    $$
+    故有下列关系，其中“$a.s.\ \rho^*(t,x)$”表示在$\rho$的最优解$\rho^*$非零处下列等式必须成立，$u^*$表示$u$的最优解
+    $$
+u^*(t,x)=\epsilon\nabla\psi(t,x)   \quad a.s.\  \rho^*(t,x)
+    $$
+
+*   由分部积分
+    $$
+    \int_{\R^n}\int_0^1 \psi\frac{\partial\rho}{\partial t}\dd t\dd x= \int_{\R^n} (\psi\rho) \bigg|_{t=0}^1 \dd x-\int_{\R^n}\int_0^1 \rho\frac{\partial\psi}{\partial t}\dd t\dd x\\
+    =\underbrace{\int_{\R^n}[\psi(1,x)\rho_1(x)-\psi(0,x)\rho_0(x)]\dd x}_{于\rho(t,x)无关}-\int_{\R^n}\int_0^1 \rho\frac{\partial\psi}{\partial t}\dd t\dd x\\
+
+    \int_{\R^n} \psi\nabla\cdot (\rho \boldsymbol u)\dd x=\oint_{\partial \R^n}\psi \rho \boldsymbol u\cdot \dd {\boldsymbol s}-\int_{\R^n} \rho\boldsymbol u\cdot \nabla \psi \dd x=-\int_{\R^n} \rho\boldsymbol u\cdot \nabla \psi \dd x\\
+
+    \int_{\R^n} \psi\Delta \rho\dd x=\oint_{\partial \R^n}\psi\nabla\rho \cdot\dd {\boldsymbol s}-\int_{\R^n}\nabla\psi\cdot \nabla\rho \dd x=-\int_{\R^n}\nabla\psi\cdot \nabla\rho \dd x\\
+    =-\oint_{\partial \R^n}\nabla\psi \rho\cdot \dd {\boldsymbol s}+\int_{\R^n}\Delta\psi \rho\dd x=\int_{\R^n}\Delta\psi \rho\dd x
+    $$
+    故变分法
+    $$
+    \frac{\delta L}{\delta \rho}=\int\int\left[ \frac 1 {2\epsilon} \Vert u\Vert^2- \frac{\partial \psi}{\partial t}- u\cdot \nabla \psi-\frac{\epsilon} {2}\Delta\psi\right]\dd x\dd t=0\\
+    再带入u^*=\epsilon\nabla\psi
+    $$
+    故有下列关系
+    $$
+    \frac{\partial \psi}{\partial t}+\frac \epsilon 2\Vert \nabla \psi\Vert^2=-\frac{\epsilon}{2} \Delta \psi
+    $$
+
+*   变分法
+    $$
+    \frac{\partial L}{\partial \psi}=\int_0^1 \int _{\R^n}\left[ \frac{\partial \rho}{\partial t}+\nabla\cdot(\rho u)-\frac1 2\epsilon \Delta \rho\right]\dd x\dd t=0\\
+    即又回到FPK方程\frac{\partial \rho^*}{\partial t}+\epsilon \nabla\cdot(\rho^*\nabla \psi )-\frac1 2\epsilon \Delta \rho^*=0
+    $$
+
+综上，是扩散薛定谔桥/[形式4]随机控制/[形式5]流体力学问题的最优解$(u^*,\rho^*)$，和下列PDE组的解$(\rho^+,\psi^+)$之间，必然满足$u^*=\epsilon\nabla\psi^+,\psi^*=\psi^+$关系。
+$$
+\begin{align}
+\frac{\partial \psi}{\partial t}+\frac \epsilon 2\Vert \nabla \psi\Vert^2=-\frac{\epsilon}{2} \Delta \psi \label{psi-pde}\\
+\frac{\partial \rho}{\partial t}=-\epsilon \nabla\cdot(\rho \nabla\psi)+\frac1 2\epsilon \Delta \rho\label{rho-pde}\\
+\rho(0,x)=\rho_0(x),\rho(1,y)=\rho_1(y)\label{marg-pde}
+\end{align}
+$$
+
+### [形式6]$\varphi,\hat\varphi$​的线性PDE
+
+来自[^wasserstein]，我为其添加了证明过程。
+
+$$
+\frac{\partial \varphi}{\partial t}+\frac{\epsilon}{2}\Delta \varphi=0\\
+\frac{\partial \hat\varphi}{\partial t}-\frac{\epsilon}{2}\Delta \hat\varphi=0\\
+\varphi(0,x)\hat\varphi(0,x)=\rho_0(x)\\
+\varphi(1,y)\hat\varphi(1,y)=\rho_1(y)\\
+$$
+
+该线性PDE组的解$(\varphi^+,\hat\varphi^+)$，和扩散薛定谔桥/[形式4]随机控制/[形式5]流体力学问题/前述问题$\eqref{psi-pde}-\eqref{marg-pde}$ 的最优解$(u^*,\rho^*)$，必然满足$\rho^*=\varphi^+\hat\varphi^+,u^*=\epsilon \nabla \log \varphi^+$。
+
+这就是说：
+
+*   $\varphi^+,\hat\varphi^+$是一组$\rho^*(t,x)$的因式分解，满足前文所述[因式分解的性质](#因式分解的性质)，比如，$\rho^*(t,x)$的所有因式分解只差乘除一个系数。
+
+*   $\varphi^+,\hat\varphi^+$，能够分别通过正向和反向SDE，决定一个正向扩散过程和一个反向扩散过程，二者具有相同的密度函数$\rho(t,x)=\varphi(t,x)\hat\varphi(t,x)$：
+
+$$
+正向扩散：\dd x_t=\ \ \ \epsilon \nabla \log \varphi\dd t+\sqrt \epsilon \dd w_t, x_0\sim \rho_0,\\
+反向扩散：\dd x_t=-\epsilon \nabla \log\hat \varphi\dd t+\sqrt \epsilon \dd {\bar w_t}, x_1\sim \rho_1.
+$$
+
+> 证明：
+>
+> 1.   从$\eqref{psi-pde}-\eqref{marg-pde}$​ 推上述线性PDE组：
+>
+> $$
+> \varphi(t,x)=\exp(\psi(t,x))\\
+> \hat\varphi(t,x)=\rho^*(t,x)\exp(-\psi(t,x))\label{phi-def}
+> $$
+>
+> 将$\psi= \log\varphi$代入$\eqref{psi-pde}$，得
+> $$
+> \frac{1}{\varphi} \frac{\partial \varphi}{\partial t}+\frac{\epsilon}{2\varphi^2} \Vert\nabla \varphi\Vert^2=-\frac{\epsilon}{2} \nabla\cdot \frac{\nabla\varphi}{\varphi}\\
+> 右式=-\frac{\epsilon}{2} (\frac{\Delta\varphi}{\varphi}-\frac{\Vert\nabla\varphi\Vert^2}{\varphi^2})\\
+> 故\frac{\partial \varphi}{\partial t}+\frac{\epsilon}{2}\Delta \varphi=0\label{phi-linear}
+> $$
+> 将$\rho=\varphi \hat\varphi$代入$\eqref{rho-pde}$，得
+> $$
+> \varphi \partial_t\hat\varphi+\hat\varphi\partial_t \varphi=-\epsilon\nabla\cdot(\varphi\hat \varphi \frac{\nabla \varphi}{\varphi})+\frac{\epsilon}{2}\Delta (\varphi\hat \varphi)\\
+> =-\epsilon\nabla\hat \varphi\cdot \nabla \varphi-\epsilon\hat\varphi\Delta \varphi+\frac{\epsilon}{2}(\hat\varphi\Delta\varphi+2\nabla\varphi\cdot\nabla\hat\varphi+\varphi\Delta\hat\varphi )\\
+> =-\frac{\epsilon}{2}\hat\varphi\Delta\varphi+\frac{\epsilon}{2}\varphi\Delta\hat\varphi
+> $$
+> 即
+> $$
+> \hat\varphi(\partial_t \varphi+\frac{\epsilon}2\nabla\varphi)+\varphi(\partial_t \hat\varphi-\frac{\epsilon}2\nabla\hat\varphi)=0
+> $$
+> 由于$\eqref{phi-linear}$，故
+> $$
+> \varphi(\partial_t \hat\varphi-\frac{\epsilon}2\nabla\hat\varphi)=0
+> $$
+> 由定义式$\eqref{phi-def}$可知$\varphi,\hat\varphi$处处大于0，故有
+> $$
+> \frac{\partial \varphi}{\partial t}+\frac{\epsilon}{2}\Delta \varphi=0\\
+> \frac{\partial \hat\varphi}{\partial t}-\frac{\epsilon}{2}\Delta \hat\varphi=0
+> $$
+> 证毕。
+>
+> 2.   推导反向SDE：
+>      $$
+>      \nabla \log \rho= \frac{\nabla\rho}{\rho}=\frac{\varphi\nabla\hat\varphi+\hat\varphi\nabla\varphi}{\varphi\hat\varphi}=\nabla \log \varphi+\nabla \log \hat\varphi
+>      $$
+>      上文的FPK方程$\eqref{fpk}$可以做三种变形：
+>
+>      *   正向SDE及对应的FPK：
+>          $$
+>          \begin{align}
+>          \frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho u)+\frac1 2\epsilon \Delta \rho, &u&=\epsilon \nabla \log \varphi\\
+>          \frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho \epsilon \log \varphi)+\frac1 2\epsilon \Delta \rho ,&&\\
+>          \dd x_t&=u\dd t+\sqrt \epsilon\dd w_t, & \dd x_t&=\epsilon \nabla \log \varphi \dd t+\sqrt \epsilon\dd w_t
+>          \end{align}
+>          $$
+>
+>      *   ODE及对应的FPK：
+>          $$
+>          \begin{align}
+>          \frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho v),&v&=u-\frac \epsilon 2 \nabla \log \rho=\frac\epsilon 2 \nabla\log \frac{\varphi}{\hat\varphi}\\
+>          \frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho \frac\epsilon 2 \log \frac{\varphi}{\hat\varphi}),&&\\
+>          \dd x_t&=v \dd t, &\dd x_t&=\frac\epsilon 2 \nabla\log \frac{\varphi}{\hat\varphi}\dd t
+>          \end{align}
+>          $$
+>
+>      *   反向SDE及对应的FPK：
+>
+> $$
+> \begin{align}
+> \frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho (u-\epsilon \nabla \log \rho ))-\frac1 2\epsilon \Delta \rho, &u-\epsilon  \nabla \log \rho&= \epsilon  \nabla \log \varphi-(\epsilon  \nabla \log \varphi+\epsilon\nabla \log \hat\varphi)=-\nabla\epsilon  \log {\hat\varphi}\\
+>
+> \frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho (-\epsilon \nabla \log \hat\varphi ))-\frac1 2\epsilon \Delta \rho, &\frac{\partial \rho}{\partial (-t)}&=-\nabla\cdot(\rho (\epsilon \nabla \log \hat\varphi ))+\frac1 2\epsilon \Delta \rho\\
+>
+> \dd x_t&=\epsilon\log\hat\varphi \dd (-t)+\sqrt \epsilon\dd w_t, &\dd x_t&=-\epsilon\nabla\log\hat\varphi \dd t+\sqrt \epsilon\dd w_t
+> \end{align}
+> $$
+>
+>
+
+### 流速场
+
+设流速为
+$$
+v^*(t,x):=u^*(t,x)-\frac{\epsilon}2\nabla\log \rho^*(t,x)
+$$
+则FPK方程$\eqref{fpk}$转变为
+$$
+\frac{\partial \rho}{\partial t}+\nabla\cdot (v^*\rho)=0
+$$
+证明：
+
+>   $$
+>   \frac{\partial \rho}{\partial t}=-\nabla\cdot (\rho u)+\frac{\epsilon }2 \Delta \rho\\
+>   =-\nabla\cdot (\rho (v+\frac\epsilon 2\nabla \log \rho))+\frac{\epsilon }2 \Delta \rho\\
+>   =-\nabla\cdot (\rho v)+\frac\epsilon 2\nabla\cdot(\rho \nabla \log \rho))+\frac{\epsilon }2 \Delta \rho\\
+>   =-\nabla\cdot (\rho v)+\frac\epsilon 2\nabla\cdot(\rho \frac{\nabla \rho}{\rho}))+\frac{\epsilon }2 \Delta \rho\\
+>   =-\nabla\cdot (\rho v)
+>   $$
+
+这是一个新的FPK方程，它对应一个ODE方程，称概率流方程：
+$$
+\dd X_t= v^*(t,X_t)\dd t,X_0\sim \rho_0
+$$
+通过这个ODE是一个确定性过程，能从$X_0\sim \rho_0$演化得到$X_1\sim \rho_1$，也能从$X_1\sim\rho_1$演化到$X_0\sim \rho_0$，时间对称。
+
+### [形式7]流速场问题
+
+$$
+\begin{gather}
+\operatorname*{\arg\min}_{v\in \mathcal U,\rho\in \mathcal P}  \int_0^1\int_{\R^n}\left[ \frac 1 {2} \Vert v(t,x)\Vert^2+\frac{\epsilon^2}{8}\Vert\nabla\log\rho\Vert^2\right]\rho(t,x)\dd x\dd t\label{v-loss}\\
+FPK方程：\frac{\partial \rho}{\partial t}+\nabla\cdot(v\rho )=0\\
+\rho(0,x)=\rho_0(x),\rho(1,y)=\rho_1(y)
+\end{gather}
+$$
+
+该形式的解$(v^*,\rho^*)$，和[形式5]的解$(u^*,\rho^*)$，必然满足关系$v^*=u^*-\dfrac{\epsilon} 2 \nabla\log \rho^*$。
+
+该形式和[形式5]的区别是：
+
+*   优化目标多一项$I(\rho):=\int_{\R^n} \Vert \nabla \log \rho(t,x) \Vert^2 \rho(t,x)\dd x$，这是Fisher信息；
+*   FPK方程换成**连续性方程**（continuity equation），是描述守恒量传输行为的PDE，$\rho$为守恒的物理量的密度（即单位体积内的物理量），$\boldsymbol f=\boldsymbol v\rho$表示流量密度（即单位面积上单位时间内通过的物理量）。比如，$\rho$为电荷密度、粒子数量密度、量子力学中的概率密度，$\boldsymbol f$为电流密度、粒子流密度、量子力学中的概率流密度。
+
+**证明：**
+
+要从$\eqref{u-loss}$推导$\eqref{v-loss}$，只需证明交叉项
+$$
+\int_0^1\int_{\R^n} \rho v \nabla\log \rho\dd x \dd t=\text{const.}\
+$$
+推导过程
+$$
+\begin{align}
+&\int_0^1\int_{\R^n} \rho v \nabla\log \rho\dd x \dd t\\
+分部积分\quad =&\int_0^1 \oint_{\partial \R^n}\rho \boldsymbol v \log \rho \cdot \dd{\boldsymbol s}-\int_0^1\int_{\R^n}\nabla \cdot (\rho v)\log \rho\dd x\\
+=&-\int_0^1\int_{\R^n}\nabla \cdot (\rho v)\log \rho\dd x\\
+连续性方程\quad=&\int_{\R^n}\int_0^1\frac{\partial \rho}{\partial t}\log \rho \dd t\dd x\\
+=&\int_{\R^n}(\rho\log \rho-\rho) \bigg|_{t=0}^1\dd x\\
+=&\int_{\R^n}[\rho_1(x)\log \rho_1(x)-\rho_0(x)\log \rho_0(x)-\rho_1(x)+\rho_0(x)]\dd x\\
+=&\int_{\R^n}[\rho_1(x)\log \rho_1(x)-\rho_0(x)\log \rho_0(x)]\dd x=\text{const.}
+
+\end{align}
+$$
+
+
+
+## 普遍先验：$Q$​是扩散过程
+
+普遍先验是，以$Q$测度下的一个已知扩散过程为参考，找一个连接始末分布$\rho_0,\rho_1$的$P$测度下的随机过程，使得这两个过程尽可能接近。
+
+具体描述是：
+
+在$P$测度下，扩散过程为
+$$
+\dd{\boldsymbol  X}_t=\boldsymbol f(t,\boldsymbol X_t)\dd t+g(t,X_t) \dd{{\boldsymbol  W}}_t,\\
+ {\boldsymbol W}_t在 P测度下是标准布朗运动
+$$
+
+在$Q=\bar P$测度下，已知扩散过程为
+$$
+\dd{\boldsymbol  X}_t=\boldsymbol f(t,\boldsymbol X_t)\dd t+g(t,X_t) \dd{\bar{\boldsymbol  W}}_t,\\
+\bar {\boldsymbol W}_t在\bar P测度下是标准布朗运动
+$$
+**[形式1｜普遍先验] 薛定谔桥**：仍然成立，只需取$Q$为$\bar P$
+
+**[形式2｜普遍先验] 静态薛定谔桥**：仍然成立，只需取$Q_x^y=\bar P_x^y$
+
+**[形式3｜普遍先验]最优传输**：不成立，因为只有在$Q$是布朗运动时，薛定谔桥才等价于最优传输问题；在$Q$是扩散过程时，就不等价。
+
+**[形式2-续｜普遍先验]因式分解**：仍然成立，只需把$p^Q(s,x,t,y)$取为$p^{\bar P}(s,x,t,y)$
+
+### 若P也是扩散过程：
+
+### [形式4｜普遍先验]随机控制
+
+$$
+\operatorname*{\arg\min}_{u\in \mathcal U} J(u):=\mathbb E  \int_0^1 \frac 1 {2 g^2(t,X_t)} \Vert u(t,X_t)\Vert^2\dd t\\
+\dd X_t=[f(t,X_t)+u(t,X_t)]\dd t+g(t,X_t) \dd W_t, X_0\sim \rho_0(x),X_1\sim \rho_1(x)
+$$
+
+该问题的最优解，是 [形式1｜普遍先验] 薛定谔桥 在$P$为扩散过程、$Q$为已知扩散过程 时的特例。
+
+**证明：**
+
+在[形式1｜普遍先验]中，取$Q=\bar P$，限制$P$为扩散过程的概率测度：
+
+其中$P$是以下扩散过程的概率测度：
+$$
+\dd X_t= [f(t,X_t)+u(t,X_t)]\dd t+g(t,X_t) \dd W_t,\\
+W_t在概率测度P下是标准布朗运动
+$$
+$Q=\bar P$是方程为以下扩散过程的概率测度：
+$$
+\dd X_t= u(t,X_t)\dd t+g(t,X_t) \dd {\bar W_t},\\
+\bar W_t在概率测度Q=\bar P下是标准布朗运动
+$$
+则由Girsanov定理得，
+$$
+\dd{ \bar W_t}=\frac{u(t,X_t)}{g(t,X_t)}\dd t+\dd W_t
+$$
+R-N导数
+$$
+\frac{\dd P}{\dd Q}=\log\frac{\rho_0(X_0)}{\rho_0^{\bar P} (X_0)}+\int_0^1\frac{ u(t,X_t)}{g(t,X_t)}\dd {\bar W}_t-\int_0^1 \frac1 {2g^2(t,X_t) }\Vert u(t,X_t)\Vert^2\dd t,\\
+=\log\frac{\rho_0(X_0)}{\rho_0^{\bar P}(X_0)}+\int_0^1\frac{ u(t,X_t)}{g(t,X_t)}\dd W_t+\int_0^1 \frac1 {2g^2(t,X_t)}\Vert u(t,X_t)\Vert^2\dd t
+$$
+由于$W_t$是鞅，且$ u(t,X_t)$于$\dd W_t$无关，故
+$$
+\mathbb E\int_0^1 \frac{u(t,X_t)}{g(t,X_t)}\dd W_t=\mathbb \int_0^1 E[ \frac{u(t,X_t)}{g(t,X_t)}\mathbb E[\dd W_t|_{\mathcal F_t}]]=\mathbb \int_0^1 E[\frac{u(t,X_t)}{g(t,X_t)}0]=0
+$$
+故R-N导数进一步化简为
+$$
+\frac{\dd P}{\dd Q}=\log\frac{\rho_0(X_0)}{\rho_0^{\bar P}(X_0)}+\int_0^1 \frac1 {2 g^2(t,X_t)}\Vert u(t,X_t)\Vert^2\dd t
+$$
+故[形式1]中的优化目标化为
+$$
+\mathbb D(P\Vert Q)=\mathbb E_P\log \frac{\dd P}{\dd Q}=\mathbb D(\rho_0\Vert\rho_0^{\bar P})+\mathbb E_P \left[ \int_0^1 \frac 1 {2g^2(t,X_t)} \Vert u (t,X_t)\Vert^2\dd t\right]
+$$
+由于$\rho_0$是给定的初始分布，$\rho^{\bar P}_0$是已知扩散过程的初始分布，是已知的，故$\mathbb D(\rho_0\Vert\rho_0^{\bar P})$是定值。
+
+故[形式1｜普遍先验]转化为[形式4｜普遍先验]。
+
+### [形式5｜普遍先验]流体力学问题
+
+$$
+\begin{gather}
+\operatorname*{\arg\min}_{u\in \mathcal U,\rho\in \mathcal P} \int_0^1\int_{\R^n} \frac 1 {2g^2(t,x)} \Vert u(t,x)\Vert^2\rho(t,x)\dd x\dd t \label{gen-u-loss}\\
+FPK方程：\frac{\partial \rho}{\partial t}=-\nabla\cdot(\rho (f+u))+\frac1 2g^2 \Delta \rho\label{gen-fpk}\\
+\rho(0,x)=\rho_0(x),\rho(1,y)=\rho_1(y)
+\end{gather}
+$$
+
+[形式5｜普遍先验]与[形式5｜普遍先验]的优化目标相同，仅把SDE换成FPK方程。扩散过程的SDE的解，一定满足相应的FPK方程。
+
+[形式4｜普遍先验]的最优解$u^*$和[形式5｜普遍先验]的最优解$(u^+,\rho^+)$之间，一定满足关系：$u^*=u^+$，$u^*$代入[形式4]的SDE所得的随机过程的$\rho^*=\rho^+$。
+
+### [形式6｜普遍先验]$\varphi, \varphi^*$的线性PDE
+
+**仅当$g$只和$t$有关，而于$x$无关，即记作$g(t)$**，有以下定理：
+
+$$
+\frac{\partial \varphi}{\partial t}+f\cdot \nabla \varphi+\frac{g^2}{2}\Delta \varphi=0\\
+\frac{\partial \hat\varphi}{\partial t}+\nabla\cdot(f\hat\varphi)-\frac{g^2}{2}\Delta \hat\varphi=0\\
+\varphi(0,x)\hat\varphi(0,x)=\rho_0(x)\\
+\varphi(1,y)\hat\varphi(1,y)=\rho_1(y)\\
+$$
+
+该线性PDE组的解$(\varphi^+,\hat\varphi^+)$，和普遍先验下的扩散薛定谔桥（[形式4｜普遍形式]随机控制/[形式5｜普遍形式]流体力学问题）的最优解$(u^*,\rho^*)$，必然满足$\rho^*=\varphi^+\hat\varphi^+,u^*=g^2 \nabla \log \varphi^+$。
+
+这就是说：
+
+*   $\varphi^+,\hat\varphi^+$是一组$\rho^*(t,x)$的因式分解，满足前文所述[因式分解的性质](#因式分解的性质)，比如，$\rho^*(t,x)$的所有因式分解只差乘除一个系数。
+
+*   $\varphi^+,\hat\varphi^+$，能够分别通过正向和反向SDE，决定一个正向扩散过程和一个反向扩散过程，二者具有相同的密度函数$\rho(t,x)=\varphi(t,x)\hat\varphi(t,x)$：
+
+$$
+正向扩散：\dd x_t=(f+g^2 \nabla \log \varphi)\dd t+g \dd w_t, x_0\sim \rho_0,\\
+反向扩散：\dd x_t=(f-g^2 \nabla \log\hat \varphi)\dd t+g \dd{\bar w_t}, x_1\sim \rho_1.
+$$
+
+**证明：**
+
+1.   从[形式5｜普遍先验]推导线性PDE组：
+
+参考[^wasserstein]，我为其添加了证明过程。
+
+$\eqref{gen-u-loss}$在约束$\eqref{gen-fpk}$下，可以用拉格朗日法求解，$\psi(t,x)\in \R$是FPK方程成立的乘子：
+$$
+L(u,\rho,\psi):=\int_0^1\int_{\R^n} \frac 1 {2g^2(t,x)} \Vert u(t,x)\Vert^2\rho(t,x)\dd x\dd t\\
++\int_0^1 \int _{\R^n}\psi(t,x)\left[ \frac{\partial \rho(t,x)}{\partial t}+\nabla\cdot\big(\rho(t,x) (f(t,x)+u(t,x))\big)-\frac1 2g^2(t) \Delta \rho(t,x)\right]\dd x\dd t
+$$
+求解过程和[\[形式5\]流体力学问题](#\[形式5\]流体力学问题)相同，只需把$u$换成$f+u$即可，
+$$
+\frac{\delta L}{\delta u}=\frac1 {g^2 }u\rho-\rho\nabla\psi=0 \Rightarrow u=g^2 \nabla\psi,\  a.s.\ \rho\\
+\frac{\delta L}{\delta \rho}=\frac1 {2g^2 }\Vert u\Vert ^2-\frac{\partial \psi}{\partial t}-\nabla\psi\cdot(f+u)-\frac{g^2}2 \Delta \psi=0 \Rightarrow \frac{\partial \psi}{\partial t}+\frac{g^2 }2\Vert\nabla \psi\Vert^2+\nabla\psi\cdot f=-\frac {g^2} 2\Delta \psi\\
+\frac{\delta L}{\delta \psi}=0 \Rightarrow  FPK方程
+$$
+综上即
+$$
+\begin{gather}
+u=g^2\nabla\psi\\
+\frac{\partial \psi}{\partial t}+\frac{g^2} 2\Vert\nabla \psi\Vert^2+\nabla\psi\cdot f=-\frac {g^2} 2\Delta \psi\label{gen-psi}\\
+\frac{\partial \rho}{\partial t}+\nabla\cdot(\rho(f+{g^2}\nabla \psi))=\frac {g^2}  2 \Delta \rho\label{gen-rho-psi}
+\end{gather}
+$$
+然后和[[形式5]流体力学问题][#\[形式5\]流体力学问题]相同，令
+$$
+\varphi(t,x)=\exp(\psi(t,x))\label{gen-phi-def}\\
+\hat\varphi(t,x)=\rho(t,x)\exp(-\psi(t,x))
+$$
+故$\psi=\log \varphi$带入$\eqref{gen-psi}$，得到
+$$
+\frac{1}{\varphi} \frac{\partial \varphi}{\partial t}+\frac{g^2}{2\varphi^2} \Vert\nabla \varphi\Vert^2+\frac{\nabla\varphi}{\varphi}\cdot f=-\frac{g^2}{2} \nabla\cdot \frac{\nabla\varphi}{\varphi}\\
+右式=-\frac{g^2}{2} (\frac{\Delta\varphi}{\varphi}-\frac{\Vert\nabla\varphi\Vert^2}{\varphi^2})\\
+故\frac{\partial \varphi}{\partial t}+f\cdot \nabla\varphi+\frac{g^2}{2}\Delta \varphi=0\label{gen-phi-linear}
+$$
+将$\rho=\varphi\hat\varphi$带入$\eqref{gen-rho-psi}$，得到
+$$
+\hat\varphi\partial_t\varphi+ \varphi\partial_t\hat\varphi+\nabla\cdot[\varphi\hat\varphi(f+g^2 \frac{\nabla \varphi}{\varphi})]=\frac{g^2}2\Delta(\varphi\hat\varphi)\\
+
+\hat\varphi\partial_t\varphi+ \varphi\partial_t\hat\varphi +  \nabla\cdot(\varphi\hat\varphi f) +g^2 \nabla \cdot (\hat\varphi\nabla \varphi)=\frac{g^2}2\Delta (\varphi\hat\varphi)\\
+
+\hat\varphi\partial_t\varphi+ \varphi\partial_t\hat\varphi +  \hat\varphi  f\cdot\nabla\varphi + \varphi \nabla\cdot (f\hat\varphi)+
+\cancel{g^2 \nabla \hat\varphi \cdot \nabla \varphi}+ g^2 \hat\varphi \Delta \varphi=\\
+\frac{g^2}2( \varphi\Delta\hat\varphi+ \cancel{2\nabla\varphi\cdot\nabla \hat\varphi}+\hat  \varphi\Delta\varphi)\\
+
+\hat\varphi\underbrace{ [\partial_t \varphi+f\cdot \nabla\varphi+\frac {g^2} 2 \Delta\varphi]}_{=0\quad \because \eqref{gen-phi-linear}}+\varphi[\partial_t \hat\varphi+ \nabla\cdot(f\hat\varphi)-\frac {g^2} 2 \Delta\hat\varphi]=0\\
+
+\varphi[\partial_t \hat\varphi+ \nabla\cdot(f\hat\varphi)-\frac {g^2} 2 \Delta\hat\varphi]=0\\
+由\eqref{gen-phi-def}可知\varphi>0,故\\
+\partial_t \hat\varphi+ \nabla\cdot(f\hat\varphi)-\frac {g^2} 2 \Delta\hat\varphi=0
+$$
+综上
+$$
+\frac{\partial \varphi}{\partial t}+f\cdot \nabla\varphi+\frac{g^2}{2}\Delta \varphi=0\\
+\frac{\partial \hat\varphi}{\partial t}+\nabla\cdot(f\hat\varphi)-\frac{g^2}{2}\Delta \hat\varphi=0
+$$
+证毕。
+
+2.   推导反向SDE：
+     $$
+     \nabla \log \rho= \frac{\nabla\rho}{\rho}=\frac{\varphi\nabla\hat\varphi+\hat\varphi\nabla\varphi}{\varphi\hat\varphi}=\nabla \log \varphi+\nabla \log \hat\varphi
+     $$
+
+上文的FPK方程$\eqref{gen-fpk}$可以做三种变形：
+
+*   正向SDE及对应的FPK：
+$$
+\begin{aligned}
+\frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho (f+u))+\frac1 2\epsilon \Delta \rho, &u&=g^2 \nabla \log \varphi \\
+\frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho(f+ g^2 \log \varphi))+\frac1 2g^2 \Delta \rho ,&&\\
+\dd x_t&=(f+u)\dd t+g\dd w_t, & \dd x_t&=(f+\epsilon \nabla \log \varphi )\dd t+g\dd w_t
+\end{aligned}
+$$
+
+*   ODE及对应的FPK：
+$$
+\begin{aligned}
+\frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho v),&v&=f+u-\frac {g^2} 2 \nabla \log \rho=f+\frac{g^2} 2 \nabla\log \frac{\varphi}{\hat\varphi}\\
+\frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho (f+\frac{g^2} 2 \log \frac{\varphi}{\hat\varphi})),&&\\
+\dd x_t&=v \dd t, &\dd x_t&=(f+\frac{g^2} 2 \nabla\log \frac{\varphi}{\hat\varphi})\dd t
+\end{aligned}
+$$
+
+*   反向SDE及对应的FPK：
+
+$$
+\begin{aligned}
+\frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho (u-g^2 \nabla \log \rho ))-\frac1 2g^2 \Delta \rho, &u-g^2  \nabla \log \rho&= f+g^2  \nabla \log \varphi-(g^2  \nabla \log \varphi+g^2\nabla \log \hat\varphi)=f-g^2 \nabla \log {\hat\varphi}\\
+
+\frac{\partial \rho}{\partial t}&=-\nabla\cdot(\rho (f-g^2 \nabla \log \hat\varphi ))-\frac1 2g^2 \Delta \rho, &\frac{\partial \rho}{\partial (-t)}&=-\nabla\cdot(\rho (-f+g^2 \nabla \log \hat\varphi ))+\frac1 2g^2 \Delta \rho\\
+
+\dd x_t&=(-f+g^2\log\hat\varphi )\dd (-t)+g\dd w_t, &\dd x_t&=(f-g^2\nabla\log\hat\varphi )\dd t+g\dd w_t
+\end{aligned}
+$$
+
+
+
+### [形式7｜普遍先验]流速场问题
+
+仅当$g$和$t,x$都无关，即$g$**是常数时**（在前文非普遍先验中，记作$\epsilon=g^2$），有下列定理：
+
+令
+$$
+\bar v=f-\frac{g^2}  2\nabla \log \bar \rho
+$$
+则下列问题的解
+$$
+\begin{gather}
+\operatorname*{\arg\min}_{v\in \mathcal U,\rho\in \mathcal P}  \int_0^1\int_{\R^n}\left[ \frac 1 {2} \Vert v(t,x)-\bar v(t,x)\Vert^2+\frac{g^2}{8}\Vert\nabla\log\frac{\rho(t,x)}{\bar\rho(t,x)}\Vert^2\right]\rho(t,x)\dd x\dd t\label{gen-v-loss}\\
+FPK方程：\frac{\partial \rho}{\partial t}+\nabla\cdot(v\rho )=0\\
+\rho(0,x)=\rho_0(x),\rho(1,y)=\rho_1(y)
+\end{gather}
+$$
+该形式的解$(v^*,\rho^*)$，和[形式5]的解$(u^*,\rho^*)$，必然满足关系$v^*=f+u^*-\dfrac{g^2} 2 \nabla\log \rho^*$。
+
+**证明：**
+
+$P$测度下：
+$$
+\dd X_t= [f(t,X_t)+u(t,X_t)]\dd t+g \dd W_t, g是常数,\\
+W_t在概率测度P下是标准布朗运动\\
+故有FPK方程:\frac{\partial \rho}{\partial t}+\nabla\cdot(\rho(f+u))=\frac{g^2}  2 \Delta \rho\\
+ v:=f+u-\frac{g^2}  2\nabla\log  \rho\label{v-def} \\
+该PFK等价形式(连续性方程)：\frac{\partial \rho}{\partial t}+\nabla\cdot(\rho(f+v))=0\\
+对应的概率流方程（ODE）： \dd X_t= \bar v(t,X_t)\dd t,X_0\sim \rho_0, 能保证演化到X_1\sim \rho_1
+$$
+
+$Q$测度下：
+$$
+\dd X_t= u(t,X_t)\dd t+g \dd {\bar W_t},g是常数,\\
+\bar W_t在概率测度Q=\bar P下是标准布朗运动\\
+故有FPK方程:\frac{\partial \bar \rho}{\partial t}+\nabla\cdot(\bar \rho f)=\frac {g^2}  2 \Delta \bar \rho\\
+\bar v:=f-\frac{g^2}  2\nabla\log \bar \rho\label{vbar-def} \\
+该PFK等价形式(连续性方程)：\frac{\partial \bar \rho}{\partial t}+\nabla\cdot(\rho\bar v)=0\\
+对应的概率流方程（ODE）： \dd X_t= \bar v(t,X_t)\dd t,X_0\sim \rho_0, 不能保证演化到X_1\sim \rho_1
+$$
+
+将两个速度的定义式$\eqref{v-def}\eqref{vbar-def}$作差，得到
+$$
+v-\bar v+\frac {g^2} 2\log \frac{\rho}{\bar \rho}=u
+$$
+将其带入[形式5｜普遍先验]流体力学问题的目标函数 $\eqref{gen-u-loss}$，和[形式7｜普遍形式]的目标函数$\eqref{gen-v-loss}$只差一个交叉项（如下），只需证明它是常数：
+$$
+\int_0^1 \int_{\R^n} (v-\bar v)\cdot\nabla \log\frac{\rho}{\bar\rho}\rho\dd x\dd t\\
+=\int\int (v-\bar v)\cdot\nabla\frac{\rho}{\bar\rho} \bar\rho\\
+分部积分=-\int\int \nabla\cdot((v-\bar v)\bar\rho) \frac{\rho}{\bar \rho}\\
+=-\int\int \nabla\cdot (v\bar\rho) \frac{\rho}{\bar \rho}+\int\int \nabla\cdot (\bar v\bar\rho) \frac{\rho}{\bar \rho}\\
+连续性方程=-\int\int  \nabla\cdot (v\bar\rho) \frac{\rho}{\bar \rho}-\int\int \frac{\partial \bar\rho}{\partial t} \frac{\rho}{\bar \rho}\\
+=-\int\int  \nabla\cdot v\bar\rho \frac{\rho}{\bar \rho}-\int\int   v\cdot\nabla\bar\rho \frac{\rho}{\bar \rho}-\int\int \frac{\partial \log \bar\rho}{\partial t} \rho\\
+=-\int\int  \nabla\cdot v\rho-\int\int   \rho v\cdot\nabla\log \bar\rho-\int\int \frac{\partial \log \bar\rho}{\partial t} \rho\\
+分部积分=\int\int  v\cdot  \nabla\rho+\int\int   \nabla\cdot (\rho v)\log \bar\rho-\int\int \frac{\partial \log \bar\rho}{\partial t} \rho\\
+连续性方程=\int\int  v\rho \cdot  \nabla\log\rho- \int\int \frac{\partial \rho}{\partial t}\log \bar\rho-\int\int \frac{\partial \log \bar\rho}{\partial t} \rho\\
+分部积分,分部求导=-\int\int  \nabla\cdot(v\rho)\log\rho-\int\int \frac{\partial}{\partial t}( \rho \log \bar\rho) \\
+连续性方程=\int\int\frac{\partial \rho}{\partial t}\log\rho-\int\int \frac{\partial}{\partial t}( \rho \log \bar\rho)\\
+=\int_{\R^n}\int_0^1\left[ \frac{\partial }{\partial t}(\rho\log \rho-\rho)- \frac{\partial}{\partial t}( \rho \log \bar\rho)\right]\dd t\dd x\\
+= \int_{\R^n}(\rho\log \rho-\rho-\rho\log\bar \rho)\big|_0^1\dd x\\
+= \int_{\R^n}(\rho\log \frac{\rho}{\bar \rho})\big|_0^1\dd x\\
+=\mathbb D(\rho_1\Vert\bar \rho_1)-\mathbb D(\rho_0\Vert\bar \rho_0)\\
+因为\bar\rho_0=\rho_0(参考随机运动也采用\rho_0作为初始分布)，故\\
+=\mathbb D(\rho_1\Vert\bar \rho_1)
+$$
+由于$\bar\rho_0=\rho_0$固定，$\bar\rho_1$能通过参考随机运动唯一确定，$\rho_1$固定，故上式是常数。
+
+证毕。
