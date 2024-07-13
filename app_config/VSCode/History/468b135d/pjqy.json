@@ -70,6 +70,7 @@
     // 非注释的 左右 大中小括号 之间跳转： ctrl + \
     { "key": "ctrl+\\", "command": "editor.action.jumpToBracket", "when": "editorTextFocus" },
 
+
     // alt+z  光标退回  可以是选区, 当前文件内 两步编辑之间
     // { "key": "alt+z", "command": "cursorUndo", "when": "textInputFocus" },
     // { "key": "cmd+u", "command": "-cursorUndo", "when": "textInputFocus" },
@@ -80,30 +81,24 @@
 
 
     // 跨越自动换行
-    // cmd+左 移动到当前文本行的行首
-    {"key": "cmd+right","command": "cursorLineEnd","when": "textInputFocus"    },
-    {"key": "ctrl+e","command": "-cursorLineEnd","when": "textInputFocus"    },
-    // cmd+右 移动到当前文本行的行尾
-    {"key": "cmd+left","command": "cursorLineStart","when": "textInputFocus"    },
+    // home(fn+左) 移动到当前显示行的行首
+    {"key": "home","command": "cursorLineStart","when": "textInputFocus"    },
     {"key": "ctrl+a","command": "-cursorLineStart","when": "textInputFocus"    },
-    // cmd+shift+左 选中到当前文本行的行首
-    {"key": "shift+cmd+left","command": "cursorLineStartSelect","when": "textInputFocus"    },
+    // end(fn+右) 移动到当前显示行的行尾
+    {"key": "end","command": "cursorLineEnd","when": "textInputFocus"    },
+    {"key": "ctrl+e","command": "-cursorLineEnd","when": "textInputFocus"    },
+    // ctrl+shift+左 选中到当前显示行的行首 // 因为home是功能键，不能再用shift修饰，故无法设置成shift+home
+    {"key": "shift+ctrl+left","command": "cursorLineStartSelect","when": "textInputFocus"    },
     {"key": "ctrl+shift+a","command": "-cursorLineStartSelect","when": "textInputFocus"    },
-    // cmd+shift+右 选中到当前文本行的行尾
-    {"key": "shift+cmd+right","command": "cursorLineEndSelect","when": "textInputFocus"    },
+    // ctrl+shift+右 选中到当前显示行的行尾 // 因为end是功能键，不能再用shift修饰，故无法设置成shift+end
+    {"key": "shift+ctrl+right","command": "cursorLineEndSelect","when": "textInputFocus"    },
     {"key": "ctrl+shift+e","command": "-cursorLineEndSelect","when": "textInputFocus"    },
 
     // 不跨越自动换行
-    // home（fn+左）  移动到当前显示行的行首
-    // end（fn+右）  移动到当前显示行的行尾
-    // shift+ctrl+left    选中到当前显示行的行首 // 因为home是功能键，不能再用shift修饰，故无法设置成shift+home
-    {"key": "shift+ctrl+left","command": "cursorHomeSelect","when": "textInputFocus"    },
-    {"key": "shift+cmd+left","command": "-cursorHomeSelect","when": "textInputFocus"    },
-    // shift+ctrl+right    选中到当前显示行的行尾 // 因为end是功能键，不能再用shift修饰，故无法设置成shift+end
-    {"key": "shift+ctrl+right","command": "cursorEndSelect","when": "textInputFocus"    },
-    {"key": "shift+cmd+right","command": "-cursorEndSelect","when": "textInputFocus"    },
-
-
+    // cmd+left   移动到当前文本行的行首，再按跨行移动到上一行，直到到达一开始的文本行的行首（在缩进的右侧），再按一次到缩进的左侧，再按一次到缩进的右侧，如此不断循环
+    // cmd+right  移动到当前文本行的行尾
+    // shift+cmd+left    选中到当前文本行的行首，同cmd+left
+    // shift+cmd+right    选中到当前文本行的行尾
 
     // // ⌃Z : 光标退回 可以是选区, 跨文件 跨若干步编辑
     { "key": "alt+z", "command": "-editor.action.toggleWordWrap" },
@@ -117,6 +112,7 @@
 
     // 代码左右: cmd+\
     // 上下分窗
+    { "key": "shift+cmd+[Backslsh]", "command": "workbench.action.splitEditorOrthogonal", "when": "editorTextFocus" },
     { "key": "shift+cmd+\\", "command": "workbench.action.splitEditorOrthogonal", "when": "editorTextFocus" },
     { "key": "shift+cmd+\\", "command": "-editor.action.jumpToBracket", "when": "editorTextFocus" },
     // 最大化当前窗口
@@ -226,6 +222,7 @@
 
 
     // Markdown all in one 插件的快捷键
+    // 删除线：给选中区域添加/去除删除线
     {
         "key": "alt+s",
         "command": "markdown.extension.editing.toggleStrikethrough",
@@ -237,18 +234,10 @@
         "when": "false"
     },
 
-    // {
-    //     "key": "alt+cmd+b",
-    //     "command": "markdown.extension.editing.toggleMathReverse",
-    //     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
-    // },
-    // {
-    //     "key": "alt+cmd+c",
-    //     "command": "markdown.extension.editing.toggleCodeBlock",
-    //     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
-    // },
+
+    // 行内代码：将选中文本添加/解除格式
     {
-        "key": "cmd+`",
+        "key": "ctrl+c",
         "command": "markdown.extension.editing.toggleCodeSpan",
         "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
     },
@@ -259,12 +248,13 @@
         "command": "macros.markdownQuoteSelectedLines",
         "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
     },
-    // task list
+    // task list：只能将选中/光标所在行变成task list，但不能去除task list格式
     {
         "key": "cmd+alt+x",
         "command": "macros.markdownInsertTaskListSelectedLines",
         "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
     },
+    // 勾选/勾除 task list：支持多行同时操作
     {
         "key": "ctrl+x",
         "command": "markdown.extension.checkTaskList",
@@ -275,23 +265,44 @@
         "command": "-markdown.extension.checkTaskList",
         "when": "false"
     },
-
+    // 插入代码块：只能添加格式，不能去除格式，支持下拉框选择编程语言
     {
         "key": "alt+cmd+c",
         "command": "editor.action.insertSnippet",
         "args": { "name": "Insert fenced code block"},
         "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
     },
+    // 插入代码块：只能添加格式，不能去除格式，不支持下拉框选择编程语言
+    // {
+    //     "key": "alt+cmd+c",
+    //     "command": "markdown.extension.editing.toggleCodeBlock",
+    //     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
+    // },
+
+    // 公式块：只能添加格式，不能去除格式，支持下拉框选择编程语言，可以将选中文本变成公式块
     {
         "key": "alt+cmd+b",
         "command": "editor.action.insertSnippet",
         "args": { "name": "Insert fenced math"},
         "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
     },
+    // 插入行内公式：只能添加格式，不能去除格式，可以将选中文本行内公式
     {
         "key": "ctrl+m",
         "command": "editor.action.insertSnippet",
         "args": { "name": "Insert inline math"},
         "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
     },
+    // 插入公式：按一下是行内公式，再按一下是居中公式块，再按一下是左对齐公式块，再按一下取消格式；不支持将选中文本变成/取消公式格式；
+    // {
+    //     "key": "cmd+m",
+    //     "command": "markdown.extension.editing.toggleMath",
+    //     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
+    // },
+    // 插入式块：按一下是左对齐公式块，再按一下是居中公式块，再按一下是行内公式，，再按一下取消格式；不支持将选中文本变成/取消公式格式；
+    // {
+    //     "key": "alt+cmd+m",
+    //     "command": "markdown.extension.editing.toggleMathReverse",
+    //     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
+    // },
 ]
