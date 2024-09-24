@@ -227,7 +227,10 @@ sl() {
         printf "%s\t" $size
         ls -d --color=always $line
 
-        du -ahxd1 "$i" | sort -hk1 | while IFS=$'\t' read -r size line; do
+        du -ahxd1 "$i" | sort -rhk1 | while IFS=$'\t' read -r size line; do
+            if [ "$line" = "$i" ]; then
+                continue
+            fi
             printf "%s\t    " $size
             ls -d --color=always $line
         done
