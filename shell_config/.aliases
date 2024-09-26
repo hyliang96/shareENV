@@ -1033,8 +1033,8 @@ rdiff()
     fi
     local source_path="$1"
     local dest_path="$2"
-    [ ! -e ${source_path} ] && echo "no file or dir: ${source_path}" && return
-    [ ! -e ${dest_path} ] && echo "no file or dir: ${dest_path}" && return
+    [ ! -e ${source_path} ] && [[ ! "${source_path}" =~ ':' ]] && echo "no file or dir: ${source_path}" && return
+    [ ! -e ${dest_path} ]   && [[ ! "${dest_path}" =~ ':' ]]   && echo "no file or dir: ${dest_path}" && return
     [ -d ${source_path} ] && local source_path="${source_path}/"
 
     echo rsync -rvnc --delete "$source_path" "$dest_path"
