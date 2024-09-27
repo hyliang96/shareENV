@@ -1033,12 +1033,25 @@ rdiff()
     fi
     local source_path="$1"
     local dest_path="$2"
-    [ ! -e ${source_path} ] && [[ ! "${source_path}" =~ ':' ]] && echo "no file or dir: ${source_path}" && return
-    [ ! -e ${dest_path} ]   && [[ ! "${dest_path}" =~ ':' ]]   && echo "no file or dir: ${dest_path}" && return
-    [ -d ${source_path} ] && local source_path="${source_path}/"
+    [ ! -e "${source_path}" ] && [[ ! "${source_path}" =~ ':' ]] && echo "no file or dir: ${source_path}" && return
+    [ ! -e "${dest_path}" ]   && [[ ! "${dest_path}" =~ ':' ]]   && echo "no file or dir: ${dest_path}" && return
+    if [ -d "${source_path}" ]; then
+        local source_path="${source_path}/"
+    elif [[ ! "${source_path}" =~ ':' ]]; then
+        local host_name="${source_path%%:*}"
+        local remote_source_path="${source_path#*:}"
+        if [ "$(ssh "${host_name}" -t "[ -d '${remote_source_path}' ] && echo yes")" = yes ]; then
+            local source_path="${source_path}/"
+        fi
+    fi
 
-    echo rsync -rvnc --delete "$source_path" "$dest_path"
-    rsync -rvnc --delete "$source_path" "$dest_path"
+    if [[ ! "${dest_path}" =~ ':' ]]; then
+        echo rsync -rvnc --delete "$source_path" "$dest_path"
+        rsync -rvnc --delete "$source_path" "$dest_path"
+    else
+        echo rsync -arvnc --delete "$source_path" "$dest_path"
+        rsync -arvnc --delete "$source_path" "$dest_path"
+    fi
 }
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
