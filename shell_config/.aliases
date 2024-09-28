@@ -190,6 +190,10 @@ sys()
     cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c #  查看CPU信息（型号）
 }
 
+# 若不是mac系统
+if [ "$(uname)" != "Darwin" ]; then
+    alias brand='sudo dmidecode -s system-manufacturer'
+fi
 
 # 总核数 = 物理CPU个数 X 每颗物理CPU的核数
 # 逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数
@@ -223,7 +227,10 @@ sl() {
         printf "%s\t" $size
         ls -d --color=always $line
 
-        du -ahxd1 "$i" | sort -hk1 | while IFS=$'\t' read -r size line; do
+        du -ahxd1 "$i" | sort -rhk1 | while IFS=$'\t' read -r size line; do
+            if [ "$line" = "$i" ]; then
+                continue
+            fi
             printf "%s\t    " $size
             ls -d --color=always $line
         done
@@ -921,7 +928,7 @@ alias stmux='tmux source-file ~/.tmux.conf'
 alias vv='default_editor ~/.vimrc'           # vim 免source，重新开vim即生效
 alias vvp='default_editor ~/.vimrc.bundles'      # vim 的插件
 alias ivp="v -u ~/.vimrc.bundles +'PlugInstall --sync' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件
-alias uvp="v -u ~/.vimrc.bundles +'PlugInstall --sync' +'PlugUpdate' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件
+alias uvp="v -u ~/.vimrc.bundles +'PlugInstall --sync' +'PlugUpdate' +'UpdateRemotePlugins' +qa"  # 按照.vimrc.bundles下载安装之前没有的vim的插件，并升级已有插件，并升级远程插件
 alias make_ycm='$HOME/.vim/plugged/YouCompleteMe/install.sh' # 编译YouCompleteMe
 fix_ycm() {
     # 参考：https://www.lizenghai.com/archives/22681.html
@@ -1026,12 +1033,12 @@ rdiff()
     fi
     local source_path="$1"
     local dest_path="$2"
-    [ ! -e ${source_path} ] && echo "no file or dir: ${source_path}" && return
-    [ ! -e ${dest_path} ] && echo "no file or dir: ${dest_path}" && return
+    [ ! -e ${source_path} ] && [[ ! "${source_path}" =~ ':' ]] && echo "no file or dir: ${source_path}" && return
+    [ ! -e ${dest_path} ]   && [[ ! "${dest_path}" =~ ':' ]]   && echo "no file or dir: ${dest_path}" && return
     [ -d ${source_path} ] && local source_path="${source_path}/"
 
-    echo rsync -rvnc --delete "$source_path" "$dest_path"
-    rsync -rvnc --delete "$source_path" "$dest_path"
+    echo rsync -rvnch --delete "$source_path" "$dest_path"
+    rsync -rvnch --delete "$source_path" "$dest_path"
 }
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
