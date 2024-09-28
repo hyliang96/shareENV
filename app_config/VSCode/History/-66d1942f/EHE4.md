@@ -1,0 +1,17 @@
+---
+title: DAO（去中心化自组织）
+creation_date: February 3, 2022
+modification_date: April 4, 2022
+---
+
+
+# DAO（去中心化自组织）
+
+什么是 DAO？为什么它有可能在数字时代颠覆公司制？https://www.zhihu.com/zvideo/1456674054137122817
+
+很可惜，这个dao是急于私有制、市场经济的。但是其信息技术可以拿来用，完全可以在ogas和赛博协同的基础上，开发一个公有制工人民主计划经济DAO。
+
+
+**区块链去中心化有那么有用吗？**
+
+https://www.zhihu.com/question/68685893/answer/2304781177

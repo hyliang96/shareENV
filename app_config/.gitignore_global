@@ -8,6 +8,7 @@ desktop.ini
 
 # OS X
 .DS_Store
+.*.icloud
 # Folder view configuration files
 .Spotlight-V100
 # Files that might appear on external disks
