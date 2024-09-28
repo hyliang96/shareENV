@@ -1045,13 +1045,8 @@ rdiff()
         fi
     fi
 
-    if [[ ! "${dest_path}" =~ ':' ]]; then
-        echo rsync -rvnc --delete "$source_path" "$dest_path"
-        rsync -rvnc --delete "$source_path" "$dest_path"
-    else
-        echo rsync -arvnc --delete "$source_path" "$dest_path"
-        rsync -arvnc --delete "$source_path" "$dest_path"
-    fi
+    echo rsync -rvnc --delete "$source_path" "$dest_path"
+    rsync -rvnc --delete "$source_path" "$dest_path"
 }
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
