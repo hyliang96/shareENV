@@ -1078,9 +1078,10 @@ download_icloud_file()
     done
 }
 
-# rsync 封装多种参数，但不支持断点续传; ts能够和rsync一样自动补全远程目录
-#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
-alias ts="rsync -aHhvz -e 'ssh -o ClearAllForwardings=yes' --progress --exclude='.*.icloud'"
+# rsync 封装多种参数，支持断点续传，显示进度条;
+# ts能够和rsync一样自动补全远程目录
+#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发
+alias ts="rsync -avzPhH -e 'ssh -o ClearAllForwardings=yes' --exclude='.*.icloud'"
 
 # 下载到Downloads
 # [ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync download
@@ -1088,7 +1089,7 @@ download()
 {
     local download_path="$HOME/Downloads"
     if [ -d $download_path ]; then
-        rsync -aHhvz --progress $@ $download_path
+        ts $@ $download_path
     else
         echo "no dir $download_path; did not start downloading" >&2
     fi
