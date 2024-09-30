@@ -1035,14 +1035,16 @@ rdiff()
     local dest_path="$2"
     [ ! -e "${source_path}" ] && [[ ! "${source_path}" =~ ':' ]] && echo "no file or dir: ${source_path}" && return
     [ ! -e "${dest_path}" ]   && [[ ! "${dest_path}" =~ ':' ]]   && echo "no file or dir: ${dest_path}" && return
-    if [ -d "${source_path}" ]; then
-        local source_path="${source_path}/"
-    elif [[ ! "${source_path}" =~ ':' ]]; then
+    if [[  "${source_path}" =~ ':' ]]; then
         local host_name="${source_path%%:*}"
         local remote_source_path="${source_path#*:}"
-        if [ "$(ssh "${host_name}" -t "[ -d '${remote_source_path}' ] && echo yes")" = yes ]; then
+        echo yes
+        echo "【$(ssh "${host_name}" -t "[ -d '${remote_source_path}' ] && echo -n yes" 2>/dev/null)】"
+        if [ "$(ssh "${host_name}" -t "[ -d '${remote_source_path}' ] && echo -n yes" 2>/dev/null)" = yes ]; then
             local source_path="${source_path}/"
         fi
+    elif [ -d "${source_path}" ]; then
+        local source_path="${source_path}/"
     fi
 
     echo rsync -rvnc --delete "$source_path" "$dest_path"
