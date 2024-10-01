@@ -242,6 +242,12 @@ sl() {
 # 列出 指定目录下子目录 含有某字符串的 文件/文件夹 的个数
 # alias cl='python $share_script/countfile.py -lar'
 
+duc_sl() {
+    local dir="$1"
+    if [ "${dir}" ]; then
+    fi
+}
+
 
 cl() {
     if [[ $1 =~ ^(-h|--help)$ ]]; then
