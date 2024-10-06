@@ -1038,8 +1038,6 @@ rdiff()
     if [[  "${source_path}" =~ ':' ]]; then
         local host_name="${source_path%%:*}"
         local remote_source_path="${source_path#*:}"
-        echo yes
-        echo "【$(ssh "${host_name}" -t "[ -d '${remote_source_path}' ] && echo -n yes" 2>/dev/null)】"
         if [ "$(ssh "${host_name}" -t "[ -d '${remote_source_path}' ] && echo -n yes" 2>/dev/null)" = yes ]; then
             local source_path="${source_path}/"
         fi
