@@ -1057,7 +1057,7 @@ autots() {
     while [ 1 ]
     do
         #  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
-        rsync -aHhvzP -e 'ssh -o ClearAllForwardings=yes' $*
+        ts "$@"
         # command 调用系统的 rsync 命令，避免递归调用rsync
         if [ "$?" = "0" ] ; then
             echo "rsync completed normally"
@@ -1078,7 +1078,7 @@ download_icloud_file()
     done
 }
 
-# rsync 封装多种参数，支持断点续传，显示进度条;
+# rsync 封装多种参数，支持断点续传，但没有自动重连，显示进度条;
 # ts能够和rsync一样自动补全远程目录
 #  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发
 alias ts="rsync -avzPhH -e 'ssh -o ClearAllForwardings=yes' --exclude='.*.icloud'"
