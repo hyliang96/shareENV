@@ -1911,6 +1911,6 @@ alias indent='python $share_script/indent_json.py' # rewrite .josn file(s) with 
 
 # perl 替代 sed, 支持正则正则表达式非贪婪匹配; sed不支持
 alias perlsed='perl -pe'
-
+echo 5 >&2
 
 [[ $DotFileDebug -ne  0 ]] && echo share .bash_aliases end >&2
