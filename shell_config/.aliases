@@ -1913,5 +1913,6 @@ alias indent='python $share_script/indent_json.py' # rewrite .josn file(s) with 
 alias perlsed='perl -pe'
 echo 5 >&2
 
+DotFileDebug=1
 [[ $DotFileDebug -ne 0 ]] && echo share .bash_aliases end >&2
 echo 6 >&2
