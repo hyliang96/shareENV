@@ -5,6 +5,13 @@
 
 [[ $DotFileDebug -ne 0 ]] && echo share .bash_aliases >&2
 
+# 若where没定义，则定义之
+if [ ! -x "$(command -v where)" ]; then
+    where() {
+        type -a "$@"  # | sed -E 's/^.+? is //'
+    }
+fi
+
 # 解决ubuntu18.0 无法用apt安装ripgrap (即rg)
 # 参考: https://gist.github.com/kostaz/6e0cf1eee35a34cd6589ec15b58e682c
 # 症状:
