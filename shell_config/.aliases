@@ -1901,10 +1901,10 @@ tz()
     echo $target_TZ $target_time
 }
 
-
+echo 3 >&2
 # git 的 alias
 [ -f $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
-
+echo 4 >&2
 
 # --------------------- 文件格式工具 --------------------
 alias indent='python $share_script/indent_json.py' # rewrite .josn file(s) with indent
