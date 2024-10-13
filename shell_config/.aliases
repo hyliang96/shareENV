@@ -628,22 +628,22 @@ jchat()
 
 
 # 搜索进程
-# alias jc='ps aux | awk 'NR==1'; ps aux | grep -v grep | grep'
+# alias jc='/bin/ps aux | awk 'NR==1'; /bin/ps aux | grep -v grep | grep'
 jch()
 {
     if [ $# -eq 0 ]; then
         echo 'Usgae: jc args_for_grep'
         return
     fi
-    local title="`ps aux | awk NR==1`"
-    local content="`ps aux | awk NR!=1 | grep -v grep | grep $*`"
+    local title="`/bin/ps aux | awk NR==1`"
+    local content="`/bin/ps aux | awk NR!=1 | grep -v grep | grep $*`"
     if [ "$content" != "" ]; then
         echo $title
-        ps aux | awk NR!=1 | grep -v grep | grep -v 'ps aux' | grep -v 'awk NR!=1' | grep $*
+        /bin/ps aux | awk NR!=1 | grep -v grep | grep -v '/bin/ps aux' | grep -v 'awk NR!=1' | grep $*
     fi
 }
 # 查看对应进程的pid，jchpid <pid1> [<pid2> [ <pid3>...]]
-alias jchpid='ps u -p'
+alias jchpid='/bin/ps u -p'
 
 
 # 按pid杀死进程
