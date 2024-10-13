@@ -1779,17 +1779,17 @@ randpasswd () {
 
 echo 1.8 >&2
 # ------------------ 翻墙 ---------------------------
-if [ "$(uname)" != "Darwin" ]; then
-    # 非mac
-    if [ -f $server_script/fanqiang/fanqiang.sh  ]; then
-        echo 1.9 >&2
-        . $server_script/fanqiang/fanqiang.sh
-        echo 1.91 >&2
-    else
-        echo "$server_script/fanqiang/fanqiang.sh 找不到"  >&2
-        echo "无法加载翻墙客户端、翻墙服务器的alias脚本"   >&2
-    fi
-fi
+# if [ "$(uname)" != "Darwin" ]; then
+    # # 非mac
+    # if [ -f $server_script/fanqiang/fanqiang.sh  ]; then
+        # echo 1.9 >&2
+        # . $server_script/fanqiang/fanqiang.sh
+        # echo 1.91 >&2
+    # else
+        # echo "$server_script/fanqiang/fanqiang.sh 找不到"  >&2
+        # echo "无法加载翻墙客户端、翻墙服务器的alias脚本"   >&2
+    # fi
+# fi
 
 echo 2 >&2
 

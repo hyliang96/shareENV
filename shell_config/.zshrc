@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 
-# DotFileDebug=1
+DotFileDebug=1
 [[ $DotFileDebug -ne 0 ]] && echo share .zshrc >&2
 # -------------------------------------------------------------------------
 # 定义安装函数
@@ -16,7 +16,8 @@ check_antigen_install()
         [ ! -d "$HOME/.local" ] && mkdir -p "$HOME/.local" 2> /dev/null
         [ ! -d "$HOME/.local/bin" ] && mkdir -p "$HOME/.local/bin" 2> /dev/null
         [ ! -f "$HOME/.z" ] && touch "$HOME/.z"
-        local URL="http://git.io/antigen"
+        # local URL="http://git.io/antigen"
+        local URL="https://raw.gitmirror.com/zsh-users/antigen/master/bin/antigen.zsh" # 墙内镜像
         local TMPFILE="/tmp/antigen.zsh"
         if [ -x "$(which curl)" ]; then
             curl -L "$URL" -o "$TMPFILE"
@@ -90,7 +91,9 @@ check_fzf_install()
         if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
             echo 'There is no fzf. Installing to '"$FZF_BASE" >&2
             git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_BASE
+            echo B1 >&2
             ${FZF_BASE}/install --bin
+            echo B2 >&2
         fi
     fi
 }
@@ -148,6 +151,7 @@ antigen use oh-my-zsh
 # 历史命令搜索
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
+echo B3 >&2
 antigen bundle fzf   # 模糊搜索, 可以搜文件夹下路径,历史命令,历史路径
 antigen bundle marlonrichert/zsh-hist --branch=main
 
