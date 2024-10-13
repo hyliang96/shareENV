@@ -1058,6 +1058,12 @@ rdiff()
     rsync -avnc --delete "$source_path" "$dest_path"
 }
 
+# rsync 封装多种参数，支持断点续传，但没有自动重连，显示进度条;
+# ts能够和rsync一样自动补全远程目录
+#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发
+alias ts="rsync -avzPhH -e 'ssh -o ClearAllForwardings=yes' --exclude='.*.icloud'"
+
+
 # 自动端点续传，传送失败后隔180秒自动重新连接
 # autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
 # [ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync autots
@@ -1086,11 +1092,6 @@ download_icloud_file()
         brctl download "$file"
     done
 }
-
-# rsync 封装多种参数，支持断点续传，但没有自动重连，显示进度条;
-# ts能够和rsync一样自动补全远程目录
-#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发
-alias ts="rsync -avzPhH -e 'ssh -o ClearAllForwardings=yes' --exclude='.*.icloud'"
 
 # 下载到Downloads
 # [ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync download
