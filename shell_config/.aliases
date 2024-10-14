@@ -2,8 +2,8 @@
 
 
 # 服务器、笔记本、WSL 共享的alias配置
-
-[[ $DotFileDebug -ne 0 ]] && echo share .bash_aliases >&2
+[ ! $DotFileDebug ] && DotFileDebug=0 # 若DotFileDebug未定义，则定义之
+[[ $DotFileDebug -ne 0 ]] && echo share .aliases >&2
 
 # 若where没定义，则定义之
 if [ ! -x "$(command -v where)" ]; then
@@ -1901,5 +1901,5 @@ alias indent='python $share_script/indent_json.py' # rewrite .josn file(s) with 
 alias perlsed='perl -pe'
 
 
-[[ $DotFileDebug -ne 0 ]] && echo share .bash_aliases end >&2
+[[ $DotFileDebug -ne 0 ]] && echo share .aliases end >&2
 
