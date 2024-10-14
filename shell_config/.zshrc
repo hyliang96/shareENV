@@ -195,7 +195,7 @@ echo B6 >&2
 antigen theme romkatv/powerlevel10k
 echo B7 >&2
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f $shareENV/shell_config/.p10k.zsh ]] || source $shareENV/shell_config/.p10k.zsh
+[[ -r $shareENV/shell_config/.p10k.zsh ]] && source $shareENV/shell_config/.p10k.zsh
 echo B8 >&2
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
