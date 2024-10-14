@@ -3,6 +3,8 @@
 
 DotFileDebug=1
 [[ $DotFileDebug -ne 0 ]] && echo share .zshrc >&2
+
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 # -------------------------------------------------------------------------
 # 定义安装函数
 
