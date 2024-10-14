@@ -91,9 +91,9 @@ check_fzf_install()
         if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
             echo 'There is no fzf. Installing to '"$FZF_BASE" >&2
             git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_BASE
-            echo B1 >&2
+
             ${FZF_BASE}/install --bin
-            echo B2 >&2
+
         fi
     fi
 }
@@ -151,7 +151,6 @@ antigen use oh-my-zsh
 # 历史命令搜索
 # antigen bundle zsh-users/zsh-history-substring-search
 check_fzf_install
-echo B3 >&2
 antigen bundle fzf   # 模糊搜索, 可以搜文件夹下路径,历史命令,历史路径
 antigen bundle marlonrichert/zsh-hist --branch=main
 
@@ -162,7 +161,6 @@ antigen bundle marlonrichert/zsh-hist --branch=main
 antigen bundle pip
 antigen bundle svn-fast-info
 # antigen bundle command-not-find
-echo B4 >&2
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
@@ -173,7 +171,6 @@ antigen bundle skywind3000/z.lua # https://www.v2ex.com/t/532304
 export _ZL_ADD_ONCE=1   # 若为0 则prompt显示一次则计数加1, 若为1则 cd到目录一次则计数加1
 export _ZL_MATCH_MODE=1 # 启用增强匹配模式
 export _ZL_NO_ALIASES=0 # 不用预设alias, 用自己定义的alias
-echo B5 >&2
 
 antigen bundle zdharma-continuum/fast-syntax-highlighting    # zsh 命令的语法高亮
 # antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
@@ -184,7 +181,6 @@ antigen bundle Vifon/deer
 
 antigen bundle willghatch/zsh-cdr
 # antigen bundle zsh-users/zaw
-echo B6 >&2
 # 换主题
 # 更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
 # bureau, ys, agnoster, apjanke/agnosterj-zsh-theme
@@ -193,17 +189,14 @@ echo B6 >&2
 # source /Users/mac/.antigen/bundles/apjanke/agnosterj-zsh-theme/agnosterj.zsh-theme
 
 antigen theme romkatv/powerlevel10k
-echo B7 >&2
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -r $shareENV/shell_config/.p10k.zsh ]] && source $shareENV/shell_config/.p10k.zsh
-echo B8 >&2
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-echo B9 >&2
 # antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
 # set option to '' to disable it
 agnoster_time=1

@@ -954,7 +954,6 @@ fix_ycm() {
 }
 
 
-echo 0 >&2
 
 alias vgit='default_editor ~/.gitconfig'
 
@@ -1545,7 +1544,6 @@ tuna-help()
     # fi
 # }
 
-echo 1 >&2
 
 #  ce: conda environment
 alias ceact='conda activate'
@@ -1610,7 +1608,7 @@ veact() {
 # alias veact='source venv/bin/activate'
 alias vedea='deactivate'
 
-echo 1.5 >&2
+
 # ---------------- alias to python ------------------
 alias py='python'
 alias py3='python3'
@@ -1751,7 +1749,6 @@ vncs(){
     fi
 }
 
-echo 1.7 >&2
 # vnc viewer
 # 用法：vnc 服务器别名
 alias vncv='ssh -L 5901:127.0.0.1:5901 -C -N'
@@ -1778,21 +1775,6 @@ randpasswd () {
     openssl rand -base64 $len
 }
 
-echo 1.8 >&2
-# ------------------ 翻墙 ---------------------------
-# if [ "$(uname)" != "Darwin" ]; then
-    # # 非mac
-    # if [ -f $server_script/fanqiang/fanqiang.sh  ]; then
-        # echo 1.9 >&2
-        # . $server_script/fanqiang/fanqiang.sh
-        # echo 1.91 >&2
-    # else
-        # echo "$server_script/fanqiang/fanqiang.sh 找不到"  >&2
-        # echo "无法加载翻墙客户端、翻墙服务器的alias脚本"   >&2
-    # fi
-# fi
-
-echo 2 >&2
 
 # dropbox loader
 # 安装使用教程：https://linux.cn/article-6814-1.html
@@ -1909,18 +1891,15 @@ tz()
     echo $target_TZ $target_time
 }
 
-echo 3 >&2
 # git 的 alias
 [ -f $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
-echo 4 >&2
 
 # --------------------- 文件格式工具 --------------------
 alias indent='python $share_script/indent_json.py' # rewrite .josn file(s) with indent
 
 # perl 替代 sed, 支持正则正则表达式非贪婪匹配; sed不支持
 alias perlsed='perl -pe'
-echo 5 >&2
 
 
 [[ $DotFileDebug -ne 0 ]] && echo share .bash_aliases end >&2
-echo 6 >&2
+
