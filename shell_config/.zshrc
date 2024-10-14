@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# DotFileDebug=0
+[ ! $DotFileDebug ] && DotFileDebug=0 # 若DotFileDebug未定义，则定义之
 [[ $DotFileDebug -ne 0 ]] && echo share .zshrc >&2
 
 # -------------------------------------------------------------------------
