@@ -1034,7 +1034,7 @@ alias scp="scp -r"
 #  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发
 #  -e 'ssh -o RemoteCommand=none'      不执行.ssh/config中的   RequestTTY yes 和 RemoteCommand
 #  --exclude='.*.icloud'               不同步.*.icloud
-alias _my_rsync_="rsync -avPhH -e 'ssh -o ClearAllForwardings=yes'  -e 'ssh -o RemoteCommand=none'"
+alias _my_rsync_="rsync -e 'ssh -o ClearAllForwardings=yes -o RemoteCommand=none -o RequestTTY=no'"
 
 rdiff()
 {
