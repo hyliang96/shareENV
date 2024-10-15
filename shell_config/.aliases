@@ -1030,6 +1030,11 @@ alias cp="cp -r"
 alias scp="scp -r"
 
 
+# 对rsync进行基本配置，下面的alias/函数都使用它
+#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发
+#  -e 'ssh -o RemoteCommand=none'      不执行.ssh/config中的   RequestTTY yes 和 RemoteCommand
+#  --exclude='.*.icloud'               不同步.*.icloud
+alias _my_rsync_="rsync -avPhH -e 'ssh -o ClearAllForwardings=yes'  -e 'ssh -o RemoteCommand=none'"
 
 rdiff()
 {
@@ -1053,14 +1058,13 @@ rdiff()
         local source_path="${source_path}/"
     fi
 
-    echo rsync -avnc --delete "$source_path" "$dest_path"
-    rsync -avnc --delete "$source_path" "$dest_path"
+    echo _my_rsync_ -avnc --delete "$source_path" "$dest_path"
+    _my_rsync_ -avnc --delete "$source_path" "$dest_path"
 }
 
 # rsync 封装多种参数，支持断点续传，但没有自动重连，显示进度条;
 # ts能够和rsync一样自动补全远程目录
-#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发
-alias ts="rsync -avPhH -e 'ssh -o ClearAllForwardings=yes' --exclude='.*.icloud'"
+alias ts="_my_rsync_ -avPhH"
 
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
@@ -1070,7 +1074,6 @@ autots() {
     local retry_time=180 # second
     while [ 1 ]
     do
-        #  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
         ts "$@"
         # command 调用系统的 rsync 命令，避免递归调用rsync
         if [ "$?" = "0" ] ; then
