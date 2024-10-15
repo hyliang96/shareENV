@@ -1028,11 +1028,12 @@ fi
 # 拷贝、传输一个文件或文件夹（及其下各级所有文件），包括隐藏文件
 alias cp="cp -r"
 alias scp="scp -r"
-
+# scp天然地就不执行.ssh/config中的端口转发、RequestTTY yes、RemoteCommand设置
 
 # 对rsync进行基本配置，下面的alias/函数都使用它
-#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发
-#  -e 'ssh -o RemoteCommand=none'      不执行.ssh/config中的   RequestTTY yes 和 RemoteCommand
+#  ClearAllForwardings=yes  清.ssh/config中的空端口转发
+#  RequestTTY=no            不执行.ssh/config中的`RequestTTY yes`设置
+#  RemoteCommand=none       不执行.ssh/config中的`RemoteCommand <远程命令>`设置
 #  --exclude='.*.icloud'               不同步.*.icloud
 alias _my_rsync_="rsync -e 'ssh -o ClearAllForwardings=yes -o RemoteCommand=none -o RequestTTY=no'"
 
