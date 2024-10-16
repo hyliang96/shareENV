@@ -2,8 +2,15 @@
 
 
 # 服务器、笔记本、WSL 共享的alias配置
+[ ! $DotFileDebug ] && DotFileDebug=0 # 若DotFileDebug未定义，则定义之
+[[ $DotFileDebug -ne 0 ]] && echo share .aliases >&2
 
-[[ $DotFileDebug -ne 0 ]] && echo share .bash_aliases >&2
+# 若where没定义，则定义之
+if [ ! -x "$(command -v where)" ]; then
+    where() {
+        type -a "$@"  # | sed -E 's/^.+? is //'
+    }
+fi
 
 # 解决ubuntu18.0 无法用apt安装ripgrap (即rg)
 # 参考: https://gist.github.com/kostaz/6e0cf1eee35a34cd6589ec15b58e682c
@@ -621,22 +628,22 @@ jchat()
 
 
 # 搜索进程
-# alias jc='ps aux | awk 'NR==1'; ps aux | grep -v grep | grep'
+# alias jc='/bin/ps aux | awk 'NR==1'; /bin/ps aux | grep -v grep | grep'
 jch()
 {
     if [ $# -eq 0 ]; then
         echo 'Usgae: jc args_for_grep'
         return
     fi
-    local title="`ps aux | awk NR==1`"
-    local content="`ps aux | awk NR!=1 | grep -v grep | grep $*`"
+    local title="`/bin/ps aux | awk NR==1`"
+    local content="`/bin/ps aux | awk NR!=1 | grep -v grep | grep $*`"
     if [ "$content" != "" ]; then
         echo $title
-        ps aux | awk NR!=1 | grep -v grep | grep -v 'ps aux' | grep -v 'awk NR!=1' | grep $*
+        /bin/ps aux | awk NR!=1 | grep -v grep | grep -v '/bin/ps aux' | grep -v 'awk NR!=1' | grep $*
     fi
 }
 # 查看对应进程的pid，jchpid <pid1> [<pid2> [ <pid3>...]]
-alias jchpid='ps u -p'
+alias jchpid='/bin/ps u -p'
 
 
 # 按pid杀死进程
@@ -947,6 +954,7 @@ fix_ycm() {
 }
 
 
+
 alias vgit='default_editor ~/.gitconfig'
 
 fix_golang()
@@ -1020,8 +1028,14 @@ fi
 # 拷贝、传输一个文件或文件夹（及其下各级所有文件），包括隐藏文件
 alias cp="cp -r"
 alias scp="scp -r"
+# scp天然地就不执行.ssh/config中的端口转发、RequestTTY yes、RemoteCommand设置
 
-
+# 对rsync进行基本配置，下面的alias/函数都使用它
+#  ClearAllForwardings=yes  清.ssh/config中的空端口转发
+#  RequestTTY=no            不执行.ssh/config中的`RequestTTY yes`设置
+#  RemoteCommand=none       不执行.ssh/config中的`RemoteCommand <远程命令>`设置
+#  --exclude='.*.icloud'               不同步.*.icloud
+alias _my_rsync_="rsync -e 'ssh -o ClearAllForwardings=yes -o RemoteCommand=none -o RequestTTY=no'"
 
 rdiff()
 {
@@ -1038,8 +1052,6 @@ rdiff()
     if [[  "${source_path}" =~ ':' ]]; then
         local host_name="${source_path%%:*}"
         local remote_source_path="${source_path#*:}"
-        echo yes
-        echo "【$(ssh "${host_name}" -t "[ -d '${remote_source_path}' ] && echo -n yes" 2>/dev/null)】"
         if [ "$(ssh "${host_name}" -t "[ -d '${remote_source_path}' ] && echo -n yes" 2>/dev/null)" = yes ]; then
             local source_path="${source_path}/"
         fi
@@ -1047,9 +1059,14 @@ rdiff()
         local source_path="${source_path}/"
     fi
 
-    echo rsync -avnc --delete "$source_path" "$dest_path"
-    rsync -avnc --delete "$source_path" "$dest_path"
+    echo _my_rsync_ -avnc --delete "$source_path" "$dest_path"
+    _my_rsync_ -avnc --delete "$source_path" "$dest_path"
 }
+
+# rsync 封装多种参数，支持断点续传，但没有自动重连，显示进度条;
+# ts能够和rsync一样自动补全远程目录
+alias ts="_my_rsync_ -avPhH"
+
 
 # 自动端点续传，传送失败后隔180秒自动重新连接
 # autots（alias）会被下面的autots函数覆盖，用来使得下面的autots函数能够和rsync一样自动补全远程目录
@@ -1058,8 +1075,7 @@ autots() {
     local retry_time=180 # second
     while [ 1 ]
     do
-        #  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发;
-        rsync -aHhvzP -e 'ssh -o ClearAllForwardings=yes' $*
+        ts "$@"
         # command 调用系统的 rsync 命令，避免递归调用rsync
         if [ "$?" = "0" ] ; then
             echo "rsync completed normally"
@@ -1079,11 +1095,6 @@ download_icloud_file()
         brctl download "$file"
     done
 }
-
-# rsync 封装多种参数，支持断点续传，显示进度条;
-# ts能够和rsync一样自动补全远程目录
-#  -e 'ssh -o ClearAllForwardings=yes' 清空端口转发
-alias ts="rsync -avzPhH -e 'ssh -o ClearAllForwardings=yes' --exclude='.*.icloud'"
 
 # 下载到Downloads
 # [ -n "$ZSH_NAME" ] && [[ -o interactive ]] && compdef _rsync download
@@ -1538,7 +1549,6 @@ tuna-help()
 # }
 
 
-
 #  ce: conda environment
 alias ceact='conda activate'
 alias cedea='conda deactivate'
@@ -1601,6 +1611,7 @@ veact() {
 }
 # alias veact='source venv/bin/activate'
 alias vedea='deactivate'
+
 
 # ---------------- alias to python ------------------
 alias py='python'
@@ -1769,18 +1780,6 @@ randpasswd () {
 }
 
 
-# ------------------ 翻墙 ---------------------------
-if [ "$(uname)" != "Darwin" ]; then
-    # 非mac
-    if [ -f $server_script/fanqiang/fanqiang.sh  ]; then
-        . $server_script/fanqiang/fanqiang.sh
-    else
-        echo "$server_script/fanqiang/fanqiang.sh 找不到"  >&2
-        echo "无法加载翻墙客户端、翻墙服务器的alias脚本"   >&2
-    fi
-fi
-
-
 # dropbox loader
 # 安装使用教程：https://linux.cn/article-6814-1.html
 # 此软件使用前需先翻墙
@@ -1896,13 +1895,15 @@ tz()
     echo $target_TZ $target_time
 }
 
-
 # git 的 alias
 [ -f $shareENV/app/easy-git/main.sh ] && . $shareENV/app/easy-git/main.sh
-
 
 # --------------------- 文件格式工具 --------------------
 alias indent='python $share_script/indent_json.py' # rewrite .josn file(s) with indent
 
 # perl 替代 sed, 支持正则正则表达式非贪婪匹配; sed不支持
 alias perlsed='perl -pe'
+
+
+[[ $DotFileDebug -ne 0 ]] && echo share .aliases end >&2
+

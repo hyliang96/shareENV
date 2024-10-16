@@ -7,6 +7,7 @@ gi() { # git ignore
         local target_path_to_git_root="$(git_path_to_root $i)"
         local gitignore="$(git_root)/.gitignore"
         echo "$target_path_to_git_root" >> $gitignore
+        git rm -r --cached "$i"
     done
 }
 
@@ -22,7 +23,7 @@ giv() { # git ignore vim
     default_editor "$gitignore"
 }
 
-# 依照最新的.gitignore文件 忽略整个repo中的文件(夹)
+# 依照最新的.gitignore文件 忽略整个repo中需要忽略的文件(夹)
 giu()   # git ignore update: 修改.gitignore 后，忽略其中的文件，commit一版
 {
     git rm -r --cached .  #清除缓存

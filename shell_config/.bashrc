@@ -1,4 +1,5 @@
 
+[ ! $DotFileDebug ] && DotFileDebug=0 # 若DotFileDebug未定义，则定义之
 [ $DotFileDebug -ne 0 ] && echo share .bashrc >&2
 
 # ~/.bashrc: executed by bash(1) for non-login shells.
