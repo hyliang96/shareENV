@@ -76,8 +76,8 @@ check_jump_install()
 check_fzf_install()
 {
     if [ "$(uname)" = "Darwin" ]; then
-        if ! [ -x "$(command -v fzf)" ]; then
-        # if ! builtin type fzf >/dev/null 2>&1; then
+        if [ ! -x "$(command -v fzf)" ]; then
+        # if  builtin type fzf >/dev/null 2>&1; then
             if [ -x "$(command -v brew)" ]; then
                 brew install fzf
             else
@@ -85,8 +85,11 @@ check_fzf_install()
             fi
         fi
     else
-        export FZF_BASE="${HOME}/.fzf"
-        # export FZF_BASE="$serverENV/app/fzf"
+        if [ -d $serverENV/local/myCellar/fzf ]; then
+            export FZF_BASE="$serverENV/local/myCellar/fzf"
+        else
+            export FZF_BASE="${HOME}/.fzf"
+        fi
         if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
             echo 'There is no fzf. Installing to '"$FZF_BASE" >&2
             git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_BASE

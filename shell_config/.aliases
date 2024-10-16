@@ -672,7 +672,7 @@ kjob()
 #         for arg in $@; do
 #             if [ -f $arg ]; then
 #                 # echo "用笔记本上的sublime开文件 $arg"
-#                 # 但文件走rsub
+#                 # 单文件走rsub
 #                 rsub $arg
 #                 n_file=1
 #             elif [ -d $arg ]; then
