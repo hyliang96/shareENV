@@ -9,7 +9,8 @@
 # Install antigen.zsh if not exist
 check_antigen_install()
 {
-    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - instal zsh >&2
+    # [[ $DotFileDebug -ne 0 ]] &&
+        echo share .zshrc - instal zsh >&2
 
     if [ ! -f "$ANTIGEN" ]; then
         echo "Installing antigen ..."
