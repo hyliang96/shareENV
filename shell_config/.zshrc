@@ -1,22 +1,23 @@
 #!/usr/bin/env zsh
 
-
-# DotFileDebug=1
+[ ! $DotFileDebug ] && DotFileDebug=0 # 若DotFileDebug未定义，则定义之
 [[ $DotFileDebug -ne 0 ]] && echo share .zshrc >&2
+
 # -------------------------------------------------------------------------
 # 定义安装函数
 
 # Install antigen.zsh if not exist
 check_antigen_install()
 {
-    [[ $DotFileDebug -ne 0 ]] && echo share .zshrc - instal zsh >&2
+    [[ $DotFileDebug -ne 0 ]] &&  echo share .zshrc - instal zsh >&2
 
     if [ ! -f "$ANTIGEN" ]; then
         echo "Installing antigen ..."
         [ ! -d "$HOME/.local" ] && mkdir -p "$HOME/.local" 2> /dev/null
         [ ! -d "$HOME/.local/bin" ] && mkdir -p "$HOME/.local/bin" 2> /dev/null
         [ ! -f "$HOME/.z" ] && touch "$HOME/.z"
-        local URL="http://git.io/antigen"
+        # local URL="http://git.io/antigen"
+        local URL="https://raw.gitmirror.com/zsh-users/antigen/master/bin/antigen.zsh" # 墙内镜像
         local TMPFILE="/tmp/antigen.zsh"
         if [ -x "$(which curl)" ]; then
             curl -L "$URL" -o "$TMPFILE"
@@ -76,8 +77,8 @@ check_jump_install()
 check_fzf_install()
 {
     if [ "$(uname)" = "Darwin" ]; then
-        if ! [ -x "$(command -v fzf)" ]; then
-        # if ! builtin type fzf >/dev/null 2>&1; then
+        if [ ! -x "$(command -v fzf)" ]; then
+        # if  builtin type fzf >/dev/null 2>&1; then
             if [ -x "$(command -v brew)" ]; then
                 brew install fzf
             else
@@ -85,12 +86,17 @@ check_fzf_install()
             fi
         fi
     else
-        export FZF_BASE="${HOME}/.fzf"
-        # export FZF_BASE="$serverENV/app/fzf"
+        if [ -d $serverENV/local/myCellar/fzf ]; then
+            export FZF_BASE="$serverENV/local/myCellar/fzf"
+        else
+            export FZF_BASE="${HOME}/.fzf"
+        fi
         if [ ! -x $FZF_BASE/bin/fzf ] 2>&1; then
             echo 'There is no fzf. Installing to '"$FZF_BASE" >&2
             git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_BASE
+
             ${FZF_BASE}/install --bin
+
         fi
     fi
 }
@@ -158,7 +164,6 @@ antigen bundle marlonrichert/zsh-hist --branch=main
 antigen bundle pip
 antigen bundle svn-fast-info
 # antigen bundle command-not-find
-
 antigen bundle colorize
 antigen bundle github
 antigen bundle python
@@ -170,7 +175,6 @@ export _ZL_ADD_ONCE=1   # 若为0 则prompt显示一次则计数加1, 若为1则
 export _ZL_MATCH_MODE=1 # 启用增强匹配模式
 export _ZL_NO_ALIASES=0 # 不用预设alias, 用自己定义的alias
 
-
 antigen bundle zdharma-continuum/fast-syntax-highlighting    # zsh 命令的语法高亮
 # antigen bundle zsh-users/zsh-syntax-highlighting # zsh 命令的语法高亮
 antigen bundle zsh-users/zsh-autosuggestions     # 根据命令开头 补全历史命令,右键使用补全,上下键翻历史
@@ -180,7 +184,6 @@ antigen bundle Vifon/deer
 
 antigen bundle willghatch/zsh-cdr
 # antigen bundle zsh-users/zaw
-
 # 换主题
 # 更多主题见：https://github.com/robbyrussell/oh-my-zsh/wiki/themes
 # bureau, ys, agnoster, apjanke/agnosterj-zsh-theme
@@ -190,14 +193,13 @@ antigen bundle willghatch/zsh-cdr
 
 antigen theme romkatv/powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f $shareENV/shell_config/.p10k.zsh ]] || source $shareENV/shell_config/.p10k.zsh
+[[ -r $shareENV/shell_config/.p10k.zsh ]] && source $shareENV/shell_config/.p10k.zsh
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
 # antigen theme hyliang96/my_agnoster # https://github.com/hyliang96/my_agnoster.git
 # set option to '' to disable it
 agnoster_time=1
