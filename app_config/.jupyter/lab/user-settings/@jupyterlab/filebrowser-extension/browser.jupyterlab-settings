@@ -12,6 +12,10 @@
     // Whether to show the file size column
     "showFileSizeColumn": true,
 
+    // Show full path in browser bread crumbs
+    // Whether to show full path in browser bread crumbs
+    "showFullPath": true,
+
     // When sorting by name, group notebooks before other files
     // Whether to group the notebooks away from files
     "sortNotebooksFirst": true
