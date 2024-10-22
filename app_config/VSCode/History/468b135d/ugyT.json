@@ -5,17 +5,17 @@
     // ----------------------------------------------------------------------------------------------
     // ----- 外部终端
     // 本地文件夹在vscode打开后，在这个文件夹的路径开外部终端：ctrl+shift+`
-    { "key": "ctrl+shift+`", "command": "workbench.action.terminal.openNativeConsole", "when": "!terminalFocus" },
+    { "key": "ctrl+shift+[Backquote]", "command": "workbench.action.terminal.openNativeConsole", "when": "!terminalFocus" },
     { "key": "shift+cmd+c",  "command": "-workbench.action.terminal.openNativeConsole",  "when": "!terminalFocus" },
 
     // ----- 内部终端
 
 
     // 在代码和终端间切换
-    { "key": "ctrl+`", "command": "workbench.action.terminal.focus"},
-    { "key": "ctrl+`", "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"},
+    { "key": "ctrl+[Backquote]", "command": "workbench.action.terminal.focus"},
+    { "key": "ctrl+[Backquote]", "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"},
     // 打开、隐藏内置终端
-    { "key": "ctrl+alt+`",  "command": "workbench.action.togglePanel" },
+    { "key": "ctrl+alt+[Backquote]",  "command": "workbench.action.togglePanel" },
     // { "key": "ctrl+alt+`",  "command": "multiCommand.toggleTerminal" },
     // 关闭当前终端
     { "key": "cmd+w","command": "workbench.action.terminal.kill", "when": "terminalFocus"},
@@ -23,7 +23,7 @@
     { "key": "shift+cmd+enter",    "command": "workbench.action.toggleMaximizedPanel", "when": "terminalFocus" },
     // 新开一屏终端：ctrl+alt+t
     { "key": "cmd+t",      "command": "workbench.action.terminal.new"  , "when": "terminalFocus"  },
-    { "key": "ctrl+shift+`",    "command": "-workbench.action.terminal.new"  },  //( 解绑原生的 ctrl+shift+`）
+    { "key": "ctrl+shift+[Backquote]",    "command": "-workbench.action.terminal.new"  },  //( 解绑原生的 ctrl+shift+`）
     // 去前一屏终端（终端编号-1）
     { "key": "cmd+alt+up",    "command": "workbench.action.terminal.focusPrevious", "when": "terminalFocus" },
     // 去后一屏终端（终端编号+1）
@@ -68,7 +68,8 @@
     // command + k + j，展开所有代码块。
 
     // 非注释的 左右 大中小括号 之间跳转： ctrl + \
-    { "key": "ctrl+\\", "command": "editor.action.jumpToBracket", "when": "editorTextFocus" },
+    { "key": "ctrl+[Backslash]", "command": "editor.action.jumpToBracket", "when": "editorTextFocus" },
+
 
     // alt+z  光标退回  可以是选区, 当前文件内 两步编辑之间
     // { "key": "alt+z", "command": "cursorUndo", "when": "textInputFocus" },
@@ -94,27 +95,26 @@
     {"key": "ctrl+shift+e","command": "-cursorLineEndSelect","when": "textInputFocus"    },
 
     // 不跨越自动换行
-    // cmd+left   移动到当前文本行的行首
+    // cmd+left   移动到当前文本行的行首，再按跨行移动到上一行，直到到达一开始的文本行的行首（在缩进的右侧），再按一次到缩进的左侧，再按一次到缩进的右侧，如此不断循环
     // cmd+right  移动到当前文本行的行尾
-    // shift+cmd+left    选中到当前文本行的行首
+    // shift+cmd+left    选中到当前文本行的行首，同cmd+left
     // shift+cmd+right    选中到当前文本行的行尾
 
-
-
-    // // ⌃Z : 光标退回 可以是选区, 跨文件 跨若干步编辑
+    // alt+z: 跨文件 光标退回 可以是选区, 跨文件 跨若干步编辑
     { "key": "alt+z", "command": "-editor.action.toggleWordWrap" },
     { "key": "alt+z", "command": "workbench.action.navigateBack" },
     { "key": "ctrl+-", "command": "-workbench.action.navigateBack" },
     { "key": "alt+z", "command": "workbench.action.quickInputBack", "when": "inQuickOpen" },
     { "key": "ctrl+-", "command": "-workbench.action.quickInputBack", "when": "inQuickOpen" },
-    // ⇧⌃Z : 跨文件 光标前进 可以是选区, 跨文件 跨若干步编辑
+    // shfit+alt+z : 跨文件 光标前进 可以是选区, 跨文件 跨若干步编辑
     { "key": "alt+shift+z", "command": "workbench.action.navigateForward" },
     { "key": "ctrl+shift+-",  "command": "-workbench.action.navigateForward" },
 
+
     // 代码左右: cmd+\
-    // 上下分窗
-    { "key": "shift+cmd+\\", "command": "workbench.action.splitEditorOrthogonal", "when": "editorTextFocus" },
-    { "key": "shift+cmd+\\", "command": "-editor.action.jumpToBracket", "when": "editorTextFocus" },
+    // 上下分窗: shift+cmd+\
+    { "key": "shift+cmd+[Backslash]", "command": "workbench.action.splitEditorOrthogonal", "when": "editorTextFocus" },
+    { "key": "shift+cmd+[Backslash]", "command": "-editor.action.jumpToBracket", "when": "editorTextFocus" },
     // 最大化当前窗口
     { "key": "shift+cmd+enter", "command": "workbench.action.toggleEditorWidths", "when": "editorTextFocus" },
 
@@ -189,8 +189,8 @@
     // 当远程服务器断开连接时, 按cmd+r来重新连接当前window到远程服务器
     { "key": "cmd+r", "command": "workbench.action.reloadWindow" },
     { "key": "cmd+r", "command": "-workbench.action.reloadWindow", "when": "isDevelopment" },
-
-
+    // 连接到远程服务器
+    { "key": "ctrl+shift+alt+r", "command": "opensshremotes.openEmptyWindow" },
 
     // ----------------------------------------------------------------------------------------------
     // latex workshop
@@ -241,7 +241,13 @@
         "command": "markdown.extension.editing.toggleCodeSpan",
         "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
     },
-
+    // 插入链接
+    {
+        "key": "ctrl+k",
+        "command": "editor.action.insertSnippet",
+        "args": { "name": "Insert link"},
+        "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
+    },
     // quote
     {
         "key": "cmd+alt+q",
@@ -293,6 +299,13 @@
         "args": { "name": "Insert inline math"},
         "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
     },
+    // 打开/关闭markdown预览： cmd+k v
+    {
+        "key": "shift+cmd+v",
+        "command": "-markdown.extension.closePreview",
+        "when": "activeWebviewPanelId == 'markdown.preview'"
+    },
+
     // 插入公式：按一下是行内公式，再按一下是居中公式块，再按一下是左对齐公式块，再按一下取消格式；不支持将选中文本变成/取消公式格式；
     // {
     //     "key": "cmd+m",

@@ -189,8 +189,8 @@
     // 当远程服务器断开连接时, 按cmd+r来重新连接当前window到远程服务器
     { "key": "cmd+r", "command": "workbench.action.reloadWindow" },
     { "key": "cmd+r", "command": "-workbench.action.reloadWindow", "when": "isDevelopment" },
-
-
+    // 在新窗口连接到远程服务器： fn+r
+    { "key": "ctrl+shift+alt+r", "command": "opensshremotes.openEmptyWindow" },
 
     // ----------------------------------------------------------------------------------------------
     // latex workshop
@@ -305,6 +305,7 @@
         "command": "-markdown.extension.closePreview",
         "when": "activeWebviewPanelId == 'markdown.preview'"
     },
+
     // 插入公式：按一下是行内公式，再按一下是居中公式块，再按一下是左对齐公式块，再按一下取消格式；不支持将选中文本变成/取消公式格式；
     // {
     //     "key": "cmd+m",

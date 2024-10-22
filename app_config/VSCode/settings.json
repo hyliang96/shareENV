@@ -585,5 +585,9 @@
     "fittencode.languagePreference.commentPreference": "zh-cn",
     "remote.SSH.logLevel": "trace",
 
-    // "remote.SSH.useLocalServer": false
+    // "remote.SSH.useExecServer": true,
+    // "remote.SSH.useLocalServer": false,
+    // "remote.SSH.remotePlatform": {
+    //     "g32": "linux"
+    // }
 }
