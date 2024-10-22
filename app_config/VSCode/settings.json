@@ -583,10 +583,15 @@
     // 智能自动补全
     "fittencode.languagePreference.displayPreference": "zh-cn",
     "fittencode.languagePreference.commentPreference": "zh-cn",
-    "remote.SSH.logLevel": "trace",
 
+
+    // vscode自动升级
+    "update.mode": "none",
+
+    // 远程开发
+    "remote.SSH.logLevel": "trace",
     // "remote.SSH.useExecServer": true,
-    "remote.SSH.useLocalServer": false,
+    // "remote.SSH.useLocalServer": false,
     // "remote.SSH.remotePlatform": {
     //     "g32": "linux"
     // }
