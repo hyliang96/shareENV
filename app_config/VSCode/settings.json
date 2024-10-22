@@ -584,7 +584,6 @@
     "fittencode.languagePreference.displayPreference": "zh-cn",
     "fittencode.languagePreference.commentPreference": "zh-cn",
     "remote.SSH.logLevel": "trace",
-    "update.mode": "none",
 
     // "remote.SSH.useLocalServer": false
 }
