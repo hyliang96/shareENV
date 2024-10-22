@@ -586,7 +586,7 @@
     "remote.SSH.logLevel": "trace",
 
     // "remote.SSH.useExecServer": true,
-    // "remote.SSH.useLocalServer": false,
+    "remote.SSH.useLocalServer": false,
     // "remote.SSH.remotePlatform": {
     //     "g32": "linux"
     // }
