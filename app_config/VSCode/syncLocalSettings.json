@@ -12,12 +12,14 @@
         "gpm-recentItems.json"
     ],
     "ignoreUploadFolders": [
-        "workspaceStorage"
+        "workspaceStorage",
+        "History",
+        "globalStorage"
     ],
     "ignoreExtensions": [],
     "gistDescription": "Visual Studio Code Settings Sync Gist",
     "version": 343,
-    "token": "f4dfa1080b94a9f7037898c452bc3b264a741242",
+    "token": "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",
     "downloadPublicGist": false,
     "supportedFileExtensions": [
         "json",
@@ -25,8 +27,8 @@
     ],
     "openTokenLink": true,
     "disableUpdateMessage": false,
-    "lastUpload": "2020-08-05T09:21:30.528Z",
-    "lastDownload": "2020-08-05T09:21:30.528Z",
+    "lastUpload": "2024-10-23T08:34:09.599Z",
+    "lastDownload": "2024-10-23T08:34:09.599Z",
     "githubEnterpriseUrl": null,
     "askGistDescription": false,
     "customFiles": {},
