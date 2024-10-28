@@ -591,6 +591,7 @@
     // 远程开发
     "remote.SSH.logLevel": "trace",
     "gitlens.views.branches.branches.layout": "list",
+    "files.eol": "\n",
     // "remote.SSH.useExecServer": true,
     // "remote.SSH.useLocalServer": false,
     // "remote.SSH.remotePlatform": {
