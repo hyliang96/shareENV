@@ -1789,7 +1789,7 @@ alias dbx='python2 $server_script/dropbox/dropbox.py'
 # -------------------------------------------------------------------------
 # sshfs
 # 挂载
-alias sshfs='sshfs -o allow_other,default_permissions,reconnect'
+alias sshfs='sshfs -o default_permissions,reconnect' # -o allow_other
 
 # 卸挂载
 usshfs()
