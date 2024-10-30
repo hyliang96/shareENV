@@ -150,13 +150,6 @@
         ".env": "shellscript"
     },
 
-    // settings sync 插件的设置
-    "sync.gist": "0026018f4553eaa3a28963a25ba3d452",
-    "sync.autoUpload": true,
-    "sync.autoDownload": true,
-    "sync.quietSync": true,
-    "sync.forceDownload": false,
-
     // // 参见：https://blog.csdn.net/tangyang8941/article/details/107169763
     // // 多行标签页栏
     // // 按cmd+shift+p呼出命令框，输入命令Reload Custom CSS and JS
@@ -590,11 +583,29 @@
 
     // 远程开发
     "remote.SSH.logLevel": "trace",
-    "gitlens.views.branches.branches.layout": "list",
-    "files.eol": "\n",
     // "remote.SSH.useExecServer": true,
     // "remote.SSH.useLocalServer": false,
     // "remote.SSH.remotePlatform": {
     //     "g32": "linux"
     // }
+
+    // 换行符
+    "files.eol": "\n",
+    // gitlens 插件
+    "gitlens.views.branches.branches.layout": "list",
+
+    // settings sync 插件（已弃用）的设置
+    "sync.gist": "0026018f4553eaa3a28963a25ba3d452",
+    "sync.autoUpload": true,
+    "sync.autoDownload": true,
+    "sync.quietSync": true,
+    "sync.forceDownload": false,
+
+    // vscode内置的Sync设置
+    "settingsSync.ignoredExtensions": [
+
+    ],
+    "settingsSync.ignoredSettings": [
+
+    ],
 }

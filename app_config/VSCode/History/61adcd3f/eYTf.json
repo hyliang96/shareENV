@@ -151,7 +151,7 @@
     },
 
     // settings sync 插件的设置
-    "sync.gist": "",
+    "sync.gist": "0026018f4553eaa3a28963a25ba3d452",
     "sync.autoUpload": true,
     "sync.autoDownload": true,
     "sync.quietSync": true,
@@ -447,10 +447,11 @@
     "jupyter.askForKernelRestart": false,
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook",
-        "*.md": "default",  // "cweijan.markdownViewer",
-        "*.markdown": "default", //"cweijan.markdownViewer",
+        "*.md": "default",
+        "*.markdown": "default",
         "*.jpg": "cweijan.officeViewer",
-        "{git,gitlens}:/**/*.{md,csv}": "default"
+        "{git,gitlens}:/**/*.{md,csv}": "default",
+        "{git,gitlens}:/**/*.{md,csv,svg}": "default"
     },
     "editor.wordWrap": "on",
 
@@ -463,12 +464,13 @@
     // "vscode-office.workspacePathAsImageBasePath": true,
 
     // ----------------------------------------------------------------------
+    // Markdown 插件
     // 文本编辑器+分栏预览
     "markdown-preview-github-styles.colorTheme":"light",
     // "markdown.styles": [
     //     "https://cdn.jsdelivr.net/gh/dhdhagar/vscode-md-preview-light/style.min.css"
     // ],
-    // 不论从哪移入的附件（通常是图片），都复制到相对于当前markdown文件的
+    // 不论从哪移入的附件（通常是图片），都复制到相对于当前markdown文件的路径 “assets/附件文件名（包括扩展名）“
     "markdown.copyFiles.destination": {
         "/**/*": "assets/${fileName}"
     },
@@ -484,24 +486,27 @@
 
     // Markdown all in one 插件
     "markdown.extension.preview.autoShowPreviewToSide": true, // 开markdown文件时自动开启侧栏预览
-
-
     "markdown.extension.math.enabled": false, // 用 “Markdown+Math” 插件替换之，以获得更强的公式渲染
-    //  Markdown+Math
+
+    //  Markdown+Math 插件
     "mdmath.katexoptions": {
         "trust": "(context) => ['\\htmlId', '\\href'].includes(context.command)"
     },
     "mdmath.macros": {
         // "\\R": "\\mathbb{R}",
-        "\\dd": "\\mathrm{d}",
+        "\\dd": "{\\,\\textrm d{#1}}",
+        // "\\dd": "\\mathrm{d}",
         "\\tr": "\\mathrm{tr}",
         "\\and": "\\land",
+        "\\or": "\\lor",
+        "\\Q": "\\mathbb{Q}",
         "\\vek": "{\\begin{pmatrix}#1\\\\#2\\end{pmatrix}}",
         "\\eqref": "\\href{###1}{(\\text{#1})}",
         "\\ref": "\\href{###1}{\\text{#1}}",
         "\\label": "\\htmlId{#1}{\\quad\\textcolor{blue}{\\text{(#1)}}}"
         // "\\label": "\\htmlId{#1}{}\\tag{#1}"
     },
+
 
     // 插件 Folder Templates
     "folderTemplates.structures": [
@@ -517,10 +522,10 @@
                 //     "template": "EmptyDirectory"
                 // },
                 {
-                    "fileName": "<Filename>.textbundle/text.markdown",
+                    "fileName": "<Filename>.textbundle/text.md",
                 }
             ],
-            "openFilesWhenDone": ["<Filename>.textbundle/text.markdown"]
+            "openFilesWhenDone": ["<Filename>.textbundle/text.md"]
         },
         // 创建空文件夹
         {
@@ -560,6 +565,7 @@
     "ltex.enabled": true, // 启用插件
     "ltex.language": "en-US",
 
+    // ----------------------------------------------------------------------------------------------
     "notebook.cellToolbarLocation": {
         "default": "right",
         "jupyter-notebook": "left"
@@ -572,8 +578,34 @@
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "workbench.startupEditor": "none",
     "window.zoomLevel": -1,
+
+
+    // 智能自动补全
     "fittencode.languagePreference.displayPreference": "zh-cn",
     "fittencode.languagePreference.commentPreference": "zh-cn",
 
 
+    // vscode自动升级
+    "update.mode": "none",
+
+    // 远程开发
+    "remote.SSH.logLevel": "trace",
+    // "remote.SSH.useExecServer": true,
+    // "remote.SSH.useLocalServer": false,
+    // "remote.SSH.remotePlatform": {
+    //     "g32": "linux"
+    // }
+
+    // 换行符
+    "files.eol": "\n",
+    // gitlens 插件
+    "gitlens.views.branches.branches.layout": "list",
+
+    // Sync设置
+    "settingsSync.ignoredExtensions": [
+
+    ],
+    "settingsSync.ignoredSettings": [
+
+    ],
 }

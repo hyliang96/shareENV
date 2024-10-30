@@ -151,7 +151,7 @@
     },
 
     // settings sync 插件的设置
-    "sync.gist": "",
+    "sync.gist": "0026018f4553eaa3a28963a25ba3d452",
     "sync.autoUpload": true,
     "sync.autoDownload": true,
     "sync.quietSync": true,
@@ -447,10 +447,11 @@
     "jupyter.askForKernelRestart": false,
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook",
-        "*.md": "default",  // "cweijan.markdownViewer",
-        "*.markdown": "default", //"cweijan.markdownViewer",
+        "*.md": "default",
+        "*.markdown": "default",
         "*.jpg": "cweijan.officeViewer",
-        "{git,gitlens}:/**/*.{md,csv}": "default"
+        "{git,gitlens}:/**/*.{md,csv}": "default",
+        "{git,gitlens}:/**/*.{md,csv,svg}": "default"
     },
     "editor.wordWrap": "on",
 
@@ -493,15 +494,19 @@
     },
     "mdmath.macros": {
         // "\\R": "\\mathbb{R}",
-        "\\dd": "\\mathrm{d}",
+        "\\dd": "{\\,\\textrm d{#1}}",
+        // "\\dd": "\\mathrm{d}",
         "\\tr": "\\mathrm{tr}",
         "\\and": "\\land",
+        "\\or": "\\lor",
+        "\\Q": "\\mathbb{Q}",
         "\\vek": "{\\begin{pmatrix}#1\\\\#2\\end{pmatrix}}",
         "\\eqref": "\\href{###1}{(\\text{#1})}",
         "\\ref": "\\href{###1}{\\text{#1}}",
         "\\label": "\\htmlId{#1}{\\quad\\textcolor{blue}{\\text{(#1)}}}"
         // "\\label": "\\htmlId{#1}{}\\tag{#1}"
     },
+
 
     // 插件 Folder Templates
     "folderTemplates.structures": [
@@ -517,10 +522,10 @@
                 //     "template": "EmptyDirectory"
                 // },
                 {
-                    "fileName": "<Filename>.textbundle/text.markdown",
+                    "fileName": "<Filename>.textbundle/text.md",
                 }
             ],
-            "openFilesWhenDone": ["<Filename>.textbundle/text.markdown"]
+            "openFilesWhenDone": ["<Filename>.textbundle/text.md"]
         },
         // 创建空文件夹
         {
@@ -560,6 +565,7 @@
     "ltex.enabled": true, // 启用插件
     "ltex.language": "en-US",
 
+    // ----------------------------------------------------------------------------------------------
     "notebook.cellToolbarLocation": {
         "default": "right",
         "jupyter-notebook": "left"
@@ -572,8 +578,29 @@
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "workbench.startupEditor": "none",
     "window.zoomLevel": -1,
+
+
+    // 智能自动补全
     "fittencode.languagePreference.displayPreference": "zh-cn",
     "fittencode.languagePreference.commentPreference": "zh-cn",
 
 
+    // vscode自动升级
+    "update.mode": "none",
+
+    // 远程开发
+    "remote.SSH.logLevel": "trace",
+    // "remote.SSH.useExecServer": true,
+    // "remote.SSH.useLocalServer": false,
+    // "remote.SSH.remotePlatform": {
+    //     "g32": "linux"
+    // }
+
+    // 换行符
+    "files.eol": "\n",
+    //
+    "gitlens.views.branches.branches.layout": "list",
+    "settingsSync.ignoredExtensions": [
+
+    ],
 }
