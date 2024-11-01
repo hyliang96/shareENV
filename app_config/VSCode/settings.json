@@ -570,7 +570,6 @@
     "jupyter.interactiveWindow.creationMode": "perFile",
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "workbench.startupEditor": "none",
-    "window.zoomLevel": -1,
 
 
     // 智能自动补全
