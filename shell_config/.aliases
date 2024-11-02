@@ -1677,7 +1677,7 @@ tb()
 t-h() {
         echo 'tmux easy mode:
     t-o [<session-name>]                   : open a tmux session (default session-name is 'default')
-    t-ls                                   : list sessions
+    t-l                                    : list sessions
     t-mv <session-name> <session-new-name> : rename a session
     t-k <session-name>                     : kill a session
     t-ka                                   : kill all sessions
@@ -1687,7 +1687,7 @@ t-h() {
 alias t='t-h'
 
 # list all session of tmux session
-alias t-ls='tmux ls'
+alias t-l='tmux ls'
 # rename a tmux session: tmv <current-session-name> <new-session-name>
 alias t-mv='tmux rename-session -t'
 # kill a tmux session
