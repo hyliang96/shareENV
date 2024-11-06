@@ -62,6 +62,9 @@
         "terminal.ansiBrightMagenta": "#ff76ff",
     },
 
+    // 注释自动续行
+    "editor.autoClosingBrackets": "always",
+
     // 按tab弹出自动补全
     "editor.tabCompletion": "on",
     // 根据语法自动确定缩进
@@ -149,13 +152,6 @@
     "files.associations": {
         ".env": "shellscript"
     },
-
-    // settings sync 插件的设置
-    "sync.gist": "",
-    "sync.autoUpload": true,
-    "sync.autoDownload": true,
-    "sync.quietSync": true,
-    "sync.forceDownload": false,
 
     // // 参见：https://blog.csdn.net/tangyang8941/article/details/107169763
     // // 多行标签页栏
@@ -447,10 +443,11 @@
     "jupyter.askForKernelRestart": false,
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook",
-        "*.md": "default",  // "cweijan.markdownViewer",
-        "*.markdown": "default", //"cweijan.markdownViewer",
+        "*.md": "default",
+        "*.markdown": "default",
         "*.jpg": "cweijan.officeViewer",
-        "{git,gitlens}:/**/*.{md,csv}": "default"
+        "{git,gitlens}:/**/*.{md,csv}": "default",
+        "{git,gitlens}:/**/*.{md,csv,svg}": "default"
     },
     "editor.wordWrap": "on",
 
@@ -493,9 +490,12 @@
     },
     "mdmath.macros": {
         // "\\R": "\\mathbb{R}",
-        "\\dd": "\\mathrm{d}",
+        "\\dd": "{\\,\\textrm d{#1}}",
+        // "\\dd": "\\mathrm{d}",
         "\\tr": "\\mathrm{tr}",
         "\\and": "\\land",
+        "\\or": "\\lor",
+        "\\Q": "\\mathbb{Q}",
         "\\vek": "{\\begin{pmatrix}#1\\\\#2\\end{pmatrix}}",
         "\\eqref": "\\href{###1}{(\\text{#1})}",
         "\\ref": "\\href{###1}{\\text{#1}}",
@@ -518,10 +518,10 @@
                 //     "template": "EmptyDirectory"
                 // },
                 {
-                    "fileName": "<Filename>.textbundle/text.markdown",
+                    "fileName": "<Filename>.textbundle/text.md",
                 }
             ],
-            "openFilesWhenDone": ["<Filename>.textbundle/text.markdown"]
+            "openFilesWhenDone": ["<Filename>.textbundle/text.md"]
         },
         // 创建空文件夹
         {
@@ -561,6 +561,7 @@
     "ltex.enabled": true, // 启用插件
     "ltex.language": "en-US",
 
+    // ----------------------------------------------------------------------------------------------
     "notebook.cellToolbarLocation": {
         "default": "right",
         "jupyter-notebook": "left"
@@ -572,7 +573,6 @@
     "jupyter.interactiveWindow.creationMode": "perFile",
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "workbench.startupEditor": "none",
-    "window.zoomLevel": -1,
 
 
     // 智能自动补全
@@ -580,4 +580,34 @@
     "fittencode.languagePreference.commentPreference": "zh-cn",
 
 
+    // vscode自动升级
+    "update.mode": "none",
+
+    // 远程开发
+    "remote.SSH.logLevel": "trace",
+    // "remote.SSH.useExecServer": true,
+    // "remote.SSH.useLocalServer": false,
+    // "remote.SSH.remotePlatform": {
+    //     "g32": "linux"
+    // }
+
+    // 换行符
+    "files.eol": "\n",
+    // gitlens 插件
+    "gitlens.views.branches.branches.layout": "list",
+
+    // settings sync 插件（已弃用）的设置
+    "sync.gist": "0026018f4553eaa3a28963a25ba3d452",
+    "sync.autoUpload": true,
+    "sync.autoDownload": true,
+    "sync.quietSync": true,
+    "sync.forceDownload": false,
+
+    // vscode内置的Sync设置
+    "settingsSync.ignoredExtensions": [
+
+    ],
+    "settingsSync.ignoredSettings": [
+
+    ],
 }
