@@ -17,7 +17,10 @@ from model.unet import GradLogPEstimator2d
 
 
 class Diffusion_SB(BaseModule):
-    # Bridge-gmax: f(t)=0, g^2(t)=g2_min + (g2_max-g2_min)*t, alpha_1=1,
+    # Bridge-gmax:
+    # g2_t即beta_t;  g2_min,g2_max即beta_0,beta_1 (但谁对应谁，不明)
+    # f(t)=0, g^2(t)= (g2_max-g2_min)*t + g2_min, alpha_t=1, sigma2_t= (g2_max-g2_min)*t^2/2 + g2_min*t
+    # 故 t=1时, sigma2_1 = (g2_max+g2_min)/2
     def __init__(self, n_feats=80, dim=64,
                  n_spks=1, spk_emb_dim=64,
                  g2_min=0.01, g2_max=8, g2_max_t=1, pe_scale=1000, predictor="hpsi", offset=1e-5, sampling_temp=2.0, sde_lambda=0.1):
@@ -83,6 +86,7 @@ class Diffusion_SB(BaseModule):
         xt.detach()
 
         if self.predictor == "hpsi":
+            # 用网络去预测 \nabla\log p\hat{\psi}_t
             target = (xt - alpha_t * x0) / (alpha_t * torch.sqrt(sigma2_t))
 
             # Control the variance of the input to 1
@@ -92,6 +96,7 @@ class Diffusion_SB(BaseModule):
             weight = 1
 
         elif self.predictor == "x0":
+            # 用网络去直接预测 x_0
             target = x0
             target.detach()
             weight = 1

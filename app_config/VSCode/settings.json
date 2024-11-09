@@ -62,7 +62,6 @@
         "terminal.ansiBrightMagenta": "#ff76ff",
     },
 
-    "auto-comment-blocks.singleLineBlockOnEnter": true,
 
     // 按tab弹出自动补全
     "editor.tabCompletion": "on",

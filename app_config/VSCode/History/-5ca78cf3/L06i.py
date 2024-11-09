@@ -16,60 +16,57 @@ from model.base import BaseModule
 from model.unet import GradLogPEstimator2d
 
 
-class Diffusion_SB(BaseModule):
-    # Bridge-gmax: f(t)=0, g^2(t)=
+class Diffusion_SB_Drift(BaseModule):
+    # f: drift rate,
+    # g: diffusion coefficient,
+    # pe_scale: scale of positional encoding
     def __init__(self, n_feats=80, dim=64,
                  n_spks=1, spk_emb_dim=64,
-                 g2_min=0.01, g2_max=8, g2_max_t=1, pe_scale=1000, predictor="hpsi", offset=1e-5, sampling_temp=2.0, sde_lambda=0.1):
-        super(Diffusion_SB, self).__init__()
+                 f=-0.01, g=8.2793, pe_scale=1000, predictor="hpsi", offset=1e-5, sampling_temp=2.0, **kwargs):
+        super(Diffusion_SB_Drift, self).__init__()
 
         self.n_feats = n_feats
         self.dim = dim
         self.n_spks = n_spks
         self.spk_emb_dim = spk_emb_dim
+        self.f = f
+        self.g = g
         self.pe_scale = pe_scale
 
-        self.g2_min = g2_min
-        self.g2_max = g2_max
-        self.g2_max_t = g2_max_t
-        self.alpha_1 = 1
-
-        self.sampling_temp = sampling_temp
-        self.sde_lambda2 = sde_lambda ** 2
-
-        # Linear schedule for g2
-        self.k1 = (self.g2_max - self.g2_min) / self.g2_max_t
-        if self.g2_max_t < 1:
-            self.k2 = (self.g2_max - self.g2_min) / (1 - self.g2_max_t)
-        else:
-            self.k2 = 0
-        self.sigma2_1 = (self.g2_min + self.g2_max) / 2
-        self.sigma2_half = (self.g2_min + self.g2_max) * self.g2_max_t / 2
+        # exp(-2f)
+        self.enf = math.exp(-2*self.f)
+        self.alpha_1 = math.exp(self.f)
 
         self.predictor = predictor
         self.offset = offset
 
+        self.sampling_temp = sampling_temp
+        # self.total_noise = (self.beta_min + self.beta_max) / 2
 
         self.estimator = GradLogPEstimator2d(dim, n_spks=n_spks,
                                              spk_emb_dim=spk_emb_dim,
                                              pe_scale=pe_scale)
 
     def get_alpha(self, t):
-        return 1
+        return torch.exp(self.f * t)
 
     def get_bar_alpha(self, t):
-        return 1
+        return torch.exp(-self.f * (1-t))
 
     def get_sigma2(self, t):
-        half_flag = t <= self.g2_max_t
-        sigma2 = torch.zeros_like(t)
-        sigma2[half_flag] = (self.g2_min + (self.g2_min + t[half_flag] * self.k1)) * t[half_flag] / 2
-        sigma2[~half_flag] = self.sigma2_half + (self.g2_max + (self.g2_max - (t[~half_flag] - self.g2_max_t) * self.k2)) * (t[~half_flag] - self.g2_max_t) / 2
+        if self.f == 0:
+            sigma2 = self.g**2 * t
+        else:
+            sigma2 = self.g**2/(2*self.f) * (1 - torch.exp(-2*self.f*t))
         return sigma2
 
     def get_bar_sigma2(self, t):
-        sigma2 = self.sigma2_1 - self.get_sigma2(t)
+        if self.f == 0:
+            sigma2 = self.g**2 * (1-t)
+        else:
+            sigma2 = self.g**2/(2*self.f) * (torch.exp(-2*self.f*t) - self.enf)
         return sigma2
+
 
     def forward_diffusion(self, x0, mask, x1, t):
         time = t.unsqueeze(-1).unsqueeze(-1)
@@ -207,44 +204,14 @@ class Diffusion_SB(BaseModule):
                 alpha_t = self.get_alpha(t)
                 alpha_s = self.get_alpha(s)
 
+
+
                 xs = xt
                 hat_x0 = self.data_estimation(xs, mask, x1, s, spk)
 
                 xt = (alpha_t*sigma_t*bar_sigma_t)/(alpha_s*sigma_s*bar_sigma_s) * xs + alpha_t/sigma2_1 * ((bar_sigma2_t - (bar_sigma_s*sigma_t*bar_sigma_t)/(sigma_s)) * hat_x0 + (sigma2_t - (sigma_s*sigma_t*bar_sigma_t)/(bar_sigma_s)) * x1/self.alpha_1)
                 xt = xt * mask
 
-            elif sampler == 'sde_first_order_lambda':
-                # s -> t
-                s = (1.0 - self.offset - (i*h)) * torch.ones(xt.shape[0], dtype=xt.dtype, device=xt.device)
-                t = max(self.offset, 1.0 - self.offset - (i+1)*h) * torch.ones(xt.shape[0], dtype=xt.dtype, device=xt.device)
-                # Prepare all needed variables
-                sigma2_t = self.get_sigma2(t)
-                bar_sigma2_t = self.get_bar_sigma2(t)
-                sigma2_s = self.get_sigma2(s)
-                bar_sigma2_s = self.get_bar_sigma2(s)
-                sigma_t = torch.sqrt(sigma2_t)
-                bar_sigma_t = torch.sqrt(bar_sigma2_t)
-                sigma_s = torch.sqrt(sigma2_s)
-                bar_sigma_s = torch.sqrt(bar_sigma2_s)
-                sigma2_1 = sigma2_t + bar_sigma2_t
-                alpha_t = self.get_alpha(t)
-                alpha_s = self.get_alpha(s)
-                bar_alpha_t = self.get_bar_alpha(t)
-
-                xs = xt
-                hat_x0 = self.data_estimation(xs, mask, x1, s, spk)
-
-                coeff_sigma_t = sigma_t**(1+self.sde_lambda2) * bar_sigma_t**(1-self.sde_lambda2)
-                coeff_xs = (alpha_t/alpha_s) * (coeff_sigma_t)/(sigma_s**(1+self.sde_lambda2) * bar_sigma_s**(1-self.sde_lambda2))
-                coeff_x1 = (bar_alpha_t * coeff_sigma_t)/sigma2_1 * ((sigma_t**(1-self.sde_lambda2)/bar_sigma_t**(1-self.sde_lambda2)) - (sigma_s**(1-self.sde_lambda2)/bar_sigma_s**(1-self.sde_lambda2)))
-                coeff_hat_x0 = (alpha_t * coeff_sigma_t)/sigma2_1 * ((sigma_t**(-1-self.sde_lambda2)/bar_sigma_t**(-1-self.sde_lambda2)) - (sigma_s**(-1-self.sde_lambda2)/bar_sigma_s**(-1-self.sde_lambda2)))
-                xt = coeff_xs * xs + coeff_x1 * x1 + coeff_hat_x0 * hat_x0
-
-                if i != n_timesteps - 1:
-                    eps = torch.randn(x1.shape, dtype=x1.dtype, device=x1.device, requires_grad=False)
-                    coeff_eps = alpha_t * coeff_sigma_t * torch.sqrt(((bar_sigma2_t**self.sde_lambda2/sigma2_t**self.sde_lambda2)-(bar_sigma2_s**self.sde_lambda2/sigma2_s**self.sde_lambda2))/sigma2_1)
-                    xt += coeff_eps * eps
-                xt = xt * mask
             else:
                 raise NotImplementedError()
 
