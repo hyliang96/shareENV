@@ -62,10 +62,11 @@
         "terminal.ansiBrightMagenta": "#ff76ff",
     },
 
+
     // 按tab弹出自动补全
     "editor.tabCompletion": "on",
     // 根据语法自动确定缩进
-    // "editor.autoIndent": "advanced",
+    "editor.autoIndent": "advanced",
     // 遇到“else”"elif"之类的也会自动缩进
     "editor.formatOnType": true,
     // 显示tab和空格
@@ -149,13 +150,6 @@
     "files.associations": {
         ".env": "shellscript"
     },
-
-    // settings sync 插件的设置
-    "sync.gist": "",
-    "sync.autoUpload": true,
-    "sync.autoDownload": true,
-    "sync.quietSync": true,
-    "sync.forceDownload": false,
 
     // // 参见：https://blog.csdn.net/tangyang8941/article/details/107169763
     // // 多行标签页栏
@@ -438,153 +432,180 @@
     ],
 
 
-    // ----------------------------------------------------------------
-    // markdown 编辑器
-    // ----------------------------------------------------------------------
-    // Office Viewer：所见即所得的
-    "editor.renderControlCharacters": true,
-    "go.formatTool": "goimports",
-    "jupyter.askForKernelRestart": false,
-    "workbench.editorAssociations": {
-        "*.ipynb": "jupyter-notebook",
-        "*.md": "default",
-        "*.markdown": "default",
-        "*.jpg": "cweijan.officeViewer",
-        "{git,gitlens}:/**/*.{md,csv}": "default",
-        "{git,gitlens}:/**/*.{md,csv,svg}": "default"
-    },
-    "editor.wordWrap": "on",
+//     // ----------------------------------------------------------------
+//     // markdown 编辑器
+//     // ----------------------------------------------------------------------
+//     // Office Viewer：所见即所得的
+//     "editor.renderControlCharacters": true,
+//     "go.formatTool": "goimports",
+//     "jupyter.askForKernelRestart": false,
+//     "workbench.editorAssociations": {
+//         "*.ipynb": "jupyter-notebook",
+//         "*.md": "default",
+//         "*.markdown": "default",
+//         "*.jpg": "cweijan.officeViewer",
+//         "{git,gitlens}:/**/*.{md,csv}": "default",
+//         "{git,gitlens}:/**/*.{md,csv,svg}": "default"
+//     },
+//     "editor.wordWrap": "on",
 
-    // textbundle式的image存放
-    "vscode-office.pasterImgPath": "assets/${now}.png",  // 还可使用${workspaceDir}, ${fileName}变量
-    "vscode-office.workspacePathAsImageBasePath": false,
+//     // textbundle式的image存放
+//     "vscode-office.pasterImgPath": "assets/${now}.png",  // 还可使用${workspaceDir}, ${fileName}变量
+//     "vscode-office.workspacePathAsImageBasePath": false,
 
-    // 一个根文件夹下有很多markdown文件（可以套在许多层子文件夹内），根文件夹下有‘assets/markdown文件名/图片名.png’
-    // "vscode-office.pasterImgPath": "${workspaceDir}/assets/${fileName}/${now}.png",  // 还可使用${workspaceDir}, ${fileName}变量
-    // "vscode-office.workspacePathAsImageBasePath": true,
+//     // 一个根文件夹下有很多markdown文件（可以套在许多层子文件夹内），根文件夹下有‘assets/markdown文件名/图片名.png’
+//     // "vscode-office.pasterImgPath": "${workspaceDir}/assets/${fileName}/${now}.png",  // 还可使用${workspaceDir}, ${fileName}变量
+//     // "vscode-office.workspacePathAsImageBasePath": true,
 
-    // ----------------------------------------------------------------------
-    // Markdown 插件
-    // 文本编辑器+分栏预览
-    "markdown-preview-github-styles.colorTheme":"light",
-    // "markdown.styles": [
-    //     "https://cdn.jsdelivr.net/gh/dhdhagar/vscode-md-preview-light/style.min.css"
-    // ],
-    // 不论从哪移入的附件（通常是图片），都复制到相对于当前markdown文件的路径 “assets/附件文件名（包括扩展名）“
-    "markdown.copyFiles.destination": {
-        "/**/*": "assets/${fileName}"
-    },
+//     // ----------------------------------------------------------------------
+//     // Markdown 插件
+//     // 文本编辑器+分栏预览
+//     "markdown-preview-github-styles.colorTheme":"light",
+//     // "markdown.styles": [
+//     //     "https://cdn.jsdelivr.net/gh/dhdhagar/vscode-md-preview-light/style.min.css"
+//     // ],
+//     // 不论从哪移入的附件（通常是图片），都复制到相对于当前markdown文件的路径 “assets/附件文件名（包括扩展名）“
+//     "markdown.copyFiles.destination": {
+//         "/**/*": "assets/${fileName}"
+//     },
 
-    "[markdown]": {
-        "editor.quickSuggestions": {
-            "other": true,
-            "comments": true,
-            "strings": true
-        },
-        "editor.acceptSuggestionOnEnter":"on"
-    },
+//     "[markdown]": {
+//         "editor.quickSuggestions": {
+//             "other": true,
+//             "comments": true,
+//             "strings": true
+//         },
+//         "editor.acceptSuggestionOnEnter":"on"
+//     },
 
-    // Markdown all in one 插件
-    "markdown.extension.preview.autoShowPreviewToSide": true, // 开markdown文件时自动开启侧栏预览
-    "markdown.extension.math.enabled": false, // 用 “Markdown+Math” 插件替换之，以获得更强的公式渲染
+//     // Markdown all in one 插件
+//     "markdown.extension.preview.autoShowPreviewToSide": true, // 开markdown文件时自动开启侧栏预览
+//     "markdown.extension.math.enabled": false, // 用 “Markdown+Math” 插件替换之，以获得更强的公式渲染
 
-    //  Markdown+Math 插件
-    "mdmath.katexoptions": {
-        "trust": "(context) => ['\\htmlId', '\\href'].includes(context.command)"
-    },
-    "mdmath.macros": {
-        // "\\R": "\\mathbb{R}",
-        "\\dd": "{\\,\\textrm d{#1}}",
-        // "\\dd": "\\mathrm{d}",
-        "\\tr": "\\mathrm{tr}",
-        "\\and": "\\land",
-        "\\or": "\\lor",
-        "\\Q": "\\mathbb{Q}",
-        "\\vek": "{\\begin{pmatrix}#1\\\\#2\\end{pmatrix}}",
-        "\\eqref": "\\href{###1}{(\\text{#1})}",
-        "\\ref": "\\href{###1}{\\text{#1}}",
-        "\\label": "\\htmlId{#1}{\\quad\\textcolor{blue}{\\text{(#1)}}}"
-        // "\\label": "\\htmlId{#1}{}\\tag{#1}"
-    },
-
-
-    // 插件 Folder Templates
-    "folderTemplates.structures": [
-        // 创建具有textbundle结构的文件夹
-        {
-            "name": "New Textbundle",
-            "customVariables": ["Filename"],
-            "omitParentDirectory": true,
-            "omitFTName": true,
-            "structure": [
-                // {
-                //     "fileName": "<Filename>.textbundle",
-                //     "template": "EmptyDirectory"
-                // },
-                {
-                    "fileName": "<Filename>.textbundle/text.md",
-                }
-            ],
-            "openFilesWhenDone": ["<Filename>.textbundle/text.md"]
-        },
-        // 创建空文件夹
-        {
-            "name": "New Empty Dir",
-            "customVariables": ["Filename"],
-            "omitParentDirectory": true,
-            "omitFTName": true,
-            "structure": [
-                {
-                    "fileName": "<Filename>",
-                    "template": "EmptyDirectory"
-                }
-            ]
-        }
-    ],
-
-    // 是否在资源管理器（即左边的文件目录栏）中显示一个文件夹下唯一的子文件夹
-    "explorer.compactFolders": false,
-
-    // 尝试给’*.textbundle‘文件夹一个自定义icon，以和其他文件夹区分开，但失败了
-    // 原因是 vscode 的API只支持文件夹以全名去匹配然后加icon （详见相关issue的答复： https://github.com/vscode-icons/vscode-icons/issues/2886 ）
-    // "vsicons.associations.folders": [
-    //     { "icon": "node", "extensions": ["textbundle"], "format": "svg"}
-    // ],
-
-    // "material-icon-theme.files.associations": {
-    //     "textbundle": "markdown"
-    // },
-
-    // "material-icon-theme.folders.associations": {
-    //     "**.textbundle": "markdown"
-    //     // "customFolderName": "*.textbundle",
-    //     // "sample": "dist"
-    // },
-
-    // LTex : latex/markdown 拼写检查
-    "ltex.enabled": true, // 启用插件
-    "ltex.language": "en-US",
-
-    // ----------------------------------------------------------------------------------------------
-    "notebook.cellToolbarLocation": {
-        "default": "right",
-        "jupyter-notebook": "left"
-    },
-    "python.defaultInterpreterPath": "/Users/mac/miniconda3/bin/python",
-    "[python]": {
-        "editor.formatOnType": true
-    },
-    "jupyter.interactiveWindow.creationMode": "perFile",
-    "jupyter.interactiveWindow.textEditor.executeSelection": true,
-    "workbench.startupEditor": "none",
-    "window.zoomLevel": -1,
+//     //  Markdown+Math 插件
+//     "mdmath.katexoptions": {
+//         "trust": "(context) => ['\\htmlId', '\\href'].includes(context.command)"
+//     },
+//     "mdmath.macros": {
+//         // "\\R": "\\mathbb{R}",
+//         "\\dd": "{\\,\\textrm d{#1}}",
+//         // "\\dd": "\\mathrm{d}",
+//         "\\tr": "\\mathrm{tr}",
+//         "\\and": "\\land",
+//         "\\or": "\\lor",
+//         "\\Q": "\\mathbb{Q}",
+//         "\\vek": "{\\begin{pmatrix}#1\\\\#2\\end{pmatrix}}",
+//         "\\eqref": "\\href{###1}{(\\text{#1})}",
+//         "\\ref": "\\href{###1}{\\text{#1}}",
+//         "\\label": "\\htmlId{#1}{\\quad\\textcolor{blue}{\\text{(#1)}}}"
+//         // "\\label": "\\htmlId{#1}{}\\tag{#1}"
+//     },
 
 
-    // 智能自动补全
-    "fittencode.languagePreference.displayPreference": "zh-cn",
-    "fittencode.languagePreference.commentPreference": "zh-cn",
-    "remote.SSH.logLevel": "trace",
-    "update.mode": "none",
+//     // 插件 Folder Templates
+//     "folderTemplates.structures": [
+//         // 创建具有textbundle结构的文件夹
+//         {
+//             "name": "New Textbundle",
+//             "customVariables": ["Filename"],
+//             "omitParentDirectory": true,
+//             "omitFTName": true,
+//             "structure": [
+//                 // {
+//                 //     "fileName": "<Filename>.textbundle",
+//                 //     "template": "EmptyDirectory"
+//                 // },
+//                 {
+//                     "fileName": "<Filename>.textbundle/text.md",
+//                 }
+//             ],
+//             "openFilesWhenDone": ["<Filename>.textbundle/text.md"]
+//         },
+//         // 创建空文件夹
+//         {
+//             "name": "New Empty Dir",
+//             "customVariables": ["Filename"],
+//             "omitParentDirectory": true,
+//             "omitFTName": true,
+//             "structure": [
+//                 {
+//                     "fileName": "<Filename>",
+//                     "template": "EmptyDirectory"
+//                 }
+//             ]
+//         }
+//     ],
 
-    // "remote.SSH.useLocalServer": false
+//     // 是否在资源管理器（即左边的文件目录栏）中显示一个文件夹下唯一的子文件夹
+//     "explorer.compactFolders": false,
+
+//     // 尝试给’*.textbundle‘文件夹一个自定义icon，以和其他文件夹区分开，但失败了
+//     // 原因是 vscode 的API只支持文件夹以全名去匹配然后加icon （详见相关issue的答复： https://github.com/vscode-icons/vscode-icons/issues/2886 ）
+//     // "vsicons.associations.folders": [
+//     //     { "icon": "node", "extensions": ["textbundle"], "format": "svg"}
+//     // ],
+
+//     // "material-icon-theme.files.associations": {
+//     //     "textbundle": "markdown"
+//     // },
+
+//     // "material-icon-theme.folders.associations": {
+//     //     "**.textbundle": "markdown"
+//     //     // "customFolderName": "*.textbundle",
+//     //     // "sample": "dist"
+//     // },
+
+//     // LTex : latex/markdown 拼写检查
+//     "ltex.enabled": true, // 启用插件
+//     "ltex.language": "en-US",
+
+//     // ----------------------------------------------------------------------------------------------
+//     "notebook.cellToolbarLocation": {
+//         "default": "right",
+//         "jupyter-notebook": "left"
+//     },
+//     "python.defaultInterpreterPath": "/Users/mac/miniconda3/bin/python",
+//     "[python]": {
+//         "editor.formatOnType": true
+//     },
+//     "jupyter.interactiveWindow.creationMode": "perFile",
+//     "jupyter.interactiveWindow.textEditor.executeSelection": true,
+//     "workbench.startupEditor": "none",
+
+
+//     // 智能自动补全
+//     "fittencode.languagePreference.displayPreference": "zh-cn",
+//     "fittencode.languagePreference.commentPreference": "zh-cn",
+
+
+//     // vscode自动升级
+//     "update.mode": "none",
+
+//     // 远程开发
+//     "remote.SSH.logLevel": "trace",
+//     // "remote.SSH.useExecServer": true,
+//     // "remote.SSH.useLocalServer": false,
+//     // "remote.SSH.remotePlatform": {
+//     //     "g32": "linux"
+//     // }
+
+//     // 换行符
+//     "files.eol": "\n",
+//     // gitlens 插件
+//     "gitlens.views.branches.branches.layout": "list",
+
+//     // settings sync 插件（已弃用）的设置
+//     "sync.gist": "0026018f4553eaa3a28963a25ba3d452",
+//     "sync.autoUpload": true,
+//     "sync.autoDownload": true,
+//     "sync.quietSync": true,
+//     "sync.forceDownload": false,
+
+//     // vscode内置的Sync设置
+//     "settingsSync.ignoredExtensions": [
+
+//     ],
+//     "settingsSync.ignoredSettings": [
+
+//     ],
 }
