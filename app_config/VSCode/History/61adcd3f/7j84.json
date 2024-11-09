@@ -430,6 +430,9 @@
         "*.log",
         "*.fdb_latexmk",
     ],
+    "workbench.editorAssociations": {
+        "{git,gitlens}:/**/*.{md,csv,svg}": "default"
+    },
 
 
     // ----------------------------------------------------------------
@@ -444,6 +447,7 @@
         "*.md": "default",
         "*.markdown": "default",
         "*.jpg": "cweijan.officeViewer",
+        "{git,gitlens}:/**/*.{md,csv}": "default",
         "{git,gitlens}:/**/*.{md,csv,svg}": "default"
     },
     "editor.wordWrap": "on",
@@ -607,4 +611,7 @@
     "settingsSync.ignoredSettings": [
 
     ],
+
+
+    "auto-comment-line.hashLangs": ["python"],
 }

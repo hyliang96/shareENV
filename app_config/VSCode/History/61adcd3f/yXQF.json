@@ -607,4 +607,34 @@
     "settingsSync.ignoredSettings": [
 
     ],
+    "continueInlineComments.list": {
+        "type": "array",
+        "default": [
+        {
+            "comment": "//",
+            "languages": [
+            "php",
+            "javascript",
+            "typescript",
+            "jsonc",
+            "scss",
+            "sass",
+            "json",
+            "vue",
+            "markdown",
+            "javascriptreact",
+            "typescriptreact"
+            ]
+        },
+        {
+            "comment": "#",
+            "languages": [
+            "python",
+            "ruby",
+            "shellscript",
+            "makefile"
+            ]
+        }
+    ]
+  }
 }
