@@ -62,10 +62,11 @@
         "terminal.ansiBrightMagenta": "#ff76ff",
     },
 
+
     // 按tab弹出自动补全
     "editor.tabCompletion": "on",
     // 根据语法自动确定缩进
-    // "editor.autoIndent": "advanced",
+    "editor.autoIndent": "advanced",
     // 遇到“else”"elif"之类的也会自动缩进
     "editor.formatOnType": true,
     // 显示tab和空格
@@ -443,7 +444,6 @@
         "*.md": "default",
         "*.markdown": "default",
         "*.jpg": "cweijan.officeViewer",
-        "{git,gitlens}:/**/*.{md,csv}": "default",
         "{git,gitlens}:/**/*.{md,csv,svg}": "default"
     },
     "editor.wordWrap": "on",
@@ -607,4 +607,5 @@
     "settingsSync.ignoredSettings": [
 
     ],
+    "window.zoomLevel": -1,
 }

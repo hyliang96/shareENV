@@ -607,4 +607,5 @@
     "settingsSync.ignoredSettings": [
 
     ],
+    "window.zoomLevel": -1,
 }
