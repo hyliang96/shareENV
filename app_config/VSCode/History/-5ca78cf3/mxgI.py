@@ -16,53 +16,57 @@ from model.base import BaseModule
 from model.unet import GradLogPEstimator2d
 
 
-class Diffusion_SB_VP(BaseModule):
-    # Bridge-VP
+class Diffusion_SB_Drift(BaseModule):
+    # fg: f(t) and g(t)
+    # f: drift rate, f(t)=f
+    # g: diffusion coefficient, g(t)=g
+    # pe_scale: scale of positional encoding
     def __init__(self, n_feats=80, dim=64,
-                 n_spks=1, spk_emb_dim=64,
-                 beta_min=0.01, beta_max=20, pe_scale=1000, predictor="hpsi", offset=1e-5, sampling_temp=2.0, sde_lambda=0.1):
-        super(Diffusion_SB_VP, self).__init__()
+                 n_spks=1, spk_emb_dim= 64,
+                 f=-0.01, g=8.2793, pe_scale=1000, predictor="hpsi", offset=1e-5, sampling_temp=2.0, **kwargs):
+        super(Diffusion_SB_Drift, self).__init__()
 
         self.n_feats = n_feats
         self.dim = dim
         self.n_spks = n_spks
         self.spk_emb_dim = spk_emb_dim
-        self.beta_min = beta_min
-        self.beta_max = beta_max
+        self.f = f
+        self.g = g
         self.pe_scale = pe_scale
 
-        self.total_cul_beta = (self.beta_min + self.beta_max) / 2
-        self.alpha_1 = math.exp(-0.5 * self.total_cul_beta)
-        self.sigma2_1 = math.exp(self.total_cul_beta) - 1
+        # exp(-2f)
+        self.enf = math.exp(-2*self.f)
+        self.alpha_1 = math.exp(self.f)
 
         self.predictor = predictor
         self.offset = offset
 
         self.sampling_temp = sampling_temp
-        self.sde_lambda2 = sde_lambda ** 2
         # self.total_noise = (self.beta_min + self.beta_max) / 2
 
         self.estimator = GradLogPEstimator2d(dim, n_spks=n_spks,
                                              spk_emb_dim=spk_emb_dim,
                                              pe_scale=pe_scale)
 
-    def get_cul_beta(self, t):
-        return self.beta_min * t + 0.5 * (self.beta_max - self.beta_min) * (t**2)
-
     def get_alpha(self, t):
-        cul_beta = self.get_cul_beta(t)
-        return torch.exp(-0.5 * cul_beta)
+        return torch.exp(self.f * t)
 
     def get_bar_alpha(self, t):
-        cul_bar_beta = self.total_cul_beta - self.get_cul_beta(t)
-        return torch.exp(0.5 * cul_bar_beta)
+        return torch.exp(-self.f * (1-t))
 
     def get_sigma2(self, t):
-        cul_beta = self.get_cul_beta(t)
-        return torch.exp(cul_beta) - 1
+        if self.f == 0:
+            sigma2 = self.g**2 * t
+        else:
+            sigma2 = self.g**2/(2*self.f) * (1 - torch.exp(-2*self.f*t))
+        return sigma2
 
     def get_bar_sigma2(self, t):
-        return self.sigma2_1 - self.get_sigma2(t)
+        if self.f == 0:
+            sigma2 = self.g**2 * (1-t)
+        else:
+            sigma2 = self.g**2/(2*self.f) * (torch.exp(-2*self.f*t) - self.enf)
+        return sigma2
 
 
     def forward_diffusion(self, x0, mask, x1, t):
@@ -157,7 +161,7 @@ class Diffusion_SB_VP(BaseModule):
             sigma2_t = self.get_sigma2(init_s)
             bar_sigma2_t = self.get_bar_sigma2(init_s)
             z = torch.randn(x1.shape, dtype=x1.dtype, device=x1.device, requires_grad=False)
-            xt = (alpha_t*bar_sigma2_t*x0_s + bar_alpha_t*sigma2_t*x1)/(bar_sigma2_t + sigma2_t) + torch.sqrt((alpha_t**2 * sigma2_t * bar_sigma2_t)/(bar_sigma2_t + sigma2_t)) * z / 2
+            xt = (alpha_t*bar_sigma2_t*x0_s + bar_alpha_t*sigma2_t*x1)/(bar_sigma2_t + sigma2_t) + torch.sqrt((alpha_t**2 * sigma2_t * bar_sigma2_t)/(bar_sigma2_t + sigma2_t)) * z
             n_timesteps -= 1
 
         xt = xt * mask
@@ -207,39 +211,6 @@ class Diffusion_SB_VP(BaseModule):
                 hat_x0 = self.data_estimation(xs, mask, x1, s, spk)
 
                 xt = (alpha_t*sigma_t*bar_sigma_t)/(alpha_s*sigma_s*bar_sigma_s) * xs + alpha_t/sigma2_1 * ((bar_sigma2_t - (bar_sigma_s*sigma_t*bar_sigma_t)/(sigma_s)) * hat_x0 + (sigma2_t - (sigma_s*sigma_t*bar_sigma_t)/(bar_sigma_s)) * x1/self.alpha_1)
-                xt = xt * mask
-
-            elif sampler == 'sde_first_order_lambda':
-                # s -> t
-                s = (1.0 - self.offset - (i*h)) * torch.ones(xt.shape[0], dtype=xt.dtype, device=xt.device)
-                t = max(self.offset, 1.0 - self.offset - (i+1)*h) * torch.ones(xt.shape[0], dtype=xt.dtype, device=xt.device)
-                # Prepare all needed variables
-                sigma2_t = self.get_sigma2(t)
-                bar_sigma2_t = self.get_bar_sigma2(t)
-                sigma2_s = self.get_sigma2(s)
-                bar_sigma2_s = self.get_bar_sigma2(s)
-                sigma_t = torch.sqrt(sigma2_t)
-                bar_sigma_t = torch.sqrt(bar_sigma2_t)
-                sigma_s = torch.sqrt(sigma2_s)
-                bar_sigma_s = torch.sqrt(bar_sigma2_s)
-                sigma2_1 = sigma2_t + bar_sigma2_t
-                alpha_t = self.get_alpha(t)
-                alpha_s = self.get_alpha(s)
-                bar_alpha_t = self.get_bar_alpha(t)
-
-                xs = xt
-                hat_x0 = self.data_estimation(xs, mask, x1, s, spk)
-
-                coeff_sigma_t = sigma_t**(1+self.sde_lambda2) * bar_sigma_t**(1-self.sde_lambda2)
-                coeff_xs = (alpha_t/alpha_s) * (coeff_sigma_t)/(sigma_s**(1+self.sde_lambda2) * bar_sigma_s**(1-self.sde_lambda2))
-                coeff_x1 = (bar_alpha_t * coeff_sigma_t)/sigma2_1 * ((sigma_t**(1-self.sde_lambda2)/bar_sigma_t**(1-self.sde_lambda2)) - (sigma_s**(1-self.sde_lambda2)/bar_sigma_s**(1-self.sde_lambda2)))
-                coeff_hat_x0 = (alpha_t * coeff_sigma_t)/sigma2_1 * ((sigma_t**(-1-self.sde_lambda2)/bar_sigma_t**(-1-self.sde_lambda2)) - (sigma_s**(-1-self.sde_lambda2)/bar_sigma_s**(-1-self.sde_lambda2)))
-                xt = coeff_xs * xs + coeff_x1 * x1 + coeff_hat_x0 * hat_x0
-
-                if i != n_timesteps - 1:
-                    eps = torch.randn(x1.shape, dtype=x1.dtype, device=x1.device, requires_grad=False)
-                    coeff_eps = alpha_t * coeff_sigma_t * torch.sqrt(((bar_sigma2_t**self.sde_lambda2/sigma2_t**self.sde_lambda2)-(bar_sigma2_s**self.sde_lambda2/sigma2_s**self.sde_lambda2))/sigma2_1)
-                    xt += coeff_eps * eps
                 xt = xt * mask
 
             else:
