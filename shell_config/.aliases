@@ -551,7 +551,7 @@ dk()
         return
     fi
     echo 1
-    echo "${pids[@]}"
+    # echo "${pids[@]}"
     local jch_return=()
     local pid=
     for pid in "${pids[@]}"; do
@@ -647,7 +647,7 @@ jch()
     fi
 }
 # 查看对应进程的pid，jchpid <pid1> [<pid2> [ <pid3>...]]
-alias jchpid='/bin/ps -p'
+alias jchpid='/bin/ps u -p'
 
 
 # 按pid杀死进程
