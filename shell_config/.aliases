@@ -539,7 +539,7 @@ dk()
     fi
 
     local dk_return="$(_dk $@)"
-    echo $dk_return
+    # echo $dk_return
     local title="$(echo "$dk_return"|head -n 1)"
     local content="$(echo "$dk_return"|sed '1d')"
     local title_short="$(echo "$title"    |perl -pe 's/^(\S+\s+){4}(\S+)(\s+\S+\s+\S+)/\2/g')"
@@ -550,25 +550,27 @@ dk()
     if [ ${#pids} -eq 0 ]; then
         return
     fi
-    # echo 1
+    echo 1
     # echo "${pids[@]}"
+    echo 11
     local jch_return=()
     local pid=
     for pid in "${pids[@]}"; do
-        jch_return+=("$(jchpid "$pid" | sed -n '2p'|
+        jch_return+=("$(/bin/ps u -p "$pid" | sed -n '2p'|
             perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2m\7\e[22m/g')" )
     done
-    # echo 2
-    local jch_return=("$(jchpid "$pid"|head -n 1|
-        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2m\7\e[22m/g')" )
-    local i=
-    # echo 3
+    echo 2
+    local jch_return=("$(/bin/ps u -p "$pid"|head -n 1|
+        perl -pe 's/^((\S+\s+){3}\S+)((\s+\S+){4}\s*)([\S\s]{7}\S\s+\S+)(\s+)(.+)$/\1\5\n\e[2m\7\e[22m/g')"
+            "${jch_return[@]}")
+
+    echo 3
     local first_length=$(echo "$dk_short" | while  IFS=  read -r line ; do
         local line_without_red=$(cat -v <<< "$line" | sed -E "s/(\^\[\[01;31m\^\[\[K|\^\[\[m\^\[\[K)//g")
         local line_char_num=${#line_without_red}
         echo $line_char_num
     done | sort -n | tail -1)
-    # echo 4
+    echo 4
     local i=0
     echo "$dk_short" | while  IFS=  read -r line ; do
         echo -n -E "$line"
@@ -583,7 +585,7 @@ dk()
         echo
         i=$(($i + 1))
     done | uniq
-    # echo 5
+    echo 5
 }
 
 # 杀掉监听某个端口的进程
