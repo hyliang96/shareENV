@@ -1,1 +1,0 @@
-# 用cifar10数据集训练一个AlexNet模型
