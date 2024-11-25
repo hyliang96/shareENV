@@ -1,3 +1,5 @@
+# Bridge TTS: Chen, Z., He, G., Zheng, K., Tan, X., & Zhu, J. (2023). Schrodinger Bridges Beat Diffusion Models on Text-to-Speech Synthesis (No. arXiv:2312.03491). arXiv. https://doi.org/10.48550/arXiv.2312.03491
+
 # Copyright (C) 2021. Huawei Technologies Co., Ltd. All rights reserved.
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License.
@@ -17,10 +19,35 @@ from model.unet import GradLogPEstimator2d
 
 
 class Diffusion_SB(BaseModule):
-    # Bridge-gmax:
-    # g2_t即beta_t;  g2_min,g2_max即beta_0,beta_1 (但谁对应谁，不明)
-    # f(t)=0, g^2(t)= (g2_max-g2_min)*t + g2_min, alpha_t=1, sigma2_t= (g2_max-g2_min)*t^2/2 + g2_min*t
-    # 故 t=1时, sigma2_1 = (g2_max+g2_min)/2
+    # 11页 / Table 1 / Bridge-gmax:
+
+    # dx = sqrt(beta_t) dW_t
+
+    # f(t)=0
+    # g^2(t)=beta_t=
+        # {
+        #   k1*t +            beta_min, t<=g2_max_t
+        #   k2*(t-g2_max_t) + beta_max, t>g2_max_t
+        # }
+        #
+        # 分段线性
+        # t          beta_t
+        # -------------------
+        # 0          beta_min
+        # g2_max_t   beta_max
+        # 1          beta_min
+        #
+        # k1= (beta_max-beta_min)/g2_max_t
+        # k2= (beta_max-beta_min)/(1-g2_max_t)
+
+    # alpha_t=1, 常数
+    # sigma^2(t)=int_0^t g^2(t)dt =
+        # {
+        #   (2*g2_min + k1*t) * t/2,                          t<=g2_max_t
+        #   sigma2_half + [2*g2_max + k1*(t-g2_max_t)*k2] * (t-g2_max_t)/2, t>g2_max_t
+        # }
+        # sigma2_half = sigma^2(g2_max_t) = (g2_min + g2_max) * g2_max_t / 2
+
     def __init__(self, n_feats=80, dim=64,
                  n_spks=1, spk_emb_dim=64,
                  g2_min=0.01, g2_max=8, g2_max_t=1, pe_scale=1000, predictor="hpsi", offset=1e-5, sampling_temp=2.0, sde_lambda=0.1):
@@ -86,6 +113,7 @@ class Diffusion_SB(BaseModule):
         xt.detach()
 
         if self.predictor == "hpsi":
+            # 用网络去预测 \nabla\log p\hat{\psi}_t
             target = (xt - alpha_t * x0) / (alpha_t * torch.sqrt(sigma2_t))
 
             # Control the variance of the input to 1
@@ -95,6 +123,7 @@ class Diffusion_SB(BaseModule):
             weight = 1
 
         elif self.predictor == "x0":
+            # 用网络去直接预测 x_0
             target = x0
             target.detach()
             weight = 1
@@ -103,6 +132,8 @@ class Diffusion_SB(BaseModule):
             raise NotImplementedError(f"Unsupported predictor {self.predictor}")
         target.detach()
         return xt * mask, target * mask, weight
+        # mask 是什么？
+        # weight是什么？
 
 
     @torch.no_grad()
