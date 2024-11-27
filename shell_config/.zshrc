@@ -663,7 +663,7 @@ alias tz='tz0'
 
 ufs_list() {  :;  }
 compdef _ls ufs_list
-alias ufs="ufs_list /Users/mac/mount"
+alias ufs="ufs_list /Users/mac/mount/"
 
 # 允许在有`alias foo=...`时，再定义函数`foo() {  .... }`
 set -o ALIAS_FUNC_DEF > /dev/null 2>&1
