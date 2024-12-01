@@ -2378,6 +2378,26 @@ The script should do this: \(ai.prompt)</string>
 					<key>regex</key>
 					<string>\[⚡RUNCOMMAND⚡\](.+?)\[⚡RUNCOMMANDEND⚡\]</string>
 				</dict>
+				<dict>
+					<key>action</key>
+					<string>CoprocessTrigger</string>
+					<key>parameter</key>
+					<string>/usr/local/bin/iterm2-zmodem sz</string>
+					<key>partial</key>
+					<true/>
+					<key>regex</key>
+					<string>\*\*B0100</string>
+				</dict>
+				<dict>
+					<key>action</key>
+					<string>CoprocessTrigger</string>
+					<key>parameter</key>
+					<string>/usr/local/bin/iterm2-zmodem rz</string>
+					<key>partial</key>
+					<true/>
+					<key>regex</key>
+					<string>\*\*B00000000000000</string>
+				</dict>
 			</array>
 			<key>Unicode Normalization</key>
 			<integer>0</integer>
