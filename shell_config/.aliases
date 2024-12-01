@@ -663,6 +663,70 @@ kjob()
 }
 
 # --------------------- 软件 ----------------------
+abspath(){
+    if [[ "$1" =~ ^/ ]]; then
+        echo "$1"
+    else
+        echo $(cd $(dirname "$1") && pwd -P)/$(basename "$1")
+    fi
+}
+
+
+if [ "$(uname)" != "Darwin" ]; then
+    # 不是mac
+
+    # down/up: ssh登陆服务器后，在远程的终端下输入down/up命令，实现下载/上传文件或文件夹
+
+    # 依赖：
+    #    远程：Linux
+    #       定义了down/up这两个函数
+    #    本地：Mac
+    #       安装了scp
+    #       iTerm2设置
+    #       * Preference/Profiles/Advanced/Triggers:
+    #           Regular Expression: \[⚡RUNCOMMAND⚡\](.+?)\[⚡RUNCOMMANDEND⚡\]
+    #           Action: Run Command
+    #           Parameters: \1
+    #           Instant: ✓
+    #           Enable: ✓
+    #       * Preference/Advanced:
+    #           Number of screen lines to match against trigger regular expressions: 10 或者别的较大的数字，它表示Trigger能匹配最多多少行（以当前终端分屏窗口的行计算）
+
+    down() {
+        # 将文件夹/文件从服务器下载到本地
+        # down 远程路径 [远程路径 [远程路径...]]
+        # 远程路径可以是绝对路径、相对路径
+        local dirs=
+        local arg
+        for arg in $@; do
+            if [ -e $arg ]; then
+                local path_arg=$(abspath $arg)
+                dirs="$dirs,'\"$path_arg\"'"
+            else
+                echo not exist: $arg
+            fi
+        done
+        # 去掉dirs字符串开头的'; '
+        if [ "${dirs:0:1}" = "," ]; then
+            dirs=${dirs:1}
+        fi
+        if [[ "$dirs" =~ , ]]; then
+            dirs="{${dirs}}"
+        fi
+        if [ "$dirs" != '' ]; then
+            echo -e "\033[38;5;8m[\U000026A1RUNCOMMAND\U000026A1]scp -r $USER@`hostname`:$dirs ~/Downloads && osascript -e 'display notification \"Download finished successfully.\" with title \"Download Finished\"'[\U000026A1RUNCOMMANDEND\U000026A1]\033[0m"
+        fi
+    }
+
+    up(){
+        # 从本地上传到服务器
+        # up  本地路径 [本地路径 [本地路径...]]
+        # 本地路径必需是绝对路径，要获得本地绝对路径，可以在Finder中选中文件/文件夹后，cmd+C然后在iterm2中cmd+V，或者直接拖拽到iterm2中
+        local dirs=$(printf "'%s' " "$@")
+        dirs=${dirs:0:${#dirs}-1}
+        echo -e "\033[38;5;8m[\U000026A1RUNCOMMAND\U000026A1]scp -r $dirs $USER@`hostname`:`pwd` && osascript -e 'display notification \"Upload finished successfully.\" with title \"Upload Finished\"'[\U000026A1RUNCOMMANDEND\U000026A1]\033[0m"
+    }
+fi
 
 # sub(){
 #     if [ -d /Applications/Sublime\ Text.app ]; then
@@ -694,9 +758,6 @@ kjob()
 #     fi
 # }
 
-abspath(){
-    echo $(cd $(dirname "$1") && pwd -P)/$(basename "$1")
-}
 # sub(){
     # if [ -d /Applications/Sublime\ Text.app ]; then
         # # 本地是Mac，且有sublime
@@ -736,6 +797,9 @@ abspath(){
     # }
 # fi
 
+
+
+
 my_open() {
     local app="$1"
     shift
@@ -754,9 +818,11 @@ my_open() {
         dirs=${dirs:2}
     fi
     if [ "$dirs" != '' ]; then
-        echo 'remote open: '"$app"'; '"$USER"'; '"`hostname`"'; '"$dirs"
+        echo -e "\033[38;5;8m[\U000026A1REMOTEOPEN\U000026A1]$app; $USER; `hostname`; ${dirs}[\U000026A1REMOTEOPENEND\U000026A1]\033[0m"
+        # iTerm2 Triggers Regular Expression: \[⚡REMOTEOPEN⚡\](.+?)\[⚡REMOTEOPENEND⚡\]
     fi
 }
+
 
 if [ "$(uname)" != "Darwin" ]; then
     # 不是mac
