@@ -1126,6 +1126,8 @@ rdiff()
     _my_rsync_ -avnc --delete "$source_path" "$dest_path"
 }
 
+
+
 # rsync 封装多种参数，支持断点续传，但没有自动重连，显示进度条;
 # ts能够和rsync一样自动补全远程目录
 alias ts="_my_rsync_ -avPhH"
