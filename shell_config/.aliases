@@ -1664,7 +1664,7 @@ venew()
     else
         virtualenv --no-site-packages -p python$version $envdir
     fi   && \
-    source venv/bin/activate $envdir
+    source ${envdir}/bin/activate
 }
 
 veact() {
