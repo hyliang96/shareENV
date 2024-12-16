@@ -1200,6 +1200,20 @@ cp_under_vis()
     done
 }
 
+# -------------------- alias to rg ---------------------
+alias rgu='rg -uu' # search ignored files and hidden files, but ignore binary files
+# ignored : ~/.gitignore_global and ~/.config/git/ignore and local .gitignore + .rgignore + .ignore
+# hidden  : hidden files/dirs (**/.* or **/.*/**)
+# binary  : binary files
+#
+# command | ignored | hidden | binary
+# --------|---------|--------|--------
+# rg      | ignore  | ignore | ignore
+# rg -u   | search  | ignore | ignore
+# rg -uu  | search  | search | ignore
+# rg -uuu | search  | search | search
+
+
 # -------------------- alias to ls ---------------------
 alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出现乱码
 
