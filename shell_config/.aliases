@@ -1126,6 +1126,8 @@ rdiff()
     _my_rsync_ -avnc --delete "$source_path" "$dest_path"
 }
 
+
+
 # rsync 封装多种参数，支持断点续传，但没有自动重连，显示进度条;
 # ts能够和rsync一样自动补全远程目录
 alias ts="_my_rsync_ -avPhH"
@@ -1197,6 +1199,20 @@ cp_under_vis()
         cp $x/* $targetpath
     done
 }
+
+# -------------------- alias to rg ---------------------
+alias rgu='rg -uu' # search ignored files and hidden files, but ignore binary files
+# ignored : ~/.gitignore_global and ~/.config/git/ignore and local .gitignore + .rgignore + .ignore
+# hidden  : hidden files/dirs (**/.* or **/.*/**)
+# binary  : binary files
+#
+# command | ignored | hidden | binary
+# --------|---------|--------|--------
+# rg      | ignore  | ignore | ignore
+# rg -u   | search  | ignore | ignore
+# rg -uu  | search  | search | ignore
+# rg -uuu | search  | search | search
+
 
 # -------------------- alias to ls ---------------------
 alias tree='tree -N'  # -N 原编码输出，以避免在mac上中文路径出现乱码
@@ -1662,7 +1678,7 @@ venew()
     else
         virtualenv --no-site-packages -p python$version $envdir
     fi   && \
-    source venv/bin/activate $envdir
+    source ${envdir}/bin/activate
 }
 
 veact() {
