@@ -113,15 +113,14 @@
     "git.autofetch": true,
     // darkly
 
-    // "search.useIgnoreFiles": true,
     // to solve "Visual Studio Code is unable to watch for file changes in this large workspace" (error ENOSPC)"
     "files.watcherExclude": {
-        "**/__data__/**": true,
-        "**/__result__/**": true,
-        "**/result/**": true,
+        "**/__*__/**": true,
         "**/venv/**": true,
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
+        "**/.git/**": true,
+        "**/filelist/**": true,
+        // "**/.git/objects/**": true,
+        // "**/.git/subtree-cache/**": true,
     },
     // 左侧目录树不显示
     "files.exclude": {
@@ -132,8 +131,13 @@
         // "**/*.PNG": true,
         // "experimental_results": true
     },
+    "search.useIgnoreFiles": true,
     // 搜索不搜
     "search.exclude": {
+        "**/__*__/**": true,
+        "**/venv/**": true,
+        "**/.git/**": true,
+        "**/filelist/**": true,
         "**/*.jpg": true,
         "**/*.jpeg": true,
         "**/*.JPEG": true,
