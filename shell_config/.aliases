@@ -118,7 +118,14 @@ grp () {
 
 # ---------------- alias to resource ----------------
 alias nvd='watch -n 10 nvidia-smi'  # 查GPU使用
-alias gpu='watch -n 10 gpustat'     # 查看GPU使用，谁在用
+gpu() {
+    if [ $# -eq 0 ]; then
+        watch -n 10 gpustat
+    else
+        watch -n $1 gpustat
+    fi
+}
+# alias gpu='watch -n 10 gpustat'     # 查看GPU使用，谁在用
 alias gpujch='nvidia-who'            # 看用哪个进程在用显卡
 
 # 用法
