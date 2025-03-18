@@ -97,7 +97,7 @@
     "vspace": {
         "prefix": "vspace",
         "body": [
-            "\\vspace{${1:-1}em} % em: height of 'M'",
+            "\\vspace{${1:-1}ex} % ex: height of 'M'",
         ],
         "description": "vspace"
     },
@@ -105,7 +105,7 @@
     "vskip": {
         "prefix": "vskip",
         "body": [
-            "\\vskip ${1:-1}em % em: height of 'M'",
+            "\\vskip ${1:-1}ex % ex: height of 'M'",
         ],
         "description": "vskip"
     },
@@ -125,43 +125,34 @@
         "description": "extra footnote without heading mark and mark in text"
     },
 
-    "multirow": {
-        "prefix": "multirow",
-        "body": [
-            "\\multirow{${1:#row}}{*}{\\tabincell{c}{${2:content}}}",
-        ],
-        "description": "multirow"
-    },
-
-
-    "multicolumn": {
-        "prefix": "multicolumn",
-        "body": [
-            "\\multicolumn{${1:#col}}{${2:c|}}{${3:content}}",
-        ],
-        "description": "multicolumn"
-    },
-
-    "cmidrule": {
-        "prefix": "cmidrule",
-        "body": [
-            "\\cmidrule{${1:#col-1}-${2:#col-2}}",
-        ],
-        "description": "cmidrule"
-    },
-
-
     "figure": {
         "prefix": "figure",
         "body": [
             "\\begin{figure}[thbp]",
             "    \\centering",
-            "    \\includegraphics[width=${1:1}\\textwidth]{${2:img/}}",
-            "    \\caption{$3}",
-            "    \\label{fig:$4}",
+            "    \\includegraphics[width=${1:1.0}\\textwidth]{${2}}",
+            "    \\caption*{$3}"
+            "    \\caption{$4}",
+            "    \\label{fig:$5}",
             "\\end{figure}"
         ],
         "description": "figure"
+    },
+
+    "subfigure": {
+        "prefix": "subfigure",
+        "body": [
+            "\\begin{figure}",
+            "\\centering",
+            "\\subcaptionbox{$1\\label{fig:$2}}",
+            "    {\\includegraphics[width=${3:0.45}\\linewidth]{${4}}}",
+            "\\subcaptionbox{$5\\label{fig:$6}}",
+            "    {\\includegraphics[width=${7:0.45}\\linewidth]{${8}}}",
+            "\\caption{$9}",
+            "\\label{fig:$10}",
+            "\\end{figure}"
+        ],
+        "description": "subfigure"
     },
 
     "floatingfigure": {
@@ -169,7 +160,7 @@
         "body": [
             "\\begin{floatingfigure}[r]{${1:0.5}\\textwidth}",
             "    \\centering",
-            "    \\includegraphics[width=${2:0.5}\\textwidth]{${3:img/}}",
+            "    \\includegraphics[width=${2:0.5}\\textwidth]{${3:figures/}}",
             "    \\caption{$4}",
             "    \\label{fig:$5}",
             "\\end{floatingfigure}"
@@ -177,20 +168,39 @@
         "description": "floatingfigure"
     },
 
+    "figure_right_caption": {
+        "prefix": "figure_right_caption",
+        "body": [
+            "\\begin{figure}[thbp]",
+            "\\begin{minipage}[t]{${1:0.5}\\textwidth}",
+            "\\centering",
+            "\\vspace{0pt} \\includegraphics[width=1\\textwidth]{${2:figures/}}",
+            "% \\adjincludegraphics[valign=t,width=1\\textwidth]{${2:figures/}}",
+            "% \\usepackage{adjustbox}",
+            "\\label{fig:$3}",
+            "\\end{minipage}",
+            "\\hfill",
+            "\\begin{minipage}[t]{${4:0.5}\\textwidth}",
+            "\\caption{$5}",
+            "\\end{minipage}",
+            "\\end{figure}",
+        ],
+        "description": "figure_right_caption"
+    },
+
     "table": {
         "prefix": "table",
         "body": [
             "% \\usepackage{floatflt}",
             "\\begin{table}[thbp]",
-            "    \\label{tab:$1}",
-            "    \\caption{$2}",
+            "    \\caption{$1}",
+            "    \\label{tab:$2}",
             "    \\begin{center}",
             "    \\begin{tabular}{${3:lcc}}",
             "    \\toprule",
             "    ${4: & & }\\\\\\",
             "    \\midrule",
             "    ${5: & & }\\\\\\",
-            "    \\hline",
             "    ${6: & & }\\\\\\",
             "    \\bottomrule",
             "    \\end{tabular}",
@@ -224,47 +234,75 @@
         "description": "floatingtable"
     },
 
-    "figure_right_caption": {
-        "prefix": "figure_right_caption",
+
+    "multirow": {
+        "prefix": "multirow",
         "body": [
-            "\\begin{figure}[thbp]",
-            "\\begin{minipage}[t]{${1:0.5}\\textwidth}",
-            "\\centering",
-            "\\vspace{0pt} \\includegraphics[width=1\\textwidth]{${2:img/}}",
-            "% \\adjincludegraphics[valign=t,width=1\\textwidth]{${2:img/}}",
-            "% \\usepackage{adjustbox}",
-            "\\label{fig:$3}",
-            "\\end{minipage}",
-            "\\hfill",
-            "\\begin{minipage}[t]{${4:0.5}\\textwidth}",
-            "\\caption{$5}",
-            "\\end{minipage}",
-            "\\end{figure}",
+            "\\multirow{${1:#row}}{*}{\\makecell{${2:content}}}",
         ],
-        "description": "figure_right_caption"
+        "description": "multirow"
     },
+
+
+    "multicolumn": {
+        "prefix": "multicolumn",
+        "body": [
+            "\\multicolumn{${1:#col}}{${2:c|}}{${3:content}}",
+        ],
+        "description": "multicolumn"
+    },
+
+    "cmidrule": {
+        "prefix": "cmidrule",
+        "body": [
+            "\\cmidrule{${1:#col-1}-${2:#col-2}}",
+        ],
+        "description": "cmidrule"
+    },
+
+
 
     "algorithm": {
         "prefix": "algorithm",
         "body": [
-            "% \\usepackage{algorithm}",
-            "% \\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx",
-            "% algorithmic doc: https://en.wikibooks.org/wiki/LaTeX/Algorithms",
-            "\\begin{algorithm}[t]",
-            "\\caption{$1}",
-            "\\label{alg:$2}",
-            "\\begin{algorithmic}[1]",
-            "\\For{$3}",
-            "    \\If{$4}",
-            "        \\State $5",
-            "    \\ElsIf{$6}",
-            "        \\State $7",
-            "    \\ElsIf{$8}",
-            "        \\State $9",
-            "    \\EndIf",
-            "\\EndFor",
-            "\\end{algorithmic}",
-            "\\end{algorithm}",
+            "\\renewcommand{\\algorithmicrequire}{\\textbf{输入：}\\unskip}",
+            "\\renewcommand{\\algorithmicensure}{\\textbf{输出：}\\unskip}",
+            "\\begin{algorithm}",
+            "  \\caption{$1}",
+            "  \\label{alg:$2}",
+            "  \\small",
+            "  \\begin{algorithmic}",
+            "    \\REQUIRE $3",
+            "    \\ENSURE $4",
+            "    \\STATE $5",
+            "    \\WHILE{$6}",
+            "      \\IF{$7}",
+            "        \\STATE $8",
+            "      \\ELSE[$9]",
+            "        \\STATE $10",
+            "      \\ENDIF",
+            "    \\ENDWHILE",
+            "  \\end{algorithmic}",
+            "\\end{algorithm}"
+
+            // "% \\usepackage{algorithm}",
+            // "% \\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx",
+            // "% algorithmic doc: https://en.wikibooks.org/wiki/LaTeX/Algorithms",
+            // "\\begin{algorithm}[t]",
+            // "\\caption{$1}",
+            // "\\label{alg:$2}",
+            // "\\begin{algorithmic}[1]",
+            // "\\For{$3}",
+            // "    \\If{$4}",
+            // "        \\State $5",
+            // "    \\ElsIf{$6}",
+            // "        \\State $7",
+            // "    \\ElsIf{$8}",
+            // "        \\State $9",
+            // "    \\EndIf",
+            // "\\EndFor",
+            // "\\end{algorithmic}",
+            // "\\end{algorithm}",
         ],
         "description": "algorithm"
     },

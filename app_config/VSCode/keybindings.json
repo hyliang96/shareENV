@@ -123,8 +123,8 @@
 
     // cmd+c 复制一行, 不带行尾换行符, 依赖于'macros'插件terminalFocus; 之后 cmd+v 则粘贴插入到光标所在处
     { "key": "cmd+c", "command": "macros.copyWithoutNewLine", "when": "editorTextFocus && !editorHasSelection" },
-    // cmd+alt+c 复制一行, 带行尾换行符; 之后 cmd+v 则粘贴到光标上一行
-    { "key": "cmd+alt+c", "command": "editor.action.clipboardCopyAction", "when": "editorTextFocus && !editorHasSelection" },
+    // alt+c 复制一行, 带行尾换行符; 之后 cmd+v 则粘贴到光标上一行
+    { "key": "alt+c", "command": "editor.action.clipboardCopyAction", "when": "editorTextFocus && !editorHasSelection" },
     { "key": "cmd+c", "command": "-editor.action.clipboardCopyAction", "when": "editorTextFocus && !editorHasSelection" },
     // 选择一行, 不带行尾换行符, 依赖于'macros'插件terminalFocus
     { "key": "cmd+l", "command": "macros.selectWithoutNewLine", "when": "editorTextFocus && !editorHasSelection" },
@@ -206,11 +206,24 @@
     // alt+cmd+J : code jump to pdf
     // cmd+single fingre click: pdf jump to code
     {  "key": "cmd+alt+shift+b", "command": "latex-workshop.recipes" },
-    {
-        "key": "alt+cmd+q",
-        "command": "latex-workshop.kill"
-    },
+    { "key": "alt+cmd+q", "command": "latex-workshop.kill" },
 
+    // alt+cmd+0/1/2/3 选中文本放进chapter、section、subsection、subsubsection环境
+    { "key": "alt+cmd+0", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\chapter{${TM_SELECTED_TEXT}$1}" } },
+    { "key": "alt+cmd+1", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\section{${TM_SELECTED_TEXT}$1}" } },
+    { "key": "alt+cmd+2", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\subsection{${TM_SELECTED_TEXT}$1}" } },
+    { "key": "alt+cmd+3", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\subsubsection{${TM_SELECTED_TEXT}$1}" } },
+    { "key": "alt+cmd+p", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\paragraph{${TM_SELECTED_TEXT}$1}" } },
+
+    // cmd+b/i/u 选中文本放进加粗/斜体/下横线环境
+    { "key": "cmd+b", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\textbf{${TM_SELECTED_TEXT}$1}" } },
+    { "key": "cmd+i", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\textit{${TM_SELECTED_TEXT}$1}" } },
+    { "key": "cmd+u", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\underline{${TM_SELECTED_TEXT}$1}" } },
+
+    { "key": "alt+cmd+y", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\cite{${TM_SELECTED_TEXT}$1}" } },
+    { "key": "alt+cmd+r", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\ref{${TM_SELECTED_TEXT}$1}" } },
+    { "key": "alt+cmd+e", "command": "editor.action.insertSnippet", "when": "editorTextFocus && editorLangId == latex", "args": { "snippet": "\\eqref{${TM_SELECTED_TEXT}$1}" } },
+    // --------------------------------------------------------------------------
     // Markdown all in one 插件的快捷键
     // 删除线：给选中区域添加/去除删除线
     {

@@ -248,7 +248,7 @@
     // ---------------------- latex-workshop -------------------------
     // 全选 "/ * latextmp * /", 然后 "cmd+/" 开关所在行注释, 以切换临时文件输出的目录:
 // /*no*//*latextmp*/ // 输出到 `当前项目/`
-/*latextmp*/ // 输出到 `当前项目/.vsclatextmp/`
+/*latextmp*/ // 输出到 `当前项目/build/`
 
     "latex-workshop.latex.recipe.default": "lastUsed", // "first"
     "latex-workshop.latex.build.forceRecipeUsage": true,  // 按cmd+alt+B时, 也使用recipe编译
@@ -306,7 +306,7 @@
 
 
 // /*no*//*latextmp*/  "latex-workshop.latex.outDir": "%DIR%",  // %TMPDIR%
-/*latextmp*/  "latex-workshop.latex.outDir": "%DIR%/.vsclatextmp",  // %TMPDIR%
+/*latextmp*/  "latex-workshop.latex.outDir": "%DIR%/build",  // %TMPDIR%
     "latex-workshop.latex.tools": [
         {
             "name": "latexmkrc",
@@ -353,7 +353,7 @@
 // /*no*//*latextmp*/     "%DOCFILE%"
 /*latextmp*/     "%OUTDIR%/%DOCFILE%"
             ],
-/*latextmp*/    "env": { "TEXMFOUTPUT": "%OUTDIR%" }
+/*latextmp*/  "env": { "TEXMFOUTPUT": "%OUTDIR%" }
         }, {
             "name": "hide",
             "command": "find",
@@ -405,8 +405,17 @@
         }
     ],
 
-    "latex-workshop.latex.autoBuild.run": "never", // "never" "onFileChange" "onSave"
+
+    "latex-workshop.intellisense.package.enabled": true, // 启用包的自动补全功能
+    "latex-workshop.intellisense.unimathsymbols.enabled": true, // 启用数学符号的自动补全功能
+    "latex-workshop.intellisense.includegraphics.preview.enabled": true, // 插图预览
+
+    "latex-workshop.latex.autoBuild.run": "onFileChange", // "never" "onFileChange" "onSave"
     "latex-workshop.view.pdf.viewer": "tab",
+
+    // 预览公式
+    "latex-workshop.hover.preview.enabled": false, // 关闭它，换成用Ultra Math Preview插件预览。 hover只有当鼠标在公式开始符号上停留时才显示公式预览，而Ultra Math Preview在鼠标位于公示环境中时也能显示公式预览，因而可以边改公式边预览。
+    "latex-workshop.hover.preview.scale": 0.7,
 
     // latex 自动删除辅助文件
 // /*no*//*latextmp*/ "latex-workshop.latex.autoClean.run": "onBuilt",
@@ -434,7 +443,6 @@
         "*.log",
         "*.fdb_latexmk",
     ],
-
 
     // ----------------------------------------------------------------
     // markdown 编辑器
@@ -612,5 +620,7 @@
 
     ],
     "gitlens.home.preview.enabled": false,
-    "window.zoomLevel": -1,
+
+    "remote.SSH.useLocalServer": true,
+    "remote.SSH.connectTimeout": 60
 }
