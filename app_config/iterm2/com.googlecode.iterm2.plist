@@ -7,9 +7,11 @@
 
 The script should do this: \(ai.prompt)</string>
 	<key>AiMaxTokens</key>
-	<integer>4096</integer>
+	<integer>128000</integer>
 	<key>AiModel</key>
-	<string>gpt-4o</string>
+	<string>gpt-4o-mini</string>
+	<key>AitermURL</key>
+	<string>https://api.openai.com/v1/completions</string>
 	<key>AllowClipboardAccess</key>
 	<true/>
 	<key>AlternateMouseScroll</key>
