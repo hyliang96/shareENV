@@ -970,17 +970,11 @@ fi
     # alias vim='PATH=$HOME/.vim/vim_venv/bin:$PATH vim'
 # fi
 
-# if [ -d "$(which -a python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ] && [ -x "$(which nvim)" ]; then
-    # alias nvim='PATH=$(which -a python | grep conda | head -n 1 | xargs dirname):$PATH nvim'
-# fi
-
 if [ -d "$conda_path/bin" ] && [ -x "$(which nvim)" ]; then
     alias nvim='PATH=$conda_path/bin:$PATH nvim'
 fi
-
-
-if [ -d "$(which -a python | grep conda | head -n 1 | sed -E 's/\/python.*//')" ] && [ -x "$(which vim)" ]; then
-    alias vim='PATH=$(which -a python | grep conda | head -n 1 | xargs dirname):$PATH vim'
+if [ -d "$conda_path/bin" ] && [ -x "$(which vim)" ]; then
+    alias vim='PATH=$conda_path/bin:$PATH vim'
 fi
 
 alias nvi=nvim
