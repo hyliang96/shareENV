@@ -823,6 +823,8 @@ The script should do this: \(ai.prompt)</string>
 			<integer>80</integer>
 			<key>Command</key>
 			<string></string>
+			<key>Composer Top Offset</key>
+			<real>0.0</real>
 			<key>Cursor Boost</key>
 			<real>0.0</real>
 			<key>Cursor Color</key>

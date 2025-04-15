@@ -12,6 +12,8 @@
     excludesfile = ~/.gitignore_global
     ; 支持git status的返回显示中文
     quotepath = false
+    ; 默认忽略换行符\n和\r\n的差异，在git diff中\r显示为^M
+    whitespace = cr-at-eol
 [color]
     ui = auto
 [alias]
