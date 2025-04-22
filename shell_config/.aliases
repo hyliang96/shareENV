@@ -1289,7 +1289,7 @@ l() {
 # mv to $my/trash/
 # if the file/dir name conflicts with those in trash/, add time prefix on it
 # support file/dir name conatins spaces and non-ascii chars
-if [ "$(uname)" = "Darwin" ] || [ $my = '' ]; then
+if [ "$(uname)" = "Darwin" ] || [ "$my" = '' ]; then
 # mac
     trash=~/.Trash
 else
