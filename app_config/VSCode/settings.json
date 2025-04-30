@@ -622,5 +622,6 @@
     "gitlens.home.preview.enabled": false,
 
     "remote.SSH.useLocalServer": true,
-    "remote.SSH.connectTimeout": 60
+    "remote.SSH.connectTimeout": 60,
+    "window.zoomLevel": -1
 }
