@@ -588,14 +588,11 @@
     "fittencode.languagePreference.displayPreference": "zh-cn",
     "fittencode.languagePreference.commentPreference": "zh-cn",
 
-
-    // vscode自动升级
-    "update.mode": "none",
-
-    // 远程开发
+    // 远程开发 Remote Development
     "remote.SSH.logLevel": "trace",
-    // "remote.SSH.useExecServer": true,
-    // "remote.SSH.useLocalServer": false,
+    "remote.SSH.useExecServer": false, // 连接到服务器时使用新的引导模式。如果出现连接问题，可关闭此模式
+    "remote.SSH.useLocalServer": false, // 启用使用在窗口之间共享的单个连接和跨窗口重新加载进行连接的模式。这样可以更快地打开新窗口，并减少需要输入密码的次数
+    "remote.SSH.connectTimeout": 60, // 指定用于连接到远程的 SSH 命令的超时（以秒为单位）
     // "remote.SSH.remotePlatform": {
     //     "g32": "linux"
     // }
@@ -620,7 +617,10 @@
 
     ],
     "gitlens.home.preview.enabled": false,
+    "remote.SSH.remotePlatform": {
+        "g33": "linux",
+        "g46": "linux",
+        "g32": "linux"
+    },
 
-    "remote.SSH.useLocalServer": true,
-    "remote.SSH.connectTimeout": 60
 }

@@ -2825,7 +2825,7 @@ The script should do this: \(ai.prompt)</string>
 			<key>HotKey Modifier Activation</key>
 			<integer>0</integer>
 			<key>HotKey Modifier Flags</key>
-			<integer>1966080</integer>
+			<integer>393216</integer>
 			<key>HotKey Window Animates</key>
 			<true/>
 			<key>HotKey Window AutoHides</key>

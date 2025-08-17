@@ -146,6 +146,7 @@
             "\\centering",
             "\\subcaptionbox{$1\\label{fig:$2}}",
             "    {\\includegraphics[width=${3:0.45}\\linewidth]{${4}}}",
+            "\\hfill",
             "\\subcaptionbox{$5\\label{fig:$6}}",
             "    {\\includegraphics[width=${7:0.45}\\linewidth]{${8}}}",
             "\\caption{$9}",
