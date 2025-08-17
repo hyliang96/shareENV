@@ -19,7 +19,7 @@ The script should do this: \(ai.prompt)</string>
 	<key>AlternateMouseScroll</key>
 	<true/>
 	<key>AlwaysOpenWindowAtStartup</key>
-	<false/>
+	<true/>
 	<key>AutoHideTmuxClientSession</key>
 	<true/>
 	<key>BadgeFontIsBold</key>
