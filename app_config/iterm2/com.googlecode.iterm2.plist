@@ -36,6 +36,8 @@ The script should do this: \(ai.prompt)</string>
 	<false/>
 	<key>BracketedPasteMode</key>
 	<true/>
+	<key>CloseBookmarksWindowAfterOpening</key>
+	<true/>
 	<key>Control</key>
 	<integer>1</integer>
 	<key>ConvertDosNewlines</key>
