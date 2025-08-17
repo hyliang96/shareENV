@@ -19,7 +19,7 @@ The script should do this: \(ai.prompt)</string>
 	<key>AlternateMouseScroll</key>
 	<true/>
 	<key>AlwaysOpenWindowAtStartup</key>
-	<true/>
+	<false/>
 	<key>AutoHideTmuxClientSession</key>
 	<true/>
 	<key>BadgeFontIsBold</key>
@@ -6130,7 +6130,7 @@ The script should do this: \(ai.prompt)</string>
 	<key>OpenArrangementAtStartup</key>
 	<false/>
 	<key>OpenBookmark</key>
-	<true/>
+	<false/>
 	<key>OpenNewWindowAtStartup</key>
 	<true/>
 	<key>OpenNoWindowsAtStartup</key>
@@ -6193,7 +6193,7 @@ The script should do this: \(ai.prompt)</string>
 	<key>PromptOnQuit</key>
 	<false/>
 	<key>RestoreWindowsToSameSpaces</key>
-	<true/>
+	<false/>
 	<key>RightCommand</key>
 	<integer>8</integer>
 	<key>RightOption</key>
