@@ -6128,7 +6128,7 @@ The script should do this: \(ai.prompt)</string>
 	<key>OpenArrangementAtStartup</key>
 	<false/>
 	<key>OpenBookmark</key>
-	<false/>
+	<true/>
 	<key>OpenNewWindowAtStartup</key>
 	<true/>
 	<key>OpenNoWindowsAtStartup</key>
