@@ -6193,7 +6193,7 @@ The script should do this: \(ai.prompt)</string>
 	<key>PromptOnQuit</key>
 	<false/>
 	<key>RestoreWindowsToSameSpaces</key>
-	<true/>
+	<false/>
 	<key>RightCommand</key>
 	<integer>8</integer>
 	<key>RightOption</key>
