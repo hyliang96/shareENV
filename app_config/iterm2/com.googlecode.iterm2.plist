@@ -6,12 +6,28 @@
 	<string>Return commands suitable for copy/pasting into \(shell) on \(uname). Do NOT include commentary NOR Markdown triple-backtick code blocks as your whole response will be copied into my terminal automatically.
 
 The script should do this: \(ai.prompt)</string>
+	<key>AIFeatureFunctionCalling</key>
+	<true/>
+	<key>AIFeatureHostedCodeInterpeter</key>
+	<true/>
+	<key>AIFeatureHostedFileSearch</key>
+	<true/>
+	<key>AIFeatureHostedWebSearch</key>
+	<true/>
+	<key>AIFeatureStreamingResponses</key>
+	<true/>
+	<key>AITermAPI</key>
+	<integer>2</integer>
+	<key>AIVectorStore</key>
+	<integer>0</integer>
 	<key>AiMaxTokens</key>
-	<integer>5000</integer>
+	<integer>400000</integer>
 	<key>AiModel</key>
-	<string>gpt-4o-mini</string>
+	<string>gpt-5.2</string>
+	<key>AiResponseMaxTokens</key>
+	<integer>128000</integer>
 	<key>AitermURL</key>
-	<string>https://free.v36.cm/v1/chat/completions</string>
+	<string>https://api.openai.com/v1/responses</string>
 	<key>AitermUseLegacyAPI</key>
 	<false/>
 	<key>AllowClipboardAccess</key>
@@ -881,7 +897,7 @@ The script should do this: \(ai.prompt)</string>
 			<key>Disable Window Resizing</key>
 			<true/>
 			<key>Draw Powerline Glyphs</key>
-			<true/>
+			<false/>
 			<key>Enable Triggers in Interactive Apps</key>
 			<true/>
 			<key>Flashing Bell</key>
@@ -2790,7 +2806,7 @@ The script should do this: \(ai.prompt)</string>
 			<key>Disable Window Resizing</key>
 			<true/>
 			<key>Draw Powerline Glyphs</key>
-			<true/>
+			<false/>
 			<key>Enable Triggers in Interactive Apps</key>
 			<true/>
 			<key>Flashing Bell</key>
@@ -4687,7 +4703,7 @@ The script should do this: \(ai.prompt)</string>
 			<key>Disable Window Resizing</key>
 			<true/>
 			<key>Draw Powerline Glyphs</key>
-			<true/>
+			<false/>
 			<key>Flashing Bell</key>
 			<false/>
 			<key>Foreground Color</key>
